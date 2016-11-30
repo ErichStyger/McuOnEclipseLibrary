@@ -33,7 +33,10 @@
 #include "PE_Error.h"
 #include "PE_Const.h"
 #include "IO_Map.h"
-#include "Pins1.h"
+#include "McuUtility.h"
+#include "McuXFormat.h"
+#include "McuRTOS.h"
+#include "McuLib.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,6 +57,65 @@ extern "C" {
 /* ===================================================================*/
 void Cpu_OnNMI(void);
 
+
+void McuRTOS_vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName);
+/*
+** ===================================================================
+**     Event       :  McuRTOS_vApplicationStackOverflowHook (module Events)
+**
+**     Component   :  McuRTOS [McuRTOS]
+**     Description :
+**         if enabled, this hook will be called in case of a stack
+**         overflow.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         pxTask          - Task handle
+**       * pcTaskName      - Pointer to task name
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuRTOS_vApplicationMallocFailedHook(void);
+/*
+** ===================================================================
+**     Event       :  McuRTOS_vApplicationMallocFailedHook (module Events)
+**
+**     Component   :  McuRTOS [McuRTOS]
+**     Description :
+**         If enabled, the McuRTOS will call this hook in case memory
+**         allocation failed.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuRTOS_vApplicationTickHook(void);
+/*
+** ===================================================================
+**     Event       :  McuRTOS_vApplicationTickHook (module Events)
+**
+**     Component   :  McuRTOS [FreeRTOS]
+**     Description :
+**         If enabled, this hook will be called by the RTOS for every
+**         tick increment.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuRTOS_vApplicationIdleHook(void);
+/*
+** ===================================================================
+**     Event       :  McuRTOS_vApplicationIdleHook (module Events)
+**
+**     Component   :  McuRTOS [FreeRTOS]
+**     Description :
+**         If enabled, this hook will be called when the RTOS is idle.
+**         This might be a good place to go into low power mode.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
 
 /* END Events */
 

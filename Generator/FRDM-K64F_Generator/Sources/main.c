@@ -30,7 +30,10 @@
 /* Including needed modules to compile this module/procedure */
 #include "Cpu.h"
 #include "Events.h"
-#include "Pins1.h"
+#include "McuUtility.h"
+#include "McuXFormat.h"
+#include "McuRTOS.h"
+#include "McuLib.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
