@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : McuLibConfig
-**     Version     : Component 01.004, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.006, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-11-30, 08:55, # CodeGen: 55
+**     Date/Time   : 2016-12-01, 20:59, # CodeGen: 58
 **     Abstract    :
 **
 **     Settings    :
@@ -68,6 +68,8 @@
   #include "PE_Const.h"
   #include "IO_Map.h"
   #include "Cpu.h" /* include CPU related interfaces and defines */
+#elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_GENERIC
+  /* no specific includes */
 #else /* use non-Processor Expert SDK */
   #include "PE_KSDK_Types.h"
   #ifndef __HIWARE__ /* Hiware compiler (S08, S12) only supports C89 */

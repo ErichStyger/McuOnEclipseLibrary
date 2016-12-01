@@ -2,6 +2,7 @@
 #define __McuLibCONFIG_H
 
 /* Identifiers used to identify the SDK */
+#define McuLib_CONFIG_SDK_GENERIC             0 /* using a generic API/SDK */
 #define McuLib_CONFIG_SDK_PROCESSOR_EXPERT    1 /* using Processor Expert SDK */
 #define McuLib_CONFIG_SDK_KINETIS_1_3         2 /* using NXP Kinetis SDK V1.3 */
 #define McuLib_CONFIG_SDK_KINETIS_2_0         3 /* using NXP Kinetis SDK V2.0 */
