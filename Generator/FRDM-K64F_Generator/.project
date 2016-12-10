@@ -32,9 +32,24 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>McuOnEclipseLibrary</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>lib</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
+		</link>
+		<link>
+			<name>McuOnEclipseLibrary/license.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/license.txt</locationURI>
+		</link>
+		<link>
+			<name>McuOnEclipseLibrary/readme.txt</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/readme.txt</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

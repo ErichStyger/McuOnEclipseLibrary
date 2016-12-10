@@ -18,8 +18,10 @@
                                                   || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_2_0) \
                                                   || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_MCUXPRESSO_2_0) \
                                                  )
-  /* 1: project is a NXP/Kinetis SDK project; 0: Normal Processor Expert project or generic project */
-
+#define McuLib_CONFIG_NXP_SDK_2_0_USED           (   (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_2_0) \
+                                                  || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_MCUXPRESSO_2_0) \
+                                                 )
+#define McuLib_CONFIG_PEX_SDK_USED               (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_PROCESSOR_EXPERT)
 
 #endif /* __McuLib_CONFIG_H */
 

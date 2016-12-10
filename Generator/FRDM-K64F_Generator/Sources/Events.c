@@ -168,6 +168,25 @@ void McuPercepio_OnTraceWrap(void)
 #endif
 }
 
+/*
+** ===================================================================
+**     Event       :  McuEvents_AppHandleEvent (module Events)
+**
+**     Component   :  McuEvents [SimpleEvents]
+**     Description :
+**         
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         event           - Event (event number) to be processed.
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuEvents_AppHandleEvent(uint8_t event)
+{
+  (void)event; /* only to avoid compiler warning about unused variable */
+  /* Write your code here ... */
+}
+
 /* END Events */
 
 #ifdef __cplusplus

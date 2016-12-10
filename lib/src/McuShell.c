@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.087, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.088, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2016-12-10, 11:06, # CodeGen: 87
 **     Abstract    :
 **
 **     Settings    :
@@ -38,7 +38,7 @@
 **            Stored Characters                            : 32
 **            Char for Next                                : \t
 **            Char for Previous                            : \e
-**          Kinetis SDK                                    : McuLib
+**          SDK                                            : McuLib
 **     Contents    :
 **         PrintPrompt                  - void McuShell_PrintPrompt(McuShell_ConstStdIOType *io);
 **         SendNum8u                    - void McuShell_SendNum8u(uint8_t val, McuShell_StdIO_OutErr_FctType io);

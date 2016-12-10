@@ -50,6 +50,19 @@
 #include "CDC1.h"
 #include "Tx1.h"
 #include "Rx1.h"
+#include "McuLED.h"
+#include "LEDpin1.h"
+#include "BitIoLdd1.h"
+#include "McuQuadCounter.h"
+#include "C11.h"
+#include "BitIoLdd2.h"
+#include "C21.h"
+#include "BitIoLdd3.h"
+#include "McuTrigger.h"
+#include "McuEvents.h"
+#include "McuTimeDate.h"
+#include "EH1.h"
+#include "INT_Hard_Fault.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus
@@ -141,6 +154,21 @@ void McuPercepio_OnTraceWrap(void);
 **         Called for trace ring buffer wrap around. This gives the
 **         application a chance to dump the trace buffer.
 **     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuEvents_AppHandleEvent(uint8_t event);
+/*
+** ===================================================================
+**     Event       :  McuEvents_AppHandleEvent (module Events)
+**
+**     Component   :  McuEvents [SimpleEvents]
+**     Description :
+**         
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         event           - Event (event number) to be processed.
 **     Returns     : Nothing
 ** ===================================================================
 */
