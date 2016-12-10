@@ -125,9 +125,8 @@
  *
  * See http://www.freertos.org/a00110.html.
  *----------------------------------------------------------*/
-#define configPEX_KINETIS_SDK                     (McuLib_CONFIG_SDK_VERSION_USED != McuLib_CONFIG_SDK_PROCESSOR_EXPERT) /* 1: project is a Kinetis SDK Processor Expert project; 0: No Kinetis Processor Expert project */
-#define configGENERATE_RUN_TIME_STATS_USE_TICKS   0 /* 1: Use the RTOS tick counter as runtime counter. 0: use extra timer */
-#define configGENERATE_RUN_TIME_STATS             0 /* 1: generate runtime statistics; 0: no runtime statistics */
+#define configGENERATE_RUN_TIME_STATS_USE_TICKS   1 /* 1: Use the RTOS tick counter as runtime counter. 0: use extra timer */
+#define configGENERATE_RUN_TIME_STATS             1 /* 1: generate runtime statistics; 0: no runtime statistics */
 #if configGENERATE_RUN_TIME_STATS
   #if configGENERATE_RUN_TIME_STATS_USE_TICKS
     #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()   /* nothing */ /* default: use Tick counter as runtime counter */
@@ -180,9 +179,9 @@
 #define configSUPPORT_STATIC_ALLOCATION           0 /* 1: make static allocation functions for RTOS available. 0: only dynamic functions are allowed */
 /*----------------------------------------------------------*/
 #define configMAX_TASK_NAME_LEN                   12 /* task name length in bytes */
-#define configUSE_TRACE_FACILITY                  0 /* 1: include additional structure members and functions to assist with execution visualization and tracing, 0: no runtime stats/trace */
+#define configUSE_TRACE_FACILITY                  1 /* 1: include additional structure members and functions to assist with execution visualization and tracing, 0: no runtime stats/trace */
 #define configUSE_TRACE_HOOKS                     0 /* 1: Percepio Trace hooks, 0: not using Percepio Trace hooks */
-#define configUSE_SEGGER_SYSTEM_VIEWER_HOOKS      0 /* 1: Segger System Viewer hooks, 0: not using Segger System Viewer hooks */
+#define configUSE_SEGGER_SYSTEM_VIEWER_HOOKS      1 /* 1: Segger System Viewer hooks, 0: not using Segger System Viewer hooks */
 #define configUSE_STATS_FORMATTING_FUNCTIONS      (configUSE_TRACE_FACILITY || configGENERATE_RUN_TIME_STATS)
 #define configUSE_16_BIT_TICKS                    0 /* 1: use 16bit tick counter type, 0: use 32bit tick counter type */
 #define configIDLE_SHOULD_YIELD                   1 /* 1: the IDEL task will yield as soon as possible. 0: The IDLE task waits until preemption. */
@@ -238,8 +237,11 @@ point support. */
 #define INCLUDE_uxTaskGetStackHighWaterMark       1
 #define INCLUDE_xTaskGetSchedulerState            1
 #define INCLUDE_xQueueGetMutexHolder              1
+#define INCLUDE_xTaskGetHandle                    1
+#define INCLUDE_xTaskAbortDelay                   1
 #define INCLUDE_xTaskGetCurrentTaskHandle         1
 #define INCLUDE_xTaskGetIdleTaskHandle            1
+#define INCLUDE_xTaskResumeFromISR                1
 #define INCLUDE_eTaskGetState                     0
 #define INCLUDE_pcTaskGetTaskName                 1
 /* -------------------------------------------------------------------- */

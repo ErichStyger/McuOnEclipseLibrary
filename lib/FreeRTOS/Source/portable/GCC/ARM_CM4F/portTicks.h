@@ -77,12 +77,12 @@
  *  That way the a module can interface this wrapper header file instead
  *  of one of the standard FreeRTOS header files.
  */
-#include "McuLib.h" /* include interface to SDK */
+#include "McuLib.h" /* include SDK and API used */
 
 #include "FreeRTOSConfig.h"
 #include "portmacro.h"
 
-#if configPEX_KINETIS_SDK
+#if McuLib_CONFIG_NXP_SDK_USED
 extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
 #endif
 

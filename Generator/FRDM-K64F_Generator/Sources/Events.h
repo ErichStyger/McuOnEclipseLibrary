@@ -36,6 +36,20 @@
 #include "McuUtility.h"
 #include "McuXFormat.h"
 #include "McuRTOS.h"
+#include "McuWait.h"
+#include "McuCriticalSection.h"
+#include "McuRingbuffer.h"
+#include "McuHardFault.h"
+#include "McuKinetisTools.h"
+#include "McuRTT.h"
+#include "McuShell.h"
+#include "McuSystemView.h"
+#include "McuTimeout.h"
+#include "McuPercepio.h"
+#include "McuUSB.h"
+#include "CDC1.h"
+#include "Tx1.h"
+#include "Rx1.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus
@@ -112,6 +126,20 @@ void McuRTOS_vApplicationIdleHook(void);
 **     Description :
 **         If enabled, this hook will be called when the RTOS is idle.
 **         This might be a good place to go into low power mode.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuPercepio_OnTraceWrap(void);
+/*
+** ===================================================================
+**     Event       :  McuPercepio_OnTraceWrap (module Events)
+**
+**     Component   :  McuPercepio [PercepioTrace]
+**     Description :
+**         Called for trace ring buffer wrap around. This gives the
+**         application a chance to dump the trace buffer.
 **     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================

@@ -145,6 +145,29 @@ void McuRTOS_vApplicationIdleHook(void)
   /* Write your code here ... */
 }
 
+/*
+** ===================================================================
+**     Event       :  McuPercepio_OnTraceWrap (module Events)
+**
+**     Component   :  McuPercepio [PercepioTrace]
+**     Description :
+**         Called for trace ring buffer wrap around. This gives the
+**         application a chance to dump the trace buffer.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuPercepio_OnTraceWrap(void)
+{
+#if 0 /* default implementation for gdb below ... */
+  /* Write your code here ... */
+  uint8_t buf[64];
+
+  /* GDB: dump binary memory <file> <hexStartAddr> <hexEndAddr> */
+  McuPercepio_vGetGDBDumpCommand(buf, sizeof(buf), "c:\\tmp\\trc.dump");
+#endif
+}
+
 /* END Events */
 
 #ifdef __cplusplus

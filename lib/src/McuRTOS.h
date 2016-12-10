@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.514, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.516, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-11-30, 08:55, # CodeGen: 55
+**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -33,10 +33,14 @@
 **          Enable GDB Debug Helper                        : no
 **          Application Task Tags                          : no
 **          Thread Local Storage Pointers                  : 0
-**          Use Trace Facility                             : no
-**          Segger System Viewer Trace                     : Disabled
+**          Use Trace Facility                             : yes
+**          Segger System Viewer Trace                     : Enabled
+**            Segger System Viewer                         : McuSystemView
 **          Percepio Trace                                 : Disabled
-**          Generate Runtime Statistics                    : Disabled
+**          Generate Runtime Statistics                    : Enabled
+**            Use Tick Counter                             : yes
+**            LDD                                          : Disabled
+**            non-LDD                                      : Disabled
 **          Scheduler                                      : Settings for the scheduler
 **            ColdFire V1                                  : Disabled
 **            ColdFire V2                                  : Disabled
@@ -90,7 +94,9 @@
 **            Critical section                             : Configures how critical sections are handled.
 **              User function for entering critical section: no
 **              User function for exiting critical section : no
-**          Shell                                          : Disabled
+**          Shell                                          : Enabled
+**            Max number of tasks                          : 16
+**            Shell                                        : McuShell
 **          Utility                                        : McuUtility
 **     Contents    :
 **         xTaskCreate                          - portBASE_TYPE McuRTOS_xTaskCreate(pdTASK_CODE pvTaskCode, const portCHAR *...
@@ -136,10 +142,13 @@
 **         xPortGetFreeHeapSize                 - Tsize_t McuRTOS_xPortGetFreeHeapSize(void);
 **         xTaskGetCurrentTaskHandle            - xTaskHandle McuRTOS_xTaskGetCurrentTaskHandle(void);
 **         xTaskGetIdleTaskHandle               - xTaskHandle McuRTOS_xTaskGetIdleTaskHandle(void);
+**         xTaskGetHandle                       - TaskHandle_t McuRTOS_xTaskGetHandle(const char *pcNameToQuery );
 **         pcTaskGetTaskName                    - signed char McuRTOS_pcTaskGetTaskName(xTaskHandle xTaskToQuery);
 **         xTaskGetSchedulerState               - portBASE_TYPE McuRTOS_xTaskGetSchedulerState(void);
+**         vTaskList                            - void McuRTOS_vTaskList(signed portCHAR *pcWriteBuffer, size_t bufSize);
 **         uxTaskGetStackHighWaterMark          - unsigned_portBASE_TYPE McuRTOS_uxTaskGetStackHighWaterMark(xTaskHandle xTask);
 **         uxTaskGetNumberOfTasks               - unsigned_portBASE_TYPE McuRTOS_uxTaskGetNumberOfTasks(void);
+**         vTaskGetRunTimeStats                 - void McuRTOS_vTaskGetRunTimeStats(portCHAR *pcWriteBuffer, size_t bufSize);
 **         uxQueueMessagesWaiting               - unsigned_portBASE_TYPE McuRTOS_uxQueueMessagesWaiting(xQueueHandle xQueue);
 **         uxQueueMessagesWaitingfromISR        - unsigned_portBASE_TYPE McuRTOS_uxQueueMessagesWaitingfromISR(xQueueHandle...
 **         xQueueCreate                         - xQueueHandle McuRTOS_xQueueCreate(unsigned_portBASE_TYPE uxQueueLength,...
@@ -197,22 +206,43 @@
 **         xTaskNotifyStateClear                - BaseType_t McuRTOS_xTaskNotifyStateClear(TaskHandle_t xTask);
 **         vTaskSetThreadLocalStoragePointer    - void McuRTOS_vTaskSetThreadLocalStoragePointer(TaskHandle_t xTaskToSet,...
 **         pvTaskGetThreadLocalStoragePointer   - void* McuRTOS_pvTaskGetThreadLocalStoragePointer(TaskHandle_t xTaskToQuery,...
-**         xTaskGetHandle                       - TaskHandle_t McuRTOS_xTaskGetHandle(const char *pcNameToQuery );
 **         pcTaskGetName                        - char* McuRTOS_pcTaskGetName(TaskHandle_t xTaskToQuery);
 **         vTaskGetInfo                         - void McuRTOS_vTaskGetInfo(TaskHandle_t xTask, TaskStatus_t *pxTaskStatus,...
+**         ParseCommand                         - uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const...
 **         AppConfigureTimerForRuntimeStats     - void McuRTOS_AppConfigureTimerForRuntimeStats(void);
 **         AppGetRuntimeCounterValueFromISR     - uint32_t McuRTOS_AppGetRuntimeCounterValueFromISR(void);
 **         Init                                 - void McuRTOS_Init(void);
 **         Deinit                               - void McuRTOS_Deinit(void);
 **
-**     License : Open Source (LGPL)
-**     FreeRTOS (c) Copyright 2003-2016 Richard Barry, http: www.FreeRTOS.org
-**     FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2016
-**     Processor Expert and CodeWarrior (c) Copyright Freescale Semiconductor, 2013-2016, all rights reserved
-**     This is a free software and is opened for education, research and commercial developments under license policy of following terms:
-**     * This is a free software and there is NO WARRANTY.
-**     * No restriction on use. You can use, modify and redistribute it for personal, non-profit or commercial product UNDER YOUR RESPONSIBILITY.
-**     * Redistributions of source code must retain the above copyright notice.
+**     * FreeRTOS (c) Copyright 2003-2016 Richard Barry, http: www.FreeRTOS.org
+**      * See separate FreeRTOS licensing terms.
+**      *
+**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2016
+**      * Web:         https://mcuoneclipse.com
+**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**      * All rights reserved.
+**      *
+**      * Redistribution and use in source and binary forms, with or without modification,
+**      * are permitted provided that the following conditions are met:
+**      *
+**      * - Redistributions of source code must retain the above copyright notice, this list
+**      *   of conditions and the following disclaimer.
+**      *
+**      * - Redistributions in binary form must reproduce the above copyright notice, this
+**      *   list of conditions and the following disclaimer in the documentation and/or
+**      *   other materials provided with the distribution.
+**      *
+**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuRTOS.h
@@ -234,6 +264,8 @@
 
 /* Include inherited components */
 #include "McuLib.h"
+#include "McuSystemView.h"
+#include "McuShell.h"
 #include "McuUtility.h"
 
 /* other includes needed */
@@ -245,7 +277,7 @@
 #include <stddef.h>                    /* for size_t type */
 
 /* Macro for shell support */
-#define McuRTOS_PARSE_COMMAND_ENABLED        0 /* set to 1 if method ParseCommand() is present, 0 otherwise */
+#define McuRTOS_PARSE_COMMAND_ENABLED        1  /* set to 1 if method ParseCommand() is present, 0 otherwise */
 #define McuRTOS_GENERATE_PEX_RTOS_MACROS     1  /* set to 1 to generate the RTOS macros PEX_RTOS_INIT() and PEX_RTOS_START() */
 
 /* Macros used by Processor Expert */
@@ -993,6 +1025,37 @@ extern "C" {
 ** ===================================================================
 */
 
+#define McuRTOS_vTaskList(pcWriteBuffer, bufSize) \
+  vTaskList(pcWriteBuffer, bufSize)
+
+/*
+** ===================================================================
+**     Method      :  McuRTOS_vTaskList (component FreeRTOS)
+**     Description :
+**         configUSE_TRACE_FACILITY, INCLUDE_vTaskDelete and
+**         INCLUDE_vTaskSuspend must all be defined as 1 for this
+**         function to be available. See the configuration section for
+**         more information.
+**         NOTE: This function will disable interrupts for its duration.
+**         It is not intended for normal application runtime use but as
+**         a debug aid. Lists all the current tasks, along with their
+**         current state and stack usage high water mark.
+**         Tasks are reported as blocked ('B'), ready ('R'), deleted
+**         ('D') or suspended ('S').
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * pcWriteBuffer   - Pointer to buffer. A
+**                           buffer into which the above mentioned
+**                           details will be written, in ascii form.
+**                           This buffer is assumed to be large enough
+**                           to contain the generated report.
+**                           Approximately 40 bytes per task should be
+**                           sufficient.
+**         bufSize         - size of buffer
+**     Returns     : Nothing
+** ===================================================================
+*/
+
 #define McuRTOS_pvPortMalloc(xWantedSize) \
   pvPortMalloc(xWantedSize)
 /*
@@ -1088,6 +1151,45 @@ extern "C" {
 **     Parameters  : None
 **     Returns     :
 **         ---             - number of tasks
+** ===================================================================
+*/
+
+#define McuRTOS_vTaskGetRunTimeStats(pcWriteBuffer, bufSize) \
+  vTaskGetRunTimeStats(pcWriteBuffer, bufSize)
+
+/*
+** ===================================================================
+**     Method      :  McuRTOS_vTaskGetRunTimeStats (component FreeRTOS)
+**     Description :
+**         configGENERATE_RUN_TIME_STATS must be defined as 1 for this
+**         function to be available. The application must also then
+**         provide definitions for
+**         portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() and
+**         portGET_RUN_TIME_COUNTER_VALUE to configure a peripheral
+**         timer/counter and return the timers current count value
+**         respectively. The counter should be at least 10 times the
+**         frequency of the tick count.
+**         NOTE: This function will disable interrupts for its duration.
+**         It is not intended for normal application runtime use but as
+**         a debug aid.
+**         Setting configGENERATE_RUN_TIME_STATS to 1 will result in a
+**         total accumulated execution time being stored for each task.
+**         The resolution of the accumulated time value depends on the
+**         frequency of the timer configured by the
+**         portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() macro. Calling
+**         vTaskGetRunTimeStats() writes the total execution time of
+**         each task into a buffer, both as an absolute count value and
+**         as a percentage of the total system execution time. 
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         pcWriteBuffer   - A buffer into which
+**                           the execution times will be written, in
+**                           ascii form. This buffer is assumed to be
+**                           large enough to contain the generated
+**                           report. Approximately 40 bytes per task
+**                           should be sufficient. 
+**         bufSize         - size of buffer
+**     Returns     : Nothing
 ** ===================================================================
 */
 
@@ -1588,6 +1690,23 @@ extern "C" {
 **                           exited.
 **     Returns     :
 **         ---             - Returns pdTRUE if the semaphore was given.
+** ===================================================================
+*/
+
+uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  McuRTOS_ParseCommand (component FreeRTOS)
+**     Description :
+**         Shell Command Line Parser
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cmd             - Pointer to command string
+**       * handled         - Pointer to variable which tells if
+**                           the command has been handled or not
+**       * io              - Pointer to I/O structure
+**     Returns     :
+**         ---             - Error code
 ** ===================================================================
 */
 

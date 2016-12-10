@@ -1,6 +1,6 @@
-#ifndef __McuUtilityCONFIG_H
-#define __McuUtilityCONFIG_H
+#ifndef __McuUtility_CONFIG_H
+#define __McuUtility_CONFIG_H
 
 /* no configuration supported yet */
 
-#endif /* __McuUtilityCONFIG_H */
+#endif /* __McuUtility_CONFIG_H */

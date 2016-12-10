@@ -1,5 +1,5 @@
-#ifndef __McuLibCONFIG_H
-#define __McuLibCONFIG_H
+#ifndef __McuLib_CONFIG_H
+#define __McuLib_CONFIG_H
 
 /* Identifiers used to identify the SDK */
 #define McuLib_CONFIG_SDK_GENERIC             0 /* using a generic API/SDK */
@@ -13,5 +13,13 @@
   #define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_PROCESSOR_EXPERT
 #endif
 
-#endif /* __McuLibCONFIG_H */
+/* special macro to identify a set of SDKs used */
+#define McuLib_CONFIG_NXP_SDK_USED               (   (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_1_3) \
+                                                  || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_2_0) \
+                                                  || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_MCUXPRESSO_2_0) \
+                                                 )
+  /* 1: project is a NXP/Kinetis SDK project; 0: Normal Processor Expert project or generic project */
+
+
+#endif /* __McuLib_CONFIG_H */
 

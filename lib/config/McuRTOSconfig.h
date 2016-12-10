@@ -1,6 +1,6 @@
-#ifndef __McuRTOSCONFIG_H
-#define __McuRTOSCONFIG_H
+#ifndef __McuRTOS_CONFIG_H
+#define __McuRTOS_CONFIG_H
 
 /* no configuration supported yet */
 
-#endif /* __McuRTOSCONFIG_H */
+#endif /* __McuRTOS_CONFIG_H */
