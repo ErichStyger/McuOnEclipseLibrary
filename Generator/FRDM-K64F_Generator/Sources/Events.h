@@ -61,8 +61,8 @@
 #include "McuTrigger.h"
 #include "McuEvents.h"
 #include "McuTimeDate.h"
-#include "EH1.h"
-#include "INT_Hard_Fault.h"
+#include "McuBitIO.h"
+#include "McuSDKBitIO.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus

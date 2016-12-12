@@ -7,7 +7,7 @@
 **     Version     : Component 01.045, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 17:59, # CodeGen: 93
+**     Date/Time   : 2016-12-12, 14:14, # CodeGen: 97
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -1302,13 +1302,13 @@ void McuTimeDate_UnixSecondsToTimeDateCustom(int32_t seconds, int8_t offset_hour
     secs_per_month = (int32_t)daysmonth[month]*24*3600;
   }
   /* day */
-  day = (seconds/(24*3600))+1;
+  day = (uint8_t)(seconds/(24*3600))+1;
   seconds = seconds%(24*3600);
 
-  hours   = seconds/3600;
+  hours   = (uint8_t)seconds/3600;
   seconds = seconds%3600;
 
-  minutes = seconds/60;
+  minutes = (uint8_t)seconds/60;
   seconds = seconds%60;
 
   if (date!=NULL) {
@@ -1319,7 +1319,7 @@ void McuTimeDate_UnixSecondsToTimeDateCustom(int32_t seconds, int8_t offset_hour
   if (time!=NULL) {
     time->Hour = hours;
     time->Min = minutes;
-    time->Sec = seconds;
+    time->Sec = (uint8_t)seconds;
     time->Sec100 = 0;
   }
 }

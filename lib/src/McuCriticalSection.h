@@ -7,7 +7,7 @@
 **     Version     : Component 01.010, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2016-12-12, 14:14, # CodeGen: 97
 **     Abstract    :
 **
 **     Settings    :
@@ -81,6 +81,10 @@
 #define McuCriticalSection_ExitCriticalDrv() \
   McuCriticalSection_ExitCritical()
 
+#ifdef __HIWARE__
+  #pragma MESSAGE DISABLE C3303 /* C3303 Implicit concatenation of strings */
+#endif
+
 #if McuCriticalSection_CONFIG_USE_PEX_DEFAULT
   #define McuCriticalSection_CriticalVariable() /* nothing needed */
 #elif McuCriticalSection_CONFIG_USE_RTOS_CRITICAL_SECTION
@@ -130,7 +134,7 @@
 #elif McuCriticalSection_CONFIG_USE_RTOS_CRITICAL_SECTION
   #define McuCriticalSection_ExitCritical()   taskEXIT_CRITICAL_FROM_ISR(0) /* FreeRTOS critical section inside interrupt */
 #elif McuCriticalSection_CONFIG_USE_CUSTOM_CRITICAL_SECTION
-#define McuCriticalSection_ExitCritical() \
+  #define McuCriticalSection_ExitCritical() \
    do{                                  \
      __asm (                            \
      "ldrb r0, %[input]    \n\t"        \

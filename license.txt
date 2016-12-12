@@ -31,8 +31,6 @@ The provided files are provided under the following permissive license (with exc
 
 EXCEPTIONS and different licenses:
 - FreeRTOS: see lib\FreeRTOS\Source\FreeRTOS_license.txt
+- TraceRecorder: (c) Copyright Percepio AB, www.percepio.com
 - Xformat: (c) Copyright Mario Viara, 2014-2016, https://github.com/MarioViara/xprintfc
 - xatoi() in Utility: Copyright (C) 2010, ChaN, all right reserved.
-
-
-

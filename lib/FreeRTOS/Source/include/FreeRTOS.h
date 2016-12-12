@@ -338,7 +338,7 @@ extern "C" {
   #error "Only one trace implementation can be active"
 #endif
 #if configUSE_TRACE_HOOKS /* << EST */
-  #include "trcKernelPort.h" /* include Percepio trace macro definition */
+  //#include "trcKernelPort.h" /* include Percepio trace macro definition */
 #endif
 #if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS
   #include "SEGGER_SYSVIEW_FreeRTOS.h" /* include Segger System Viewer macro definitions */
@@ -1112,5 +1112,9 @@ typedef struct xSTATIC_TIMER
 #endif
 
 #endif /* INC_FREERTOS_H */
+
+#if configUSE_TRACE_HOOKS /* << EST */
+  #include "trcRecorder.h"
+#endif
 
 

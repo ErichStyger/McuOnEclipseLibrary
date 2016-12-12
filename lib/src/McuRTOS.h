@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.516, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.519, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2016-12-12, 18:17, # CodeGen: 101
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -17,7 +17,7 @@
 **          Kinetis SDK                                    : Disabled
 **          Custom Port                                    : Custom port settings
 **            Compiler                                     : automatic
-**            Static Sources                               : Enabled
+**            Source Folders                               : Enabled
 **              Source Folder                              : FreeRTOS\Source
 **              Header Folder                              : FreeRTOS\Source\include
 **              Port Folder                                : FreeRTOS\Source\portable\GCC\ARM_CM4F
@@ -284,7 +284,8 @@
 #if McuRTOS_GENERATE_PEX_RTOS_MACROS
   #define PEX_RTOS_INIT() /* macro called from PE_low_level_init() */ \
                                        portDISABLE_ALL_INTERRUPTS(); /* disable all interrupts, they get enabled in vStartScheduler() */ \
-                                       /* not Trace Hooks, nothing to do */
+                                       /* no Percepio Trace Hooks enabled with configUSE_TRACE_HOOKS */
+
   #define PEX_RTOS_START()             McuRTOS_vTaskStartScheduler()
 #endif
 /* macro to identify CPU: 0 for M0+ and 4 for M4 */

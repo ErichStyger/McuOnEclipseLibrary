@@ -79,8 +79,8 @@ const uint8_t FreeRTOSDebugConfig[] =
   offsetof(struct tskTaskControlBlock, uxTCBNumber),
   offsetof(struct tskTaskControlBlock, uxTaskNumber),
   configMAX_TASK_NAME_LEN,
-  0, // pad to 32-bit boundary
-  0
+  configMAX_PRIORITIES, 
+  0 // pad to 32-bit boundary
 };
 
 #ifdef __cplusplus

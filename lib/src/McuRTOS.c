@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.516, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.519, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2016-12-12, 14:14, # CodeGen: 97
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -17,7 +17,7 @@
 **          Kinetis SDK                                    : Disabled
 **          Custom Port                                    : Custom port settings
 **            Compiler                                     : automatic
-**            Static Sources                               : Enabled
+**            Source Folders                               : Enabled
 **              Source Folder                              : FreeRTOS\Source
 **              Header Folder                              : FreeRTOS\Source\include
 **              Port Folder                                : FreeRTOS\Source\portable\GCC\ARM_CM4F
