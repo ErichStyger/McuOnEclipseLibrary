@@ -4,23 +4,26 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericTimeDate
-**     Version     : Component 01.045, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.046, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-12, 14:14, # CodeGen: 97
+**     Date/Time   : 2016-12-17, 17:32, # CodeGen: 110
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
 **          Component name                                 : McuTimeDate
-**          Software RTC                                   : Enabled
-**            Tick Time (ms)                               : 10
-**            RTOS                                         : Disabled
-**          Hardware RTC                                   : Disabled
+**          Software RTC                                   : Disabled
+**          Hardware RTC                                   : Enabled
+**            Internal                                     : Enabled
+**              Internal LDD RTC                           : Enabled
+**                RTC                                      : RTC1
+**              Internal non-LDD RTC                       : Disabled
+**            External RTC                                 : Disabled
 **          Set Time and Date                              : 
 **            Software RTC                                 : yes
 **            Internal RTC                                 : yes
 **            External RTC                                 : yes
-**          Get Time and Date                              : Software RTC
+**          Get Time and Date                              : Internal RTC
 **          Init()                                         : 
 **            Defaults                                     : 
 **              Time                                       : 17:51:31
@@ -389,6 +392,7 @@ void McuTimeDate_AddTicks(uint16_t nofTicks)
 */
 uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
 {
+#if McuTimeDate_USE_SOFTWARE_RTC
   uint8_t res;
   uint32_t nofTicks;
   bool failed = FALSE;
@@ -416,6 +420,9 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
     return ERR_FAILED;
   }
   return ERR_OK;
+#else
+  return ERR_FAILED;
+#endif
 }
 
 /*
@@ -436,6 +443,7 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
 */
 uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date)
 {
+#if McuTimeDate_USE_SOFTWARE_RTC
   uint8_t res;
   uint32_t ticks;
   bool failed = FALSE;
@@ -461,6 +469,9 @@ uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date)
     return ERR_FAILED;
   }
   return ERR_OK;
+#else
+  return ERR_FAILED;
+#endif
 }
 
 /*
@@ -649,7 +660,7 @@ uint8_t McuTimeDate_GetDate(DATEREC *Date)
   #error "invalid configuration!"
   res = ERR_FAILED;
 #endif
-#if McuTimeDate_ON_DATE_GET_EVENT
+#if McuTimeDate_ON_DATE_GET_EVENT && McuTimeDate_USE_SOFTWARE_RTC
   McuTimeDate_ON_DATE_GET_EVENT_NAME(&CntDay, &CntMonth, &CntYear); /* call user event */
 #endif
   return res;
@@ -1305,10 +1316,10 @@ void McuTimeDate_UnixSecondsToTimeDateCustom(int32_t seconds, int8_t offset_hour
   day = (uint8_t)(seconds/(24*3600))+1;
   seconds = seconds%(24*3600);
 
-  hours   = (uint8_t)seconds/3600;
+  hours   = (uint8_t)(seconds/3600);
   seconds = seconds%3600;
 
-  minutes = (uint8_t)seconds/60;
+  minutes = (uint8_t)(seconds/60);
   seconds = seconds%60;
 
   if (date!=NULL) {

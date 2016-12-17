@@ -4,23 +4,26 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericTimeDate
-**     Version     : Component 01.045, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.046, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 17:59, # CodeGen: 93
+**     Date/Time   : 2016-12-17, 17:32, # CodeGen: 110
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
 **          Component name                                 : McuTimeDate
-**          Software RTC                                   : Enabled
-**            Tick Time (ms)                               : 10
-**            RTOS                                         : Disabled
-**          Hardware RTC                                   : Disabled
+**          Software RTC                                   : Disabled
+**          Hardware RTC                                   : Enabled
+**            Internal                                     : Enabled
+**              Internal LDD RTC                           : Enabled
+**                RTC                                      : RTC1
+**              Internal non-LDD RTC                       : Disabled
+**            External RTC                                 : Disabled
 **          Set Time and Date                              : 
 **            Software RTC                                 : yes
 **            Internal RTC                                 : yes
 **            External RTC                                 : yes
-**          Get Time and Date                              : Software RTC
+**          Get Time and Date                              : Internal RTC
 **          Init()                                         : 
 **            Defaults                                     : 
 **              Time                                       : 17:51:31
@@ -107,6 +110,7 @@
 #include "McuTimeDateconfig.h" /* configuration */
 
 /* Include inherited components */
+#include "RTC1.h"
 #include "McuCriticalSection.h"
 #include "McuUtility.h"
 #include "McuLib.h"
@@ -125,13 +129,13 @@
 #define McuTimeDate_INIT_SOFTWARE_RTC_FROM_EXTERNAL_RTC     1  /* init software RTC from external RTC values */
 
 /* settings for software RTC */
-#define McuTimeDate_USE_SOFTWARE_RTC                        1  /* set to 1 if using software RTC, 0 otherwise */
+#define McuTimeDate_USE_SOFTWARE_RTC                        0  /* set to 1 if using software RTC, 0 otherwise */
 #define McuTimeDate_INIT_SOFTWARE_RTC_METHOD                McuTimeDate_INIT_SOFTWARE_RTC_FROM_DEFAULTS /* which method to use during Init() */
 
 /* settings for internal hardware RTC */
-#define McuTimeDate_USE_INTERNAL_HW_RTC                     0  /* set to 1 if using internal HW RTC, 0 otherwise */
+#define McuTimeDate_USE_INTERNAL_HW_RTC                     1  /* set to 1 if using internal HW RTC, 0 otherwise */
 #define McuTimeDate_USE_INTERNAL_HW_RTC_BEAN                0  /* set to 1 if using HW RTC using normal bean driver, 0 otherwise */
-#define McuTimeDate_USE_INTERNAL_HW_RTC_LDD                 0  /* set to 1 if using HW RTC using LDD driver, 0 otherwise */
+#define McuTimeDate_USE_INTERNAL_HW_RTC_LDD                 1  /* set to 1 if using HW RTC using LDD driver, 0 otherwise */
 
 #define McuTimeDate_USE_EXTERNAL_HW_RTC                     0  /* set to 1 if using external HW RTC driver, 0 otherwise */
 
@@ -150,7 +154,7 @@
 #define McuTimeDate_GET_TIME_DATE_METHOD_SOFTWARE_RTC       1 /* use software RTC */
 #define McuTimeDate_GET_TIME_DATE_METHOD_INTERNAL_RTC       2 /* use internal RTC */
 #define McuTimeDate_GET_TIME_DATE_METHOD_EXTERNAL_RTC       3 /* use external RTC */
-#define McuTimeDate_USE_GET_TIME_DATE_METHOD                McuTimeDate_GET_TIME_DATE_METHOD_SOFTWARE_RTC /* specifies method to get time and date */
+#define McuTimeDate_USE_GET_TIME_DATE_METHOD                McuTimeDate_GET_TIME_DATE_METHOD_INTERNAL_RTC /* specifies method to get time and date */
 
 /* user events */
 #define McuTimeDate_ON_DATE_GET_EVENT                       0 /* 1: enabled user event */
@@ -199,7 +203,7 @@ static const DATEREC McuTimeDate_DefaultDate = {
 };
 
 #define McuTimeDate_TICK_TIME_MS \
-  10                                    /* Period in milliseconds as defined in component properties, at which McuTimeDate._AddTick() is called */
+  10                                    /* Period in milliseconds, at which McuTimeDate._AddTick() is called */
 
 
 

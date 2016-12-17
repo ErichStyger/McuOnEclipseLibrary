@@ -62,6 +62,17 @@
 #include "McuEvents.h"
 #include "McuTimeDate.h"
 #include "RTC1.h"
+#include "McuGenericSWSPI.h"
+#include "Clock1.h"
+#include "BitIoLdd4.h"
+#include "Output1.h"
+#include "BitIoLdd5.h"
+#include "McuGGisplay.h"
+#include "McuSharpMemoryDisplay.h"
+#include "SCEpin1.h"
+#include "BitIoLdd6.h"
+#include "McuGFont.h"
+#include "McuFontDisplay.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus

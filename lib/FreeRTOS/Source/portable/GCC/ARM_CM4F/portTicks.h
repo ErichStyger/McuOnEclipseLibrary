@@ -123,8 +123,10 @@ portLONG uxGetTickCounterValue(void);
   #define TRC_HWTC_DIVISOR 2 /* divisor for fast counter tick value */
 #endif
 
-#define TRC_HWTC_COUNT (uxGetTickCounterValue())
-#define TRC_HWTC_TYPE TRC_FREE_RUNNING_32BIT_INCR
+#if (TRC_CFG_HARDWARE_PORT == TRC_HARDWARE_PORT_PROCESSOR_EXPERT)
+  #define TRC_HWTC_COUNT (uxGetTickCounterValue())
+  #define TRC_HWTC_TYPE TRC_FREE_RUNNING_32BIT_INCR
+#endif
 
 #if !configCPU_FAMILY_IS_ARM(configCPU_FAMILY) /* the defines below are already defined in trcHardwarePort.h for Cortex-M */
   #define TRC_IRQ_PRIORITY_ORDER 1
