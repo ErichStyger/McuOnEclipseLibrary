@@ -70,6 +70,8 @@
 #include "BitIoLdd6.h"
 #include "McuGFont.h"
 #include "McuFontDisplay.h"
+#include "McuPidInt.h"
+#include "McuPidFloat.h"
 #include "McuLib.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"

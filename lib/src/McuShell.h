@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.088, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.089, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 11:06, # CodeGen: 87
+**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
 **     Abstract    :
 **
 **     Settings    :
@@ -31,7 +31,7 @@
 **          XFormat                                        : McuXFormat
 **          Default Serial                                 : Enabled
 **            Console Interface                            : McuRTT
-**          Semaphore                                      : no
+**          Mutex                                          : no
 **          Critical Section                               : McuCriticalSection
 **          History                                        : yes
 **            Number of History Items                      : 4

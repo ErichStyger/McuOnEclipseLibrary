@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SharpMemDisplay
-**     Version     : Component 01.004, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.006, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-17, 17:37, # CodeGen: 112
+**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
 **     Abstract    :
 **
 **     Settings    :
@@ -29,6 +29,7 @@
 **          HW LDD                                         : Disabled
 **          System                                         : 
 **            Wait                                         : McuWait
+**            SDK                                          : McuLib
 **            Initialize on Init                           : yes
 **     Contents    :
 **         GetWidth              - McuSharpMemoryDisplay_PixelDim McuSharpMemoryDisplay_GetWidth(void);

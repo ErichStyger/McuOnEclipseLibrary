@@ -73,6 +73,8 @@
 #include "BitIoLdd6.h"
 #include "McuGFont.h"
 #include "McuFontDisplay.h"
+#include "McuPidInt.h"
+#include "McuPidFloat.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus
