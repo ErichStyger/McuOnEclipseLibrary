@@ -4,19 +4,22 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : HardFault
-**     Version     : Component 01.011, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.018, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
 **     Abstract    :
 **          Component to simplify hard faults for ARM/Kinetis.
 **     Settings    :
 **          Component name                                 : McuHardFault
 **          SDK                                            : McuLib
+**          Disabling write buffer                         : no
 **     Contents    :
 **         HardFaultHandler - void McuHardFault_HardFaultHandler(void);
+**         Deinit           - void McuHardFault_Deinit(void);
+**         Init             - void McuHardFault_Init(void);
 **
-**     *  Copyright : (c) Copyright Mario Viara, 2013-2016, https://github.com/MarioViara/xprintfc
+**     * Copyright : (c) Copyright Mario Viara, 2013-2016, https://github.com/MarioViara/xprintfc
 **      * Adopted for Processor Expert: Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
@@ -169,6 +172,46 @@ void McuHardFault_HardFaultHandler(void)
     " ldr r1,[r0,#20] \n"  /* load program counter into R1. R1 contains address of the next instruction where the hard fault happened */
     " b McuHardFault_HandlerC   \n"  /* decode more information. R0 contains pointer to stack frame */
   );
+}
+
+/*
+** ===================================================================
+**     Method      :  McuHardFault_Deinit (component HardFault)
+**     Description :
+**         Deinitializes the driver
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuHardFault_Deinit(void)
+{
+#if McuHardFault_CONFIG_SETTING_DISABLE_WRITE_BUFFER
+  #if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+    SCB_ACTLR &= ~(SCB_ACTLR_DISDEFWBUF_MASK); /* write buffer bit, see https://community.nxp.com/docs/DOC-103810 */
+  #elif McuLib_CONFIG_NXP_SDK_USED
+    SCnSCB->ACTLR &= ~SCnSCB_ACTLR_DISDEFWBUF_Msk;
+  #endif
+#endif
+}
+
+/*
+** ===================================================================
+**     Method      :  McuHardFault_Init (component HardFault)
+**     Description :
+**         Initializes the driver
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuHardFault_Init(void)
+{
+#if McuHardFault_CONFIG_SETTING_DISABLE_WRITE_BUFFER
+  #if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+    SCB_ACTLR |= SCB_ACTLR_DISDEFWBUF_MASK; /* write buffer bit, see https://community.nxp.com/docs/DOC-103810 */
+  #elif McuLib_CONFIG_NXP_SDK_USED
+    SCnSCB->ACTLR |= SCnSCB_ACTLR_DISDEFWBUF_Msk;
+  #endif
+#endif
 }
 
 /* END McuHardFault. */

@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PID_Int
-**     Version     : Component 01.008, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.009, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
+**     Date/Time   : 2017-01-10, 19:33, # CodeGen: 126
 **     Abstract    :
 **
 **     Settings    :
@@ -150,7 +150,7 @@ void McuPidInt_Control(void)
 **         Specifies the value to be reached by the PID controller.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**         value           - The setpoint value.
+**         value           - The value to be reached.
 **     Returns     : Nothing
 ** ===================================================================
 */

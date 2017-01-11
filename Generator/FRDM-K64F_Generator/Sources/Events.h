@@ -75,6 +75,13 @@
 #include "McuFontDisplay.h"
 #include "McuPidInt.h"
 #include "McuPidFloat.h"
+#include "McuGenericI2C.h"
+#include "McuGenericSWI2C.h"
+#include "SDA1.h"
+#include "BitIoLdd7.h"
+#include "SCL1.h"
+#include "BitIoLdd8.h"
+#include "McuI2CSpy.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus

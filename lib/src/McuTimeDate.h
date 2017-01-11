@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericTimeDate
-**     Version     : Component 01.046, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.059, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-17, 17:32, # CodeGen: 110
+**     Date/Time   : 2017-01-10, 19:33, # CodeGen: 126
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -39,27 +39,29 @@
 **     Contents    :
 **         AddTick                     - void McuTimeDate_AddTick(void);
 **         AddTicks                    - void McuTimeDate_AddTicks(uint16_t nofTicks);
-**         TicksToTime                 - uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *Time);
-**         TimeToTicks                 - uint8_t McuTimeDate_TimeToTicks(TIMEREC *Time, uint32_t *ticks);
+**         TicksToTime                 - uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *time);
+**         TimeToTicks                 - uint8_t McuTimeDate_TimeToTicks(TIMEREC *time, uint32_t *ticks);
 **         CalculateDayOfWeek          - uint8_t McuTimeDate_CalculateDayOfWeek(uint16_t Year, uint8_t Month, uint8_t...
 **         SetTime                     - uint8_t McuTimeDate_SetTime(uint8_t Hour, uint8_t Min, uint8_t Sec, uint8_t...
-**         GetTime                     - uint8_t McuTimeDate_GetTime(TIMEREC *Time);
+**         GetTime                     - uint8_t McuTimeDate_GetTime(TIMEREC *time);
 **         SetDate                     - uint8_t McuTimeDate_SetDate(uint16_t Year, uint8_t Month, uint8_t Day);
-**         GetDate                     - uint8_t McuTimeDate_GetDate(DATEREC *Date);
-**         SetTimeDate                 - uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetTimeDate                 - uint8_t McuTimeDate_GetTimeDate(TIMEREC *Time, DATEREC *Date);
-**         SetSWTimeDate               - uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetSWTimeDate               - uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date);
-**         SetInternalRTCTimeDate      - uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetInternalRTCTimeDate      - uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+**         GetDate                     - uint8_t McuTimeDate_GetDate(DATEREC *date);
+**         SetTimeDate                 - uint8_t McuTimeDate_SetTimeDate(TIMEREC *time, DATEREC *date);
+**         GetTimeDate                 - uint8_t McuTimeDate_GetTimeDate(TIMEREC *time, DATEREC *date);
+**         SetSWTimeDate               - uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *time, DATEREC *date);
+**         GetSWTimeDate               - uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *time, DATEREC *date);
+**         SetInternalRTCTimeDate      - uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
+**         GetInternalRTCTimeDate      - uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         SyncWithInternalRTC         - uint8_t McuTimeDate_SyncWithInternalRTC(void);
-**         SetExternalRTCTimeDate      - uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetExternalRTCTimeDate      - uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+**         SetExternalRTCTimeDate      - uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
+**         GetExternalRTCTimeDate      - uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         SyncWithExternalRTC         - uint8_t McuTimeDate_SyncWithExternalRTC(void);
 **         UnixSecondsToTimeDateCustom - void McuTimeDate_UnixSecondsToTimeDateCustom(int32_t seconds, int8_t...
 **         UnixSecondsToTimeDate       - void McuTimeDate_UnixSecondsToTimeDate(int32_t seconds, int8_t offset_hours,...
 **         TimeDateToUnixSecondsCustom - int32_t McuTimeDate_TimeDateToUnixSecondsCustom(TIMEREC *time, DATEREC *date,...
 **         TimeDateToUnixSeconds       - int32_t McuTimeDate_TimeDateToUnixSeconds(TIMEREC *time, DATEREC *date,...
+**         AddDateString               - uint8_t McuTimeDate_AddDateString(uint8_t *buf, size_t bufSize, DATEREC...
+**         AddTimeString               - uint8_t McuTimeDate_AddTimeString(uint8_t *buf, size_t bufSize, TIMEREC...
 **         ParseCommand                - uint8_t McuTimeDate_ParseCommand(const unsigned char *cmd, bool *handled,...
 **         DeInit                      - void McuTimeDate_DeInit(void);
 **         Init                        - uint8_t McuTimeDate_Init(void);
@@ -156,6 +158,10 @@
 #define McuTimeDate_GET_TIME_DATE_METHOD_EXTERNAL_RTC       3 /* use external RTC */
 #define McuTimeDate_USE_GET_TIME_DATE_METHOD                McuTimeDate_GET_TIME_DATE_METHOD_INTERNAL_RTC /* specifies method to get time and date */
 
+/* default time and date format strings */
+#define McuTimeDate_DEFAULT_TIME_FORMAT_STR  "hh:mm:ss,cc"
+#define McuTimeDate_DEFAULT_DATE_FORMAT_STR  "dd.mm.yyyy"
+
 /* user events */
 #define McuTimeDate_ON_DATE_GET_EVENT                       0 /* 1: enabled user event */
 #define McuTimeDate_ON_DATE_GET_EVENT_NAME                  McuTimeDate_OnDateGet /* name of user event*/
@@ -239,7 +245,7 @@ void McuTimeDate_AddTick(void);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_GetTime(TIMEREC *Time);
+uint8_t McuTimeDate_GetTime(TIMEREC *time);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_GetTime (component GenericTimeDate)
@@ -247,7 +253,7 @@ uint8_t McuTimeDate_GetTime(TIMEREC *Time);
 **         This method returns current time from the software RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure TIMEREC. It
+**       * time            - Pointer to the structure TIMEREC. It
 **                           contains actual number of hours, minutes,
 **                           seconds and hundredth of seconds.
 **     Returns     :
@@ -271,7 +277,7 @@ uint8_t McuTimeDate_SetDate(uint16_t Year, uint8_t Month, uint8_t Day);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_GetDate(DATEREC *Date);
+uint8_t McuTimeDate_GetDate(DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_GetDate (component GenericTimeDate)
@@ -279,7 +285,7 @@ uint8_t McuTimeDate_GetDate(DATEREC *Date);
 **         This method returns current date from the software RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Date            - Pointer to DATEREC
+**       * date            - Pointer to DATEREC
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
@@ -339,7 +345,7 @@ void McuTimeDate_AddTicks(uint16_t nofTicks);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *Time);
+uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *time);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_TicksToTime (component GenericTimeDate)
@@ -348,14 +354,14 @@ uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *Time);
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **         ticks           - 
-**       * Time            - Pointer where to store the time
+**       * time            - Pointer where to store the time
 **                           information
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_TimeToTicks(TIMEREC *Time, uint32_t *ticks);
+uint8_t McuTimeDate_TimeToTicks(TIMEREC *time, uint32_t *ticks);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_TimeToTicks (component GenericTimeDate)
@@ -363,14 +369,14 @@ uint8_t McuTimeDate_TimeToTicks(TIMEREC *Time, uint32_t *ticks);
 **         Transforms time information into ticks
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer where to time information
+**       * time            - Pointer where to time information
 **       * ticks           - Pointer to where to store the ticks
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_SetInternalRTCTimeDate (component GenericTimeDate)
@@ -379,10 +385,10 @@ uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
 **         hardware RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
@@ -390,7 +396,7 @@ uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_GetInternalRTCTimeDate (component GenericTimeDate)
@@ -399,9 +405,9 @@ uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
 **         RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
@@ -425,7 +431,7 @@ uint8_t McuTimeDate_CalculateDayOfWeek(uint16_t Year, uint8_t Month, uint8_t Day
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_SetSWTimeDate (component GenericTimeDate)
@@ -434,10 +440,10 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date);
 **         RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
@@ -445,7 +451,7 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_GetSWTimeDate (component GenericTimeDate)
@@ -454,9 +460,9 @@ uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date);
 **         RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
@@ -491,7 +497,7 @@ uint8_t McuTimeDate_SyncWithExternalRTC(void);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_SetExternalRTCTimeDate (component GenericTimeDate)
@@ -500,10 +506,10 @@ uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
 **         hardware RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
@@ -511,7 +517,7 @@ uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_GetExternalRTCTimeDate (component GenericTimeDate)
@@ -520,16 +526,16 @@ uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
 **         hardware RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_SetTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_SetTimeDate (component GenericTimeDate)
@@ -537,10 +543,10 @@ uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date);
 **         This method sets a new actual time and date of the RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
@@ -548,7 +554,7 @@ uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date);
 ** ===================================================================
 */
 
-uint8_t McuTimeDate_GetTimeDate(TIMEREC *Time, DATEREC *Date);
+uint8_t McuTimeDate_GetTimeDate(TIMEREC *time, DATEREC *date);
 /*
 ** ===================================================================
 **     Method      :  McuTimeDate_GetTimeDate (component GenericTimeDate)
@@ -556,9 +562,9 @@ uint8_t McuTimeDate_GetTimeDate(TIMEREC *Time, DATEREC *Date);
 **         This method returns current time and date from the RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
@@ -652,6 +658,44 @@ int32_t McuTimeDate_TimeDateToUnixSeconds(TIMEREC *time, DATEREC *date, int8_t o
 **     Returns     :
 **         ---             - number of seconds after given base
 **                           month/year
+** ===================================================================
+*/
+
+uint8_t McuTimeDate_AddDateString(uint8_t *buf, size_t bufSize, DATEREC *date, uint8_t *format);
+/*
+** ===================================================================
+**     Method      :  McuTimeDate_AddDateString (component GenericTimeDate)
+**     Description :
+**         Adds a formatted date string to a buffer
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * buf             - Pointer to zero terminated buffer where to
+**                           append the string
+**         bufSize         - Size of the buffer in bytes
+**       * date            - Pointer to date information
+**       * format          - Pointer to the format string.
+**                           Supported formats: "dd.mm.yyyy"
+**     Returns     :
+**         ---             - Error code, ERR_OK for no error
+** ===================================================================
+*/
+
+uint8_t McuTimeDate_AddTimeString(uint8_t *buf, size_t bufSize, TIMEREC *time, uint8_t *format);
+/*
+** ===================================================================
+**     Method      :  McuTimeDate_AddTimeString (component GenericTimeDate)
+**     Description :
+**         Adds a formatted time string to a buffer
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * buf             - Pointer to zero terminated buffer where to
+**                           append the string
+**         bufSize         - Size of the buffer in bytes
+**       * time            - Pointer to time information
+**       * format          - Pointer to the format string.
+**                           Supported formats: "hh:mm.ss,cc"
+**     Returns     :
+**         ---             - Error code, ERR_OK for no error
 ** ===================================================================
 */
 

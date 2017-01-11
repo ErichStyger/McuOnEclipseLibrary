@@ -7,7 +7,7 @@
 **     Version     : Component 01.147, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 20:43, # CodeGen: 65
+**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -357,7 +357,7 @@ void McuUtility_Num16sToStr(uint8_t *dst, size_t dstSize, int16_t val)
   }
   dstSize--; /* for zero byte */
   if (sign) {
-    val = -val;
+    val = (int16_t)(-val);
   }
   if (val == 0 && dstSize > 0){
     ptr[i++] = '0';
@@ -1572,7 +1572,7 @@ uint8_t McuUtility_ScanDecimal8sNumber(const unsigned char **str, signed char *v
     return res;
   }
   if (isNeg) {
-    *val = - (int8_t)val8u;
+    *val = (int8_t)(-(int8_t)val8u);
   } else {
     *val = (int8_t)val8u;
   }
@@ -1657,7 +1657,7 @@ uint8_t McuUtility_ScanDecimal16sNumber(const unsigned char **str, int16_t *val)
     return res;
   }
   if (isNeg) {
-    *val = - (int16_t)val16u;
+    *val = (int16_t)(-(int16_t)val16u);
   } else {
     *val = (int16_t)val16u;
   }

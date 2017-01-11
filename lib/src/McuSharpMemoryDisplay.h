@@ -4,14 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SharpMemDisplay
-**     Version     : Component 01.006, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.008, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
+**     Date/Time   : 2017-01-11, 16:07, # CodeGen: 130
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuSharpMemoryDisplay
+**          Display                                        : 96x96
 **          Properties                                     : 
 **            Width                                        : 96
 **            Height                                       : 96

@@ -7,7 +7,7 @@
 **     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 20:43, # CodeGen: 65
+**     Date/Time   : 2016-12-22, 07:25, # CodeGen: 115
 **     Abstract    :
 **
 **     Settings    :
@@ -359,8 +359,6 @@ unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const char 
   va_start(list,fmt);
   count = McuXFormat_xvformat(outchar,arg,fmt,list);
   va_end(list);
-  (void)list;
-
   return count;
 }
 
@@ -852,10 +850,10 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
 
                 count += outBuffer(outchar,arg,prefix,prefixlen,0);
                 if (!(flags & FLAG_LEFT))
-                    count += outChars(outchar,arg,flags & FLAG_ZERO ? '0' : ' ' , padding);
+                    count += outChars(outchar,arg,(flags & FLAG_ZERO) ? '0' : ' ' , padding);
                 count += outBuffer(outchar,arg,out,length,flags);
                 if (flags & FLAG_LEFT)
-                    count += outChars(outchar,arg,flags & FLAG_ZERO ? '0' : ' ' , padding);
+                    count += outChars(outchar,arg,(flags & FLAG_ZERO) ? '0' : ' ' , padding);
 
         }
     }

@@ -7,7 +7,7 @@
 **     Version     : Component 01.089, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
+**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
 **     Abstract    :
 **
 **     Settings    :
@@ -1136,7 +1136,7 @@ unsigned McuShell_printfIO(McuShell_ConstStdIOType *io, const char *fmt, ...)
   unsigned int count = 0;
 
   va_start(args,fmt);
-  count = McuXFormat_xvformat(McuShell_printfPutChar, io->stdOut, fmt, args);
+  count = McuXFormat_xvformat(McuShell_printfPutChar, (void*)io->stdOut, fmt, args);
   va_end(args);
   return count;
 }
@@ -1160,7 +1160,7 @@ unsigned McuShell_printf(const char *fmt, ...)
   unsigned int count = 0;
 
   va_start(args,fmt);
-  count = McuXFormat_xvformat(McuShell_printfPutChar, McuShell_GetStdio()->stdOut, fmt, args);
+  count = McuXFormat_xvformat(McuShell_printfPutChar, (void*)McuShell_GetStdio()->stdOut, fmt, args);
   va_end(args);
   return count;
 }

@@ -7,7 +7,7 @@
 **     Version     : Component 01.006, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
+**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
 **     Abstract    :
 **
 **     Settings    :
@@ -62,15 +62,17 @@
 #include "McuLibconfig.h" /* include configuration header file */
 
 #if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+  #ifndef __IASMARM__ /* not including standard header files if using IAR assembler */
   /* Include shared modules, which are used for whole project */
-  #include "PE_Types.h"
-  #include "PE_Error.h"
-  #include "PE_Const.h"
-  #include "IO_Map.h"
-  #include "Cpu.h" /* include CPU related interfaces and defines */
+    #include "PE_Types.h"
+    #include "PE_Error.h"
+    #include "PE_Const.h"
+    #include "IO_Map.h"
+    #include "Cpu.h" /* include CPU related interfaces and defines */
+  #endif
 #else /* use non-Processor Expert SDK: generic or silicon vendor SDK */
   /* defines of common types used by Processor Expert, which might not be provided by the SDK */
-  #ifndef __HIWARE__ /* Hiware compiler (S08, S12) only supports C89 */
+  #if !(defined(__ICCARM__) || defined(__HIWARE__)) /* Hiware compiler (S08, S12) only supports C89 */
     #include <stdint.h> /* uint8_t, int16_t, ... */
     #include <stdbool.h> /* bool, true, false, ... */
   #endif

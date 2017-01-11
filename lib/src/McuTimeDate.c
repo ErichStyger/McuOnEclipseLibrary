@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericTimeDate
-**     Version     : Component 01.046, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.059, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-17, 17:32, # CodeGen: 110
+**     Date/Time   : 2017-01-10, 19:33, # CodeGen: 126
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -39,27 +39,29 @@
 **     Contents    :
 **         AddTick                     - void McuTimeDate_AddTick(void);
 **         AddTicks                    - void McuTimeDate_AddTicks(uint16_t nofTicks);
-**         TicksToTime                 - uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *Time);
-**         TimeToTicks                 - uint8_t McuTimeDate_TimeToTicks(TIMEREC *Time, uint32_t *ticks);
+**         TicksToTime                 - uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *time);
+**         TimeToTicks                 - uint8_t McuTimeDate_TimeToTicks(TIMEREC *time, uint32_t *ticks);
 **         CalculateDayOfWeek          - uint8_t McuTimeDate_CalculateDayOfWeek(uint16_t Year, uint8_t Month, uint8_t...
 **         SetTime                     - uint8_t McuTimeDate_SetTime(uint8_t Hour, uint8_t Min, uint8_t Sec, uint8_t...
-**         GetTime                     - uint8_t McuTimeDate_GetTime(TIMEREC *Time);
+**         GetTime                     - uint8_t McuTimeDate_GetTime(TIMEREC *time);
 **         SetDate                     - uint8_t McuTimeDate_SetDate(uint16_t Year, uint8_t Month, uint8_t Day);
-**         GetDate                     - uint8_t McuTimeDate_GetDate(DATEREC *Date);
-**         SetTimeDate                 - uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetTimeDate                 - uint8_t McuTimeDate_GetTimeDate(TIMEREC *Time, DATEREC *Date);
-**         SetSWTimeDate               - uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetSWTimeDate               - uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date);
-**         SetInternalRTCTimeDate      - uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetInternalRTCTimeDate      - uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+**         GetDate                     - uint8_t McuTimeDate_GetDate(DATEREC *date);
+**         SetTimeDate                 - uint8_t McuTimeDate_SetTimeDate(TIMEREC *time, DATEREC *date);
+**         GetTimeDate                 - uint8_t McuTimeDate_GetTimeDate(TIMEREC *time, DATEREC *date);
+**         SetSWTimeDate               - uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *time, DATEREC *date);
+**         GetSWTimeDate               - uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *time, DATEREC *date);
+**         SetInternalRTCTimeDate      - uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
+**         GetInternalRTCTimeDate      - uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         SyncWithInternalRTC         - uint8_t McuTimeDate_SyncWithInternalRTC(void);
-**         SetExternalRTCTimeDate      - uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
-**         GetExternalRTCTimeDate      - uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date);
+**         SetExternalRTCTimeDate      - uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
+**         GetExternalRTCTimeDate      - uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         SyncWithExternalRTC         - uint8_t McuTimeDate_SyncWithExternalRTC(void);
 **         UnixSecondsToTimeDateCustom - void McuTimeDate_UnixSecondsToTimeDateCustom(int32_t seconds, int8_t...
 **         UnixSecondsToTimeDate       - void McuTimeDate_UnixSecondsToTimeDate(int32_t seconds, int8_t offset_hours,...
 **         TimeDateToUnixSecondsCustom - int32_t McuTimeDate_TimeDateToUnixSecondsCustom(TIMEREC *time, DATEREC *date,...
 **         TimeDateToUnixSeconds       - int32_t McuTimeDate_TimeDateToUnixSeconds(TIMEREC *time, DATEREC *date,...
+**         AddDateString               - uint8_t McuTimeDate_AddDateString(uint8_t *buf, size_t bufSize, DATEREC...
+**         AddTimeString               - uint8_t McuTimeDate_AddTimeString(uint8_t *buf, size_t bufSize, TIMEREC...
 **         ParseCommand                - uint8_t McuTimeDate_ParseCommand(const unsigned char *cmd, bool *handled,...
 **         DeInit                      - void McuTimeDate_DeInit(void);
 **         Init                        - uint8_t McuTimeDate_Init(void);
@@ -380,17 +382,17 @@ void McuTimeDate_AddTicks(uint16_t nofTicks)
 **         RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *time, DATEREC *date)
 {
 #if McuTimeDate_USE_SOFTWARE_RTC
   uint8_t res;
@@ -398,8 +400,8 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
   bool failed = FALSE;
   McuCriticalSection_CriticalVariable()
 
-  if (Time!=NULL) {
-    res = McuTimeDate_TimeToTicks(Time, &nofTicks);
+  if (time!=NULL) {
+    res = McuTimeDate_TimeToTicks(time, &nofTicks);
     if (res!=ERR_OK) {
       failed = TRUE;
     }
@@ -409,11 +411,11 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
       McuCriticalSection_ExitCritical();
     }
   }
-  if (Date!=NULL) {
+  if (date!=NULL) {
     McuCriticalSection_EnterCritical();
-    CntDay = Date->Day;
-    CntMonth = Date->Month;
-    CntYear = Date->Year;
+    CntDay = date->Day;
+    CntMonth = date->Month;
+    CntYear = date->Year;
     McuCriticalSection_ExitCritical();
   }
   if (failed) {
@@ -433,15 +435,15 @@ uint8_t McuTimeDate_SetSWTimeDate(TIMEREC *Time, DATEREC *Date)
 **         RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *time, DATEREC *date)
 {
 #if McuTimeDate_USE_SOFTWARE_RTC
   uint8_t res;
@@ -449,20 +451,20 @@ uint8_t McuTimeDate_GetSWTimeDate(TIMEREC *Time, DATEREC *Date)
   bool failed = FALSE;
   McuCriticalSection_CriticalVariable()
 
-  if (Time!=NULL) {
+  if (time!=NULL) {
     McuCriticalSection_EnterCritical();
     ticks = tickCntr;
     McuCriticalSection_ExitCritical();
-    res = McuTimeDate_TicksToTime(ticks, Time);
+    res = McuTimeDate_TicksToTime(ticks, time);
     if (res!=ERR_OK) {
       failed = TRUE;
     }
   }
-  if (Date!=NULL) {
+  if (date!=NULL) {
     McuCriticalSection_EnterCritical();
-    Date->Year = CntYear;
-    Date->Month = CntMonth;
-    Date->Day = CntDay;
+    date->Year = CntYear;
+    date->Month = CntMonth;
+    date->Day = CntDay;
     McuCriticalSection_ExitCritical();
   }
   if (failed) {
@@ -544,23 +546,23 @@ uint8_t McuTimeDate_SetTime(uint8_t Hour, uint8_t Min, uint8_t Sec, uint8_t Sec1
 **         This method returns current time from the software RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure TIMEREC. It
+**       * time            - Pointer to the structure TIMEREC. It
 **                           contains actual number of hours, minutes,
 **                           seconds and hundredth of seconds.
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_GetTime(TIMEREC *Time)
+uint8_t McuTimeDate_GetTime(TIMEREC *time)
 {
   uint8_t res;
 
 #if McuTimeDate_USE_SOFTWARE_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_SOFTWARE_RTC
-  res = McuTimeDate_GetSWTimeDate(Time, NULL);
+  res = McuTimeDate_GetSWTimeDate(time, NULL);
 #elif McuTimeDate_USE_INTERNAL_HW_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_INTERNAL_RTC
-  res = McuTimeDate_GetInternalRTCTimeDate(Time, NULL);
+  res = McuTimeDate_GetInternalRTCTimeDate(time, NULL);
 #elif McuTimeDate_USE_EXTERNAL_HW_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_EXTERNAL_RTC
-  res = McuTimeDate_GetExternalRTCTimeDate(Time, NULL);
+  res = McuTimeDate_GetExternalRTCTimeDate(time, NULL);
 #else
   #error "invalid configuration!"
   res = ERR_FAILED;
@@ -568,9 +570,9 @@ uint8_t McuTimeDate_GetTime(TIMEREC *Time)
   /* call user event */
 #if McuTimeDate_ON_TIME_GET_EVENT
   #if McuTimeDate_HAS_SEC100_IN_TIMEREC
-  McuTimeDate_ON_TIME_GET_EVENT_NAME(&Time->Hour, &Time->Min, &Time->Sec, &Time->Sec100);
+    McuTimeDate_ON_TIME_GET_EVENT_NAME(&time->Hour, &time->Min, &time->Sec, &time->Sec100);
   #else
-  McuTimeDate_ON_TIME_GET_EVENT_NAME(&Time->Hour, &Time->Min, &Time->Sec, 0);
+    McuTimeDate_ON_TIME_GET_EVENT_NAME(&time->Hour, &time->Min, &time->Sec, 0);
   #endif
 #endif
   return res;
@@ -641,21 +643,21 @@ uint8_t McuTimeDate_SetDate(uint16_t Year, uint8_t Month, uint8_t Day)
 **         This method returns current date from the software RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Date            - Pointer to DATEREC
+**       * date            - Pointer to DATEREC
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_GetDate(DATEREC *Date)
+uint8_t McuTimeDate_GetDate(DATEREC *date)
 {
   uint8_t res;
 
 #if McuTimeDate_USE_SOFTWARE_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_SOFTWARE_RTC
-  res = McuTimeDate_GetSWTimeDate(NULL, Date);
+  res = McuTimeDate_GetSWTimeDate(NULL, date);
 #elif McuTimeDate_USE_INTERNAL_HW_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_INTERNAL_RTC
-  res = McuTimeDate_GetInternalRTCTimeDate(NULL, Date);
+  res = McuTimeDate_GetInternalRTCTimeDate(NULL, date);
 #elif McuTimeDate_USE_EXTERNAL_HW_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_EXTERNAL_RTC
-  res = McuTimeDate_GetExternalRTCTimeDate(NULL, Date);
+  res = McuTimeDate_GetExternalRTCTimeDate(NULL, date);
 #else
   #error "invalid configuration!"
   res = ERR_FAILED;
@@ -799,22 +801,22 @@ void McuTimeDate_DeInit(void)
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **         ticks           - 
-**       * Time            - Pointer where to store the time
+**       * time            - Pointer where to store the time
 **                           information
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *Time)
+uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *time)
 {
-  Time->Hour = (uint8_t)(ticks/(3600*McuTimeDate_TICKS_PER_S)); /* number of hours */
+  time->Hour = (uint8_t)(ticks/(3600*McuTimeDate_TICKS_PER_S)); /* number of hours */
   ticks %= (3600*McuTimeDate_TICKS_PER_S); /* remainder of ticks inside hour */
-  Time->Min = (uint8_t)(ticks/(60*McuTimeDate_TICKS_PER_S)); /* number of minutes */
+  time->Min = (uint8_t)(ticks/(60*McuTimeDate_TICKS_PER_S)); /* number of minutes */
   ticks %= (60*McuTimeDate_TICKS_PER_S); /* remainder of ticks inside minute */
-  Time->Sec = (uint8_t)(ticks/McuTimeDate_TICKS_PER_S); /* number of seconds */
+  time->Sec = (uint8_t)(ticks/McuTimeDate_TICKS_PER_S); /* number of seconds */
   ticks %= McuTimeDate_TICKS_PER_S;
 #if McuTimeDate_HAS_SEC100_IN_TIMEREC
-  Time->Sec100 = (uint8_t)((ticks*(1000/McuTimeDate_TICKS_PER_S))/10); /* number of 1/100 seconds */
+  time->Sec100 = (uint8_t)((ticks*(1000/McuTimeDate_TICKS_PER_S))/10); /* number of 1/100 seconds */
 #endif
   return ERR_OK;
 }
@@ -826,22 +828,22 @@ uint8_t McuTimeDate_TicksToTime(uint32_t ticks, TIMEREC *Time)
 **         Transforms time information into ticks
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer where to time information
+**       * time            - Pointer where to time information
 **       * ticks           - Pointer to where to store the ticks
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_TimeToTicks(TIMEREC *Time, uint32_t *ticks)
+uint8_t McuTimeDate_TimeToTicks(TIMEREC *time, uint32_t *ticks)
 {
   uint32_t cntr;
 
   /* Load given time re-calculated to McuTimeDate_TICK_TIME_MS ms ticks into software tick counter */
-  cntr = (3600UL*McuTimeDate_TICKS_PER_S*(uint32_t)Time->Hour)
-              + (60UL*McuTimeDate_TICKS_PER_S*(uint32_t)Time->Min)
-              + (McuTimeDate_TICKS_PER_S*(uint32_t)Time->Sec)
+  cntr = (3600UL*McuTimeDate_TICKS_PER_S*(uint32_t)time->Hour)
+              + (60UL*McuTimeDate_TICKS_PER_S*(uint32_t)time->Min)
+              + (McuTimeDate_TICKS_PER_S*(uint32_t)time->Sec)
 #if McuTimeDate_HAS_SEC100_IN_TIMEREC
-              + ((McuTimeDate_TICKS_PER_S/100)*(uint32_t)Time->Sec100)
+              + ((McuTimeDate_TICKS_PER_S/100)*(uint32_t)time->Sec100)
 #endif
               ;
   *ticks = cntr;
@@ -856,54 +858,54 @@ uint8_t McuTimeDate_TimeToTicks(TIMEREC *Time, uint32_t *ticks)
 **         hardware RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *time, DATEREC *date)
 {
 #if McuTimeDate_USE_INTERNAL_HW_RTC_LDD
   LDD_RTC_TTime timeDate;
 
   /* get current time/date */
   RTC1_GetTime(RTC1_DeviceData, &timeDate); /* get information from HW RTC */
-  if (Time!=NULL) {
-    timeDate.Hour = Time->Hour;
-    timeDate.Minute = Time->Min;
-    timeDate.Second = Time->Sec;
+  if (time!=NULL) {
+    timeDate.Hour = time->Hour;
+    timeDate.Minute = time->Min;
+    timeDate.Second = time->Sec;
   }
-  if (Date!=NULL) {
-    timeDate.Year = Date->Year;
-    timeDate.Month = Date->Month;
-    timeDate.Day = Date->Day;
-    timeDate.DayOfWeek = McuTimeDate_CalculateDayOfWeek(Date->Year, Date->Month, Date->Day);
+  if (date!=NULL) {
+    timeDate.Year = date->Year;
+    timeDate.Month = date->Month;
+    timeDate.Day = date->Day;
+    timeDate.DayOfWeek = McuTimeDate_CalculateDayOfWeek(date->Year, date->Month, date->Day);
   }
   return RTC1_SetTime(RTC1_DeviceData, &timeDate); /* get information from HW RTC */
 #elif McuTimeDate_USE_INTERNAL_HW_RTC_BEAN
   uint8_t res;
 
-  if (Time!=NULL) {
-    res = RTC1_SetTime(Time->Hour, Time->Min, Time->Sec); /* set information in HW RTC */
+  if (time!=NULL) {
+    res = RTC1_SetTime(time->Hour, time->Min, time->Sec); /* set information in HW RTC */
     if (res!=ERR_OK) {
       return res;
     }
   }
-  if (Date!=NULL) {
-    res = RTC1_SetDate(Date); /* set information in HW RTC */
+  if (date!=NULL) {
+    res = RTC1_SetDate(date); /* set information in HW RTC */
     if (res!=ERR_OK) {
       return res;
     }
   }
   return ERR_OK;
 #else
-  (void)Time;
-  (void)Date;
+  (void)time;
+  (void)date;
   return ERR_FAILED; /* no HW RTC configured */
 #endif
 }
@@ -916,57 +918,57 @@ uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
 **         RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date)
 {
 #if McuTimeDate_USE_INTERNAL_HW_RTC_LDD
   LDD_RTC_TTime timeDate;
 
   RTC1_GetTime(RTC1_DeviceData, &timeDate); /* get information from HW RTC */
-  if (Time!=NULL) {
-    Time->Hour = timeDate.Hour;
-    Time->Min = timeDate.Minute;
-    Time->Sec = timeDate.Second;
+  if (time!=NULL) {
+    time->Hour = timeDate.Hour;
+    time->Min = timeDate.Minute;
+    time->Sec = timeDate.Second;
 #if McuTimeDate_HAS_SEC100_IN_TIMEREC
-    Time->Sec100 = 0;
+    time->Sec100 = 0;
 #endif
   }
-  if (Date!=NULL) {
-    Date->Year = timeDate.Year;
-    Date->Month = timeDate.Month;
-    Date->Day = timeDate.Day;
+  if (date!=NULL) {
+    date->Year = timeDate.Year;
+    date->Month = timeDate.Month;
+    date->Day = timeDate.Day;
   }
   return ERR_OK;
 #elif McuTimeDate_USE_INTERNAL_HW_RTC_BEAN
-  TIMEREC time;
-  DATEREC date;
+  TIMEREC t;
+  DATEREC d;
   uint8_t res;
 
   if (Time!=NULL) {
-    res = RTC1_GetTime(&time); /* get information from HW RTC */
+    res = RTC1_GetTime(&t); /* get information from HW RTC */
     if (res!=ERR_OK) {
       return res;
     }
-    *Time = time; /* struct copy */
+    *time = t; /* struct copy */
   }
-  if (Date!=NULL) {
-    res = RTC1_GetDate(&date); /* get information from HW RTC */
+  if (date!=NULL) {
+    res = RTC1_GetDate(&d); /* get information from HW RTC */
     if (res!=ERR_OK) {
       return res;
     }
-    *Date = date; /* struct copy */
+    *date = d; /* struct copy */
   }
   return ERR_OK;
 #else
-  (void)Time;
-  (void)Date;
+  (void)time;
+  (void)date;
   return ERR_FAILED; /* no HW RTC configured */
 #endif
 }
@@ -1087,25 +1089,25 @@ uint8_t McuTimeDate_SyncWithExternalRTC(void)
 **         hardware RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *time, DATEREC *date)
 {
 #if McuTimeDate_USE_EXTERNAL_HW_RTC
   uint8_t res;
 
-  if (Time!=NULL) {
-    res = RTC2_SetTime(Time->Hour, Time->Min, Time->Sec,
+  if (time!=NULL) {
+    res = RTC2_SetTime(time->Hour, time->Min, time->Sec,
 #if McuTimeDate_HAS_SEC100_IN_TIMEREC
-        Time->Sec100
+        time->Sec100
 #else
         0
 #endif
@@ -1114,16 +1116,16 @@ uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
       return res;
     }
   }
-  if (Date!=NULL) {
-    res = RTC2_SetDate(Date->Year, Date->Month, Date->Day);
+  if (date!=NULL) {
+    res = RTC2_SetDate(date->Year, date->Month, date->Day);
     if (res!=ERR_OK) {
       return res;
     }
   }
   return ERR_OK;
 #else
-  (void)Time;
-  (void)Date;
+  (void)time;
+  (void)date;
   return ERR_FAILED; /* no external RTC available */
 #endif
 }
@@ -1136,35 +1138,35 @@ uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
 **         hardware RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *time, DATEREC *date)
 {
 #if McuTimeDate_USE_EXTERNAL_HW_RTC
   uint8_t res;
 
-  if (Time!=NULL) {
-    res = RTC2_GetTime(Time);
+  if (time!=NULL) {
+    res = RTC2_GetTime(time);
     if (res!=ERR_OK) {
       return res;
     }
   }
-  if (Date!=NULL) {
-    res = RTC2_GetDate(Date);
+  if (date!=NULL) {
+    res = RTC2_GetDate(date);
     if (res!=ERR_OK) {
       return res;
     }
   }
   return ERR_OK;
 #else
-  (void)Time;
-  (void)Date;
+  (void)time;
+  (void)date;
   return ERR_FAILED; /* no external RTC available */
 #endif
 }
@@ -1176,35 +1178,35 @@ uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *Time, DATEREC *Date)
 **         This method sets a new actual time and date of the RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to struct which contains the
+**       * time            - Pointer to struct which contains the
 **                           time to be set. Can be NULL if time shall
 **                           not be set.
-**       * Date            - Pointer to struct which contains the
+**       * date            - Pointer to struct which contains the
 **                           date information to be set. Can be NULL if
 **                           date shall not be set.
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_SetTimeDate(TIMEREC *time, DATEREC *date)
 {
   uint8_t res = ERR_OK;
   bool failed = FALSE;
 
 #if McuTimeDate_USE_SOFTWARE_RTC && McuTimeDate_SET_TIME_DATE_METHOD_USES_SOFTWARE_RTC
-  res = McuTimeDate_SetSWTimeDate(Time, Date);
+  res = McuTimeDate_SetSWTimeDate(time, date);
   if (res!=ERR_OK) {
     failed = TRUE;
   }
 #endif
 #if McuTimeDate_USE_INTERNAL_HW_RTC && McuTimeDate_SET_TIME_DATE_METHOD_USES_INTERNAL_RTC
-  res = McuTimeDate_SetInternalRTCTimeDate(Time, Date);
+  res = McuTimeDate_SetInternalRTCTimeDate(time, date);
   if (res!=ERR_OK) {
     failed = TRUE;
   }
 #endif
 #if McuTimeDate_USE_EXTERNAL_HW_RTC && McuTimeDate_SET_TIME_DATE_METHOD_USES_EXTERNAL_RTC
-  res = McuTimeDate_SetExternalRTCTimeDate(Time, Date);
+  res = McuTimeDate_SetExternalRTCTimeDate(time, date);
   if (res!=ERR_OK) {
     failed = TRUE;
   }
@@ -1222,24 +1224,24 @@ uint8_t McuTimeDate_SetTimeDate(TIMEREC *Time, DATEREC *Date)
 **         This method returns current time and date from the RTC.
 **     Parameters  :
 **         NAME            - DESCRIPTION
-**       * Time            - Pointer to the structure to return the
+**       * time            - Pointer to the structure to return the
 **                           time. Can be NULL.
-**       * Date            - Pointer to structure which returns the
+**       * date            - Pointer to structure which returns the
 **                           date information. Can be NULL
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuTimeDate_GetTimeDate(TIMEREC *Time, DATEREC *Date)
+uint8_t McuTimeDate_GetTimeDate(TIMEREC *time, DATEREC *date)
 {
   uint8_t res;
 
 #if McuTimeDate_USE_SOFTWARE_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_SOFTWARE_RTC
-  res = McuTimeDate_GetSWTimeDate(Time, Date);
+  res = McuTimeDate_GetSWTimeDate(time, date);
 #elif McuTimeDate_USE_INTERNAL_HW_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_INTERNAL_RTC
-  res = McuTimeDate_GetInternalRTCTimeDate(Time, Date);
+  res = McuTimeDate_GetInternalRTCTimeDate(time, date);
 #elif McuTimeDate_USE_EXTERNAL_HW_RTC && McuTimeDate_USE_GET_TIME_DATE_METHOD==McuTimeDate_GET_TIME_DATE_METHOD_EXTERNAL_RTC
-  res = McuTimeDate_GetExternalRTCTimeDate(Time, Date);
+  res = McuTimeDate_GetExternalRTCTimeDate(time, date);
 #else
   #error "invalid configuration!"
   res = ERR_FAILED;
@@ -1439,6 +1441,70 @@ void McuTimeDate_UnixSecondsToTimeDate(int32_t seconds, int8_t offset_hours, TIM
 int32_t McuTimeDate_TimeDateToUnixSeconds(TIMEREC *time, DATEREC *date, int8_t offset_hours)
 {
   return McuTimeDate_TimeDateToUnixSecondsCustom(time, date, offset_hours, 1970);
+}
+
+/*
+** ===================================================================
+**     Method      :  McuTimeDate_AddDateString (component GenericTimeDate)
+**     Description :
+**         Adds a formatted date string to a buffer
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * buf             - Pointer to zero terminated buffer where to
+**                           append the string
+**         bufSize         - Size of the buffer in bytes
+**       * date            - Pointer to date information
+**       * format          - Pointer to the format string.
+**                           Supported formats: "dd.mm.yyyy"
+**     Returns     :
+**         ---             - Error code, ERR_OK for no error
+** ===================================================================
+*/
+uint8_t McuTimeDate_AddDateString(uint8_t *buf, size_t bufSize, DATEREC *date, uint8_t *format)
+{
+  /* currently only the following format is supported: "dd.mm.yyyy" */
+  (void)format; /* not supported yet */
+  McuUtility_strcatNum16uFormatted(buf, bufSize, date->Day, '0', 2);
+  McuUtility_chcat(buf, bufSize, '.');
+  McuUtility_strcatNum16uFormatted(buf, bufSize, date->Month, '0', 2);
+  McuUtility_chcat(buf, bufSize, '.');
+  McuUtility_strcatNum16u(buf, bufSize, (uint16_t)date->Year);
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  McuTimeDate_AddTimeString (component GenericTimeDate)
+**     Description :
+**         Adds a formatted time string to a buffer
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * buf             - Pointer to zero terminated buffer where to
+**                           append the string
+**         bufSize         - Size of the buffer in bytes
+**       * time            - Pointer to time information
+**       * format          - Pointer to the format string.
+**                           Supported formats: "hh:mm.ss,cc"
+**     Returns     :
+**         ---             - Error code, ERR_OK for no error
+** ===================================================================
+*/
+uint8_t McuTimeDate_AddTimeString(uint8_t *buf, size_t bufSize, TIMEREC *time, uint8_t *format)
+{
+  /* currently only the following format is supported: hh:mm:ss,cc" */
+  (void)format; /* not supported yet */
+  McuUtility_strcatNum16sFormatted(buf, bufSize, time->Hour, '0', 2);
+  McuUtility_chcat(buf, bufSize, ':');
+  McuUtility_strcatNum16sFormatted(buf, bufSize, time->Min, '0', 2);
+  McuUtility_chcat(buf, bufSize, ':');
+  McuUtility_strcatNum16sFormatted(buf, bufSize, time->Sec, '0', 2);
+  McuUtility_chcat(buf, bufSize, ',');
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  McuUtility_strcatNum16sFormatted(buf, bufSize, time->Sec100, '0', 2);
+#else
+  McuUtility_strcatNum16sFormatted(buf, bufSize, 0, '0', 2);
+#endif
+  return ERR_OK;
 }
 
 /* END McuTimeDate. */
