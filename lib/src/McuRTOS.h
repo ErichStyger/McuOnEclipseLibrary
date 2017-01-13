@@ -7,7 +7,7 @@
 **     Version     : Component 01.519, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-12, 18:17, # CodeGen: 101
+**     Date/Time   : 2017-01-13, 07:52, # CodeGen: 131
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -34,8 +34,7 @@
 **          Application Task Tags                          : no
 **          Thread Local Storage Pointers                  : 0
 **          Use Trace Facility                             : yes
-**          Segger System Viewer Trace                     : Enabled
-**            Segger System Viewer                         : McuSystemView
+**          Segger System Viewer Trace                     : Disabled
 **          Percepio Trace                                 : Disabled
 **          Generate Runtime Statistics                    : Enabled
 **            Use Tick Counter                             : yes
@@ -82,7 +81,7 @@
 **          Timers                                         : Disabled
 **          Memory                                         : Settings for the memory and heap allocation
 **            Dynamic Allocation                           : Enabled
-**              Heap Size                                  : 2048
+**              Heap Size                                  : 8192
 **              Application allocated Heap                 : no
 **              Memory Allocation Scheme                   : Scheme 4: merge free blocks
 **            Static Allocation                            : Disabled
@@ -264,7 +263,6 @@
 
 /* Include inherited components */
 #include "McuLib.h"
-#include "McuSystemView.h"
 #include "McuShell.h"
 #include "McuUtility.h"
 

@@ -7,7 +7,7 @@
 **     Version     : Component 01.113, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-12, 18:17, # CodeGen: 101
+**     Date/Time   : 2017-01-13, 07:54, # CodeGen: 132
 **     Abstract    :
 **
 **     Settings    :
@@ -50,11 +50,12 @@
 **            Float support                                : no
 **            Use implicit IFE rules                       : yes
 **            Use 16bit Object Handles                     : no
-**          Segger RTT                                     : Disabled
+**          Segger RTT                                     : Enabled
+**            Segger RTT                                   : McuRTT
 **          Streaming Mode                                 : 
-**            Up Buffer Index                              : 1
+**            Up Buffer Index                              : 2
 **            Up Buffer Size                               : 1024
-**            Down Buffer Index                            : 1
+**            Down Buffer Index                            : 2
 **            Down Buffer Size                             : 32
 **            Symbol Table Slots                           : 30
 **            Symbol Max Length                            : 24
@@ -143,6 +144,7 @@
 #include "McuPercepioconfig.h" /* configuration */
 
 /* Include inherited components */
+#include "McuRTT.h"
 #include "McuLib.h"
 #include "McuUtility.h"
 
