@@ -7,7 +7,7 @@
 **     Version     : Component 01.519, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-13, 07:52, # CodeGen: 131
+**     Date/Time   : 2017-01-15, 14:57, # CodeGen: 133
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -494,7 +494,7 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
       McuUtility_strcatPad(buf, sizeof(buf), tmpBuf, ' ', PAD_STAT_TASK_STACK_MARK);
       McuShell_SendStr(buf, io->stdOut);
 #endif
-#if configGENERATE_RUN_TIME_STATS
+#if configGENERATE_RUN_TIME_STATS && configUSE_TRACE_FACILITY
       /* runtime */
       McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"0x");
       McuUtility_strcatNum32Hex(tmpBuf, sizeof(tmpBuf), taskStatus.ulRunTimeCounter);

@@ -7,7 +7,7 @@
 **     Version     : Component 01.147, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
+**     Date/Time   : 2017-01-15, 14:57, # CodeGen: 133
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -2352,7 +2352,12 @@ void McuUtility_NumFloatToStr(uint8_t *dst, size_t dstSize, float val, uint8_t n
   for(i=0;i<nofFracDigits;i++) {
     shift *= 10;
   }
-  fractional = ((int32_t)val)*shift; /* get fractional part */
+  /* get fractional part */
+#if 0 /* non-rounding version */
+  fractional = (int32_t)(val*shift);
+#else /* rounding version */
+  fractional = (int32_t)((val+5.0f/(shift*10))*shift);
+#endif
   if (isNeg && fractional>0 && nofFracDigits>0) {
     McuUtility_strcpy(dst, dstSize, (unsigned char*)"-");
     McuUtility_strcatNum32s(dst, dstSize, (int32_t)integral);
