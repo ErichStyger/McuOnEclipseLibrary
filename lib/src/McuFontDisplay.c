@@ -7,14 +7,14 @@
 **     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-17, 17:32, # CodeGen: 110
+**     Date/Time   : 2017-01-16, 14:36, # CodeGen: 143
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuFontDisplay
 **          System                                         : 
 **            Display                                      : McuGGisplay
-**            Font                                         : McuGFont
+**            Font                                         : McuFontCour14Normal
 **          Watchdog                                       : Disabled
 **     Contents    :
 **         GetFontHeight   - void McuFontDisplay_GetFontHeight(McuFontDisplay_Font *font,...

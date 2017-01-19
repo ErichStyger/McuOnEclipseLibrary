@@ -7,7 +7,7 @@
 **     Version     : Component 01.018, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
+**     Date/Time   : 2017-01-16, 06:32, # CodeGen: 137
 **     Abstract    :
 **          Component to simplify hard faults for ARM/Kinetis.
 **     Settings    :
