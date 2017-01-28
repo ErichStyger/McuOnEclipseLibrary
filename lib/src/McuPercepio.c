@@ -4,17 +4,17 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PercepioTrace
-**     Version     : Component 01.113, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.116, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-13, 07:54, # CodeGen: 132
+**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuPercepio
 **          RTOS+Trace Version                             : V3.1.0
-**          Startup trace enable method                    : TRC_INIT
 **          Recorder Mode                                  : Streaming
+**          Startup trace enable method                    : TRC_INIT
 **          Recorder Buffer Allocation                     : static
 **          Max ISR Nesting                                : 16
 **          Snapshot Mode                                  : 
@@ -50,9 +50,9 @@
 **            Float support                                : no
 **            Use implicit IFE rules                       : yes
 **            Use 16bit Object Handles                     : no
-**          Segger RTT                                     : Enabled
-**            Segger RTT                                   : McuRTT
 **          Streaming Mode                                 : 
+**            Segger RTT                                   : Enabled
+**              Segger RTT                                 : McuRTT
 **            Up Buffer Index                              : 2
 **            Up Buffer Size                               : 1024
 **            Down Buffer Index                            : 2
@@ -93,7 +93,7 @@
 **         vTraceClearError          - byte McuPercepio_vTraceClearError(int resetErrorMessage);
 **         Startup                   - void McuPercepio_Startup(void);
 **
-**     * (c) Copyright Percepio AB, 2013-2016
+**     * (c) Copyright Percepio AB, 2013-2017
 **      * http      : www.percepio.se
 **      * mail      : info@percepio.com
 **      * See separate Percepio licensing terms.
@@ -410,7 +410,7 @@ void McuPercepio_vTraceStoreISREnd(int isTaskSwitchRequired)
 */
 void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fileName)
 {
-#if TRC_CFG_RECORDER_MODE==TRC_RECORDER_MODE_STREAMING
+#if !TRC_USE_TRACEALYZER_RECORDER || (TRC_CFG_RECORDER_MODE==TRC_RECORDER_MODE_STREAMING) /* trace disabled or streaming mode */
   (void)bufSize; /* not used */
   (void)fileName; /* not used */
   /* with RTT streaming, there is no trace buffer */

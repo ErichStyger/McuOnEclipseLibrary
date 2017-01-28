@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.089, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.090, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-10, 18:57, # CodeGen: 121
+**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
 **     Abstract    :
 **
 **     Settings    :
@@ -27,18 +27,18 @@
 **          Multi Command                                  : Enabled
 **            Length                                       : 32
 **            Separator                                    : ;
-**          Utility                                        : McuUtility
-**          XFormat                                        : McuXFormat
-**          Default Serial                                 : Enabled
-**            Console Interface                            : McuRTT
-**          Mutex                                          : no
-**          Critical Section                               : McuCriticalSection
 **          History                                        : yes
 **            Number of History Items                      : 4
 **            Stored Characters                            : 32
 **            Char for Next                                : \t
 **            Char for Previous                            : \e
+**          Mutex                                          : no
 **          SDK                                            : McuLib
+**          Default Serial                                 : Enabled
+**            Console Interface                            : McuRTT
+**          Utility                                        : McuUtility
+**          XFormat                                        : McuXFormat
+**          Critical Section                               : McuCriticalSection
 **     Contents    :
 **         PrintPrompt                  - void McuShell_PrintPrompt(McuShell_ConstStdIOType *io);
 **         SendNum8u                    - void McuShell_SendNum8u(uint8_t val, McuShell_StdIO_OutErr_FctType io);

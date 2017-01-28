@@ -76,8 +76,12 @@
 #include "task.h"
 #include "portTicks.h" /* for CPU_CORE_CLK_HZ used in configSYSTICK_CLOCK_HZ */
 #if configSYSTICK_USE_LOW_POWER_TIMER
-  #include "LPTMR_PDD.h" /* PDD interface to low power timer */
-  #include "SIM_PDD.h"   /* PDD interface to system integration module */
+  #if McuLib_CONFIG_NXP_SDK_2_0_USED
+    #include "fsl_lptmr.h" /* SDK low power timer interface */
+  #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+    #include "LPTMR_PDD.h" /* PDD interface to low power timer */
+    #include "SIM_PDD.h"   /* PDD interface to system integration module */
+  #endif
 #endif
 #include "McuLib.h" /* include SDK and API used */
 /* --------------------------------------------------- */
@@ -92,16 +96,26 @@
 /* --------------------------------------------------- */
 /* macros dealing with tick counter */
 #if configSYSTICK_USE_LOW_POWER_TIMER
-  #define ENABLE_TICK_COUNTER()       LPTMR_PDD_EnableDevice(LPTMR0_BASE_PTR, PDD_ENABLE); LPTMR_PDD_EnableInterrupt(LPTMR0_BASE_PTR)
-  #define DISABLE_TICK_COUNTER()      LPTMR_PDD_EnableDevice(LPTMR0_BASE_PTR, PDD_DISABLE); LPTMR_PDD_DisableInterrupt(LPTMR0_BASE_PTR)
-  #define RESET_TICK_COUNTER_VAL()    DISABLE_TICK_COUNTER()  /* CNR is reset when the LPTMR is disabled or counter register overflows */
-  #define ACKNOWLEDGE_TICK_ISR()      LPTMR_PDD_ClearInterruptFlag(LPTMR0_BASE_PTR)
-  #if defined(LDD_ivIndex_INT_LPTimer) /* Earlier version of Processor Expert use this vector name */
-    #define configLOW_POWER_TIMER_VECTOR_NUMBER   LDD_ivIndex_INT_LPTimer
-  #elif defined(LDD_ivIndex_INT_LPTMR0) /* Newer versions (Processor Expert for Kinetis v3.0.1 uses this name */
-    #define configLOW_POWER_TIMER_VECTOR_NUMBER   LDD_ivIndex_INT_LPTMR0
-  #else
-  #error "Unknown Low Power Timer Interrupt Number?"
+  #if McuLib_CONFIG_NXP_SDK_USED
+    /*! \todo */
+    #define LPTMR0_BASE_PTR             LPTMR0  /* low power timer address base */
+    #define configLOW_POWER_TIMER_VECTOR_NUMBER   LPTMR0_IRQn /* low power timer IRQ number */
+    #define ENABLE_TICK_COUNTER()       LPTMR_StartTimer(LPTMR0_BASE_PTR); LPTMR_EnableInterrupts(LPTMR0_BASE_PTR, kLPTMR_TimerInterruptEnable)
+    #define DISABLE_TICK_COUNTER()      LPTMR_StopTimer(LPTMR0_BASE_PTR)
+    #define RESET_TICK_COUNTER_VAL()    LPTMR_StopTimer(LPTMR0_BASE_PTR); LPTMR_DisableInterrupts(LPTMR0_BASE_PTR, kLPTMR_TimerInterruptEnable)
+    #define ACKNOWLEDGE_TICK_ISR()      LPTMR_ClearStatusFlags(LPTMR0_BASE_PTR, kLPTMR_TimerCompareFlag);
+  #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+    #define ENABLE_TICK_COUNTER()       LPTMR_PDD_EnableDevice(LPTMR0_BASE_PTR, PDD_ENABLE); LPTMR_PDD_EnableInterrupt(LPTMR0_BASE_PTR)
+    #define DISABLE_TICK_COUNTER()      LPTMR_PDD_EnableDevice(LPTMR0_BASE_PTR, PDD_DISABLE); LPTMR_PDD_DisableInterrupt(LPTMR0_BASE_PTR)
+    #define RESET_TICK_COUNTER_VAL()    DISABLE_TICK_COUNTER()  /* CNR is reset when the LPTMR is disabled or counter register overflows */
+    #define ACKNOWLEDGE_TICK_ISR()      LPTMR_PDD_ClearInterruptFlag(LPTMR0_BASE_PTR)
+    #if defined(LDD_ivIndex_INT_LPTimer) /* Earlier version of Processor Expert use this vector name */
+      #define configLOW_POWER_TIMER_VECTOR_NUMBER   LDD_ivIndex_INT_LPTimer
+    #elif defined(LDD_ivIndex_INT_LPTMR0) /* Newer versions (Processor Expert for Kinetis v3.0.1 uses this name */
+      #define configLOW_POWER_TIMER_VECTOR_NUMBER   LDD_ivIndex_INT_LPTMR0
+    #else
+      #error "Unknown Low Power Timer Interrupt Number?"
+    #endif
   #endif
 #else
   #define ENABLE_TICK_COUNTER()       portNVIC_SYSTICK_CTRL_REG = portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTICK_ENABLE_BIT
@@ -114,9 +128,15 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
 #if configSYSTICK_USE_LOW_POWER_TIMER
   #define TICK_NOF_BITS               16
   #define COUNTS_UP                   1 /* LPTMR is counting up */
-  #define SET_TICK_DURATION(val)      LPTMR_PDD_WriteCompareReg(LPTMR0_BASE_PTR, val)
-  #define GET_TICK_DURATION()         LPTMR_PDD_ReadCompareReg(LPTMR0_BASE_PTR)
-  #define GET_TICK_CURRENT_VAL(addr)  *(addr)=LPTMR_PDD_ReadCounterReg(LPTMR0_BASE_PTR)
+  #if McuLib_CONFIG_NXP_SDK_USED
+    #define SET_TICK_DURATION(val)      LPTMR_SetTimerPeriod(LPTMR0_BASE_PTR, val);
+    #define GET_TICK_DURATION()         LPTMR0_BASE_PTR->CNR /*! \todo SDK has no access method for this */
+    #define GET_TICK_CURRENT_VAL(addr)  *(addr)=LPTMR_GetCurrentTimerCount(LPTMR0_BASE_PTR)
+  #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+    #define SET_TICK_DURATION(val)      LPTMR_PDD_WriteCompareReg(LPTMR0_BASE_PTR, val)
+    #define GET_TICK_DURATION()         LPTMR_PDD_ReadCompareReg(LPTMR0_BASE_PTR)
+    #define GET_TICK_CURRENT_VAL(addr)  *(addr)=LPTMR_PDD_ReadCounterReg(LPTMR0_BASE_PTR)
+  #endif
 #else
   #define TICK_NOF_BITS               24
   #define COUNTS_UP                   0 /* SysTick is counting down to zero */
@@ -135,9 +155,8 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
   unsigned int SEGGER_SYSVIEW_TickCnt; /* tick counter for Segger SystemViewer */
 #endif
 
-#if configUSE_TICKLESS_IDLE == 1
-#define UL_TIMER_COUNTS_FOR_ONE_TICK  ((TickCounter_t)(TIMER_COUNTS_FOR_ONE_TICK))
-
+#if configUSE_TICKLESS_IDLE
+  #define UL_TIMER_COUNTS_FOR_ONE_TICK  ((TickCounter_t)(TIMER_COUNTS_FOR_ONE_TICK))
 #if configCPU_FAMILY_IS_ARM(configCPU_FAMILY)
   #define TICKLESS_DISABLE_INTERRUPTS()  __asm volatile("cpsid i") /* disable interrupts. Note that the wfi (wait for interrupt) instruction later will still be able to wait for interrupts! */
   #define TICKLESS_ENABLE_INTERRUPTS()   __asm volatile("cpsie i") /* re-enable interrupts. */
@@ -152,7 +171,12 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
   #if 1
     #if configSYSTICK_USE_LOW_POWER_TIMER
       /* using Low Power Timer */
-      #define TICK_INTERRUPT_HAS_FIRED()   (LPTMR_PDD_GetInterruptFlag(LPTMR0_BASE_PTR)!=0)  /* returns TRUE if tick interrupt had fired */
+      #if McuLib_CONFIG_NXP_SDK_USED
+        #define LPTMR_CSR_TCF_MASK           0x80u
+        #define TICK_INTERRUPT_HAS_FIRED()   (LPTMR0_BASE_PTR->CSR&LPTMR_CSR_TCF_MASK)!=0/*! \todo */  /* returns TRUE if tick interrupt had fired */
+     #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+        #define TICK_INTERRUPT_HAS_FIRED()   (LPTMR_PDD_GetInterruptFlag(LPTMR0_BASE_PTR)!=0)  /* returns TRUE if tick interrupt had fired */
+      #endif
       #define TICK_INTERRUPT_FLAG_RESET()  /* not needed */
       #define TICK_INTERRUPT_FLAG_SET()    /* not needed */
     #else
@@ -190,7 +214,7 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
 /* Flag indicating that the tick counter interval needs to be restored back to
  * the normal setting. Used when woken up from a low power mode using the LPTMR.
  */
-#if (configUSE_TICKLESS_IDLE == 1) && configSYSTICK_USE_LOW_POWER_TIMER
+#if configUSE_TICKLESS_IDLE && configSYSTICK_USE_LOW_POWER_TIMER
   static uint8_t restoreTickInterval = 0; /* used to flag in tick ISR that compare register needs to be reloaded */
 #endif
 
@@ -235,7 +259,7 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
 #define portNVIC_SYSPRI7                    ((volatile unsigned long*)0xe000e41c) /* system handler priority register 7, PRI_28 is LPTMR */
 #define portNVIC_LP_TIMER_PRI               (((unsigned long)configKERNEL_INTERRUPT_PRIORITY)<<0) /* priority of low power timer interrupt */
 
-#if configSYSTICK_USE_LOW_POWER_TIMER
+#if configSYSTICK_USE_LOW_POWER_TIMER && McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
 #define IRQn_Type int
 #define __NVIC_PRIO_BITS          configPRIO_BITS
 #define     __O     volatile             /*!< Defines 'write only' permissions                */
@@ -711,6 +735,7 @@ void vPortInitTickTimer(void) {
 #endif /* configUSE_TICKLESS_IDLE */
 #if configSYSTICK_USE_LOW_POWER_TIMER
   /* SIM_SCGx: enable clock to LPTMR */
+#if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
   SIM_PDD_SetClockGate(SIM_BASE_PTR, SIM_PDD_CLOCK_GATE_LPTMR0, PDD_ENABLE);
 
   /* LPTRM0_CSR: clear TCF (Timer compare Flag) with writing a one to it */
@@ -725,7 +750,15 @@ void vPortInitTickTimer(void) {
    */
   LPTMR_PDD_SelectPrescalerSource(LPTMR0_BASE_PTR, LPTMR_PDD_SOURCE_LPO1KHZ);
   LPTMR_PDD_EnablePrescalerBypass(LPTMR0_BASE_PTR, LPTMR_PDD_BYPASS_ENABLED);
+#elif McuLib_CONFIG_NXP_SDK_2_0_USED
+  /*! \todo */
+  {
+    lptmr_config_t config;
 
+    LPTMR_GetDefaultConfig(&config);
+    LPTMR_Init(LPTMR0_BASE_PTR, &config);
+  }
+#endif
   /* set timer interrupt priority in IP[] and enable it in ISER[] */
   NVIC_SetPriority(configLOW_POWER_TIMER_VECTOR_NUMBER, configLIBRARY_LOWEST_INTERRUPT_PRIORITY);
   NVIC_EnableIRQ(configLOW_POWER_TIMER_VECTOR_NUMBER); /* enable IRQ in NVIC_ISER[] */
@@ -956,7 +989,11 @@ portLONG uxGetTickCounterValue(void) {
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_KEIL)
 #if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
-void SysTick_Handler(void) {
+#if configSYSTICK_USE_LOW_POWER_TIMER
+void LPTMR0_IRQHandler(void) { /* low power timer */
+#else
+void SysTick_Handler(void) { /* normal SysTick */
+#endif
 #else
 void vPortTickHandler(void) {
 #endif
@@ -995,7 +1032,11 @@ void vPortTickHandler(void) {
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_GCC)
 #if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
-void SysTick_Handler(void) {
+#if configSYSTICK_USE_LOW_POWER_TIMER
+void LPTMR0_IRQHandler(void) { /* low power timer */
+#else
+void SysTick_Handler(void) { /* normal SysTick */
+#endif
 #else
 void vPortTickHandler(void) {
 #endif

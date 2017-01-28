@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Utility
-**     Version     : Component 01.147, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.148, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-15, 14:57, # CodeGen: 133
+**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -79,7 +79,7 @@
 **         Deinit                  - void McuUtility_Deinit(void);
 **         Init                    - void McuUtility_Init(void);
 **
-**     * Copyright (c) 2014-2016, Erich Styger
+**     * Copyright (c) 2014-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -2353,11 +2353,7 @@ void McuUtility_NumFloatToStr(uint8_t *dst, size_t dstSize, float val, uint8_t n
     shift *= 10;
   }
   /* get fractional part */
-#if 0 /* non-rounding version */
   fractional = (int32_t)(val*shift);
-#else /* rounding version */
-  fractional = (int32_t)((val+5.0f/(shift*10))*shift);
-#endif
   if (isNeg && fractional>0 && nofFracDigits>0) {
     McuUtility_strcpy(dst, dstSize, (unsigned char*)"-");
     McuUtility_strcatNum32s(dst, dstSize, (int32_t)integral);

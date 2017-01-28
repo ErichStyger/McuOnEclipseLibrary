@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : KinetisTools
-**     Version     : Component 01.033, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.034, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
 **     Abstract    :
 **
 **     Settings    :
@@ -28,7 +28,7 @@
 **         SetPSP                 - void McuKinetisTools_SetPSP(void *setval);
 **         SetLR                  - void McuKinetisTools_SetLR(uint32_t setval);
 **
-**     * Copyright (c) 2014-2016, Erich Styger
+**     * Copyright (c) 2014-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -70,11 +70,11 @@
 
 #include "McuKinetisTools.h"
 #include <stddef.h> /* for size_t */
-#if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_2_0
+#if McuLib_CONFIG_NXP_SDK_USED
   #include "fsl_sim.h" /* system integration module */
 #endif
 
-#if McuKinetisTools_CPU_IS_M4
+#if McuLib_CONFIG_CORTEX_M==4
 static const unsigned char *KinetisM4FamilyStrings[] =
 { /* FAMID (3 bits) are used as index */
   (const unsigned char *)"K10 or K12 Family",          /* 000 */
@@ -87,7 +87,7 @@ static const unsigned char *KinetisM4FamilyStrings[] =
   (const unsigned char *)"Reserved"                    /* 111 */
 };
 #endif
-#if McuKinetisTools_CPU_IS_M0_PLUS
+#if McuLib_CONFIG_CORTEX_M==0
 static const unsigned char *KinetisM0FamilyStrings[] =
 { /* FAMID (3 bits) are used as index */
   (const unsigned char *)"KL0x",          /* 000 */
@@ -147,10 +147,10 @@ void McuKinetisTools_SoftwareReset(void)
      To write to this register, you must write 0x5FA to the VECTKEY field, otherwise the processor ignores the write.
      SYSRESETREQ will cause a system reset asynchronously, so need to wait afterwards.
    */
-#if McuKinetisTools_IS_USING_KINETIS_SDK
-  SCB->AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
-#else
+#if McuLib_CONFIG_PEX_SDK_USED
   SCB_AIRCR = SCB_AIRCR_VECTKEY(0x5FA) | SCB_AIRCR_SYSRESETREQ_MASK;
+#else
+  SCB->AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
 #endif
   for(;;) {
     /* wait until reset */
@@ -176,7 +176,7 @@ void McuKinetisTools_SoftwareReset(void)
  */
 uint8_t McuKinetisTools_UIDGet(McuKinetisTools_UID *uid)
 {
-#if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_2_0
+#if McuLib_CONFIG_NXP_SDK_USED
   sim_uid_t tmp;
   int i, j;
 
@@ -377,24 +377,29 @@ uint8_t McuKinetisTools_ParseCommand(const unsigned char* cmd, bool *handled, co
 */
 McuKinetisTools_ConstCharPtr McuKinetisTools_GetKinetisFamilyString(void)
 {
-#if McuKinetisTools_CPU_IS_M0_PLUS
-#ifdef SIM_SDID /* normal Kinetis define this */
-  int32_t val;
+#if McuLib_CONFIG_CORTEX_M==0
+  #ifdef SIM_SDID /* normal Kinetis define this */
+    int32_t val;
 
-  val = (SIM_SDID>>28)&0x3; /* bits 30..28 */
-  return KinetisM0FamilyStrings[val];
-#elif defined(SIM_SRSID_FAMID) /* MKE02Z4 defines this, hopefully all other KE too... */
-  return "KE0x Family"; /* 0000 only KE0x supported */
-#else
-  #error "Unknown architecture!"
-  return (McuKinetisTools_ConstCharPtr)"ERROR";
-#endif
-#elif McuKinetisTools_CPU_IS_M4
+    val = (SIM_SDID>>28)&0x3; /* bits 30..28 */
+    return KinetisM0FamilyStrings[val];
+  #elif defined(SIM_SRSID_FAMID) /* MKE02Z4 defines this, hopefully all other KE too... */
+    return "KE0x Family"; /* 0000 only KE0x supported */
+  #elif defined(SIM_SDID_FAMID)
+    int32_t val;
+
+    val = SIM_SDID_FAMID(SIM->SDID); /* bits 30..28 */
+    return KinetisM0FamilyStrings[val];
+  #else
+    #error "Unknown architecture!"
+    return (McuKinetisTools_ConstCharPtr)"ERROR";
+  #endif
+#elif McuLib_CONFIG_CORTEX_M==4
   int32_t val;
 
   val = (SIM_SDID>>4)&0x3; /* bits 6..4 */
   return KinetisM4FamilyStrings[val];
-#elif McuKinetisTools_CPU_IS_M7
+#elif McuLib_CONFIG_CORTEX_M==7
   return (McuKinetisTools_ConstCharPtr)"Cortex-M7";
 #else
   #error "Unknown architecture!"
@@ -465,7 +470,7 @@ void McuKinetisTools_SetPSP(void *setval)
   __asm__ volatile ("msr psp, %[value]\n\t""dmb\n\t""dsb\n\t""isb\n\t"::[value]"r"(setval):);
   __asm__ volatile ("" ::: "memory");
 #else
-  #warning "only for GCC"
+  #warning "only for GCC implemented"
 #endif
 }
 
