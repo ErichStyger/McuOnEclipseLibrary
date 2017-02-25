@@ -64,7 +64,7 @@
 #include "BitIoLdd4.h"
 #include "Output1.h"
 #include "BitIoLdd5.h"
-#include "McuGGisplay.h"
+#include "McuGDisplay.h"
 #include "McuSharpMemoryDisplay.h"
 #include "SCEpin1.h"
 #include "BitIoLdd6.h"

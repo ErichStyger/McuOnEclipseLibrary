@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : KinetisTools
-**     Version     : Component 01.034, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.037, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
+**     Date/Time   : 2017-02-21, 19:46, # CodeGen: 149
 **     Abstract    :
 **
 **     Settings    :
@@ -27,6 +27,11 @@
 **         GetSP                  - void* McuKinetisTools_GetSP(void);
 **         SetPSP                 - void McuKinetisTools_SetPSP(void *setval);
 **         SetLR                  - void McuKinetisTools_SetLR(uint32_t setval);
+**         InitCycleCounter       - void McuKinetisTools_InitCycleCounter(void);
+**         ResetCycleCounter      - void McuKinetisTools_ResetCycleCounter(void);
+**         EnableCycleCounter     - void McuKinetisTools_EnableCycleCounter(void);
+**         DisableCycleCounter    - void McuKinetisTools_DisableCycleCounter(void);
+**         GetCycleCounter        - uint32_t McuKinetisTools_GetCycleCounter(void);
 **
 **     * Copyright (c) 2014-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
@@ -87,6 +92,7 @@ static const unsigned char *KinetisM4FamilyStrings[] =
   (const unsigned char *)"Reserved"                    /* 111 */
 };
 #endif
+
 #if McuLib_CONFIG_CORTEX_M==0
 static const unsigned char *KinetisM0FamilyStrings[] =
 { /* FAMID (3 bits) are used as index */
@@ -494,6 +500,89 @@ void McuKinetisTools_SetLR(uint32_t setval)
   #warning "only for GCC"
 #endif
 }
+
+/*
+** ===================================================================
+**     Method      :  McuKinetisTools_InitCycleCounter (component KinetisTools)
+**     Description :
+**         Initializes the cycle counter, available if the core has a
+**         DWT (Data Watchpoint and Trace) unit, usually present on
+**         M3/M4/M7
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+/**
+void McuKinetisTools_InitCycleCounter(void)
+{
+  ** Implemented as macro in header file
+}
+*/
+
+/*
+** ===================================================================
+**     Method      :  McuKinetisTools_ResetCycleCounter (component KinetisTools)
+**     Description :
+**         Reset the cycle counter (set it to zero)
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+/**
+void McuKinetisTools_ResetCycleCounter(void)
+{
+  ** Implemented as macro in header file
+}
+*/
+
+/*
+** ===================================================================
+**     Method      :  McuKinetisTools_EnableCycleCounter (component KinetisTools)
+**     Description :
+**         Enables counting the cycles.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+/**
+void McuKinetisTools_EnableCycleCounter(void)
+{
+  ** Implemented as macro in header file
+}
+*/
+
+/*
+** ===================================================================
+**     Method      :  McuKinetisTools_DisableCycleCounter (component KinetisTools)
+**     Description :
+**         Disables the cycle counter.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+/**
+void McuKinetisTools_DisableCycleCounter(void)
+{
+  ** Implemented as macro in header file
+}
+*/
+
+/*
+** ===================================================================
+**     Method      :  McuKinetisTools_GetCycleCounter (component KinetisTools)
+**     Description :
+**         Return the current cycle counter value
+**     Parameters  : None
+**     Returns     :
+**         ---             - cycle counter
+** ===================================================================
+*/
+/**
+uint32_t McuKinetisTools_GetCycleCounter(void)
+{
+  ** Implemented as macro in header file
+}
+*/
 
 /* END McuKinetisTools. */
 

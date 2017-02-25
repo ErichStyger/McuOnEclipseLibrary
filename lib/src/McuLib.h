@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : McuLibConfig
-**     Version     : Component 01.007, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.008, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
+**     Date/Time   : 2017-02-21, 19:46, # CodeGen: 149
 **     Abstract    :
 **
 **     Settings    :

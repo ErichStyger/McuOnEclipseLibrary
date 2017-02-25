@@ -7,13 +7,13 @@
 **     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-16, 14:36, # CodeGen: 143
+**     Date/Time   : 2017-02-25, 14:18, # CodeGen: 155
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuFontDisplay
 **          System                                         : 
-**            Display                                      : McuGGisplay
+**            Display                                      : McuGDisplay
 **            Font                                         : McuFontCour14Normal
 **          Watchdog                                       : Disabled
 **     Contents    :
@@ -105,7 +105,7 @@ void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontD
       b = 7;                           /* bit position, MSB first */
       for(;;) {                        /* breaks, prints one pixel line */
         if ((((*data)&(1<<b))>>b)==1) { /* note that we do not change the background pixels */
-          McuGGisplay_PutPixel((McuFontDisplay_PixelDim)(currX+w), currY, color);
+          McuGDisplay_PutPixel((McuFontDisplay_PixelDim)(currX+w), currY, color);
         }
         w++;                           /* width counter */
         b--;                           /* next pixel */

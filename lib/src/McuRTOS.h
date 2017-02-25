@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.520, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.529, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
+**     Date/Time   : 2017-02-25, 13:42, # CodeGen: 153
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -18,10 +18,11 @@
 **          Custom Port                                    : Custom port settings
 **            Compiler                                     : automatic
 **            Source Folders                               : Enabled
-**              Source Folder                              : FreeRTOS\Source
-**              Header Folder                              : FreeRTOS\Source\include
-**              Port Folder                                : FreeRTOS\Source\portable\GCC\ARM_CM4F
-**              MemMang Folder                             : FreeRTOS\Source\portable\MemMang
+**              Source Folder                              : FreeRTOS/Source
+**              Header Folder                              : FreeRTOS/Source/include
+**              Port Folder                                : FreeRTOS/Source/portable/GCC/ARM_CM4F
+**              MemMang Folder                             : FreeRTOS/Source/portable/MemMang
+**              Common Folder                              : FreeRTOS/Source/portable/Common
 **              Config Folder                              : config
 **              Manual Clock Values                        : Enabled
 **                configCPU_CLOCK_HZ                       : CPU_CORE_CLK_HZ
@@ -43,15 +44,16 @@
 **          Scheduler                                      : Settings for the scheduler
 **            ColdFire V1                                  : Disabled
 **            ColdFire V2                                  : Disabled
-**            Kinetis                                      : Enabled
+**            ARM (Kinetis)                                : Enabled
 **              ARM Family                                 : Cortex-M4
 **              Max SysCall Interrupt Priority             : 5
 **              RTOS Interrupt Priority                    : 15
 **              Lowest Interrupt Priority                  : 15
 **              Compiler Optimization Level                : 0
+**              MPU                                        : no
 **              SysTick                                    : Enabled
 **                Core Clock                               : yes
-**              Low Power Timer                            : Disabled
+**              Low Power Timer                            : Enabled
 **            non-LDD SWI                                  : Disabled
 **            Preemptive                                   : yes
 **            Optimized Task Selection                     : no
@@ -216,7 +218,7 @@
 **     * FreeRTOS (c) Copyright 2003-2016 Richard Barry, http: www.FreeRTOS.org
 **      * See separate FreeRTOS licensing terms.
 **      *
-**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2016
+**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2017
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

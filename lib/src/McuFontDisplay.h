@@ -7,13 +7,13 @@
 **     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-16, 14:36, # CodeGen: 143
+**     Date/Time   : 2017-02-25, 14:18, # CodeGen: 155
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuFontDisplay
 **          System                                         : 
-**            Display                                      : McuGGisplay
+**            Display                                      : McuGDisplay
 **            Font                                         : McuFontCour14Normal
 **          Watchdog                                       : Disabled
 **     Contents    :
@@ -54,13 +54,13 @@
 #include "PE_Const.h"
 #include "IO_Map.h"
 /* Include inherited beans */
-#include "McuGGisplay.h"
+#include "McuGDisplay.h"
 #include "McuFontCour14Normal.h"
 
 #include "Cpu.h"
 
-typedef McuGGisplay_PixelDim   McuFontDisplay_PixelDim; /* type which can hold a integral type for the x/y pixel dimension. This is depending on the display used. */
-typedef McuGGisplay_PixelColor McuFontDisplay_PixelColor; /* Type definining the color type (depens on display used). */
+typedef McuGDisplay_PixelDim   McuFontDisplay_PixelDim; /* type which can hold a integral type for the x/y pixel dimension. This is depending on the display used. */
+typedef McuGDisplay_PixelColor McuFontDisplay_PixelColor; /* Type definining the color type (depens on display used). */
 typedef GFONT_Callbacks McuFontDisplay_Font; /* Pointer to GFONT_Callbacks */
 
 
