@@ -7,12 +7,13 @@
 **     Version     : Component 01.078, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-09, 07:48, # CodeGen: 156
+**     Date/Time   : 2017-03-09, 11:47, # CodeGen: 158
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
-**          Use Cycle Counter                              : Disabled
+**          Use Cycle Counter                              : Enabled
+**            Cortex Tools                                 : McuKinetisTools
 **          SDK                                            : McuLib
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
@@ -76,6 +77,7 @@
 #include "McuWaitconfig.h" /* configuration */
 
 /* Include inherited components */
+#include "McuKinetisTools.h"
 #include "McuLib.h"
 
 /* other includes needed */

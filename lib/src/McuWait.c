@@ -7,12 +7,13 @@
 **     Version     : Component 01.078, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-09, 11:42, # CodeGen: 157
+**     Date/Time   : 2017-03-09, 11:47, # CodeGen: 158
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
-**          Use Cycle Counter                              : Disabled
+**          Use Cycle Counter                              : Enabled
+**            Cortex Tools                                 : McuKinetisTools
 **          SDK                                            : McuLib
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
@@ -153,8 +154,8 @@ void McuWait_WaitCycles(uint16_t cycles)
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   uint32_t counter = cycles;
 
-  counter += KIN1_GetCycleCounter();
-  while(KIN1_GetCycleCounter()<counter) {
+  counter += McuKinetisTools_GetCycleCounter();
+  while(McuKinetisTools_GetCycleCounter()<counter) {
     /* wait */
   }
 #else
@@ -186,8 +187,8 @@ void McuWait_WaitLongCycles(uint32_t cycles)
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   uint32_t counter = cycles;
 
-  counter += KIN1_GetCycleCounter();
-  while(KIN1_GetCycleCounter()<counter) {
+  counter += McuKinetisTools_GetCycleCounter();
+  while(McuKinetisTools_GetCycleCounter()<counter) {
     /* wait */
   }
 #else
@@ -281,7 +282,7 @@ void McuWait_Init(void)
 {
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   /* init cycle counter */
-  KIN1_InitCycleCounter();
+  McuKinetisTools_InitCycleCounter();
 #endif
 }
 
@@ -298,7 +299,7 @@ void McuWait_DeInit(void)
 {
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   /* disable hardware cycle counter */
-  KIN1_DisableCycleCounter();
+  McuKinetisTools_DisableCycleCounter();
 #endif
 }
 
