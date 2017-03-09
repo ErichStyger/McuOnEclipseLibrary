@@ -1593,15 +1593,28 @@ __attribute__ ((naked)) void vPortPendSVHandler(void) {
 #endif /* (configCOMPILER==configCOMPILER_ARM_GCC) */
 /*-----------------------------------------------------------*/
 #if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY) /* ARM M4(F) or M7 core */
-#if( configASSERT_DEFINED == 1 )
 
+#if configCOMPILER==configCOMPILER_ARM_KEIL
+__asm uint32_t vPortGetIPSR(void) {
+  PRESERVE8
+
+  mrs r0, ipsr
+  bx r14
+}
+#endif
+
+#if( configASSERT_DEFINED == 1 )
   void vPortValidateInterruptPriority( void )
   {
   uint32_t ulCurrentInterrupt;
   uint8_t ucCurrentPriority;
 
     /* Obtain the number of the currently executing interrupt. */
+  #if configCOMPILER==configCOMPILER_ARM_KEIL
+    ulCurrentInterrupt = vPortGetIPSR();
+  #else
     __asm volatile( "mrs %0, ipsr" : "=r"( ulCurrentInterrupt ) );
+  #endif
 
     /* Is the interrupt number a user defined interrupt? */
     if( ulCurrentInterrupt >= portFIRST_USER_INTERRUPT_NUMBER )

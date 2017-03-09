@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericTimeDate
-**     Version     : Component 01.059, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.061, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-10, 19:33, # CodeGen: 126
+**     Date/Time   : 2017-03-09, 07:48, # CodeGen: 156
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -53,6 +53,7 @@
 **         SetInternalRTCTimeDate      - uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         GetInternalRTCTimeDate      - uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         SyncWithInternalRTC         - uint8_t McuTimeDate_SyncWithInternalRTC(void);
+**         SyncSWtimeToInternalRTCsec  - uint8_t McuTimeDate_SyncSWtimeToInternalRTCsec(void);
 **         SetExternalRTCTimeDate      - uint8_t McuTimeDate_SetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         GetExternalRTCTimeDate      - uint8_t McuTimeDate_GetExternalRTCTimeDate(TIMEREC *time, DATEREC *date);
 **         SyncWithExternalRTC         - uint8_t McuTimeDate_SyncWithExternalRTC(void);
@@ -126,9 +127,9 @@
 #define McuTimeDate_INIT_IN_STARTUP                         1 /* 1: call Init() during startup, 0: application needs to call Init() */
 
 /* RTC Initialization options during Init() */
-#define McuTimeDate_INIT_SOFTWARE_RTC_FROM_DEFAULTS         1  /* init software RTC from default values */
+#define McuTimeDate_INIT_SOFTWARE_RTC_FROM_DEFAULTS         0  /* init software RTC from default values */
 #define McuTimeDate_INIT_SOFTWARE_RTC_FROM_INTERNAL_RTC     1  /* init software RTC from internal RTC values */
-#define McuTimeDate_INIT_SOFTWARE_RTC_FROM_EXTERNAL_RTC     1  /* init software RTC from external RTC values */
+#define McuTimeDate_INIT_SOFTWARE_RTC_FROM_EXTERNAL_RTC     2  /* init software RTC from external RTC values */
 
 /* settings for software RTC */
 #define McuTimeDate_USE_SOFTWARE_RTC                        0  /* set to 1 if using software RTC, 0 otherwise */
@@ -696,6 +697,20 @@ uint8_t McuTimeDate_AddTimeString(uint8_t *buf, size_t bufSize, TIMEREC *time, u
 **                           Supported formats: "hh:mm.ss,cc"
 **     Returns     :
 **         ---             - Error code, ERR_OK for no error
+** ===================================================================
+*/
+
+uint8_t McuTimeDate_SyncSWtimeToInternalRTCsec(void);
+/*
+** ===================================================================
+**     Method      :  McuTimeDate_SyncSWtimeToInternalRTCsec (component GenericTimeDate)
+**     Description :
+**         This method synchronizes the software RTC with the internal
+**         HW RTC. Because the internal RTC only counts seconds, we
+**         sync on a second change.
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code
 ** ===================================================================
 */
 

@@ -4,14 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
-**     Version     : Component 01.071, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.078, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2017-03-09, 11:42, # CodeGen: 157
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
+**          Use Cycle Counter                              : Disabled
 **          SDK                                            : McuLib
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
@@ -26,6 +27,8 @@
 **         Waitus         - void McuWait_Waitus(uint16_t us);
 **         Waitns         - void McuWait_Waitns(uint16_t ns);
 **         WaitOSms       - void McuWait_WaitOSms(void);
+**         Init           - void McuWait_Init(void);
+**         DeInit         - void McuWait_DeInit(void);
 **
 **     * Copyright (c) 2013-2016, Erich Styger
 **      * Web:         https://mcuoneclipse.com
@@ -147,6 +150,14 @@ __attribute__((naked, no_instrument_function)) void McuWait_Wait100Cycles(void)
 void McuWait_WaitCycles(uint16_t cycles)
 {
   /*lint -save -e522 function lacks side effect. */
+#if McuWait_CONFIG_USE_CYCLE_COUNTER
+  uint32_t counter = cycles;
+
+  counter += KIN1_GetCycleCounter();
+  while(KIN1_GetCycleCounter()<counter) {
+    /* wait */
+  }
+#else
   while(cycles > 100) {
     McuWait_Wait100Cycles();
     cycles -= 100;
@@ -155,6 +166,7 @@ void McuWait_WaitCycles(uint16_t cycles)
     McuWait_Wait10Cycles();
     cycles -= 10;
   }
+#endif
   /*lint -restore */
 }
 
@@ -171,6 +183,14 @@ void McuWait_WaitCycles(uint16_t cycles)
 */
 void McuWait_WaitLongCycles(uint32_t cycles)
 {
+#if McuWait_CONFIG_USE_CYCLE_COUNTER
+  uint32_t counter = cycles;
+
+  counter += KIN1_GetCycleCounter();
+  while(KIN1_GetCycleCounter()<counter) {
+    /* wait */
+  }
+#else
   /*lint -save -e522 function lacks side effect. */
   while(cycles>60000) {
     McuWait_WaitCycles(60000);
@@ -178,6 +198,7 @@ void McuWait_WaitLongCycles(uint32_t cycles)
   }
   McuWait_WaitCycles((uint16_t)cycles);
   /*lint -restore */
+#endif
 }
 
 /*
@@ -240,12 +261,46 @@ void McuWait_Waitms(uint16_t ms)
 **     Returns     : Nothing
 ** ===================================================================
 */
-#if 0
+/*
 void McuWait_WaitOSms(void)
 {
-  /* Method is implemented as macro in the header file */
+  Method is implemented as macro in the header file
 }
+*/
+
+/*
+** ===================================================================
+**     Method      :  McuWait_Init (component Wait)
+**     Description :
+**         Driver initialization routine.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuWait_Init(void)
+{
+#if McuWait_CONFIG_USE_CYCLE_COUNTER
+  /* init cycle counter */
+  KIN1_InitCycleCounter();
 #endif
+}
+
+/*
+** ===================================================================
+**     Method      :  McuWait_DeInit (component Wait)
+**     Description :
+**         Driver de-initialization routine
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuWait_DeInit(void)
+{
+#if McuWait_CONFIG_USE_CYCLE_COUNTER
+  /* disable hardware cycle counter */
+  KIN1_DisableCycleCounter();
+#endif
+}
 
 /* END McuWait. */
 

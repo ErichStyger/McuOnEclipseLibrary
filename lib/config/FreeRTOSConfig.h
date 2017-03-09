@@ -164,12 +164,12 @@
 #define configMAX_PRIORITIES                      6
 #define configMAX_CO_ROUTINE_PRIORITIES           2
 
-#define configTASK_RETURN_ADDRESS   0  /* return address of task is zero */
+#define configTASK_RETURN_ADDRESS   0             /* return address of task is zero */
 
 #define configRECORD_STACK_HIGH_ADDRESS           1  /* 1: record stack high address for the debugger, 0: do not record stack high address */
 
 /* Software timer definitions. */
-#define configUSE_TIMERS                          0 /* set to 1 to enable sofware timers */
+#define configUSE_TIMERS                          0 /* set to 1 to enable software timers */
 #define configTIMER_TASK_PRIORITY                 (configMAX_PRIORITIES-1U)
 #define configTIMER_QUEUE_LENGTH                  10U
 #define configTIMER_TASK_STACK_DEPTH              (configMINIMAL_STACK_SIZE)

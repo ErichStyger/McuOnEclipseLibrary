@@ -299,14 +299,15 @@ extern void vPortYieldFromISR(void);
 #if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY)
   #if configUSE_PORT_OPTIMISED_TASK_SELECTION == 1
 	/* Generic helper function. */
-	__attribute__( ( always_inline ) ) static inline unsigned char ucPortCountLeadingZeros( unsigned long ulBitmap )
-	{
-	  uint8_t ucReturn;
+    #if (configCOMPILER==configCOMPILER_ARM_GCC)
+      __attribute__((always_inline)) static inline unsigned char ucPortCountLeadingZeros(unsigned long ulBitmap)
+	  {
+	    uint8_t ucReturn;
 
-		__asm volatile ( "clz %0, %1" : "=r" ( ucReturn ) : "r" ( ulBitmap ) );
-		return ucReturn;
-	}
-
+	    __asm volatile ( "clz %0, %1" : "=r" ( ucReturn ) : "r" ( ulBitmap ) );
+	    return ucReturn;
+	  }
+    #endif
 	/* Check the configuration. */
 	#if( configMAX_PRIORITIES > 32 )
 		#error configUSE_PORT_OPTIMISED_TASK_SELECTION can only be set to 1 when configMAX_PRIORITIES is less than or equal to 32.  It is very rare that a system requires more than 10 to 15 difference priorities as tasks that share a priority will time slice.
@@ -317,8 +318,13 @@ extern void vPortYieldFromISR(void);
 	#define portRESET_READY_PRIORITY( uxPriority, uxReadyPriorities ) ( uxReadyPriorities ) &= ~( 1UL << ( uxPriority ) )
 
 	/*-----------------------------------------------------------*/
-
+  #if (configCOMPILER==configCOMPILER_ARM_GCC)
     #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31UL - ( uint32_t ) ucPortCountLeadingZeros( ( uxReadyPriorities ) ) )
+  #elif (configCOMPILER==configCOMPILER_ARM_KEIL)
+    #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31UL - ( uint32_t ) __clz( ( uxReadyPriorities ) ) )
+  #elif (configCOMPILER==configCOMPILER_ARM_IAR)
+    #define portGET_HIGHEST_PRIORITY( uxTopPriority, uxReadyPriorities ) uxTopPriority = ( 31UL - ( ( uint32_t ) __CLZ( ( uxReadyPriorities ) ) ) )
+  #endif
 
   #endif /* configUSE_PORT_OPTIMISED_TASK_SELECTION */
 #endif /* configCPU_FAMILY_IS_ARM_M4_M7 */

@@ -4,14 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
-**     Version     : Component 01.071, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.078, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 10:31, # CodeGen: 86
+**     Date/Time   : 2017-03-09, 07:48, # CodeGen: 156
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
+**          Use Cycle Counter                              : Disabled
 **          SDK                                            : McuLib
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
@@ -26,6 +27,8 @@
 **         Waitus         - void McuWait_Waitus(uint16_t us);
 **         Waitns         - void McuWait_Waitns(uint16_t ns);
 **         WaitOSms       - void McuWait_WaitOSms(void);
+**         Init           - void McuWait_Init(void);
+**         DeInit         - void McuWait_DeInit(void);
 **
 **     * Copyright (c) 2013-2016, Erich Styger
 **      * Web:         https://mcuoneclipse.com
@@ -225,6 +228,28 @@ void McuWait_WaitLongCycles(uint32_t cycles);
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **         cycles          - The number of cycles to wait.
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuWait_Init(void);
+/*
+** ===================================================================
+**     Method      :  McuWait_Init (component Wait)
+**     Description :
+**         Driver initialization routine.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuWait_DeInit(void);
+/*
+** ===================================================================
+**     Method      :  McuWait_DeInit (component Wait)
+**     Description :
+**         Driver de-initialization routine
+**     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
 */

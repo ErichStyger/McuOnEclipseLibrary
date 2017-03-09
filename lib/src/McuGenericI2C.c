@@ -7,7 +7,7 @@
 **     Version     : Component 01.028, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-24, 09:52, # CodeGen: 118
+**     Date/Time   : 2017-03-09, 07:48, # CodeGen: 156
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -348,10 +348,11 @@ uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t me
 */
 void McuGenericI2C_Init(void)
 {
-  McuGenericI2C_busSem = McuRTOS_xSemaphoreCreateRecursiveMutex();
+  McuGenericI2C_busSem = xSemaphoreCreateRecursiveMutex();
   if (McuGenericI2C_busSem==NULL) { /* semaphore creation failed */
     for(;;) {} /* error, not enough memory? */
   }
+  vQueueAddToRegistry(McuGenericI2C_busSem, "McuGenericI2C_Mutex");
 }
 
 /*
@@ -365,7 +366,9 @@ void McuGenericI2C_Init(void)
 */
 void McuGenericI2C_Deinit(void)
 {
+  vQueueUnregisterQueue(McuGenericI2C_busSem);
   McuRTOS_vSemaphoreDelete(McuGenericI2C_busSem);
+  McuGenericI2C_busSem = NULL;
 }
 
 /*
