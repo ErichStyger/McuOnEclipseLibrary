@@ -52,7 +52,6 @@
 #include "Rx1.h"
 #include "McuLED.h"
 #include "LEDpin1.h"
-#include "BitIoLdd1.h"
 #include "McuQuadCounter.h"
 #include "C11.h"
 #include "BitIoLdd2.h"
