@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : LED
-**     Version     : Component 01.073, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.074, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 11:06, # CodeGen: 87
+**     Date/Time   : 2017-03-10, 16:50, # CodeGen: 159
 **     Abstract    :
 **          This component implements a universal driver for a single LED.
 **     Settings    :
@@ -17,20 +17,23 @@
 **          HW Interface                                   : 
 **            Anode on port side, HIGH is ON               : no
 **            On/Off                                       : Enabled
-**              Pin                                        : LEDpin
+**              Pin                                        : SDK_BitIO
 **            PWM                                          : Disabled
-**          Shell                                          : Disabled
+**          Shell                                          : Enabled
+**            Shell                                        : McuShell
+**            Utility                                      : McuUtility
 **     Contents    :
-**         On         - void McuLED_On(void);
-**         Off        - void McuLED_Off(void);
-**         Neg        - void McuLED_Neg(void);
-**         Get        - uint8_t McuLED_Get(void);
-**         Put        - void McuLED_Put(uint8_t val);
-**         SetRatio16 - void McuLED_SetRatio16(uint16_t ratio);
-**         Deinit     - void McuLED_Deinit(void);
-**         Init       - void McuLED_Init(void);
+**         On           - void McuLED_On(void);
+**         Off          - void McuLED_Off(void);
+**         Neg          - void McuLED_Neg(void);
+**         Get          - uint8_t McuLED_Get(void);
+**         Put          - void McuLED_Put(uint8_t val);
+**         SetRatio16   - void McuLED_SetRatio16(uint16_t ratio);
+**         ParseCommand - uint8_t McuLED_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         Deinit       - void McuLED_Deinit(void);
+**         Init         - void McuLED_Init(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -78,13 +81,15 @@
 /* Include inherited components */
 #include "McuLib.h"
 #include "LEDpin1.h"
+#include "McuShell.h"
+#include "McuUtility.h"
 
 #define McuLED_ClrVal()    LEDpin1_ClrVal() /* put the pin on low level */
 #define McuLED_SetVal()    LEDpin1_SetVal() /* put the pin on high level */
 #define McuLED_SetInput()  LEDpin1_SetInput() /* use the pin as input pin */
 #define McuLED_SetOutput() LEDpin1_SetOutput() /* use the pin as output pin */
 
-#define McuLED_PARSE_COMMAND_ENABLED  0 /* set to 1 if method ParseCommand() is present, 0 otherwise */
+#define McuLED_PARSE_COMMAND_ENABLED  1 /* set to 1 if method ParseCommand() is present, 0 otherwise */
 
 
 #define McuLED_On() LEDpin1_ClrVal()
@@ -165,6 +170,25 @@ void McuLED_Deinit(void);
 **         Deinitializes the driver
 **     Parameters  : None
 **     Returns     : Nothing
+** ===================================================================
+*/
+
+uint8_t McuLED_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  McuLED_ParseCommand (component LED)
+**     Description :
+**         Shell Command Line parser. This method is enabled/disabled
+**         depending on if you have the Shell enabled/disabled in the
+**         properties.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cmd             - Pointer to command string
+**       * handled         - Pointer to variable which tells if
+**                           the command has been handled or not
+**       * io              - Pointer to I/O structure
+**     Returns     :
+**         ---             - Error code
 ** ===================================================================
 */
 

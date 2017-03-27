@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericSWSPI
-**     Version     : Component 01.026, Driver 01.15, CPU db: 3.00.000
+**     Version     : Component 01.029, Driver 01.15, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-17, 17:32, # CodeGen: 110
+**     Date/Time   : 2017-03-19, 09:33, # CodeGen: 161
 **     Abstract    :
 **
 **     Contents    :
@@ -20,15 +20,35 @@
 **         Write_ReadDummy       - void McuGenericSWSPI_Write_ReadDummy(uint8_t val);
 **         SetSlowMode           - void McuGenericSWSPI_SetSlowMode(void);
 **         SetFastMode           - void McuGenericSWSPI_SetFastMode(void);
+**         Deinit                - void McuGenericSWSPI_Deinit(void);
+**         Init                  - void McuGenericSWSPI_Init(void);
 **
-**     License : Open Source (LGPL)
-**     Copyright : (c) Copyright Erich Styger, 2014-2016, all rights reserved.
-**     Web       : www.mcuoneclipse.com
-**     This an open source software implemented with using Processor Expert.
-**     This is a free software and is opened for education, research and commercial developments under license policy of following terms:
-**     * This is a free software and there is NO WARRANTY.
-**     * No restriction on use. You can use, modify and redistribute it for personal, non-profit or commercial product UNDER YOUR RESPONSIBILITY.
-**     * Redistributions of source code must retain the above copyright notice.
+**     * Copyright (c) 2013-2017, Erich Styger
+**      * Web:         https://mcuoneclipse.com
+**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**      * All rights reserved.
+**      *
+**      * Redistribution and use in source and binary forms, with or without modification,
+**      * are permitted provided that the following conditions are met:
+**      *
+**      * - Redistributions of source code must retain the above copyright notice, this list
+**      *   of conditions and the following disclaimer.
+**      *
+**      * - Redistributions in binary form must reproduce the above copyright notice, this
+**      *   list of conditions and the following disclaimer in the documentation and/or
+**      *   other materials provided with the distribution.
+**      *
+**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuGenericSWSPI.c
@@ -43,22 +63,27 @@
 
 
 /* MODULE McuGenericSWSPI. */
-
 #include "McuGenericSWSPI.h"
+
+/* Include inherited components */
+#include "Clock1.h"
+#include "Output1.h"
+#include "McuWait.h"
+#include "McuLib.h"
 
   /* data-clock-clock */
 
 #define OVERRUN_ERR  0x01              /* Overrun error flag bit   */
 #define CHAR_IN_RX   0x08              /* Char is in RX buffer     */
 
-static byte McuGenericSWSPI_FastMode; /* 0: slow, 1: fast */
+static uint8_t McuGenericSWSPI_FastMode; /* 0: slow, 1: fast */
 #define MOSI_IDLE_POLARITY    1        /* MOSI idle polarity is high */
 #define CLOCK_IDLE_POLARITY   0        /* Clock idle polarity is low */
 
-static byte CLKshift;
-static byte CLKsampl;
-static byte InputBuffer;
-static byte SerFlag;                   /* Flags for serial communication */
+static uint8_t CLKshift;
+static uint8_t CLKsampl;
+static uint8_t InputBuffer;
+static uint8_t SerFlag;                /* Flags for serial communication */
                                        /* Bits: 0 - OverRun error */
                                        /*       1 - Unused */
                                        /*       2 - Unused */
@@ -146,7 +171,7 @@ uint8_t McuGenericSWSPI_RecvChar(uint8_t *Chr)
 */
 void McuGenericSWSPI_Write_ReadDummy(uint8_t val)
 {
-  byte i;
+  int i;
 
   for(i=0; i<8; i++) {
     McuGenericSWSPI_DELAY();
@@ -175,7 +200,7 @@ void McuGenericSWSPI_Write_ReadDummy(uint8_t val)
 */
 uint8_t McuGenericSWSPI_SendChar(uint8_t val)
 {
-  byte i;
+  int i;
 
   for(i=0; i<8; i++) {
     McuGenericSWSPI_DELAY();
@@ -208,7 +233,7 @@ uint8_t McuGenericSWSPI_SendChar(uint8_t val)
 */
 uint8_t McuGenericSWSPI_CharsInRxBuf(void)
 {
-  return (byte)((SerFlag & CHAR_IN_RX)?(byte)1:(byte)0); /* Return number of chars in receive buffer */
+  return (uint8_t)((SerFlag & CHAR_IN_RX)?(uint8_t)1:(uint8_t)0); /* Return number of chars in receive buffer */
 }
 
 /*
@@ -246,8 +271,8 @@ uint8_t McuGenericSWSPI_CharsInTxBuf(void)
 */
 uint8_t McuGenericSWSPI_SetShiftClockPolarity(uint8_t Edge)
 {
-  CLKshift = (byte)(Edge?(byte)1:(byte)0); /* Set shift value */
-  CLKsampl = (byte)(CLKshift ^ (byte)0x01); /* Set sample value */
+  CLKshift = (uint8_t)(Edge?(uint8_t)1:(uint8_t)0); /* Set shift value */
+  CLKsampl = (uint8_t)(CLKshift^(uint8_t)0x01); /* Set sample value */
   return ERR_OK;
 }
 
@@ -270,20 +295,25 @@ uint8_t McuGenericSWSPI_SetShiftClockPolarity(uint8_t Edge)
 */
 uint8_t McuGenericSWSPI_SetIdleClockPolarity(uint8_t Level)
 {
-  Clock1_PutVal((byte)Level);          /* Set CLK to (new) idle value */
+  Clock1_PutVal((uint8_t)Level);       /* Set CLK to (new) idle value */
   return ERR_OK;
 }
 
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWSPI_Init (component GenericSWSPI)
-**
 **     Description :
-**         This method is internal. It is used by Processor Expert only.
+**         Driver Initialization
+**     Parameters  : None
+**     Returns     : Nothing
 ** ===================================================================
 */
 void McuGenericSWSPI_Init(void)
 {
+#if McuLib_CONFIG_SDK_VERSION_USED != McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+  Output1_Init();
+  Clock1_Init();
+#endif
   McuGenericSWSPI_SetSlowMode();       /* slow mode is default */
   /* clock idle low, falling edge: Data - Sample - Shift */
   CLKsampl = 1;
@@ -293,8 +323,25 @@ void McuGenericSWSPI_Init(void)
   SerFlag = 0;                         /* Clear flags */
 }
 
+/*
+** ===================================================================
+**     Method      :  McuGenericSWSPI_Deinit (component GenericSWSPI)
+**     Description :
+**         Driver Deinitialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuGenericSWSPI_Deinit(void)
+{
+#if McuLib_CONFIG_SDK_VERSION_USED != McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+  Output1_Deinit();
+  Clock1_Deinit();
+#endif
+}
 
-/* END McuGenericSWSPI. */
+
+/* END __McuGenericSWSPI_H */
 
 /*!
 ** @}
@@ -307,4 +354,3 @@ void McuGenericSWSPI_Init(void)
 **
 ** ###################################################################
 */
-

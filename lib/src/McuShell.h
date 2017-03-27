@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.090, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
+**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
 **     Abstract    :
 **
 **     Settings    :
@@ -70,10 +70,11 @@
 **         ReadChar                     - void McuShell_ReadChar(uint8_t *c);
 **         SendChar                     - void McuShell_SendChar(uint8_t ch);
 **         KeyPressed                   - bool McuShell_KeyPressed(void);
+**         SendCharFct                  - void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch));
 **         Init                         - void McuShell_Init(void);
 **         Deinit                       - void McuShell_Deinit(void);
 **
-**     * Copyright (c) 2014-2016, Erich Styger
+**     * Copyright (c) 2014-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -196,7 +197,6 @@ extern uint8_t McuShell_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; 
 #if McuShell_DEFAULT_SERIAL
   extern McuShell_ConstStdIOType McuShell_stdio; /* default standard I/O */
 #endif
-
 
 #define McuShell_DASH_LINE "--------------------------------------------------------------"
 /* predefined commands */
@@ -707,6 +707,21 @@ unsigned McuShell_printfIO(McuShell_ConstStdIOType *io, const char *fmt, ...);
 **         fmt             - printf style format string
 **     Returns     :
 **         ---             - number of characters written
+** ===================================================================
+*/
+
+void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch));
+/*
+** ===================================================================
+**     Method      :  McuShell_SendCharFct (component Shell)
+**     Description :
+**         Method to send a character using a standard I/O handle.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         ch              - character to be sent
+**       * fct             - Function pointer to output function: takes
+**                           a byte to write and returns error code.
+**     Returns     : Nothing
 ** ===================================================================
 */
 

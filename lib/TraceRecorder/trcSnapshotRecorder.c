@@ -50,7 +50,7 @@
 
 #include <string.h>
 #include <stdarg.h>
-#ifndef __HIWARE__ /* << EST */
+  #ifndef __HIWARE__ /* << EST */
 #include <stdint.h>
 #endif
 
@@ -2235,7 +2235,11 @@ void prvTraceInitTraceData()
 	RecorderDataPtr->exampleFloatEncoding = 1.0f; /* otherwise already zero */
 #endif
 	RecorderDataPtr->debugMarker2 = (int32_t)0xF2F2F2F2;
+#if 0
 	prvStrncpy(RecorderDataPtr->systemInfo, "Trace Recorder Demo", 80);
+#else /* << EST */
+  prvStrncpy(RecorderDataPtr->systemInfo, TRC_CFG_TRACE_DESCRIPTION, TRC_CFG_TRACE_DESCRIPTION_MAX_LENGTH); /* << EST */
+#endif
 	RecorderDataPtr->debugMarker3 = (int32_t)0xF3F3F3F3;
 	RecorderDataPtr->endmarker0 = 0x0A;
 	RecorderDataPtr->endmarker1 = 0x0B;
@@ -2540,7 +2544,7 @@ void prvTraceError(const char* msg)
 	/* If first error only... */
 	if (traceErrorMessage == NULL)
 	{
-		traceErrorMessage = (char*)(intptr_t) msg;
+		traceErrorMessage = (char*) msg;
 		if (RecorderDataPtr != NULL)
 		{
 			prvStrncpy(RecorderDataPtr->systemInfo, traceErrorMessage, 80);

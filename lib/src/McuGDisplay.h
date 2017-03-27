@@ -7,7 +7,7 @@
 **     Version     : Component 01.193, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-25, 14:18, # CodeGen: 155
+**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
 **     Abstract    :
 **
 **     Settings    :
@@ -150,7 +150,6 @@ typedef McuSharpMemoryDisplay_DisplayOrientation McuGDisplay_DisplayOrientation;
 
 #define McuGDisplay_BUF_BYTE(x,y)  /* how to access a byte in the display buf[][] */ \
       McuSharpMemoryDisplay_DisplayBuf[y][(x)/8]
-
 #define McuGDisplay_BUF_BYTE_PIXEL_BIT_NO(x,y) /* pixel bit number inside display buffer byte (0 is LSB, 7 MSB) */ \
       ((byte)(7-((x)%8)))
 

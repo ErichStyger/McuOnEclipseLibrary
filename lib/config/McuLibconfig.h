@@ -17,14 +17,12 @@
   /*!< 1: NXP LPC CPU family, 0: otherwise */
 
 /* identification of Cortex-M core. __FPU_USED can be defined in CMSIS-Core */
-#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
-  #define McuLib_CONFIG_CORTEX_M      (4)
-    /*!< 0: Cortex-M0, 3: M3, 4: M4, 7: M7, -1 otherwise */
-  #define McuLib_CONFIG_FPU_PRESENT   (1 || (defined(__FPU_PRESENT) && (__FPU_PRESENT)==1))
-    /*!< 1: floating point unit present, 0: otherwise */
-  #define McuLib_CONFIG_FPU_USED      (1 || (defined(__FPU_USED) && (__FPU_USED)==1))
-    /*!< 1: using floating point unit, 0: otherwise */
-#endif
+#define McuLib_CONFIG_CORTEX_M      (4)
+  /*!< 0: Cortex-M0, 3: M3, 4: M4, 7: M7, -1 otherwise */
+#define McuLib_CONFIG_FPU_PRESENT   (1 || (defined(__FPU_PRESENT) && (__FPU_PRESENT)==1))
+  /*!< 1: floating point unit present, 0: otherwise */
+#define McuLib_CONFIG_FPU_USED      (1 || (defined(__FPU_USED) && (__FPU_USED)==1))
+  /*!< 1: using floating point unit, 0: otherwise */
 
 /* Identifiers used to identify the SDK */
 #define McuLib_CONFIG_SDK_GENERIC             0

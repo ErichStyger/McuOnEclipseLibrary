@@ -4,15 +4,16 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericI2C
-**     Version     : Component 01.028, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-24, 09:50, # CodeGen: 117
+**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
 **          Component name                                 : McuGenericI2C
 **          Wait                                           : McuWait
+**          SDK                                            : McuLib
 **          Support STOP_NOSTART                           : no
 **          Write Buffer Size                              : 16
 **          non-LDD I2C                                    : Enabled
@@ -81,39 +82,15 @@
 #define __McuGenericI2C_H
 
 /* MODULE McuGenericI2C. */
+#include "McuLib.h" /* SDK and API used */
+#include "McuGenericI2Cconfig.h" /* configuration */
 
-/* Include shared modules, which are used for whole project */
-#include "PE_Types.h"
-#include "PE_Error.h"
-#include "PE_Const.h"
-#include "IO_Map.h"
 /* Include inherited beans */
 #include "McuWait.h"
+#include "McuLib.h"
 #include "McuGenericSWI2C.h"
 #include "McuRTOS.h"
 
-#include "Cpu.h"
-
-
-#ifndef __BWUserType_McuGenericI2C_TTIME
-#define __BWUserType_McuGenericI2C_TTIME
-  typedef struct {                     /* Time in binary format */
-    byte hour;                         /* hours */
-    byte min;                          /* minutes */
-    byte sec;                          /* seconds */
-    bool mode;                         /* clock mode, 0 for 12-hour mode, otherwise 0-24 hour mode */
-    byte am_pm;                        /* 0: AM, otherwise PM */
-  } McuGenericI2C_TTIME;
-#endif
-#ifndef __BWUserType_McuGenericI2C_TDATE
-#define __BWUserType_McuGenericI2C_TDATE
-  typedef struct {                     /* Date in binary format */
-    byte year;                         /* year */
-    byte month;                        /* month */
-    byte day;                          /* day */
-    bool dayOfWeek;                    /* Day of week, where 0 is the first day. In the range of 0..6 */
-  } McuGenericI2C_TDATE;
-#endif
 
 #define McuGenericI2C_WRITE_BUFFER_SIZE 16 /* size of internal buffer used, set in the component properties */
 

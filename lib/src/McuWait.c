@@ -4,17 +4,17 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
-**     Version     : Component 01.078, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.081, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-09, 11:47, # CodeGen: 158
+**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
+**          SDK                                            : McuLib
 **          Use Cycle Counter                              : Enabled
 **            Cortex Tools                                 : McuKinetisTools
-**          SDK                                            : McuLib
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
 **          RTOS                                           : Disabled
@@ -31,7 +31,7 @@
 **         Init           - void McuWait_Init(void);
 **         DeInit         - void McuWait_DeInit(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -283,6 +283,8 @@ void McuWait_Init(void)
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   /* init cycle counter */
   McuKinetisTools_InitCycleCounter();
+  McuKinetisTools_ResetCycleCounter();
+  McuKinetisTools_EnableCycleCounter();
 #endif
 }
 

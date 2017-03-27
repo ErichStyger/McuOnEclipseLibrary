@@ -4,17 +4,17 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
-**     Version     : Component 01.078, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.081, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-09, 11:47, # CodeGen: 158
+**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
+**          SDK                                            : McuLib
 **          Use Cycle Counter                              : Enabled
 **            Cortex Tools                                 : McuKinetisTools
-**          SDK                                            : McuLib
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
 **          RTOS                                           : Disabled
@@ -31,7 +31,7 @@
 **         Init           - void McuWait_Init(void);
 **         DeInit         - void McuWait_DeInit(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -77,8 +77,8 @@
 #include "McuWaitconfig.h" /* configuration */
 
 /* Include inherited components */
-#include "McuKinetisTools.h"
 #include "McuLib.h"
+#include "McuKinetisTools.h"
 
 /* other includes needed */
 /* include RTOS header files */
@@ -204,8 +204,11 @@ void McuWait_Waitms(uint16_t ms);
 ** ===================================================================
 */
 
-#define McuWait_WaitOSms(ms) \
-  vTaskDelay(ms/portTICK_PERIOD_MS)
+#if McuWait_CONFIG_USE_RTOS_WAIT
+  #define McuWait_WaitOSms(ms) vTaskDelay(ms/portTICK_PERIOD_MS) /* use FreeRTOS API */
+#else
+  #define McuWait_WaitOSms(ms)  McuWait_Waitms(ms) /* use normal wait */
+#endif
 /*
 ** ===================================================================
 **     Method      :  McuWait_WaitOSms (component Wait)
@@ -216,10 +219,6 @@ void McuWait_Waitms(uint16_t ms);
 **     Returns     : Nothing
 ** ===================================================================
 */
-
-#ifdef __cplusplus
-}  /* extern "C" */
-#endif
 
 void McuWait_WaitLongCycles(uint32_t cycles);
 /*
@@ -257,6 +256,10 @@ void McuWait_DeInit(void);
 */
 
 /* END McuWait. */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif
 /* ifndef __McuWait_H */

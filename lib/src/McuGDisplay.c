@@ -7,7 +7,7 @@
 **     Version     : Component 01.193, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-25, 14:18, # CodeGen: 155
+**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
 **     Abstract    :
 **
 **     Settings    :
@@ -135,7 +135,7 @@ static const word c332to565[256] = { /* converts a 3-3-2 RBG value into a 5-6-5 
 */
 void McuGDisplay_Clear(void)
 {
-  byte *p = &McuSharpMemoryDisplay_DisplayBuf[0][0]; /* first element in display buffer */
+  uint8_t *p = (uint8_t*)(&McuSharpMemoryDisplay_DisplayBuf[0][0]); /* first element in display buffer */
 
   while (p<((byte*)McuSharpMemoryDisplay_DisplayBuf)+sizeof(McuSharpMemoryDisplay_DisplayBuf)) {
     *p++ = (byte)(  (McuGDisplay_COLOR_WHITE<<7)
@@ -210,6 +210,40 @@ void McuGDisplay_UpdateFull(void)
 
 /*
 ** ===================================================================
+**     Method      :  McuGDisplay_PutPixel (component GDisplay)
+**     Description :
+**         
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         x               - x coordinate
+**         y               - y coordinate
+**         color           - color to be used for the pixel
+**     Returns     : Nothing
+** ===================================================================
+*/
+#ifdef __HC08__
+  #pragma MESSAGE DISABLE C4001 /* condition always FALSE */
+#endif
+void McuGDisplay_PutPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDisplay_PixelColor color)
+{
+  if (x>=McuGDisplay_GetWidth() || y>=McuGDisplay_GetHeight()) { /* values out of range */
+    return;
+  }
+  if (   (color==McuGDisplay_COLOR_BLACK && McuGDisplay_COLOR_BLACK==McuGDisplay_COLOR_PIXEL_SET)
+      || (color==McuGDisplay_COLOR_WHITE && McuGDisplay_COLOR_WHITE==McuGDisplay_COLOR_PIXEL_SET)
+     )
+  {
+    McuGDisplay_SetPixel(x,y);
+  } else {
+    McuGDisplay_ClrPixel(x,y);
+  }
+}
+#ifdef __HC08__
+  #pragma MESSAGE DEFAULT C4001 /* condition always FALSE */
+#endif
+
+/*
+** ===================================================================
 **     Method      :  McuGDisplay_DrawFilledBox (component GDisplay)
 **     Description :
 **         Draws a rectangle box (filled)
@@ -264,40 +298,6 @@ void McuGDisplay_DrawFilledBox(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, M
     y0++;
   } /* for */
 }
-
-/*
-** ===================================================================
-**     Method      :  McuGDisplay_PutPixel (component GDisplay)
-**     Description :
-**         
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         x               - x coordinate
-**         y               - y coordinate
-**         color           - color to be used for the pixel
-**     Returns     : Nothing
-** ===================================================================
-*/
-#ifdef __HC08__
-  #pragma MESSAGE DISABLE C4001 /* condition always FALSE */
-#endif
-void McuGDisplay_PutPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDisplay_PixelColor color)
-{
-  if (x>=McuGDisplay_GetWidth() || y>=McuGDisplay_GetHeight()) { /* values out of range */
-    return;
-  }
-  if (   (color==McuGDisplay_COLOR_BLACK && McuGDisplay_COLOR_BLACK==McuGDisplay_COLOR_PIXEL_SET)
-      || (color==McuGDisplay_COLOR_WHITE && McuGDisplay_COLOR_WHITE==McuGDisplay_COLOR_PIXEL_SET)
-     )
-  {
-    McuGDisplay_SetPixel(x,y);
-  } else {
-    McuGDisplay_ClrPixel(x,y);
-  }
-}
-#ifdef __HC08__
-  #pragma MESSAGE DEFAULT C4001 /* condition always FALSE */
-#endif
 
 /*
 ** ===================================================================

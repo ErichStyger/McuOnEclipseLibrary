@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.529, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.539, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-25, 13:42, # CodeGen: 153
+**     Date/Time   : 2017-03-19, 09:33, # CodeGen: 161
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -31,10 +31,15 @@
 **          Classic CodeWarrior                            : no
 **          Disabled Interrupts in Startup                 : yes
 **          configASSERT                                   : yes
-**          Enable GDB Debug Helper                        : no
 **          Application Task Tags                          : no
 **          Thread Local Storage Pointers                  : 0
 **          Use Trace Facility                             : yes
+**          Debug Helpers                                  : 
+**            Enable GDB Debug Helper                      : no
+**            uxTopUsedPriority                            : no
+**            Heap Indication Constant                     : no
+**            Task C Additions                             : no
+**            Record Stack High Address                    : yes
 **          Segger System Viewer Trace                     : Disabled
 **          Percepio Trace                                 : Disabled
 **          Generate Runtime Statistics                    : Enabled
@@ -62,7 +67,6 @@
 **            Idle should yield                            : yes
 **            Task Name Length                             : 12
 **            Minimal Stack Size                           : 200
-**            Record Stack High Address                    : yes
 **            Maximum Priorities                           : 6
 **            Maximum Coroutine Priorities                 : 2
 **            Stackoverflow checking method                : Method 1
@@ -259,6 +263,11 @@
 /* MODULE McuRTOS. */
 #include "McuRTOS.h"
 #include "portTicks.h"                 /* interface to tick counter */
+
+#if configHEAP_SCHEME_IDENTIFICATION
+  /* special variable identifying the used heap scheme */
+  const uint8_t freeRTOSMemoryScheme = configUSE_HEAP_SCHEME;
+#endif
 
 
 static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
@@ -2149,8 +2158,16 @@ uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const McuS
 */
 void McuRTOS_Init(void)
 {
-  vPortInitTickTimer();
-  vPortStopTickTimer();
+  portDISABLE_ALL_INTERRUPTS(); /* disable all interrupts, they get enabled in vStartScheduler() */
+#if configSYSTICK_USE_LOW_POWER_TIMER
+  /* enable clocking for low power timer, otherwise vPortStopTickTimer() will crash.
+    Additionally, Percepio trace needs access to the timer early on. */
+  SIM_PDD_SetClockGate(SIM_BASE_PTR, SIM_PDD_CLOCK_GATE_LPTMR0, PDD_ENABLE);
+#endif
+  vPortStopTickTimer(); /* tick timer shall not run until the RTOS scheduler is started */
+  /* no Percepio Trace Hooks enabled with configUSE_TRACE_HOOKS */
+  //vPortInitTickTimer();
+  //vPortStopTickTimer();
 }
 
 /*

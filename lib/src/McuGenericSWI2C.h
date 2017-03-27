@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericSWI2C
-**     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-24, 09:44, # CodeGen: 116
+**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
 **     Abstract    :
 **
 **     Settings    :
@@ -16,25 +16,50 @@
 **          Trials                                         : 256
 **          SDA                                            : SDA
 **          SCL                                            : SCL
+**          SDK                                            : McuLib
 **          Wait                                           : McuWait
 **          Yield                                          : yes
 **     Contents    :
-**         Init              - void McuGenericSWI2C_Init(void);
 **         ResetBus          - bool McuGenericSWI2C_ResetBus(void);
-**         SendChar          - byte McuGenericSWI2C_SendChar(byte Chr);
-**         RecvChar          - byte McuGenericSWI2C_RecvChar(byte *Chr);
-**         SendBlock         - byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt);
-**         SendBlockContinue - byte McuGenericSWI2C_SendBlockContinue(void *Ptr, word Siz, word *Snt);
-**         RecvBlock         - byte McuGenericSWI2C_RecvBlock(void *Ptr, word Siz, word *Rcv);
-**         RecvBlockCustom   - byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv,...
+**         SendChar          - uint8_t McuGenericSWI2C_SendChar(uint8_t Chr);
+**         RecvChar          - uint8_t McuGenericSWI2C_RecvChar(uint8_t *Chr);
+**         SendBlock         - uint8_t McuGenericSWI2C_SendBlock(void *Ptr, uint16_t Siz, uint16_t *Snt);
+**         SendBlockContinue - uint8_t McuGenericSWI2C_SendBlockContinue(void *Ptr, uint16_t Siz, uint16_t...
+**         RecvBlock         - uint8_t McuGenericSWI2C_RecvBlock(void *Ptr, uint16_t Siz, uint16_t *Rcv);
+**         RecvBlockCustom   - uint8_t McuGenericSWI2C_RecvBlockCustom(void *Ptr, uint16_t Siz, uint16_t...
 **         SendAck           - void McuGenericSWI2C_SendAck(bool Ack);
-**         SendStop          - byte McuGenericSWI2C_SendStop(void);
-**         SelectSlave       - byte McuGenericSWI2C_SelectSlave(byte Slv);
-**         GetSelected       - byte McuGenericSWI2C_GetSelected(byte *Slv);
+**         SendStop          - uint8_t McuGenericSWI2C_SendStop(void);
+**         SelectSlave       - uint8_t McuGenericSWI2C_SelectSlave(uint8_t Slv);
+**         GetSelected       - uint8_t McuGenericSWI2C_GetSelected(uint8_t *Slv);
+**         Deinit            - void McuGenericSWI2C_Deinit(void);
+**         Init              - void McuGenericSWI2C_Init(void);
 **
-**     (c) Copyright Freescale Semiconductor, 2014-2016
-**     http      : www.freescale.com
-**     Changed and extended: Erich Styger, 2014-2015
+**     * Copyright (c) 2014-2017, Erich Styger
+**      * Web:         https://mcuoneclipse.com
+**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**      * All rights reserved.
+**      *
+**      * Redistribution and use in source and binary forms, with or without modification,
+**      * are permitted provided that the following conditions are met:
+**      *
+**      * - Redistributions of source code must retain the above copyright notice, this list
+**      *   of conditions and the following disclaimer.
+**      *
+**      * - Redistributions in binary form must reproduce the above copyright notice, this
+**      *   list of conditions and the following disclaimer in the documentation and/or
+**      *   other materials provided with the distribution.
+**      *
+**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuGenericSWI2C.h
@@ -51,18 +76,8 @@
 #define __McuGenericSWI2C_H
 
 /* MODULE McuGenericSWI2C. */
-
-/* Include shared modules, which are used for whole project */
-#include "PE_Types.h"
-#include "PE_Error.h"
-#include "PE_Const.h"
-#include "IO_Map.h"
-/* Include inherited beans */
-#include "SDA1.h"
-#include "SCL1.h"
-#include "McuWait.h"
-
-#include "Cpu.h"
+#include "McuLib.h" /* SDK and API used */
+#include "McuGenericSWI2Cconfig.h" /* configuration */
 
 
 typedef enum McuGenericSWI2C_EnumStartFlags_ {
@@ -85,14 +100,13 @@ void McuGenericSWI2C_Init(void);
 **     Method      :  McuGenericSWI2C_Init (component GenericSWI2C)
 **     Description :
 **         Initializes the associated peripheral(s) and the components
-**         internal variables. The method is called automatically as a
-**         part of the application initialization code.
+**         internal variables.
 **     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_SendChar(byte Chr);
+uint8_t McuGenericSWI2C_SendChar(uint8_t Chr);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_SendChar (component GenericSWI2C)
@@ -129,7 +143,7 @@ byte McuGenericSWI2C_SendChar(byte Chr);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_RecvChar(byte *Chr);
+uint8_t McuGenericSWI2C_RecvChar(uint8_t *Chr);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_RecvChar (component GenericSWI2C)
@@ -158,7 +172,7 @@ byte McuGenericSWI2C_RecvChar(byte *Chr);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt);
+uint8_t McuGenericSWI2C_SendBlock(void *Ptr, uint16_t Siz, uint16_t *Snt);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_SendBlock (component GenericSWI2C)
@@ -207,7 +221,7 @@ byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_RecvBlock(void *Ptr, word Siz, word *Rcv);
+uint8_t McuGenericSWI2C_RecvBlock(void *Ptr, uint16_t Siz, uint16_t *Rcv);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_RecvBlock (component GenericSWI2C)
@@ -240,7 +254,7 @@ byte McuGenericSWI2C_RecvBlock(void *Ptr, word Siz, word *Rcv);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_SendStop(void);
+uint8_t McuGenericSWI2C_SendStop(void);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_SendStop (component GenericSWI2C)
@@ -262,7 +276,7 @@ byte McuGenericSWI2C_SendStop(void);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_SelectSlave(byte Slv);
+uint8_t McuGenericSWI2C_SelectSlave(uint8_t Slv);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_SelectSlave (component GenericSWI2C)
@@ -290,7 +304,7 @@ byte McuGenericSWI2C_SelectSlave(byte Slv);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_GetSelected(byte *Slv);
+uint8_t McuGenericSWI2C_GetSelected(uint8_t *Slv);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_GetSelected (component GenericSWI2C)
@@ -329,7 +343,7 @@ bool McuGenericSWI2C_ResetBus(void);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_SendBlockContinue(void *Ptr, word Siz, word *Snt);
+uint8_t McuGenericSWI2C_SendBlockContinue(void *Ptr, uint16_t Siz, uint16_t *Snt);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_SendBlockContinue (component GenericSWI2C)
@@ -379,7 +393,7 @@ byte McuGenericSWI2C_SendBlockContinue(void *Ptr, word Siz, word *Snt);
 ** ===================================================================
 */
 
-byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv, McuGenericSWI2C_EnumStartFlags flagsStart, McuGenericSWI2C_EnumAckFlags flagsAck);
+uint8_t McuGenericSWI2C_RecvBlockCustom(void *Ptr, uint16_t Siz, uint16_t *Rcv, McuGenericSWI2C_EnumStartFlags flagsStart, McuGenericSWI2C_EnumAckFlags flagsAck);
 /*
 ** ===================================================================
 **     Method      :  McuGenericSWI2C_RecvBlockCustom (component GenericSWI2C)
@@ -418,6 +432,17 @@ void McuGenericSWI2C_SendAck(bool Ack);
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **         Ack             - If acknowledge is high or low
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuGenericSWI2C_Deinit(void);
+/*
+** ===================================================================
+**     Method      :  McuGenericSWI2C_Deinit (component GenericSWI2C)
+**     Description :
+**         Driver de-initialization method.
+**     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
 */

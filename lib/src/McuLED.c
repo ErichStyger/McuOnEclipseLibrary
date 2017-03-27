@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : LED
-**     Version     : Component 01.073, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.074, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 11:17, # CodeGen: 88
+**     Date/Time   : 2017-03-10, 16:50, # CodeGen: 159
 **     Abstract    :
 **          This component implements a universal driver for a single LED.
 **     Settings    :
@@ -17,20 +17,23 @@
 **          HW Interface                                   : 
 **            Anode on port side, HIGH is ON               : no
 **            On/Off                                       : Enabled
-**              Pin                                        : LEDpin
+**              Pin                                        : SDK_BitIO
 **            PWM                                          : Disabled
-**          Shell                                          : Disabled
+**          Shell                                          : Enabled
+**            Shell                                        : McuShell
+**            Utility                                      : McuUtility
 **     Contents    :
-**         On         - void McuLED_On(void);
-**         Off        - void McuLED_Off(void);
-**         Neg        - void McuLED_Neg(void);
-**         Get        - uint8_t McuLED_Get(void);
-**         Put        - void McuLED_Put(uint8_t val);
-**         SetRatio16 - void McuLED_SetRatio16(uint16_t ratio);
-**         Deinit     - void McuLED_Deinit(void);
-**         Init       - void McuLED_Init(void);
+**         On           - void McuLED_On(void);
+**         Off          - void McuLED_Off(void);
+**         Neg          - void McuLED_Neg(void);
+**         Get          - uint8_t McuLED_Get(void);
+**         Put          - void McuLED_Put(uint8_t val);
+**         SetRatio16   - void McuLED_SetRatio16(uint16_t ratio);
+**         ParseCommand - uint8_t McuLED_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         Deinit       - void McuLED_Deinit(void);
+**         Init         - void McuLED_Init(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -71,6 +74,64 @@
 /* MODULE McuLED. */
 
 #include "McuLED.h"
+
+static uint8_t PrintStatus(const McuShell_StdIOType *io) {
+  McuShell_SendStatusStr((unsigned char*)"McuLED", (unsigned char*)"\r\n", io->stdOut);
+  if (McuLED_Get()!=0) {
+    McuShell_SendStatusStr((unsigned char*)"  on", (unsigned char*)"yes\r\n", io->stdOut);
+  } else {
+    McuShell_SendStatusStr((unsigned char*)"  on", (unsigned char*)"no\r\n", io->stdOut);
+  }
+  return ERR_OK;
+}
+
+static uint8_t PrintHelp(const McuShell_StdIOType *io) {
+  McuShell_SendHelpStr((unsigned char*)"McuLED", (unsigned char*)"Group of McuLED commands\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  on|off|neg", (unsigned char*)"Turns it on, off or toggle it\r\n", io->stdOut);
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  McuLED_ParseCommand (component LED)
+**     Description :
+**         Shell Command Line parser. This method is enabled/disabled
+**         depending on if you have the Shell enabled/disabled in the
+**         properties.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cmd             - Pointer to command string
+**       * handled         - Pointer to variable which tells if
+**                           the command has been handled or not
+**       * io              - Pointer to I/O structure
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuLED_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io)
+{
+  if (McuUtility_strcmp((char*)cmd, McuShell_CMD_HELP)==0 || McuUtility_strcmp((char*)cmd, "McuLED help")==0) {
+    *handled = TRUE;
+    return PrintHelp(io);
+  } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuLED status")==0)) {
+    *handled = TRUE;
+    return PrintStatus(io);
+  } else if (McuUtility_strcmp((char*)cmd, "McuLED on")==0) {
+    *handled = TRUE;
+    McuLED_On();
+    return ERR_OK;
+  } else if (McuUtility_strcmp((char*)cmd, "McuLED off")==0) {
+    *handled = TRUE;
+    McuLED_Off();
+    return ERR_OK;
+  } else if (McuUtility_strcmp((char*)cmd, "McuLED neg")==0) {
+    *handled = TRUE;
+    McuLED_Neg();
+    return ERR_OK;
+  }
+  return ERR_OK;
+}
 
 /*
 ** ===================================================================

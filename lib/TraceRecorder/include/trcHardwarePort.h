@@ -229,15 +229,15 @@
 		#define TRC_HWTC_DIVISOR 4
 		#define TRC_HWTC_FREQ_HZ TRACE_CPU_CLOCK_HZ
 		#define TRC_IRQ_PRIORITY_ORDER 0
-	
+
 	#else
 	
-		#define TRC_HWTC_TYPE TRC_OS_TIMER_DECR
-		#define TRC_HWTC_COUNT (*((volatile uint32_t*)0xE000E018))
-		#define TRC_HWTC_PERIOD ((*((volatile uint32_t*)0xE000E014)) + 1)
-		#define TRC_HWTC_DIVISOR 4
-		#define TRC_HWTC_FREQ_HZ TRACE_CPU_CLOCK_HZ
-		#define TRC_IRQ_PRIORITY_ORDER 0
+    #define TRC_HWTC_TYPE           TRC_OS_TIMER_DECR
+    #define TRC_HWTC_COUNT          (*((volatile uint32_t*)0xE000E018))        /* SYST_CVR, SysTick current value register */
+    #define TRC_HWTC_PERIOD         ((*((volatile uint32_t*)0xE000E014)) + 1)  /* SYST_RVR, SysTick reload value register */
+    #define TRC_HWTC_DIVISOR        4
+    #define TRC_HWTC_FREQ_HZ        TRACE_CPU_CLOCK_HZ
+    #define TRC_IRQ_PRIORITY_ORDER  0
 	
 	#endif
 

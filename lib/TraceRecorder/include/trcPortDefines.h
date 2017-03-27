@@ -116,7 +116,7 @@
 #define TRC_HARDWARE_PORT_NXP_LPC210X					14	/*	No			Any					*/
 #define TRC_HARDWARE_PORT_ARM_CORTEX_A9					15	/*	Yes			Any					*/
 #define TRC_HARDWARE_PORT_POWERPC_Z4                    16  /*  No          FreeRTOS            */
-#define TRC_HARDWARE_PORT_PROCESSOR_EXPERT     1  /*  No          FreeRTOS            */ /* << EST */
+#define TRC_HARDWARE_PORT_PROCESSOR_EXPERT     17  /*  No          FreeRTOS            */ /* << EST */
 
 #endif /*TRC_PORTDEFINES_H*/
 

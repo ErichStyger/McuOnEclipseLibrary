@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : I2CSpy
-**     Version     : Component 01.009, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-24, 09:52, # CodeGen: 118
+**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
 **     Abstract    :
 **          This component implements a utility to inspect devices on the I2C bus.
 **     Settings    :
@@ -16,28 +16,47 @@
 **          Default Address                                : 0x0
 **          Default Address Size                           : 1
 **          Default Bytes per Line                         : 8
+**          SDK                                            : McuLib
 **          Shell                                          : Enabled
 **            Shell                                        : McuShell
 **            Utility                                      : McuUtility
 **     Contents    :
-**         Init             - byte McuI2CSpy_Init(void);
+**         SetDeviceAddress - uint8_t McuI2CSpy_SetDeviceAddress(uint8_t addr);
+**         GetDeviceAddress - uint8_t McuI2CSpy_GetDeviceAddress(void);
+**         SetAddressSize   - uint8_t McuI2CSpy_SetAddressSize(uint8_t size);
+**         SetBytesPerLine  - uint8_t McuI2CSpy_SetBytesPerLine(uint8_t nofBytesPerLine);
+**         ReadRegData      - uint8_t McuI2CSpy_ReadRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
+**         WriteRegData     - uint8_t McuI2CSpy_WriteRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
+**         ParseCommand     - uint8_t McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const...
 **         Deinit           - void McuI2CSpy_Deinit(void);
-**         SetDeviceAddress - byte McuI2CSpy_SetDeviceAddress(byte addr);
-**         GetDeviceAddress - byte McuI2CSpy_GetDeviceAddress(void);
-**         SetAddressSize   - byte McuI2CSpy_SetAddressSize(byte size);
-**         SetBytesPerLine  - byte McuI2CSpy_SetBytesPerLine(byte nofBytesPerLine);
-**         ReadRegData      - byte McuI2CSpy_ReadRegData(dword addr, byte *data, word dataSize);
-**         WriteRegData     - byte McuI2CSpy_WriteRegData(dword addr, byte *data, word dataSize);
-**         ParseCommand     - byte McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         Init             - uint8_t McuI2CSpy_Init(void);
 **
-**     License   :  Open Source (LGPL)
-**     Copyright : (c) Copyright Erich Styger, 2013, all rights reserved.
-**     Web/Blog: www.mcuoneclipse.com
-**     This an open source software implementing software using Processor Expert.
-**     This is a free software and is opened for education,  research  and commercial developments under license policy of following terms:
-**     * This is a free software and there is NO WARRANTY.
-**     * No restriction on use. You can use, modify and redistribute it for personal, non-profit or commercial product UNDER YOUR RESPONSIBILITY.
-**     * Redistributions of source code must retain the above copyright notice.
+**     * Copyright (c) 2013-2017, Erich Styger
+**      * Web:         https://mcuoneclipse.com
+**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**      * All rights reserved.
+**      *
+**      * Redistribution and use in source and binary forms, with or without modification,
+**      * are permitted provided that the following conditions are met:
+**      *
+**      * - Redistributions of source code must retain the above copyright notice, this list
+**      *   of conditions and the following disclaimer.
+**      *
+**      * - Redistributions in binary form must reproduce the above copyright notice, this
+**      *   list of conditions and the following disclaimer in the documentation and/or
+**      *   other materials provided with the distribution.
+**      *
+**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuI2CSpy.c
@@ -70,9 +89,9 @@ static McuI2CSpy_TDataState McuI2CSpy_deviceData;
 
 static void strcatAddress(unsigned char *buf, size_t bufSize, uint32_t addr) {
   if (McuI2CSpy_deviceData.addrSize==1) {
-    McuUtility_strcatNum8Hex(buf, bufSize, (byte)addr);
+    McuUtility_strcatNum8Hex(buf, bufSize, (uint8_t)addr);
   } else if (McuI2CSpy_deviceData.addrSize==2) {
-    McuUtility_strcatNum16Hex(buf, bufSize, (word)addr);
+    McuUtility_strcatNum16Hex(buf, bufSize, (uint16_t)addr);
   } else if (McuI2CSpy_deviceData.addrSize==3) {
     McuUtility_strcatNum24Hex(buf, bufSize, addr);
   } else if (McuI2CSpy_deviceData.addrSize==4) {
@@ -257,7 +276,7 @@ static uint8_t PrintHelp(const McuShell_StdIOType *io) {
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io)
+uint8_t McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io)
 {
   uint8_t addr8, value8;
   uint32_t addr32, end32;
@@ -354,7 +373,7 @@ byte McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const McuSh
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_SetDeviceAddress(byte addr)
+uint8_t McuI2CSpy_SetDeviceAddress(uint8_t addr)
 {
   McuI2CSpy_deviceData.deviceAddr = addr;
   return ERR_OK;
@@ -370,7 +389,7 @@ byte McuI2CSpy_SetDeviceAddress(byte addr)
 **         ---             - 7bit Device Address
 ** ===================================================================
 */
-byte McuI2CSpy_GetDeviceAddress(void)
+uint8_t McuI2CSpy_GetDeviceAddress(void)
 {
   return McuI2CSpy_deviceData.deviceAddr;
 }
@@ -388,7 +407,7 @@ byte McuI2CSpy_GetDeviceAddress(void)
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_SetAddressSize(byte size)
+uint8_t McuI2CSpy_SetAddressSize(uint8_t size)
 {
   McuI2CSpy_deviceData.addrSize = size;
   return ERR_OK;
@@ -407,7 +426,7 @@ byte McuI2CSpy_SetAddressSize(byte size)
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_SetBytesPerLine(byte nofBytesPerLine)
+uint8_t McuI2CSpy_SetBytesPerLine(uint8_t nofBytesPerLine)
 {
   McuI2CSpy_deviceData.bytesPerLine = nofBytesPerLine;
   return ERR_OK;
@@ -423,7 +442,7 @@ byte McuI2CSpy_SetBytesPerLine(byte nofBytesPerLine)
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_Init(void)
+uint8_t McuI2CSpy_Init(void)
 {
   if (McuI2CSpy_SetDeviceAddress(McuI2CSpy_DEFAULT_I2C_ADDR)!=ERR_OK) {
     return ERR_FAILED;
@@ -493,7 +512,7 @@ void McuGenericI2C_OnReleaseBus(void)
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_ReadRegData(dword addr, byte *data, word dataSize)
+uint8_t McuI2CSpy_ReadRegData(uint32_t addr, uint8_t *data, uint16_t dataSize)
 {
   uint8_t addrBuf[4];
 
@@ -520,7 +539,7 @@ byte McuI2CSpy_ReadRegData(dword addr, byte *data, word dataSize)
 **         ---             - Error code
 ** ===================================================================
 */
-byte McuI2CSpy_WriteRegData(dword addr, byte *data, word dataSize)
+uint8_t McuI2CSpy_WriteRegData(uint32_t addr, uint8_t *data, uint16_t dataSize)
 {
   uint8_t addrBuf[4];
 

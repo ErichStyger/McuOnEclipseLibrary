@@ -71,9 +71,9 @@
 #define FREERTOS_CONFIG_H
 
 #include "McuLib.h" /* SDK and API used */
-#include "McuRTOSconfig.h" /* configuration */
+#include "McuRTOSconfig.h" /* extra configuration settings not part of the original FreeRTOS ports */
 
-#define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 1 /* include additional header file to help with debugging in GDB */
+#define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 0 /* 1: include additional header file at the end of task.c to help with debugging in GDB in combination with configUSE_TRACE_FACILITY; 0: no extra file included. */
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -127,7 +127,7 @@
 /*----------------------------------------------------------*/
 /* Heap Memory */
 #define configUSE_HEAP_SCHEME                     4 /* either 1 (only alloc), 2 (alloc/free), 3 (malloc), 4 (coalesc blocks), 5 (multiple blocks) */
-#define configFRTOS_MEMORY_SCHEME   configUSE_HEAP_SCHEME /* for backwards compatible only with legacy name */
+#define configFRTOS_MEMORY_SCHEME                 configUSE_HEAP_SCHEME /* for backwards compatible only with legacy name */
 #define configTOTAL_HEAP_SIZE                     ((size_t)(8192)) /* size of heap in bytes */
 #define configUSE_HEAP_SECTION_NAME               0 /* set to 1 if a custom section name (configHEAP_SECTION_NAME_STRING) shall be used, 0 otherwise */
 #if configUSE_HEAP_SECTION_NAME
@@ -161,20 +161,20 @@
 #define configUSE_TICKLESS_IDLE_DECISION_HOOK_NAME xEnterTicklessIdle /* function name of decision hook */
 #define configNUM_THREAD_LOCAL_STORAGE_POINTERS   0 /* number of tread local storage pointers, 0 to disable functionality */
 
-#define configMAX_PRIORITIES                      6
-#define configMAX_CO_ROUTINE_PRIORITIES           2
+#define configMAX_PRIORITIES                      6 /* task priorities can be from 0 up to this value-1 */
+#define configMAX_CO_ROUTINE_PRIORITIES           2 /* co-routine priorities can be from 0 up to this value-1 */
 
-#define configTASK_RETURN_ADDRESS   0             /* return address of task is zero */
+#define configTASK_RETURN_ADDRESS                 0 /* return address of task is zero */
 
 #define configRECORD_STACK_HIGH_ADDRESS           1  /* 1: record stack high address for the debugger, 0: do not record stack high address */
 
 /* Software timer definitions. */
 #define configUSE_TIMERS                          0 /* set to 1 to enable software timers */
 #define configTIMER_TASK_PRIORITY                 (configMAX_PRIORITIES-1U)
-#define configTIMER_QUEUE_LENGTH                  10U
+#define configTIMER_QUEUE_LENGTH                  10U /* size of queue for the timer task */
 #define configTIMER_TASK_STACK_DEPTH              (configMINIMAL_STACK_SIZE)
-#define INCLUDE_xEventGroupSetBitFromISR          0
-#define INCLUDE_xTimerPendFunctionCall            0
+#define INCLUDE_xEventGroupSetBitFromISR          0 /* 1: function is included; 0: do not include function */
+#define INCLUDE_xTimerPendFunctionCall            0 /* 1: function is included; 0: do not include function */
 #define configUSE_DAEMON_TASK_STARTUP_HOOK        0 /* 1: use application specific vApplicationDaemonTaskStartupHook(), 0: do not use hook */
 
 /* Set configUSE_TASK_FPU_SUPPORT to 0 to omit floating point support even

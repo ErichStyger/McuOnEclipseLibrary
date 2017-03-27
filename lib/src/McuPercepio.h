@@ -4,20 +4,20 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PercepioTrace
-**     Version     : Component 01.122, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.127, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-09, 07:48, # CodeGen: 156
+**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuPercepio
 **          RTOS+Trace Version                             : V3.1.1
 **          Recorder Mode                                  : Streaming
-**          Startup trace enable method                    : TRC_INIT
 **          Recorder Buffer Allocation                     : static
 **          Max ISR Nesting                                : 16
 **          Snapshot Mode                                  : 
+**            Snapshot trace enable method                 : TRC_START
 **            Recorder store mode                          : Ring Buffer
 **            Scheduling only                              : no
 **            Description string                           : FreeRTOS+Trace
@@ -56,6 +56,7 @@
 **          Streaming Mode                                 : 
 **            Segger RTT                                   : Enabled
 **              Segger RTT                                 : McuRTT
+**            Streaming trace enable method                : TRC_START
 **            Up Buffer Index                              : 2
 **            Up Buffer Size                               : 1024
 **            Down Buffer Index                            : 2

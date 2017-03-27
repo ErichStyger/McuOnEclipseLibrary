@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.090, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-28, 18:56, # CodeGen: 147
+**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
 **     Abstract    :
 **
 **     Settings    :
@@ -70,10 +70,11 @@
 **         ReadChar                     - void McuShell_ReadChar(uint8_t *c);
 **         SendChar                     - void McuShell_SendChar(uint8_t ch);
 **         KeyPressed                   - bool McuShell_KeyPressed(void);
+**         SendCharFct                  - void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch));
 **         Init                         - void McuShell_Init(void);
 **         Deinit                       - void McuShell_Deinit(void);
 **
-**     * Copyright (c) 2014-2016, Erich Styger
+**     * Copyright (c) 2014-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -127,6 +128,9 @@ uint8_t McuShell_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* defa
 
 #ifdef __HC08__
   #pragma MESSAGE DISABLE C3303 /* implicit concatenation of strings */
+#endif
+#if McuShell_CONFIG_USE_MUTEX
+  static xSemaphoreHandle ShellSem = NULL; /* Semaphore to protect shell SCI access */
 #endif
 
 McuShell_ConstStdIOType McuShell_stdio =
@@ -858,6 +862,9 @@ uint8_t McuShell_ReadAndParseWithCommandTable(uint8_t *cmdBuf, size_t cmdBufSize
 */
 void McuShell_RequestSerial(void)
 {
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
+#endif
 }
 
 /*
@@ -873,6 +880,9 @@ void McuShell_RequestSerial(void)
 */
 void McuShell_ReleaseSerial(void)
 {
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreGiveRecursive(ShellSem);
+#endif
 }
 
 /*
@@ -888,7 +898,11 @@ void McuShell_ReleaseSerial(void)
 */
 void* McuShell_GetSemaphore(void)
 {
+#if McuShell_CONFIG_USE_MUTEX
+  return ShellSem;
+#else
   return NULL;
+#endif
 }
 
 /*
@@ -976,11 +990,17 @@ void McuShell_ReadChar(uint8_t *c)
 {
   uint8_t res;
 
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
+#endif
   res = McuRTT_RecvChar((uint8_t*)c);
   if (res==ERR_RXEMPTY) {
     /* no character in buffer */
     *c = '\0';
   }
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreGiveRecursive(ShellSem);
+#endif
 }
 
 /*
@@ -996,10 +1016,16 @@ void McuShell_ReadChar(uint8_t *c)
 */
 void McuShell_SendChar(uint8_t ch)
 {
+#if McuShell_CONFIG_BLOCKING_SEND_ENABLED
   uint8_t res;
+#endif
   int timeoutMs = 20;
 
 
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
+#endif
+#if McuShell_CONFIG_BLOCKING_SEND_ENABLED
   do {
     res = McuRTT_SendChar((uint8_t)ch); /* Send char */
     if (res==ERR_TXFULL) {
@@ -1010,6 +1036,12 @@ void McuShell_SendChar(uint8_t ch)
     }
     timeoutMs -= 5;
   } while(res==ERR_TXFULL);
+#else
+  (void)McuRTT_SendChar((uint8_t)ch);  /* non blocking send */
+#endif
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreGiveRecursive(ShellSem);
+#endif
 }
 
 /*
@@ -1027,7 +1059,13 @@ bool McuShell_KeyPressed(void)
 {
   bool res;
 
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
+#endif
   res = (bool)((McuRTT_GetCharsInRxBuf()==0U) ? FALSE : TRUE); /* true if there are characters in receive buffer */
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreGiveRecursive(ShellSem);
+#endif
   return res;
 }
 
@@ -1043,6 +1081,30 @@ bool McuShell_KeyPressed(void)
 */
 void McuShell_Init(void)
 {
+#if McuShell_CONFIG_USE_MUTEX
+#if configSUPPORT_STATIC_ALLOCATION
+  static StaticSemaphore_t xMutexBuffer;
+#endif
+  bool schedulerStarted;
+  McuCriticalSection_CriticalVariable();
+
+  schedulerStarted = (bool)(xTaskGetSchedulerState()!=taskSCHEDULER_NOT_STARTED);
+  if (!schedulerStarted) { /* FreeRTOS not started yet. We are called in PE_low_level_init(), and interrupts are disabled */
+    McuCriticalSection_EnterCritical();
+  }
+#if configSUPPORT_STATIC_ALLOCATION
+  ShellSem = xSemaphoreCreateRecursiveMutexStatic(&xMutexBuffer);
+#else
+  ShellSem = xSemaphoreCreateRecursiveMutex();
+#endif
+  if (!schedulerStarted) { /* above RTOS call might have enabled interrupts! Make sure we restore the state */
+    McuCriticalSection_ExitCritical();
+  }
+  if (ShellSem==NULL) { /* semaphore creation failed */
+    for(;;) {} /* error, not enough memory? */
+  }
+  vQueueAddToRegistry(ShellSem, "McuShell_Sem");
+#endif
 #if McuShell_HISTORY_ENABLED
   {
     int i;
@@ -1070,6 +1132,11 @@ void McuShell_Init(void)
 */
 void McuShell_Deinit(void)
 {
+#if McuShell_CONFIG_USE_MUTEX
+  vQueueUnregisterQueue(ShellSem);
+  vSemaphoreDelete(ShellSem);
+  ShellSem = NULL;
+#endif
 }
 
 /*
@@ -1163,6 +1230,58 @@ unsigned McuShell_printf(const char *fmt, ...)
   count = McuXFormat_xvformat(McuShell_printfPutChar, (void*)McuShell_GetStdio()->stdOut, fmt, args);
   va_end(args);
   return count;
+}
+
+/*
+** ===================================================================
+**     Method      :  McuShell_SendCharFct (component Shell)
+**     Description :
+**         Method to send a character using a standard I/O handle.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         ch              - character to be sent
+**       * fct             - Function pointer to output function: takes
+**                           a byte to write and returns error code.
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch))
+{
+#if McuShell_CONFIG_BLOCKING_SEND_ENABLED
+  uint8_t res;
+#endif
+#if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS>0
+  int timeoutMs = McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS;
+#endif
+
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
+#endif
+#if McuShell_CONFIG_BLOCKING_SEND_ENABLED
+  do {
+    res = fct((uint8_t)ch);            /* Send char, returns error code */
+  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS
+    if (res==ERR_TXFULL) {
+    #if McuShell_CONFIG_BLOCKING_SEND_RTOS_WAIT
+      McuWait_WaitOSms(McuShell_CONFIG_BLOCKING_SEND_RTOS_WAIT);
+    #else
+      McuWait_Waitms(McuShell_CONFIG_BLOCKING_SEND_RTOS_WAIT);
+    #endif
+    }
+  #endif
+  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS>0
+    if(timeoutMs<=0) {
+      break; /* timeout */
+    }
+    timeoutMs -= 5;
+  #endif
+  } while(res==ERR_TXFULL);
+#else
+  (void)fct((uint8_t)ch);              /* non blocking send */
+#endif
+#if McuShell_CONFIG_USE_MUTEX
+  (void)xSemaphoreGiveRecursive(ShellSem);
+#endif
 }
 
 /* END McuShell. */

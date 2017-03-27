@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.529, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.539, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-25, 13:42, # CodeGen: 153
+**     Date/Time   : 2017-03-19, 09:33, # CodeGen: 161
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -31,10 +31,15 @@
 **          Classic CodeWarrior                            : no
 **          Disabled Interrupts in Startup                 : yes
 **          configASSERT                                   : yes
-**          Enable GDB Debug Helper                        : no
 **          Application Task Tags                          : no
 **          Thread Local Storage Pointers                  : 0
 **          Use Trace Facility                             : yes
+**          Debug Helpers                                  : 
+**            Enable GDB Debug Helper                      : no
+**            uxTopUsedPriority                            : no
+**            Heap Indication Constant                     : no
+**            Task C Additions                             : no
+**            Record Stack High Address                    : yes
 **          Segger System Viewer Trace                     : Disabled
 **          Percepio Trace                                 : Disabled
 **          Generate Runtime Statistics                    : Enabled
@@ -62,7 +67,6 @@
 **            Idle should yield                            : yes
 **            Task Name Length                             : 12
 **            Minimal Stack Size                           : 200
-**            Record Stack High Address                    : yes
 **            Maximum Priorities                           : 6
 **            Maximum Coroutine Priorities                 : 2
 **            Stackoverflow checking method                : Method 1
@@ -283,8 +287,7 @@
 /* Macros used by Processor Expert */
 #if McuRTOS_GENERATE_PEX_RTOS_MACROS
   #define PEX_RTOS_INIT() /* macro called from PE_low_level_init() */ \
-                                       portDISABLE_ALL_INTERRUPTS(); /* disable all interrupts, they get enabled in vStartScheduler() */ \
-                                       /* no Percepio Trace Hooks enabled with configUSE_TRACE_HOOKS */
+    McuRTOS_Init();
 
   #define PEX_RTOS_START()             McuRTOS_vTaskStartScheduler()
 #endif

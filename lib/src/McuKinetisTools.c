@@ -7,7 +7,7 @@
 **     Version     : Component 01.037, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-02-21, 19:46, # CodeGen: 149
+**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
 **     Abstract    :
 **
 **     Settings    :
@@ -96,14 +96,14 @@ static const unsigned char *KinetisM4FamilyStrings[] =
 #if McuLib_CONFIG_CORTEX_M==0
 static const unsigned char *KinetisM0FamilyStrings[] =
 { /* FAMID (3 bits) are used as index */
-  (const unsigned char *)"KL0x",          /* 000 */
-  (const unsigned char *)"KL1x",          /* 001 */
-  (const unsigned char *)"KL2x",          /* 010 */
-  (const unsigned char *)"KL3x",          /* 011 */
-  (const unsigned char *)"KL4x",          /* 100 */
-  (const unsigned char *)"Reserved",      /* 101 */
-  (const unsigned char *)"Reserved",      /* 110 */
-  (const unsigned char *)"Reserved"       /* 111 */
+  (const unsigned char *)"KL0x",          /* 0000 */
+  (const unsigned char *)"KL1x",          /* 0001 */
+  (const unsigned char *)"KL2x",          /* 0010 */
+  (const unsigned char *)"KL3x",          /* 0011 */
+  (const unsigned char *)"KL4x",          /* 0100 */
+  (const unsigned char *)"Reserved",      /* 0101 */
+  (const unsigned char *)"Reserved",      /* 0110 */
+  (const unsigned char *)"Reserved"       /* 0111 */
 };
 #endif
 
@@ -388,14 +388,22 @@ McuKinetisTools_ConstCharPtr McuKinetisTools_GetKinetisFamilyString(void)
     int32_t val;
 
     val = (SIM_SDID>>28)&0x3; /* bits 30..28 */
-    return KinetisM0FamilyStrings[val];
+    if (val>=0 && val<=(sizeof(KinetisM0FamilyStrings)/sizeof(KinetisM0FamilyStrings[0]))) {
+      return KinetisM0FamilyStrings[val];
+    } else {
+      return (McuKinetisTools_ConstCharPtr)"M0 Family Id out of bounds!";
+    }
   #elif defined(SIM_SRSID_FAMID) /* MKE02Z4 defines this, hopefully all other KE too... */
     return "KE0x Family"; /* 0000 only KE0x supported */
   #elif defined(SIM_SDID_FAMID)
     int32_t val;
 
-    val = SIM_SDID_FAMID(SIM->SDID); /* bits 30..28 */
-    return KinetisM0FamilyStrings[val];
+    val = ((SIM->SDID)>>28)&0xF; /* bits 31..28 */
+    if (val>=0 && val<=(sizeof(KinetisM0FamilyStrings)/sizeof(KinetisM0FamilyStrings[0]))) {
+      return KinetisM0FamilyStrings[val];
+    } else {
+      return (McuKinetisTools_ConstCharPtr)"M0 Family ID out of bounds!";
+    }
   #else
     #error "Unknown architecture!"
     return (McuKinetisTools_ConstCharPtr)"ERROR";
@@ -404,7 +412,11 @@ McuKinetisTools_ConstCharPtr McuKinetisTools_GetKinetisFamilyString(void)
   int32_t val;
 
   val = (SIM_SDID>>4)&0x3; /* bits 6..4 */
-  return KinetisM4FamilyStrings[val];
+  if (val>=0 && val<=(sizeof(KinetisM4FamilyStrings)/sizeof(KinetisM4FamilyStrings[0]))) {
+    return KinetisM4FamilyStrings[val];
+  } else {
+    return (McuKinetisTools_ConstCharPtr)"M4 Family ID out of bounds!";
+  }
 #elif McuLib_CONFIG_CORTEX_M==7
   return (McuKinetisTools_ConstCharPtr)"Cortex-M7";
 #else

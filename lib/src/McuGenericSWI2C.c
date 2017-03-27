@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericSWI2C
-**     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-24, 09:44, # CodeGen: 116
+**     Date/Time   : 2017-03-19, 09:33, # CodeGen: 161
 **     Abstract    :
 **
 **     Settings    :
@@ -16,25 +16,50 @@
 **          Trials                                         : 256
 **          SDA                                            : SDA
 **          SCL                                            : SCL
+**          SDK                                            : McuLib
 **          Wait                                           : McuWait
 **          Yield                                          : yes
 **     Contents    :
-**         Init              - void McuGenericSWI2C_Init(void);
 **         ResetBus          - bool McuGenericSWI2C_ResetBus(void);
-**         SendChar          - byte McuGenericSWI2C_SendChar(byte Chr);
-**         RecvChar          - byte McuGenericSWI2C_RecvChar(byte *Chr);
-**         SendBlock         - byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt);
-**         SendBlockContinue - byte McuGenericSWI2C_SendBlockContinue(void *Ptr, word Siz, word *Snt);
-**         RecvBlock         - byte McuGenericSWI2C_RecvBlock(void *Ptr, word Siz, word *Rcv);
-**         RecvBlockCustom   - byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv,...
+**         SendChar          - uint8_t McuGenericSWI2C_SendChar(uint8_t Chr);
+**         RecvChar          - uint8_t McuGenericSWI2C_RecvChar(uint8_t *Chr);
+**         SendBlock         - uint8_t McuGenericSWI2C_SendBlock(void *Ptr, uint16_t Siz, uint16_t *Snt);
+**         SendBlockContinue - uint8_t McuGenericSWI2C_SendBlockContinue(void *Ptr, uint16_t Siz, uint16_t...
+**         RecvBlock         - uint8_t McuGenericSWI2C_RecvBlock(void *Ptr, uint16_t Siz, uint16_t *Rcv);
+**         RecvBlockCustom   - uint8_t McuGenericSWI2C_RecvBlockCustom(void *Ptr, uint16_t Siz, uint16_t...
 **         SendAck           - void McuGenericSWI2C_SendAck(bool Ack);
-**         SendStop          - byte McuGenericSWI2C_SendStop(void);
-**         SelectSlave       - byte McuGenericSWI2C_SelectSlave(byte Slv);
-**         GetSelected       - byte McuGenericSWI2C_GetSelected(byte *Slv);
+**         SendStop          - uint8_t McuGenericSWI2C_SendStop(void);
+**         SelectSlave       - uint8_t McuGenericSWI2C_SelectSlave(uint8_t Slv);
+**         GetSelected       - uint8_t McuGenericSWI2C_GetSelected(uint8_t *Slv);
+**         Deinit            - void McuGenericSWI2C_Deinit(void);
+**         Init              - void McuGenericSWI2C_Init(void);
 **
-**     (c) Copyright Freescale Semiconductor, 2014-2016
-**     http      : www.freescale.com
-**     Changed and extended: Erich Styger, 2014-2015
+**     * Copyright (c) 2014-2017, Erich Styger
+**      * Web:         https://mcuoneclipse.com
+**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**      * All rights reserved.
+**      *
+**      * Redistribution and use in source and binary forms, with or without modification,
+**      * are permitted provided that the following conditions are met:
+**      *
+**      * - Redistributions of source code must retain the above copyright notice, this list
+**      *   of conditions and the following disclaimer.
+**      *
+**      * - Redistributions in binary form must reproduce the above copyright notice, this
+**      *   list of conditions and the following disclaimer in the documentation and/or
+**      *   other materials provided with the distribution.
+**      *
+**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuGenericSWI2C.c
@@ -50,13 +75,16 @@
 /* MODULE McuGenericSWI2C. */
 
 #include "McuGenericSWI2C.h"
+#include "McuWait.h" /* waiting routines */
+#include "SDA1.h" /* SDA pin */
+#include "SCL1.h" /* SCL pin */
 
 #define McuGenericSWI2C_HAS_RTOS  1 /* FreeRTOS present */
 #define McuGenericSWI2C_YIELD     1 /* Yield is enabled in the component properties */
 
 #if McuGenericSWI2C_HAS_RTOS
-/* include RTOS header files */
-#include "FreeRTOS.h" /* for yielding */
+  /* include RTOS header files */
+  #include "FreeRTOS.h" /* for yielding */
 #endif
 
 #if McuGenericSWI2C_HAS_RTOS && McuGenericSWI2C_YIELD
@@ -73,7 +101,7 @@
 
 #define McuGenericSWI2C_DELAY_NS    1250   /* delay time in ns, as specified in the component properties */
 
-static byte SlaveAddr;             /* destination slave address      */
+static uint8_t SlaveAddr;             /* destination slave address      */
 
 #define SCL_SetDir(dir) SCL1_SetDir(dir)
 #define SCL_ClrVal()    SCL1_ClrVal()
@@ -83,11 +111,23 @@ static byte SlaveAddr;             /* destination slave address      */
 #define SDA_ClrVal()    SDA1_ClrVal()
 #define SDA_GetVal()    SDA1_GetVal()
 
+#if McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+  #define SCL_Init()      /* Init does not exist with Processor Expert API */
+  #define SCL_Deinit()    /* Deinit does not exist with Processor Expert API */
+  #define SDA_Init()      /* Init does not exist with Processor Expert API */
+  #define SDA_Deinit()    /* Deinit does not exist with Processor Expert API */
+#else
+  #define SCL_Init()      SCL1_Init()
+  #define SCL_Deinit()    SCL1_Deinit()
+  #define SDA_Init()      SDA1_Init()
+  #define SDA_Deinit()    SDA1_Deinit()
+#endif
+
 /* Internal method prototypes */
 static void Delay(void);
-static byte Read(void);
+static uint8_t Read(void);
 static bool GetAck(void);
-static void Write(byte Data);
+static void Write(uint8_t Data);
 static void InternalStop(void);
 
 /*
@@ -107,22 +147,6 @@ static void Delay(void)
 
 /*
 ** ===================================================================
-**     Method      :  McuGenericSWI2C_Init (component GenericSWI2C)
-**     Description :
-**         Initializes the associated peripheral(s) and the components
-**         internal variables. The method is called automatically as a
-**         part of the application initialization code.
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void McuGenericSWI2C_Init(void)
-{
-  SlaveAddr = 0;
-}
-
-/*
-** ===================================================================
 **     Method      :  Write (component GenericSWI2C)
 **
 **     Description :
@@ -130,11 +154,11 @@ void McuGenericSWI2C_Init(void)
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-static void Write(byte Data)
+static void Write(uint8_t Data)
 {
-  byte Shift;
-  byte I;
-  word timeout;
+  uint8_t Shift;
+  uint8_t I;
+  uint16_t timeout;
 
   Shift = 0x80U;
   for (I = 0x08U; I != 0U; I--) {
@@ -145,7 +169,7 @@ static void Write(byte Data)
       SDA_ClrVal();              /* SDA LOW */
     }
     Delay();
-    Shift = (byte)(Shift >> 1);
+    Shift = (uint8_t)(Shift >> 1);
     SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
     Delay();
     timeout = 65535U;
@@ -169,11 +193,11 @@ static void Write(byte Data)
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-static byte Read(void)
+static uint8_t Read(void)
 {
-  byte Shift;
-  byte I;
-  word timeout;
+  uint8_t Shift;
+  uint8_t I;
+  uint16_t timeout;
 
   Shift = 0U;
   SDA_SetDir((bool)INPUT);       /* SDA INPUT MODE */
@@ -187,7 +211,7 @@ static byte Read(void)
       McuGenericSWI2C_OSYIELD();
     }
     Delay();
-    Shift = (byte)(Shift << 1);
+    Shift = (uint8_t)(Shift << 1);
     if (SDA_GetVal()) {
       Shift++;
     }
@@ -209,7 +233,7 @@ static byte Read(void)
 */
 static bool GetAck(void)
 {
-  word timeout;
+  uint16_t timeout;
 
   SDA_SetDir((bool)INPUT);       /* SDA HIGH */
   Delay();
@@ -236,7 +260,7 @@ static bool GetAck(void)
 */
 void McuGenericSWI2C_SendAck(bool Ack)
 {
-  word timeout;
+  uint16_t timeout;
 
   Delay();
   if (Ack) {
@@ -357,11 +381,11 @@ bool McuGenericSWI2C_ResetBus(void)
 **                           mode only)
 ** ===================================================================
 */
-byte McuGenericSWI2C_SendChar(byte Chr)
+uint8_t McuGenericSWI2C_SendChar(uint8_t Chr)
 {
-  word Trial;
+  uint16_t Trial;
   bool Acknowledge;
-  word timeout;
+  uint16_t timeout;
 
   Trial = TRIALS;
   do {
@@ -385,7 +409,7 @@ byte McuGenericSWI2C_SendChar(byte Chr)
     SCL_SetDir((bool)OUTPUT);
     SCL_ClrVal();                /* CLOCK LOW PULSE */
     Delay();
-    Write((byte)(SlaveAddr + WRITE));
+    Write((uint8_t)(SlaveAddr + WRITE));
     Acknowledge = GetAck();
     --Trial;
   } while ((Trial != 0U) && Acknowledge);
@@ -440,11 +464,11 @@ byte McuGenericSWI2C_SendChar(byte Chr)
 **                           mode only)
 ** ===================================================================
 */
-byte McuGenericSWI2C_RecvChar(byte *Chr)
+uint8_t McuGenericSWI2C_RecvChar(uint8_t *Chr)
 {
-  word Trial;
+  uint16_t Trial;
   bool Acknowledge;
-  word timeout;
+  uint16_t timeout;
 
   Trial = TRIALS;
   do {
@@ -468,7 +492,7 @@ byte McuGenericSWI2C_RecvChar(byte *Chr)
     SCL_SetDir((bool)OUTPUT);
     SCL_ClrVal();                /* CLOCK LOW PULSE */
     Delay();
-    Write((byte)(SlaveAddr + READ));
+    Write((uint8_t)(SlaveAddr + READ));
     Acknowledge = GetAck();
     --Trial;
   } while ((Trial != 0U) && Acknowledge);
@@ -534,12 +558,12 @@ byte McuGenericSWI2C_RecvChar(byte *Chr)
 **                           mode only)
 ** ===================================================================
 */
-byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt)
+uint8_t McuGenericSWI2C_SendBlock(void *Ptr, uint16_t Siz, uint16_t *Snt)
 {
-  register word I;
+  register uint16_t I;
   bool Acknowledge;
-  word Trial;
-  word timeout;
+  uint16_t Trial;
+  uint16_t timeout;
 
   *Snt = 0U;
   Trial = TRIALS;
@@ -563,7 +587,7 @@ byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt)
     SCL_SetDir((bool)OUTPUT);
     SCL_ClrVal();                /* CLOCK LOW PULSE */
     Delay();
-    Write((byte)(SlaveAddr + WRITE));
+    Write((uint8_t)(SlaveAddr + WRITE));
     Acknowledge = GetAck();
     --Trial;
   } while ((Trial != 0U) && Acknowledge);
@@ -575,7 +599,7 @@ byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt)
     Delay();
   }
   for (I = 0U; I < Siz; I++) {
-    Write (*((const byte*)Ptr + I) );
+    Write (*((const uint8_t*)Ptr + I) );
     if (GetAck()) {
       SCL_SetDir((bool)OUTPUT);
       SCL_ClrVal();              /* CLOCK LOW PULSE */
@@ -648,16 +672,14 @@ byte McuGenericSWI2C_SendBlock(void *Ptr, word Siz, word *Snt)
 **                           mode only)
 ** ===================================================================
 */
-byte McuGenericSWI2C_SendBlockContinue(void *Ptr, word Siz, word *Snt)
+uint8_t McuGenericSWI2C_SendBlockContinue(void *Ptr, uint16_t Siz, uint16_t *Snt)
 {
-  register word I;
-  word Trial;
-  word timeout;
+  register uint16_t I;
+  uint16_t timeout;
 
   *Snt = 0U;
-  Trial = TRIALS;
   for (I = 0U; I < Siz; I++) {
-    Write (*((const byte*)Ptr + I) );
+    Write (*((const uint8_t*)Ptr + I) );
     if (GetAck()) {
       SCL_SetDir((bool)OUTPUT);
       SCL_ClrVal();              /* CLOCK LOW PULSE */
@@ -710,12 +732,12 @@ byte McuGenericSWI2C_SendBlockContinue(void *Ptr, word Siz, word *Snt)
 **                           mode only)
 ** ===================================================================
 */
-byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv, McuGenericSWI2C_EnumStartFlags flagsStart, McuGenericSWI2C_EnumAckFlags flagsAck)
+uint8_t McuGenericSWI2C_RecvBlockCustom(void *Ptr, uint16_t Siz, uint16_t *Rcv, McuGenericSWI2C_EnumStartFlags flagsStart, McuGenericSWI2C_EnumAckFlags flagsAck)
 {
-  register word I;
+  register uint16_t I;
   bool Acknowledge;
-  word Trial;
-  word timeout;
+  uint16_t Trial;
+  uint16_t timeout;
 
   *Rcv = 0U;
   Trial = TRIALS;
@@ -741,7 +763,7 @@ byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv, McuGenericS
       SCL_SetDir((bool)OUTPUT);
       SCL_ClrVal();                /* CLOCK LOW PULSE */
       Delay();
-      Write((byte)(SlaveAddr + READ));
+      Write((uint8_t)(SlaveAddr + READ));
       Acknowledge = GetAck();
       --Trial;
     } while ((Trial != 0U) && Acknowledge);
@@ -757,7 +779,7 @@ byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv, McuGenericS
     }
   } /* McuGenericSWI2C_SEND_START */
   for (I = 0U; I < Siz; I++) {
-    *((byte *)Ptr + I) = Read();
+    *((uint8_t *)Ptr + I) = Read();
     timeout = 65535U;
     while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
@@ -810,7 +832,7 @@ byte McuGenericSWI2C_RecvBlockCustom(void *Ptr, word Siz, word *Rcv, McuGenericS
 **                           mode only)
 ** ===================================================================
 */
-byte McuGenericSWI2C_RecvBlock(void *Ptr, word Siz, word *Rcv)
+uint8_t McuGenericSWI2C_RecvBlock(void *Ptr, uint16_t Siz, uint16_t *Rcv)
 {
   return McuGenericSWI2C_RecvBlockCustom(Ptr, Siz, Rcv, McuGenericSWI2C_SEND_START, McuGenericSWI2C_SEND_LAST_ACK);
 }
@@ -835,7 +857,7 @@ byte McuGenericSWI2C_RecvBlock(void *Ptr, word Siz, word *Rcv)
 **                           ERR_DISABLED - Device is disabled
 ** ===================================================================
 */
-byte McuGenericSWI2C_SendStop(void)
+uint8_t McuGenericSWI2C_SendStop(void)
 {
   Delay();
   SDA_SetDir((bool)OUTPUT);
@@ -874,9 +896,9 @@ byte McuGenericSWI2C_SendStop(void)
 **                           ERR_DISABLED -  Device is disabled
 ** ===================================================================
 */
-byte McuGenericSWI2C_SelectSlave(byte Slv)
+uint8_t McuGenericSWI2C_SelectSlave(uint8_t Slv)
 {
-  SlaveAddr = (byte)(Slv<<1);
+  SlaveAddr = (uint8_t)(Slv<<1);
   return ERR_OK;
 }
 
@@ -904,10 +926,43 @@ byte McuGenericSWI2C_SelectSlave(byte Slv)
 **                           the active speed mode
 ** ===================================================================
 */
-byte McuGenericSWI2C_GetSelected(byte *Slv)
+uint8_t McuGenericSWI2C_GetSelected(uint8_t *Slv)
 {
-  *Slv = (byte)(SlaveAddr>>1);
+  *Slv = (uint8_t)(SlaveAddr>>1);
   return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  McuGenericSWI2C_Init (component GenericSWI2C)
+**     Description :
+**         Initializes the associated peripheral(s) and the components
+**         internal variables.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuGenericSWI2C_Init(void)
+{
+  SlaveAddr = 0;
+  SDA_Init();
+  SCL_Init();
+}
+
+/*
+** ===================================================================
+**     Method      :  McuGenericSWI2C_Deinit (component GenericSWI2C)
+**     Description :
+**         Driver de-initialization method.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuGenericSWI2C_Deinit(void)
+{
+  SCL_Deinit();
+  SDA_Deinit();
+  SlaveAddr = 0;
 }
 
 /* END McuGenericSWI2C. */
