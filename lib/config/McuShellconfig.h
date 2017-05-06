@@ -26,4 +26,25 @@
     /*!< 1: use RTOS mutex; 0: do not use RTOS mutex */
 #endif
 
+#ifndef McuShell_CONFIG_DEFAULT_SHELL_BUFFER_SIZE
+  #define McuShell_CONFIG_DEFAULT_SHELL_BUFFER_SIZE  (48)
+    /*!< default buffer size for shell command parsing */
+#endif
+
+#ifndef McuShell_CONFIG_DEFAULT_SERIAL
+  #define McuShell_CONFIG_DEFAULT_SERIAL  (1)
+    /*!< 1: the shell implements its own StdIO which is returned by GetStdio(); 0: The shell does not implement its own standard I/O */
+#endif
+
+#if McuShell_CONFIG_DEFAULT_SERIAL
+  #define McuShell_CONFIG_DEFAULT_SERIAL_RECEIVE_FCT_NAME   McuRTT_RecvChar
+    /*!< Function name to read a character and returning ERR_OK if it was successful */
+
+  #define McuShell_CONFIG_DEFAULT_SERIAL_SEND_FCT_NAME   McuRTT_SendChar
+    /*!< Function name to send a character and returning ERR_OK if it was successful */
+
+  #define McuShell_CONFIG_DEFAULT_SERIAL_RXAVAIL_FCT_NAME   McuRTT_GetCharsInRxBuf
+    /*!< Function name to check if there is anything available to receive and returns TRUE, otherwise FALSE */
+#endif
+
 #endif /* __McuShell_CONFIG_H */

@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SharpMemDisplay
-**     Version     : Component 01.008, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.010, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-11, 16:07, # CodeGen: 130
+**     Date/Time   : 2017-05-06, 16:30, # CodeGen: 178
 **     Abstract    :
 **
 **     Settings    :
@@ -22,6 +22,7 @@
 **            Bits per pixel                               : 1
 **            Window capability                            : no
 **            Display Memory Write                         : no
+**            Use RAM Buffer                               : yes
 **          Invert Display                                 : no
 **          CS                                             : SCE
 **          HW non-LDD                                     : Enabled
@@ -49,7 +50,7 @@
 **         Init                  - void McuSharpMemoryDisplay_Init(void);
 **         Deinit                - void McuSharpMemoryDisplay_Deinit(void);
 **
-**     * Copyright (c) 2016, Erich Styger
+**     * Copyright (c) 2016-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

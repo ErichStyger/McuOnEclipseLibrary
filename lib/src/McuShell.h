@@ -7,7 +7,7 @@
 **     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
+**     Date/Time   : 2017-03-29, 17:29, # CodeGen: 168
 **     Abstract    :
 **
 **     Settings    :
@@ -159,7 +159,7 @@
   typedef const McuShell_ParseCommandCallback McuShell_ConstParseCommandCallback; /* Callback for parsing a shell command */
 #endif
 
-#define McuShell_DEFAULT_SHELL_BUFFER_SIZE  48  /* default buffer size for shell command parsing */
+#define McuShell_DEFAULT_SHELL_BUFFER_SIZE  McuShell_CONFIG_DEFAULT_SHELL_BUFFER_SIZE  /* default buffer size for shell command parsing */
 
 /* Include inherited components */
 #include "McuWait.h"
@@ -191,7 +191,8 @@
 /* settings for local echo */
 #define McuShell_ECHO_ENABLED  0       /* 1: enabled, 0: disabled */
 
-#define McuShell_DEFAULT_SERIAL  1 /* If set to 1, then the shell implements its own StdIO which is returned by McuShell_GetStdio(); */
+#define McuShell_DEFAULT_SERIAL  McuShell_CONFIG_DEFAULT_SERIAL /* If set to 1, then the shell implements its own StdIO which is returned by McuShell_GetStdio(); */
+
 extern uint8_t McuShell_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 
 #if McuShell_DEFAULT_SERIAL

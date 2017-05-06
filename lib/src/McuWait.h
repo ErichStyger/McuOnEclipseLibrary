@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
-**     Version     : Component 01.081, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -100,7 +100,6 @@ extern "C" {
 #define McuWait_NofCyclesMs(ms, hz)  ((ms)*((hz)/1000)) /* calculates the needed cycles based on bus clock frequency */
 #define McuWait_NofCyclesUs(us, hz)  ((us)*(((hz)/1000)/1000)) /* calculates the needed cycles based on bus clock frequency */
 #define McuWait_NofCyclesNs(ns, hz)  (((ns)*(((hz)/1000)/1000))/1000) /* calculates the needed cycles based on bus clock frequency */
-
 
 #define McuWait_WAIT_C(cycles) \
      ( (cycles)<=10 ? \

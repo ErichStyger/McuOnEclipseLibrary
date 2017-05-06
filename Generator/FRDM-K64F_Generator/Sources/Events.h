@@ -105,6 +105,7 @@
 #include "McuFontCour14Bold.h"
 #include "McuFontCour18Bold.h"
 #include "McuFontCour24Bold.h"
+#include "McuFXOS8700.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus

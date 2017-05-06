@@ -4,20 +4,18 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SimpleEvents
-**     Version     : Component 01.054, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.057, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 11:39, # CodeGen: 92
+**     Date/Time   : 2017-03-29, 16:34, # CodeGen: 167
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuEvents
 **          SDK                                            : McuLib
 **          Critical Section                               : McuCriticalSection
-**          Initialize on Init                             : yes
 **          Event Name List                                : (string list)
-**          Power Save                                     : no
-**          Low Power                                      : Disabled
+**          Initialize on Init                             : yes
 **     Contents    :
 **         SetEvent      - void McuEvents_SetEvent(uint8_t event);
 **         ClearEvent    - void McuEvents_ClearEvent(uint8_t event);
@@ -26,7 +24,7 @@
 **         GetClearEvent - bool McuEvents_GetClearEvent(uint8_t event);
 **         HandleEvent   - void McuEvents_HandleEvent(void);
 **
-**     * Copyright (c) 2011-2016, Erich Styger
+**     * Copyright (c) 2011-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -71,16 +69,13 @@
 #include "McuLib.h" /* SDK and API used */
 #include "McuEventsconfig.h" /* configuration */
 
-/* Include inherited components */
-#include "McuLib.h"
-#include "McuCriticalSection.h"
+/* Event prototype */
+void McuEvents_CONFIG_EVENT_HANDLER_NAME(uint8_t event);
+
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-/*! List of events */
-#define McuEvents_INIT /* Example event */ 0
 
 
 
@@ -168,9 +163,6 @@ bool McuEvents_EventsPending(void);
 ** ===================================================================
 */
 
-#ifdef __cplusplus
-}  /* extern "C" */
-#endif
 bool McuEvents_GetClearEvent(uint8_t event);
 /*
 ** ===================================================================
@@ -188,6 +180,10 @@ bool McuEvents_GetClearEvent(uint8_t event);
 */
 
 /* END McuEvents. */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif
 /* ifndef __McuEvents_H */

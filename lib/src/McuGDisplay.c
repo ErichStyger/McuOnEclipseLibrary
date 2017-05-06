@@ -4,14 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.193, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
+**     Date/Time   : 2017-04-08, 19:16, # CodeGen: 170
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuGDisplay
+**          SDK                                            : McuLib
 **          Inverted Pixels                                : no
 **          Memory Buffer                                  : Enabled
 **            Orientation                                  : Landscape
@@ -48,7 +49,7 @@
 **         GiveDisplay       - void McuGDisplay_GiveDisplay(void);
 **         Init              - void McuGDisplay_Init(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -138,6 +139,7 @@ void McuGDisplay_Clear(void)
   uint8_t *p = (uint8_t*)(&McuSharpMemoryDisplay_DisplayBuf[0][0]); /* first element in display buffer */
 
   while (p<((byte*)McuSharpMemoryDisplay_DisplayBuf)+sizeof(McuSharpMemoryDisplay_DisplayBuf)) {
+ #if McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==1
     *p++ = (byte)(  (McuGDisplay_COLOR_WHITE<<7)
                   | (McuGDisplay_COLOR_WHITE<<6)
                   | (McuGDisplay_COLOR_WHITE<<5)
@@ -147,6 +149,12 @@ void McuGDisplay_Clear(void)
                   | (McuGDisplay_COLOR_WHITE<<1)
                   |  McuGDisplay_COLOR_WHITE
                  );
+ #elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==16
+    *((uint16_t*)p) = McuGDisplay_COLOR_WHITE;
+    p += 2;
+ #else
+    *p++ = McuGDisplay_COLOR_WHITE;
+ #endif
   }
 }
 
@@ -167,7 +175,17 @@ void McuGDisplay_SetPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y)
   if (x>=McuGDisplay_GetWidth() || y>=McuGDisplay_GetHeight()) { /* values out of range */
     return;
   }
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up a one pixel window */
+  McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(McuGDisplay_COLOR_BLACK); /* store pixel with color information */
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#elif McuGDisplay_CONFIG_USE_DISPLAY_MEMORY_WRITE
+  McuGDisplay_CONFIG_FCT_NAME_SETPIXEL(x, y);
+#elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==16
+  McuGDisplay_BUF_WORD(x,y) = McuGDisplay_COLOR_BLACK;
+#else
   McuGDisplay_BUF_BYTE(x,y) |= McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y);
+#endif
 }
 
 /*
@@ -187,7 +205,17 @@ void McuGDisplay_ClrPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y)
   if (x>=McuGDisplay_GetWidth() || y>=McuGDisplay_GetHeight()) { /* values out of range */
     return;
   }
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up a one pixel window */
+  McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(McuGDisplay_COLOR_WHITE); /* store pixel with color information */
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#elif McuGDisplay_CONFIG_USE_DISPLAY_MEMORY_WRITE
+  McuSharpMemoryDisplay_ClrPixel(x, y);
+#elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==16
+  McuGDisplay_BUF_WORD(x,y) = McuGDisplay_COLOR_WHITE;
+#else
   McuGDisplay_BUF_BYTE(x,y) &= ~McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y);
+#endif
 }
 
 /*
@@ -229,6 +257,12 @@ void McuGDisplay_PutPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDi
   if (x>=McuGDisplay_GetWidth() || y>=McuGDisplay_GetHeight()) { /* values out of range */
     return;
   }
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up window as large as the box */
+  McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(color); /* store pixel with color information */
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#else
+ #if McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==1
   if (   (color==McuGDisplay_COLOR_BLACK && McuGDisplay_COLOR_BLACK==McuGDisplay_COLOR_PIXEL_SET)
       || (color==McuGDisplay_COLOR_WHITE && McuGDisplay_COLOR_WHITE==McuGDisplay_COLOR_PIXEL_SET)
      )
@@ -237,6 +271,12 @@ void McuGDisplay_PutPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDi
   } else {
     McuGDisplay_ClrPixel(x,y);
   }
+ #elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==16
+  McuGDisplay_BUF_WORD(x,y) = color;
+ #else /* multi-bit display */
+  McuSharpMemoryDisplay_PutPixel(x, y, color);
+ #endif
+#endif
 }
 #ifdef __HC08__
   #pragma MESSAGE DEFAULT C4001 /* condition always FALSE */
@@ -259,7 +299,12 @@ void McuGDisplay_PutPixel(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDi
 */
 void McuGDisplay_DrawFilledBox(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDisplay_PixelDim width, McuGDisplay_PixelDim height, McuGDisplay_PixelColor color)
 {
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_PixelCount pixCnt;
+  McuGDisplay_PixelDim x1, y1;
+#else
   McuGDisplay_PixelDim x0, xe, y0, ye;
+#endif
   McuGDisplay_PixelDim d_width = McuGDisplay_GetWidth();
   McuGDisplay_PixelDim d_height = McuGDisplay_GetHeight();
 
@@ -282,6 +327,17 @@ void McuGDisplay_DrawFilledBox(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, M
       height = (McuGDisplay_PixelDim)(d_height-y);
     }
   }
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  x1 = (McuGDisplay_PixelDim)(x+width-1); /* set window lower right x coordinate */
+  y1 = (McuGDisplay_PixelDim)(y+height-1); /* set window lower right y coordinate */
+  pixCnt = (McuGDisplay_PixelCount)((x1-x+1)*(y1-y+1)); /* number of pixels to write */
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x, y, x1, y1); /* set up window as large as the box */
+  while (pixCnt>0) {
+    McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(color); /* store pixel with color information */
+    pixCnt--;
+  } /* while */
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#else
   y0 = y; ye = (McuGDisplay_PixelDim)(y0+height-1);
   for(;;) { /* breaks */
     x0 = x; xe = (McuGDisplay_PixelDim)(x0+width-1);
@@ -297,6 +353,7 @@ void McuGDisplay_DrawFilledBox(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, M
     }
     y0++;
   } /* for */
+#endif
 }
 
 /*
@@ -483,7 +540,7 @@ void McuGDisplay_DrawVLine(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGD
 */
 void McuGDisplay_DrawBarChart(McuGDisplay_PixelDim x, McuGDisplay_PixelDim y, McuGDisplay_PixelDim width, McuGDisplay_PixelDim height, byte *data, byte nofData, McuGDisplay_PixelColor barColor, byte borderWidth, McuGDisplay_PixelColor borderColor, byte borderSpace)
 {
-  byte i;
+  uint8_t i;
   McuGDisplay_PixelDim barHeight; /* for calculation of each bar height */
   McuGDisplay_PixelDim barWidth; /* bar width, based on even distribution of the bars */
 
@@ -675,8 +732,53 @@ void McuGDisplay_DrawFilledCircle(McuGDisplay_PixelDim x0, McuGDisplay_PixelDim 
 */
 void McuGDisplay_Draw65kBitmap(McuGDisplay_PixelDim x1, McuGDisplay_PixelDim y1, McuGDisplay_PixelDim x2, McuGDisplay_PixelDim y2, word *bmp, bool compressed)
 {
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_PixelCount pixelCount = (McuGDisplay_PixelCount)((x2-x1+1) * (y2-y1+1));
+
+#endif
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x1, y1, x2, y2); /* set up window as large as the box */
+  if (compressed) {
+    McuGDisplay_PixelColor PixelColor = 0;
+    uint16_t Pos = 0;
+    bool FirstRead = TRUE;
+    uint16_t i;
+    uint16_t Repeat;
+
+    for (i=0; i<pixelCount; i++) {
+      if (FirstRead) {                  /* read first pixel after first start or after finishing a compressed bunch of data */
+        PixelColor = (McuGDisplay_PixelColor)bmp[Pos++];
+        McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(PixelColor); /* paint pixel */
+        FirstRead = FALSE;
+      } else {
+        uint16_t LastPixel = PixelColor; /* save data of last pixel (word format) to temporary variable */
+
+        PixelColor = (McuGDisplay_PixelColor)bmp[Pos++]; /* read next pixel */
+        McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(PixelColor); /* paint new pixel */
+        if (LastPixel == PixelColor) {  /* check if the last two read pixels are identical */
+          Repeat = bmp[Pos++];          /* if yes: read number following pixels of this color */
+          i += Repeat;                  /* increment pixel counter */
+          while (Repeat--) {            /* output requested number of pixels */
+            McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(PixelColor);
+          }
+          FirstRead = TRUE;             /* restart potential repetition sequence */
+        }
+      }
+    }
+  } else {
+    word i;
+    McuGDisplay_PixelColor pixelColor;
+
+    for(i=0; i<pixelCount; i++) {
+      pixelColor = (McuGDisplay_PixelColor)bmp[i];
+      McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(pixelColor);
+    }
+  }
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#else
   /* NYI */
   (void)x1; (void)y1; (void)x2; (void)y2; (void)bmp; (void)compressed; /* avoid compiler warning */
+#endif
 }
 
 /*
@@ -700,8 +802,55 @@ void McuGDisplay_Draw65kBitmap(McuGDisplay_PixelDim x1, McuGDisplay_PixelDim y1,
 */
 void McuGDisplay_Draw256BitmapHigh(McuGDisplay_PixelDim x1, McuGDisplay_PixelDim y1, McuGDisplay_PixelDim x2, McuGDisplay_PixelDim y2, byte *bmp, McuGDisplay_PixelColor *ColorTable, bool compressed)
 {
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_PixelCount pixelCount = (McuGDisplay_PixelCount)((x2-x1+1) * (y2-y1+1));
+
+#endif
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x1, y1, x2, y2); /* set up window as large as the box */
+  if (compressed) {
+    byte PixelColorIndex = 0;
+    uint16_t Pos = 0;
+    bool FirstRead = TRUE;
+    uint16_t i;
+    byte LastPixelIndex;
+    byte Repeat;
+
+    for (i=0; i<pixelCount; i++) {
+      if (FirstRead) {                  /* read first pixel after first start or after finishing a compressed bunch of data */
+        PixelColorIndex = bmp[Pos++];
+        McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(ColorTable[PixelColorIndex]);
+        FirstRead = FALSE;
+      } else {
+        LastPixelIndex = PixelColorIndex; /* save data of last pixel (word format) to temporary variable */
+        PixelColorIndex = bmp[Pos++];   /* read next pixel */
+        McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(ColorTable[PixelColorIndex]);
+        if (LastPixelIndex == PixelColorIndex) { /* check if the last two read pixels are identical */
+          Repeat = bmp[Pos++];          /* if yes: read number following pixels of this color */
+          i += Repeat;                  /* increment pixel counter */
+          while (Repeat--) {            /* output requested number of pixels */
+            McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(ColorTable[PixelColorIndex]);
+          }
+          FirstRead = TRUE;             /* restart potential repetition sequence */
+        }
+      }
+    }
+  } else {
+    McuGDisplay_PixelCount i;
+    uint8_t PixelColorIndex;
+    uint16_t PixelColor;
+
+    for(i=0; i<pixelCount; i++) {
+      PixelColorIndex = bmp[i];
+      PixelColor = ColorTable[PixelColorIndex];
+      McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(PixelColor);
+    }
+  }
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#else
   /* NYI */
   (void)x1; (void)y1; (void)x2; (void)y2; (void)bmp;  (void)ColorTable; (void)compressed; /* avoid compiler warning */
+#endif
 }
 
 /*
@@ -731,8 +880,57 @@ void McuGDisplay_Draw256BitmapLow(McuGDisplay_PixelDim x1, McuGDisplay_PixelDim 
         RED RED 8
  */
 
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_PixelCount pixelCount = (McuGDisplay_PixelCount)((x2-x1+1) * (y2-y1+1));
+
+#endif
+#if McuGDisplay_CONFIG_USE_WINDOW_CAPABILITY
+  McuGDisplay_CONFIG_FCT_NAME_OPENWINDOW(x1, y1, x2, y2); /* set up window as large as the box */
+  if (compressed) {
+    /* compressed pixel information */
+    byte pixelColor = 0;
+    byte lastPixel;
+    McuGDisplay_PixelCount pos = 0;
+    bool first = TRUE;                  /* if we read the first time, or if we may have a new sequence */
+    byte repeat;
+
+    while(pixelCount!=0) {              /* while there are pixels to write... */
+      if (first) {                      /* first pixel, or first after a compressed sequence */
+        pixelColor = *bmp;              /* read pixel */
+        bmp++;                          /* advance pointer to next pixel */
+        McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(c332to565[pixelColor]); /* write pixel */
+        pixelCount--;                   /* one more done */
+        first = FALSE;                  /* reset flag */
+      } else {
+        lastPixel = pixelColor;         /* remember already written pixel to detect potential compressed sequence */
+        pixelColor = *bmp;              /* read pixel */
+        bmp++;                          /* advance pointer to next pixel */
+        McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(c332to565[pixelColor]); /* write pixel */
+        pixelCount--;                   /* one more done */
+        if (lastPixel == pixelColor) {  /* do we have twice the same pixel? Then it this starts a compressed sequence... */
+          repeat = *bmp;                /* yes! read the number of pixels to repeat */
+          bmp++;                        /* next byte in stream */
+          pixelCount -= repeat;         /* a bunch more will be done */
+          while (repeat--) {            /* write requested amount of pixels */
+            McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(c332to565[pixelColor]); /* write pixel */
+          } /* while */
+          first = TRUE;                 /* set flag for new sequence */
+        }
+      }
+    }
+  } else {
+    /* uncompressed pixel information */
+    while(pixelCount != 0) {            /* while there are pixels to write... */
+      McuGDisplay_CONFIG_FCT_NAME_WRITEPIXEL(c332to565[*bmp]); /* write pixel */
+      bmp++;                            /* next byte */
+      pixelCount--;                     /* one more done */
+    } /* for */
+  }
+  McuGDisplay_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+#else
   /* NYI */
   (void)x1; (void)y1; (void)x2; (void)y2; (void)bmp; (void)compressed; /* avoid compiler warning */
+#endif
 }
 
 /*

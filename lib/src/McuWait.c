@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
-**     Version     : Component 01.081, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :

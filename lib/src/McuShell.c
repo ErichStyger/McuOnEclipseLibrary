@@ -7,7 +7,7 @@
 **     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **
 **     Settings    :
@@ -126,6 +126,11 @@ uint8_t McuShell_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* defa
   static bool McuShell_EchoEnabled = TRUE;
 #endif
 
+#if McuShell_CONFIG_USE_MUTEX
+  #include "FreeRTOS.h"
+  #include "semphr.h"
+#endif
+
 #ifdef __HC08__
   #pragma MESSAGE DISABLE C3303 /* implicit concatenation of strings */
 #endif
@@ -133,14 +138,18 @@ uint8_t McuShell_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* defa
   static xSemaphoreHandle ShellSem = NULL; /* Semaphore to protect shell SCI access */
 #endif
 
-McuShell_ConstStdIOType McuShell_stdio =
-{
-  (McuShell_StdIO_In_FctType)McuShell_ReadChar, /* stdin */
-  (McuShell_StdIO_OutErr_FctType)McuShell_SendChar, /* stdout */
-  (McuShell_StdIO_OutErr_FctType)McuShell_SendChar, /* stderr */
-  McuShell_KeyPressed /* if input is not empty */
-};
-static McuShell_ConstStdIOType *McuShell_currStdIO = &McuShell_stdio;
+#if McuShell_DEFAULT_SERIAL
+  McuShell_ConstStdIOType McuShell_stdio =
+  {
+    (McuShell_StdIO_In_FctType)McuShell_ReadChar, /* stdin */
+    (McuShell_StdIO_OutErr_FctType)McuShell_SendChar, /* stdout */
+    (McuShell_StdIO_OutErr_FctType)McuShell_SendChar, /* stderr */
+    McuShell_KeyPressed /* if input is not empty */
+  };
+  static McuShell_ConstStdIOType *McuShell_currStdIO = &McuShell_stdio;
+#else
+  static McuShell_ConstStdIOType *McuShell_currStdIO = NULL; /* needs to be set through McuShell_SetStdio(); */
+#endif
 /* Internal method prototypes */
 static void SendSeparatedStrings(const uint8_t *strA, const uint8_t *strB, uint8_t tabChar, uint8_t tabPos, McuShell_StdIO_OutErr_FctType io);
 
@@ -918,9 +927,11 @@ void* McuShell_GetSemaphore(void)
 static void SendSeparatedStrings(const uint8_t *strA, const uint8_t *strB, uint8_t tabChar, uint8_t tabPos, McuShell_StdIO_OutErr_FctType io)
 {
   /* write command part */
-  while(*strA!='\0' && tabPos>0) {
-    io(*strA++);
-    tabPos--;
+  if (strA!=NULL) {
+    while(*strA!='\0' && tabPos>0) {
+      io(*strA++);
+      tabPos--;
+    }
   }
   /* fill up until ';' */
   while(tabPos>0) {
@@ -930,8 +941,10 @@ static void SendSeparatedStrings(const uint8_t *strA, const uint8_t *strB, uint8
   /* write separator */
   io(tabChar);
   io(' ');
-  /* write help text */
-  McuShell_SendStr(strB, io);
+  if (strB!=NULL) {
+    /* write help text */
+    McuShell_SendStr(strB, io);
+  }
 }
 
 /*
@@ -988,18 +1001,23 @@ void McuShell_SendStatusStr(const uint8_t *strItem, const uint8_t *strStatus, Mc
 */
 void McuShell_ReadChar(uint8_t *c)
 {
+#if McuShell_CONFIG_DEFAULT_SERIAL
   uint8_t res;
 
 #if McuShell_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
 #endif
-  res = McuRTT_RecvChar((uint8_t*)c);
+  res = McuShell_CONFIG_DEFAULT_SERIAL_RECEIVE_FCT_NAME((uint8_t*)c);
   if (res==ERR_RXEMPTY) {
     /* no character in buffer */
     *c = '\0';
   }
 #if McuShell_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(ShellSem);
+#endif
+#else
+  *c = '\0';
+  return; /* no serial component set up in properties */
 #endif
 }
 
@@ -1016,31 +1034,10 @@ void McuShell_ReadChar(uint8_t *c)
 */
 void McuShell_SendChar(uint8_t ch)
 {
-#if McuShell_CONFIG_BLOCKING_SEND_ENABLED
-  uint8_t res;
-#endif
-  int timeoutMs = 20;
-
-
-#if McuShell_CONFIG_USE_MUTEX
-  (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
-#endif
-#if McuShell_CONFIG_BLOCKING_SEND_ENABLED
-  do {
-    res = McuRTT_SendChar((uint8_t)ch); /* Send char */
-    if (res==ERR_TXFULL) {
-      McuWait_WaitOSms(5);
-    }
-    if(timeoutMs<=0) {
-      break; /* timeout */
-    }
-    timeoutMs -= 5;
-  } while(res==ERR_TXFULL);
+#if McuShell_CONFIG_DEFAULT_SERIAL
+  McuShell_SendCharFct(ch, McuShell_CONFIG_DEFAULT_SERIAL_SEND_FCT_NAME);
 #else
-  (void)McuRTT_SendChar((uint8_t)ch);  /* non blocking send */
-#endif
-#if McuShell_CONFIG_USE_MUTEX
-  (void)xSemaphoreGiveRecursive(ShellSem);
+  (void)ch;                            /* avoid compiler warning about unused argument */
 #endif
 }
 
@@ -1057,16 +1054,22 @@ void McuShell_SendChar(uint8_t ch)
 */
 bool McuShell_KeyPressed(void)
 {
+#if McuShell_CONFIG_DEFAULT_SERIAL
   bool res;
 
 #if McuShell_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(ShellSem, portMAX_DELAY);
 #endif
-  res = (bool)((McuRTT_GetCharsInRxBuf()==0U) ? FALSE : TRUE); /* true if there are characters in receive buffer */
+#if McuShell_CONFIG_DEFAULT_SERIAL
+  res = (bool)((McuShell_CONFIG_DEFAULT_SERIAL_RXAVAIL_FCT_NAME()==0U) ? FALSE : TRUE); /* true if there are characters in receive buffer */
+#endif
 #if McuShell_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(ShellSem);
 #endif
   return res;
+#else
+  return FALSE; /* no serial component set up in properties */
+#endif
 }
 
 /*
@@ -1273,7 +1276,7 @@ void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch))
     if(timeoutMs<=0) {
       break; /* timeout */
     }
-    timeoutMs -= 5;
+    timeoutMs -= McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS;
   #endif
   } while(res==ERR_TXFULL);
 #else

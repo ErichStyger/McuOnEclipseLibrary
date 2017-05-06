@@ -4,20 +4,18 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SimpleEvents
-**     Version     : Component 01.054, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.057, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-10, 11:39, # CodeGen: 92
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuEvents
 **          SDK                                            : McuLib
 **          Critical Section                               : McuCriticalSection
-**          Initialize on Init                             : yes
 **          Event Name List                                : (string list)
-**          Power Save                                     : no
-**          Low Power                                      : Disabled
+**          Initialize on Init                             : yes
 **     Contents    :
 **         SetEvent      - void McuEvents_SetEvent(uint8_t event);
 **         ClearEvent    - void McuEvents_ClearEvent(uint8_t event);
@@ -26,7 +24,7 @@
 **         GetClearEvent - bool McuEvents_GetClearEvent(uint8_t event);
 **         HandleEvent   - void McuEvents_HandleEvent(void);
 **
-**     * Copyright (c) 2011-2016, Erich Styger
+**     * Copyright (c) 2011-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -65,18 +63,12 @@
 */         
 
 /* MODULE McuEvents. */
-#ifndef __HIWARE__
-  #include <stdbool.h>
-  #include <stdint.h>
-#endif
 #include "McuEvents.h"
-#if McuLib_SDK_VERSION_USED == McuLib_SDK_VERSION_NONE
-  #include "Events.h"
-#endif
+
+#include "McuCriticalSection.h"
 
 
-#define McuEvents_NOF_EVENTS  1         /*!< Number of events supported */
-static uint8_t McuEvents_Events[((McuEvents_NOF_EVENTS-1)/8)+1]; /*!< Bit set of events */
+static uint8_t McuEvents_Events[((McuEvents_CONFIG_NOF_EVENTS-1)/8)+1]; /*!< Bit set of events */
 /*
 ** ===================================================================
 **     Method      :  McuEvents_SetEvent (component SimpleEvents)
@@ -142,7 +134,7 @@ void McuEvents_ClearEvent(uint8_t event)
 bool McuEvents_GetEvent(uint8_t event)
 {
   /* event is in the range of 0..255: find bit position in array */
-  return (bool)(McuEvents_Events[event/8]&(0x80>>(event%8)));
+  return (bool)((McuEvents_Events[event/8]&(0x80>>(event%8)))!=0);
 }
 
 /*
@@ -186,7 +178,24 @@ bool McuEvents_GetClearEvent(uint8_t event)
 */
 bool McuEvents_EventsPending(void)
 {
+#if McuEvents_CONFIG_NOF_EVENTS<=8
   return (bool)(McuEvents_Events[0]!=0);
+#elif McuEvents_CONFIG_NOF_EVENTS<=16
+  return (bool)(McuEvents_Events[0]!=0 || McuEvents_Events[1]!=0);
+#elif McuEvents_CONFIG_NOF_EVENTS<=24
+  return (McuEvents_Events[0]!=0 || McuEvents_Events[1]!=0 || McuEvents_Events[2]!=0);
+#elif McuEvents_CONFIG_NOF_EVENTS<=32
+  return (bool)(McuEvents_Events[0]!=0 || McuEvents_Events[1]!=0 || McuEvents_Events[2]!=0 || McuEvents_Events[3]!=0);
+#else /* iterate through the array */
+  char i; /* local counter */
+
+  for(i=0; i<(McuEvents_CONFIG_NOF_EVENTS/8)+1; i++) {
+    if (McuEvents_Events[i] != 0) { /* there are events pending */
+      return TRUE;
+    }
+  }
+  return FALSE;
+#endif
 }
 
 /*
@@ -205,18 +214,20 @@ void McuEvents_HandleEvent(void)
   McuCriticalSection_CriticalVariable();
 
   McuCriticalSection_EnterCritical();
-  for (event=0; event<McuEvents_NOF_EVENTS; event++) { /* does a test on every event */
+  for (event=0; event<McuEvents_CONFIG_NOF_EVENTS; event++) { /* does a test on every event */
     if (McuEvents_GetEvent(event)) { /* event present */
       McuEvents_Events[event/8] &= ~(0x80>>(event%8)); /* clear event */
       break; /* get out of loop */
     }
   }
   McuCriticalSection_ExitCritical();
+#if McuEvents_CONFIG_USE_EVENT_HANDLER
   /*lint -save -e522 function lacks side effect  */
-  if (event != McuEvents_NOF_EVENTS) {
-    McuEvents_AppHandleEvent(event);
+  if (event != McuEvents_CONFIG_NOF_EVENTS) {
+    McuEvents_CONFIG_EVENT_HANDLER_NAME(event);
   }
   /*lint -restore */
+#endif
 }
 
 /*
@@ -230,7 +241,15 @@ void McuEvents_HandleEvent(void)
 */
 void McuEvents_Init(void)
 {
+#if McuEvents_CONFIG_NOF_EVENTS<=8
   McuEvents_Events[0] = 0; /* initialize data structure */
+#else
+  uint8_t i;
+
+  for(i=0;i<sizeof(McuEvents_Events); i++) {
+    McuEvents_Events[i] = 0; /* initialize data structure */
+  }
+#endif
 }
 
 /* END McuEvents. */

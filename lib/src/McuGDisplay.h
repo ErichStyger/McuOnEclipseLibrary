@@ -4,14 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.193, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-27, 17:36, # CodeGen: 162
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuGDisplay
+**          SDK                                            : McuLib
 **          Inverted Pixels                                : no
 **          Memory Buffer                                  : Enabled
 **            Orientation                                  : Landscape
@@ -48,7 +49,7 @@
 **         GiveDisplay       - void McuGDisplay_GiveDisplay(void);
 **         Init              - void McuGDisplay_Init(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -86,29 +87,25 @@
 **  @{
 */         
 
-
 #ifndef __McuGDisplay_H
 #define __McuGDisplay_H
 
 /* MODULE McuGDisplay. */
+#include "McuLib.h" /* SDK and API used */
+#include "McuGDisplayconfig.h" /* configuration */
 
-/* Include shared modules, which are used for whole project */
-#include "PE_Types.h"
-#include "PE_Error.h"
-#include "PE_Const.h"
-#include "IO_Map.h"
-/* Include inherited beans */
+/* Include inherited components */
+#include "McuLib.h"
 #include "McuSharpMemoryDisplay.h"
 
-#include "Cpu.h"
 
 
 /* this type is declared in PE_Types.h for non-LDD processors, need to declare it locally otherwise */
 typedef struct {                       /* Image */
-  word width;                          /* Image width  */
-  word height;                         /* Image height */
-  const byte * pixmap;                 /* Image pixel bitmap */
-  word size;                           /* Image size   */
+  uint16_t width;                          /* Image width  */
+  uint16_t height;                         /* Image height */
+  const uint8_t * pixmap;                 /* Image pixel bitmap */
+  uint16_t size;                           /* Image size   */
   const char_t * name;                 /* Image name   */
 } TIMAGE;
 typedef TIMAGE* PIMAGE ;               /* Pointer to image */
@@ -117,22 +114,41 @@ typedef TIMAGE* PIMAGE ;               /* Pointer to image */
 
 #define McuGDisplay_COLOR_PIXEL_SET          McuSharpMemoryDisplay_COLOR_PIXEL_SET       /* value for a pixel set */
 #define McuGDisplay_COLOR_PIXEL_CLR          McuSharpMemoryDisplay_COLOR_PIXEL_CLR       /* value for a pixel cleared */
-#define McuGDisplay_COLOR_BLACK              McuSharpMemoryDisplay_COLOR_BLACK           /* black color */
-#define McuGDisplay_COLOR_WHITE              McuSharpMemoryDisplay_COLOR_WHITE           /* white color */
-#define McuGDisplay_COLOR_RED                McuSharpMemoryDisplay_COLOR_RED             /* red color */
-#define McuGDisplay_COLOR_BRIGHT_RED         McuSharpMemoryDisplay_COLOR_BRIGHT_RED      /* bright red color */
-#define McuGDisplay_COLOR_DARK_RED           McuSharpMemoryDisplay_COLOR_DARK_RED        /* dark red color */
-#define McuGDisplay_COLOR_GREEN              McuSharpMemoryDisplay_COLOR_GREEN           /* green color */
-#define McuGDisplay_COLOR_DARK_GREEN         McuSharpMemoryDisplay_COLOR_DARK_GREEN      /* dark green color */
-#define McuGDisplay_COLOR_BRIGHT_GREEN       McuSharpMemoryDisplay_COLOR_BRIGHT_GREEN    /* bright green color */
-#define McuGDisplay_COLOR_BLUE               McuSharpMemoryDisplay_COLOR_BLUE            /* blue color */
-#define McuGDisplay_COLOR_BRIGHT_BLUE        McuSharpMemoryDisplay_COLOR_BRIGHT_BLUE     /* bright blue color */
-#define McuGDisplay_COLOR_DARK_BLUE          McuSharpMemoryDisplay_COLOR_DARK_BLUE       /* dark blue color */
-#define McuGDisplay_COLOR_YELLOW             McuSharpMemoryDisplay_COLOR_YELLOW          /* yellow color */
-#define McuGDisplay_COLOR_BRIGHT_YELLOW      McuSharpMemoryDisplay_COLOR_BRIGHT_YELLOW   /* bright yellow color */
-#define McuGDisplay_COLOR_ORANGE             McuSharpMemoryDisplay_COLOR_ORANGE          /* orange color */
-#define McuGDisplay_COLOR_GREY               McuSharpMemoryDisplay_COLOR_GREY            /* grey color */
-#define McuGDisplay_COLOR_BRIGHT_GREY        McuSharpMemoryDisplay_COLOR_BRIGHT_GREY     /* bright grey color */
+#if McuGDisplay_CONFIG_INVERTED_PIXEL_COLOR
+  #define McuGDisplay_COLOR_BLACK              McuSharpMemoryDisplay_COLOR_WHITE           /* white color */
+  #define McuGDisplay_COLOR_WHITE              McuSharpMemoryDisplay_COLOR_BLACK           /* black color */
+  #define McuGDisplay_COLOR_RED                (~McuSharpMemoryDisplay_COLOR_RED)          /* red color */
+  #define McuGDisplay_COLOR_BRIGHT_RED         (~McuSharpMemoryDisplay_COLOR_BRIGHT_RED)   /* bright red color */
+  #define McuGDisplay_COLOR_DARK_RED           (~McuSharpMemoryDisplay_COLOR_DARK_RED)     /* dark red color */
+  #define McuGDisplay_COLOR_GREEN              (~McuSharpMemoryDisplay_COLOR_GREEN)        /* green color */
+  #define McuGDisplay_COLOR_DARK_GREEN         (~McuSharpMemoryDisplay_COLOR_DARK_GREEN)   /* dark green color */
+  #define McuGDisplay_COLOR_BRIGHT_GREEN       (~McuSharpMemoryDisplay_COLOR_BRIGHT_GREEN) /* bright green color */
+  #define McuGDisplay_COLOR_BLUE               (~McuSharpMemoryDisplay_COLOR_BLUE)         /* blue color */
+  #define McuGDisplay_COLOR_BRIGHT_BLUE        (~McuSharpMemoryDisplay_COLOR_BRIGHT_BLUE)  /* bright blue color */
+  #define McuGDisplay_COLOR_DARK_BLUE          (~McuSharpMemoryDisplay_COLOR_DARK_BLUE)    /* dark blue color */
+  #define McuGDisplay_COLOR_YELLOW             (~McuSharpMemoryDisplay_COLOR_YELLOW)       /* yellow color */
+  #define McuGDisplay_COLOR_BRIGHT_YELLOW      (~McuSharpMemoryDisplay_COLOR_BRIGHT_YELLOW)/* bright yellow color */
+  #define McuGDisplay_COLOR_ORANGE             (~McuSharpMemoryDisplay_COLOR_ORANGE)       /* orange color */
+  #define McuGDisplay_COLOR_GREY               (~McuSharpMemoryDisplay_COLOR_GREY)         /* grey color */
+  #define McuGDisplay_COLOR_BRIGHT_GREY        (~McuSharpMemoryDisplay_COLOR_BRIGHT_GREY)  /* bright grey color */
+#else
+  #define McuGDisplay_COLOR_BLACK              McuSharpMemoryDisplay_COLOR_BLACK           /* black color */
+  #define McuGDisplay_COLOR_WHITE              McuSharpMemoryDisplay_COLOR_WHITE           /* white color */
+  #define McuGDisplay_COLOR_RED                McuSharpMemoryDisplay_COLOR_RED             /* red color */
+  #define McuGDisplay_COLOR_BRIGHT_RED         McuSharpMemoryDisplay_COLOR_BRIGHT_RED      /* bright red color */
+  #define McuGDisplay_COLOR_DARK_RED           McuSharpMemoryDisplay_COLOR_DARK_RED        /* dark red color */
+  #define McuGDisplay_COLOR_GREEN              McuSharpMemoryDisplay_COLOR_GREEN           /* green color */
+  #define McuGDisplay_COLOR_DARK_GREEN         McuSharpMemoryDisplay_COLOR_DARK_GREEN      /* dark green color */
+  #define McuGDisplay_COLOR_BRIGHT_GREEN       McuSharpMemoryDisplay_COLOR_BRIGHT_GREEN    /* bright green color */
+  #define McuGDisplay_COLOR_BLUE               McuSharpMemoryDisplay_COLOR_BLUE            /* blue color */
+  #define McuGDisplay_COLOR_BRIGHT_BLUE        McuSharpMemoryDisplay_COLOR_BRIGHT_BLUE     /* bright blue color */
+  #define McuGDisplay_COLOR_DARK_BLUE          McuSharpMemoryDisplay_COLOR_DARK_BLUE       /* dark blue color */
+  #define McuGDisplay_COLOR_YELLOW             McuSharpMemoryDisplay_COLOR_YELLOW          /* yellow color */
+  #define McuGDisplay_COLOR_BRIGHT_YELLOW      McuSharpMemoryDisplay_COLOR_BRIGHT_YELLOW   /* bright yellow color */
+  #define McuGDisplay_COLOR_ORANGE             McuSharpMemoryDisplay_COLOR_ORANGE          /* orange color */
+  #define McuGDisplay_COLOR_GREY               McuSharpMemoryDisplay_COLOR_GREY            /* grey color */
+  #define McuGDisplay_COLOR_BRIGHT_GREY        McuSharpMemoryDisplay_COLOR_BRIGHT_GREY     /* bright grey color */
+#endif
 
 typedef McuSharpMemoryDisplay_PixelDim   McuGDisplay_PixelDim; /* Display specific type for a pixel coordinate. */
 typedef McuSharpMemoryDisplay_PixelColor McuGDisplay_PixelColor; /* Display specific color type. */
@@ -153,11 +169,21 @@ typedef McuSharpMemoryDisplay_DisplayOrientation McuGDisplay_DisplayOrientation;
 #define McuGDisplay_BUF_BYTE_PIXEL_BIT_NO(x,y) /* pixel bit number inside display buffer byte (0 is LSB, 7 MSB) */ \
       ((byte)(7-((x)%8)))
 
-#define McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y)  /* pixel mask for an individual bit inside a display buffer byte */ \
-  (1<<McuGDisplay_BUF_BYTE_PIXEL_BIT_NO(x,y))
-
-#define McuGDisplay_BUF_BYTE_GET_PIXEL(x,y)  /* extract a pixel */ \
-  ((McuGDisplay_BUF_BYTE(x,y)&McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y))>>McuGDisplay_BUF_BYTE_PIXEL_BIT_NO(x,y))
+#if McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==1
+  #define McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y)  /* pixel mask for an individual bit inside a display buffer byte */ \
+    (1<<McuGDisplay_BUF_BYTE_PIXEL_BIT_NO(x,y))
+  #define McuGDisplay_BUF_BYTE_GET_PIXEL(x,y)  /* extract a pixel */ \
+    ((McuGDisplay_BUF_BYTE(x,y)&McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y))>>McuGDisplay_BUF_BYTE_PIXEL_BIT_NO(x,y))
+#elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==8
+  #define McuGDisplay_BUF_BYTE_PIXEL_MASK(x,y)  /* pixel mask for an individual bit inside a display buffer byte */ \
+    0xff
+  #define McuGDisplay_BUF_BYTE_GET_PIXEL(x,y)  /* extract a pixel */ \
+    McuGDisplay_BUF_BYTE(x,y)
+#elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==16
+  /* no byte access used */
+#else
+  #error "not supported"
+#endif
 
 void McuGDisplay_Clear(void);
 /*

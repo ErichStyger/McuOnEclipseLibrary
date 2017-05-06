@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericI2C
-**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.033, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -34,13 +34,15 @@
 **         WriteAddress      - uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         ReadByteAddress8  - uint8_t McuGenericI2C_ReadByteAddress8(uint8_t i2cAddr, uint8_t memAddr,...
 **         WriteByteAddress8 - uint8_t McuGenericI2C_WriteByteAddress8(uint8_t i2cAddr, uint8_t memAddr,...
+**         ReadWordAddress8  - uint8_t McuGenericI2C_ReadWordAddress8(uint8_t i2cAddr, uint8_t memAddr,...
+**         WriteWordAddress8 - uint8_t McuGenericI2C_WriteWordAddress8(uint8_t i2cAddr, uint8_t memAddr,...
 **         ProbeACK          - uint8_t McuGenericI2C_ProbeACK(void* data, uint16_t dataSize,...
 **         GetSemaphore      - void* McuGenericI2C_GetSemaphore(void);
 **         ScanDevice        - uint8_t McuGenericI2C_ScanDevice(uint8_t i2cAddr);
 **         Deinit            - void McuGenericI2C_Deinit(void);
 **         Init              - void McuGenericI2C_Init(void);
 **
-**     * Copyright (c) 2013-2016, Erich Styger
+**     * Copyright (c) 2013-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -257,10 +259,12 @@ uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t mem
     return ERR_FAILED;
   }
   for(;;) { /* breaks */
-    res = McuGenericSWI2C_SendBlock((void*)memAddr, memAddrSize, &nof);
-    if (res!=ERR_OK) {
-      (void)McuGenericSWI2C_SendStop();
-      break; /* break for(;;) */
+    if(memAddr!=NULL) { /* only if we want to send an address */
+      res = McuGenericSWI2C_SendBlock((void*)memAddr, memAddrSize, &nof);
+      if (res!=ERR_OK) {
+        (void)McuGenericSWI2C_SendStop();
+        break; /* break for(;;) */
+      }
     }
     res = McuGenericSWI2C_RecvBlock(data, dataSize, &nof);
     if (res!=ERR_OK) {
@@ -425,7 +429,48 @@ uint8_t McuGenericI2C_ReadByteAddress8(uint8_t i2cAddr, uint8_t memAddr, uint8_t
 */
 uint8_t McuGenericI2C_WriteByteAddress8(uint8_t i2cAddr, uint8_t memAddr, uint8_t data)
 {
-  return McuGenericI2C_WriteAddress(i2cAddr, &memAddr, sizeof(memAddr), &data, 1);
+  return McuGenericI2C_WriteAddress(i2cAddr, &memAddr, sizeof(memAddr), &data, sizeof(data));
+}
+
+/*
+** ===================================================================
+**     Method      :  McuGenericI2C_ReadWordAddress8 (component GenericI2C)
+**     Description :
+**         Read a word from the device using an 8bit memory address.
+**         This writes (S+i2cAddr+0), (memAddr), (Sr+i2cAddr+1), (data)..
+**         .(data+P)
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         i2cAddr         - I2C Address of device
+**         memAddr         - Device memory address
+**       * data            - Pointer to read buffer (single byte)
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuGenericI2C_ReadWordAddress8(uint8_t i2cAddr, uint8_t memAddr, uint16_t *data)
+{
+  return McuGenericI2C_ReadAddress(i2cAddr, &memAddr, sizeof(memAddr), (uint8_t*)data, 2);
+}
+
+/*
+** ===================================================================
+**     Method      :  McuGenericI2C_WriteWordAddress8 (component GenericI2C)
+**     Description :
+**         Write a word to the device using an 8bit memory address:
+**         (S+i2cAddr+0), (memAddr), (data)...(data+P)
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         i2cAddr         - I2C address of device
+**         memAddr         - Device memory address
+**         data            - Data value
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuGenericI2C_WriteWordAddress8(uint8_t i2cAddr, uint8_t memAddr, uint16_t data)
+{
+  return McuGenericI2C_WriteAddress(i2cAddr, &memAddr, sizeof(memAddr), (uint8_t*)&data, sizeof(data));
 }
 
 /*

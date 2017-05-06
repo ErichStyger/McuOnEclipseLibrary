@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : XFormat
-**     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-09, 20:43, # CodeGen: 65
+**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
 **     Abstract    :
 **
 **     Settings    :
@@ -15,12 +15,14 @@
 **          SDK                                            : McuLib
 **          Floating Point                                 : no
 **     Contents    :
-**         xvformat - unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const...
-**         xformat  - unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const...
-**         xsprintf - int McuXFormat_xsprintf(char *buf, const char *fmt, ...);
+**         xvformat  - unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const...
+**         xformat   - unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const...
+**         xsprintf  - int McuXFormat_xsprintf(char *buf, const char *fmt, ...);
+**         xsnprintf - int McuXFormat_xsnprintf(char *buf, size_t max_len, const char *fmt, ...);
 **
-**     *  Copyright : (c) Copyright Mario Viara, 2014-2016, https://github.com/MarioViara/xprintfc
+**     *  Copyright : (c) Copyright Mario Viara, 2014-2017, https://github.com/MarioViara/xprintfc
 **      * Adopted for Processor Expert: Erich Styger
+**      * xsnprintf() contributed by Engin Lee
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -67,9 +69,17 @@
 
 /* other includes needed */
 #include <stdarg.h> /* open argument list support */
+#include <stddef.h> /* for size_t */
+/* GCC have printf type attribute check. */
+#ifdef __GNUC__
+  /* inform the GNU compiler about printf() style functions, so the compiler can check the arguments */
+  #define McuXFormat_PRINTF_ATTRIBUTE(a,b) __attribute__ ((__format__ (__printf__, a, b)))
+#else
+  #define McuXFormat_PRINTF_ATTRIBUTE(a,b)
+#endif /* __GNUC__ */
 
 
-unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const char * fmt, ...);
+unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const char * fmt, ...) McuXFormat_PRINTF_ATTRIBUTE(3,4);
 /*
 ** ===================================================================
 **     Method      :  McuXFormat_xformat (component XFormat)
@@ -105,7 +115,7 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
 ** ===================================================================
 */
 
-int McuXFormat_xsprintf(char *buf, const char *fmt, ...);
+int McuXFormat_xsprintf(char *buf, const char *fmt, ...) McuXFormat_PRINTF_ATTRIBUTE(2,3);
 /*
 ** ===================================================================
 **     Method      :  McuXFormat_xsprintf (component XFormat)
@@ -114,6 +124,25 @@ int McuXFormat_xsprintf(char *buf, const char *fmt, ...);
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **       * buf             - Pointer to buffer to be written
+**       * fmt             - Pointer to formatting string
+**         argList         - Open Argument List
+**     Returns     :
+**         ---             - number of characters written, negative for
+**                           error case
+** ===================================================================
+*/
+
+int McuXFormat_xsnprintf(char *buf, size_t max_len, const char *fmt, ...) McuXFormat_PRINTF_ATTRIBUTE(3,4);
+/*
+** ===================================================================
+**     Method      :  McuXFormat_xsnprintf (component XFormat)
+**     Description :
+**         snprintf() like function, returns the number of characters
+**         written, negative in case of error.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * buf             - Pointer to buffer to be written
+**         max_len         - size of output buffer (in size)
 **       * fmt             - Pointer to formatting string
 **         argList         - Open Argument List
 **     Returns     :
