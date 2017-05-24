@@ -7,7 +7,7 @@
 **     Version     : Component 01.051, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
+**     Date/Time   : 2017-05-24, 06:25, # CodeGen: 182
 **     Abstract    :
 **         This component implements a ring buffer for different integer data type.
 **     Settings    :
@@ -281,6 +281,10 @@ uint8_t McuRingbuffer_Update(McuRingbuffer_BufSizeType index, McuRingbuffer_Elem
 */
 
 /* END McuRingbuffer. */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif
 /* ifndef __McuRingbuffer_H */

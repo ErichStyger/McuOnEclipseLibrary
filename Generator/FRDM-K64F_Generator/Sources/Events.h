@@ -106,6 +106,15 @@
 #include "McuFontCour18Bold.h"
 #include "McuFontCour24Bold.h"
 #include "McuFXOS8700.h"
+#include "McuOneWire.h"
+#include "DQ1.h"
+#include "Timer1.h"
+#include "OutputRB1.h"
+#include "InputRB1.h"
+#include "TimeRB1.h"
+#include "ProgramRB1.h"
+#include "DbgRd1.h"
+#include "McuDS18B20.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus
@@ -216,6 +225,50 @@ void McuEvents_AppHandleEvent(uint8_t event);
 ** ===================================================================
 */
 
+void McuDS18B20_OnError(McuOneWire_Error error);
+/*
+** ===================================================================
+**     Event       :  McuDS18B20_OnError (module Events)
+**
+**     Component   :  McuDS18B20 [DS18B20]
+**     Description :
+**         Event called in error case
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * error           - 
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuDS18B20_OnTemperatureGet(uint8_t sensor_index, int32_t temperature);
+/*
+** ===================================================================
+**     Event       :  McuDS18B20_OnTemperatureGet (module Events)
+**
+**     Component   :  McuDS18B20 [DS18B20]
+**     Description :
+**         Event called for getting temperature
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * sensor_index    - 
+**       * temperature     - 
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuDS18B20_OnRomRead(uint8_t sensor_index, uint8_t *rom_code);
+/*
+** ===================================================================
+**     Event       :  McuDS18B20_OnRomRead (module Events)
+**
+**     Component   :  McuDS18B20 [DS18B20]
+**     Description :
+**         Event called for reading ROM value
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * sensor_index    - 
+**       * rom_code        - 
+**     Returns     : Nothing
+** ===================================================================
+*/
 /* END Events */
 
 #ifdef __cplusplus

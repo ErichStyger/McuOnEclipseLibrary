@@ -187,6 +187,62 @@ void McuEvents_AppHandleEvent(uint8_t event)
   /* Write your code here ... */
 }
 
+/*
+** ===================================================================
+**     Event       :  McuDS18B20_OnError (module Events)
+**
+**     Component   :  McuDS18B20 [DS18B20]
+**     Description :
+**         Event called in error case
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * error           - 
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuDS18B20_OnError(McuOneWire_Error error)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  McuDS18B20_OnTemperatureGet (module Events)
+**
+**     Component   :  McuDS18B20 [DS18B20]
+**     Description :
+**         Event called for getting temperature
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * sensor_index    - 
+**       * temperature     - 
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuDS18B20_OnTemperatureGet(uint8_t sensor_index, int32_t temperature)
+{
+  /* Write your code here ... */
+}
+
+/*
+** ===================================================================
+**     Event       :  McuDS18B20_OnRomRead (module Events)
+**
+**     Component   :  McuDS18B20 [DS18B20]
+**     Description :
+**         Event called for reading ROM value
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * sensor_index    - 
+**       * rom_code        - 
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuDS18B20_OnRomRead(uint8_t sensor_index, uint8_t *rom_code)
+{
+  /* Write your code here ... */
+}
+
 /* END Events */
 
 #ifdef __cplusplus

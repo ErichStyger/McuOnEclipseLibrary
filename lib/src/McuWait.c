@@ -7,7 +7,7 @@
 **     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
+**     Date/Time   : 2017-05-17, 06:33, # CodeGen: 181
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -17,7 +17,8 @@
 **            Cortex Tools                                 : McuKinetisTools
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
-**          RTOS                                           : Disabled
+**          RTOS                                           : Enabled
+**            RTOS                                         : McuRTOS
 **          Watchdog                                       : Disabled
 **     Contents    :
 **         Wait10Cycles   - void McuWait_Wait10Cycles(void);
