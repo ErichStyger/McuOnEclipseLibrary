@@ -5,10 +5,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FXOS8700CQ
-**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.031, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-06, 16:31, # CodeGen: 179
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **         Implements a Driver for the MMA8451 accelerometer from Freescale.
 **     Settings    :
@@ -113,6 +113,10 @@
 #include "McuLib.h"
 #include "McuShell.h"
 #include "McuUtility.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define McuFXOS8700_PARSE_COMMAND_ENABLED  McuFXOS8700_CONFIG_PARSE_COMMAND_ENABLED  /* set to 1 if method ParseCommand() is present, 0 otherwise */
 
@@ -632,6 +636,10 @@ uint8_t McuFXOS8700_SwReset(void);
 */
 
 /* END McuFXOS8700. */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif
 /* ifndef __McuFXOS8700_H */

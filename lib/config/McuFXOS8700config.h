@@ -8,10 +8,17 @@
 #ifndef __McuFXOS8700_CONFIG_H
 #define __McuFXOS8700_CONFIG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if !defined(McuFXOS8700_CONFIG_PARSE_COMMAND_ENABLED)
   #define McuFXOS8700_CONFIG_PARSE_COMMAND_ENABLED  1
     /*!< 1: shell support enabled, 0: otherwise */
 #endif
 
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif /* __McuFXOS8700_CONFIG_H */

@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FSL_USB_Stack
-**     Version     : Component 01.045, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.051, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-17, 06:33, # CodeGen: 181
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **         This component implements a wrapper to the FSL USB Stack.
 **     Settings    :
@@ -19,7 +19,9 @@
 **            CDCDevice                                    : FSL_USB_CDC_Device
 **          CDC Host                                       : Disabled
 **          HID Keyboard Device                            : Disabled
+**          HID Joystick Device                            : Disabled
 **          HID Mouse Device                               : Disabled
+**          MSD Device                                     : Disabled
 **          MSD Host                                       : Disabled
 **          DATA_BUFF_SIZE                                 : 64
 **          Initialization                                 : 

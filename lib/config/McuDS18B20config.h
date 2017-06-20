@@ -8,6 +8,9 @@
 #ifndef __McuDS18B20_CONFIG_H
 #define __McuDS18B20_CONFIG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define McuDS18B20_CONFIG_NUMBER_OF_SENSORS      (1)
   /*!< Number of devices (1-n) */
@@ -23,6 +26,10 @@
 #if !defined(McuDS18B20_CONFIG_PARSE_COMMAND_ENABLED)
   #define McuDS18B20_CONFIG_PARSE_COMMAND_ENABLED (1)
     /*!< 1: shell support enabled, 0: otherwise */
+#endif
+
+#ifdef __cplusplus
+}  /* extern "C" */
 #endif
 
 #endif /* __McuDS18B20_CONFIG_H */

@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericI2C
-**     Version     : Component 01.033, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.035, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -32,6 +32,8 @@
 **         ReadBlock         - uint8_t McuGenericI2C_ReadBlock(void* data, uint16_t dataSize,...
 **         ReadAddress       - uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         WriteAddress      - uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
+**         ReadByte          - uint8_t McuGenericI2C_ReadByte(uint8_t i2cAddr, uint8_t *data);
+**         WriteByte         - uint8_t McuGenericI2C_WriteByte(uint8_t i2cAddr, uint8_t data);
 **         ReadByteAddress8  - uint8_t McuGenericI2C_ReadByteAddress8(uint8_t i2cAddr, uint8_t memAddr,...
 **         WriteByteAddress8 - uint8_t McuGenericI2C_WriteByteAddress8(uint8_t i2cAddr, uint8_t memAddr,...
 **         ReadWordAddress8  - uint8_t McuGenericI2C_ReadWordAddress8(uint8_t i2cAddr, uint8_t memAddr,...
@@ -93,6 +95,10 @@
 #include "McuGenericSWI2C.h"
 #include "McuRTOS.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define McuGenericI2C_WRITE_BUFFER_SIZE 16 /* size of internal buffer used, set in the component properties */
 
@@ -368,7 +374,42 @@ uint8_t McuGenericI2C_WriteWordAddress8(uint8_t i2cAddr, uint8_t memAddr, uint16
 ** ===================================================================
 */
 
+uint8_t McuGenericI2C_ReadByte(uint8_t i2cAddr, uint8_t *data);
+/*
+** ===================================================================
+**     Method      :  McuGenericI2C_ReadByte (component GenericI2C)
+**     Description :
+**         Read a byte from the device. This writes (S+i2cAddr+0),
+**         (Sr+i2cAddr+1),(data+P)
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         i2cAddr         - I2C Address of device
+**       * data            - Pointer to read buffer (single byte)
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuGenericI2C_WriteByte(uint8_t i2cAddr, uint8_t data);
+/*
+** ===================================================================
+**     Method      :  McuGenericI2C_WriteByte (component GenericI2C)
+**     Description :
+**         Write a byte to the device: (S+i2cAddr+0).(data+P)
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         i2cAddr         - I2C address of device
+**         data            - Data value
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
 /* END McuGenericI2C. */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif
 /* ifndef __McuGenericI2C_H */

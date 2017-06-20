@@ -7,7 +7,7 @@
 **     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **
 **     Settings    :
@@ -167,6 +167,9 @@ static void SendSeparatedStrings(const uint8_t *strA, const uint8_t *strB, uint8
 */
 void McuShell_SendCh(uint8_t ch, McuShell_StdIO_OutErr_FctType io)
 {
+  if (io==NULL) {
+    return;
+  }
   io(ch);
 }
 
@@ -190,6 +193,9 @@ void McuShell_SendCh(uint8_t ch, McuShell_StdIO_OutErr_FctType io)
  */
 void McuShell_SendStr(const uint8_t *str, McuShell_StdIO_OutErr_FctType io)
 {
+  if (io==NULL) {
+    return;
+  }
   while(*str!='\0') {
     io(*str++);
   }

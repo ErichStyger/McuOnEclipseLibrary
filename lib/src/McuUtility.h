@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Utility
-**     Version     : Component 01.154, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.157, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -77,6 +77,7 @@
 **         SetValue24LE            - void McuUtility_SetValue24LE(uint32_t data, uint8_t *dataP);
 **         SetValue32LE            - void McuUtility_SetValue32LE(uint32_t data, uint8_t *dataP);
 **         map                     - int32_t McuUtility_map(int32_t x, int32_t in_min, int32_t in_max, int32_t...
+**         map64                   - int64_t McuUtility_map64(int64_t x, int64_t in_min, int64_t in_max, int64_t...
 **         constrain               - int32_t McuUtility_constrain(int32_t val, int32_t min, int32_t max);
 **         random                  - int32_t McuUtility_random(int32_t min, int32_t max);
 **         randomSetSeed           - void McuUtility_randomSetSeed(unsigned int seed);
@@ -133,14 +134,14 @@
 #include <stddef.h> /* for size_t */
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
   McuUtility_SEP_NUM_TYPE_UINT8, /* uint8_t number type */
   McuUtility_SEP_NUM_TYPE_UINT8_HEX_NO_PREFIX /* uint8_t hex number type, no 0x prefix */
 } McuUtility_SeparatedNumberType;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 void McuUtility_strcpy(uint8_t *dst, size_t dstSize, const unsigned char *src);
 /*
@@ -1298,6 +1299,24 @@ void McuUtility_randomSetSeed(unsigned int seed);
 **         seed            - seed to be used for random number
 **                           generator
 **     Returns     : Nothing
+** ===================================================================
+*/
+
+int64_t McuUtility_map64(int64_t x, int64_t in_min, int64_t in_max, int64_t out_min, int64_t out_max);
+/*
+** ===================================================================
+**     Method      :  McuUtility_map64 (component Utility)
+**     Description :
+**         Maps a value from one range to another, using 64bit math
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         x               - value to be mapped
+**         in_min          - input range minimum value
+**         in_max          - input range maximum value
+**         out_min         - output range maximum value
+**         out_max         - 
+**     Returns     :
+**         ---             - remapped value
 ** ===================================================================
 */
 

@@ -5,10 +5,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : DS18B20
-**     Version     : Component 01.013, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-24, 06:25, # CodeGen: 182
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **
 This is a component for the Maxim DS18B20 1-Wire temperature sensor.
@@ -84,6 +84,10 @@ This is a component for the Maxim DS18B20 1-Wire temperature sensor.
 #include "McuLib.h" /* SDK and API used */
 #include "McuDS18B20config.h" /* configuration */
 #include "McuShell.h" /* Shell */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 /* sensor resolution */
@@ -223,12 +227,6 @@ void McuDS18B20_Init(void);
 ** ===================================================================
 */
 
-void McuOneWire_OnBlockReceived(void);
-
-void McuOneWire_OnSendEnd(void);
-
-void McuOneWire_OnSendedReset(void);
-
 uint8_t McuDS18B20_GetTemperatureFloat(uint8_t sensor_index, float *temperature);
 /*
 ** ===================================================================
@@ -304,6 +302,10 @@ uint8_t McuDS18B20_SearchAndAssignROMCodes(void);
 */
 
 /* END McuDS18B20. */
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 #endif
 /* ifndef __McuDS18B20_H */

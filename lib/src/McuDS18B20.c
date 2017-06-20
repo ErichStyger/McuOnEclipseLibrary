@@ -5,10 +5,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : DS18B20
-**     Version     : Component 01.013, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-24, 06:25, # CodeGen: 182
+**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
 **     Abstract    :
 **
 This is a component for the Maxim DS18B20 1-Wire temperature sensor.
@@ -152,23 +152,15 @@ static uint8_t McuDS18B20_ReadScratchpad(uint8_t sensor_index, uint8_t data[DS18
 #endif
   Device.Busy = TRUE;
   McuOneWire_SendReset();
-  while(McuOneWire_isBusy()) { /* wait */ }
 #if McuDS18B20_CONFIG_MULTIPLE_BUS_DEVICES
   McuOneWire_SendByte(RC_MATCH_ROM);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendBytes(Sensor[sensor_index].Rom, sizeof(Sensor[sensor_index].Rom));
 #else /* single device on the bus, can skip ROM code */
   McuOneWire_SendByte(RC_SKIP_ROM);
 #endif
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(FC_READ_SCRATCHPAD);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_Receive(DS18B20_NOF_SCRATCHPAD_BYTES);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(0xFF);
-  while(McuOneWire_isBusy()) { /* wait */ }
-  McuOneWire_ProgramEvent(EV_READ_TEMP);
-  while(McuOneWire_isBusy()) { /* wait */ }
   Device.Busy = FALSE;
 
   /* extract data */
@@ -469,19 +461,13 @@ uint8_t McuDS18B20_StartConversion(uint8_t sensor_index)
 #endif
   Device.Busy = TRUE;
   McuOneWire_SendReset();
-  while(McuOneWire_isBusy()) { /* wait */ }
 #if McuDS18B20_CONFIG_MULTIPLE_BUS_DEVICES
   McuOneWire_SendByte(RC_MATCH_ROM);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendBytes(Sensor[sensor_index].Rom, DS18B20_ROM_CODE_SIZE);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(FC_CONVERT_T);
-  while(McuOneWire_isBusy()) { /* wait */ }
 #else /* only single device on the bus, can skip ROM code */
   McuOneWire_SendByte(RC_SKIP_ROM);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(FC_CONVERT_T);
-  while(McuOneWire_isBusy()) { /* wait */ }
 #endif
   Device.Busy = FALSE;
 #if McuDS18B20_CONFIG_READ_AUTO
@@ -490,9 +476,6 @@ uint8_t McuDS18B20_StartConversion(uint8_t sensor_index)
   if (res!=ERR_OK) {
     return res;
   }
-#else
-  McuOneWire_ProgramEvent(EV_NO_BUSY);
-  while(McuOneWire_isBusy()) { /* wait */ }
 #endif
   return ERR_OK;
 }
@@ -534,35 +517,21 @@ uint8_t McuDS18B20_SetResolution(uint8_t sensor_index, DS18B20_ResolutionBits re
   config = (((uint8_t)(resolution<<DS18B20_CONFIG_SHIFT_R0))|DS18B20_CONFIG_ONE_MASK); /* build proper configuration register mask */
   Device.Busy = TRUE;
   McuOneWire_SendReset();
-  while(McuOneWire_isBusy()) { /* wait */ }
 #if McuDS18B20_CONFIG_MULTIPLE_BUS_DEVICES
   Device.WorkSensor = sensor_index;
   McuOneWire_SendByte(RC_MATCH_ROM);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendBytes(Sensor[sensor_index].Rom, DS18B20_ROM_CODE_SIZE);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(FC_WRITE_SCRATCHPAD);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(0x01);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(0x10);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(config);
-  while(McuOneWire_isBusy()) { /* wait */ }
 #else /* only single device on the bus, can skip ROM code */
   McuOneWire_SendByte(RC_SKIP_ROM);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(FC_WRITE_SCRATCHPAD);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(0x01);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(0x10);
-  while(McuOneWire_isBusy()) { /* wait */ }
   McuOneWire_SendByte(config);
-  while(McuOneWire_isBusy()) { /* wait */ }
 #endif
-  McuOneWire_ProgramEvent(EV_NO_BUSY);
-  while(McuOneWire_isBusy()) { /* wait */ }
   Device.Busy = FALSE;
   return ERR_OK;
 }
@@ -844,45 +813,6 @@ void McuDS18B20_Init(void)
 
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_OnBlockReceived (component DS18B20)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void McuOneWire_OnBlockReceived(void)
-{
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
-**     Method      :  McuDS18B20_OnSendEnd (component DS18B20)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void McuOneWire_OnSendEnd(void)
-{
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
-**     Method      :  McuDS18B20_OnSendedReset (component DS18B20)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void McuOneWire_OnSendedReset(void)
-{
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
 **     Method      :  McuDS18B20_SearchAndAssignROMCodes (component DS18B20)
 **     Description :
 **         Scans the devices on the bus and assigns the ROM codes to
@@ -898,13 +828,11 @@ uint8_t McuDS18B20_SearchAndAssignROMCodes(void)
   bool found;
   int i, nofFound = 0;
 
-  *handled = TRUE;
   McuOneWire_ResetSearch(); /* reset search fields */
   McuOneWire_TargetSearch(DS18B20_FAMILY_CODE); /* only search for DS18B20 */
   do {
     found = McuOneWire_Search(&rom[0], TRUE);
     if (found) {
-      buf[0] = '\0';
       /* store ROM code in device list */
       for(i=0;i<McuOneWire_ROM_CODE_SIZE;i++) {
         Sensor[nofFound].Rom[i] = rom[i];
@@ -931,3 +859,4 @@ uint8_t McuDS18B20_SearchAndAssignROMCodes(void)
 **
 ** ###################################################################
 */
+
