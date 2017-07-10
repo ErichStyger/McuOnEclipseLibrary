@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.196, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-05, 07:35, # CodeGen: 172
+**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
 **     Abstract    :
 **
 **     Settings    :
@@ -181,6 +181,8 @@ typedef McuSharpMemoryDisplay_DisplayOrientation McuGDisplay_DisplayOrientation;
     McuGDisplay_BUF_BYTE(x,y)
 #elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==16
   /* no byte access used */
+#elif McuGDisplay_CONFIG_NOF_BITS_PER_PIXEL==24
+  /* Neopixels, no byte access used */
 #else
   #error "not supported"
 #endif

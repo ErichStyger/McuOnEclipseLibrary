@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.195, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.196, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-04-08, 19:16, # CodeGen: 170
+**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
 **     Abstract    :
 **
 **     Settings    :

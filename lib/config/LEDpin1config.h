@@ -41,4 +41,11 @@
   /*!< 1: perform pin muxing in Init(), 0: do not do pin muxing */
 #endif
 
+#ifndef LEDpin1_CONFIG_PULL_RESISTOR
+  #define LEDpin1_CONFIG_PULL_RESISTOR  0
+  /*!< pull resistor setting. 0: no pull resistor, 1: pull-up, 2: pull-down, 3: pull-up or no pull, 4: pull-down or no pull: 4: autoselect-pull */
+#endif
+
+
+
 #endif /* __LEDpin1_CONFIG_H */

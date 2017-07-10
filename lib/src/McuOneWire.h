@@ -5,10 +5,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : OneWire
-**     Version     : Component 01.149, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.151, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
+**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
 **     Abstract    :
 **          This is a component implementing the 1-Wire protocol.
 **     Settings    :
