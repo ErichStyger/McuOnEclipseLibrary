@@ -9,7 +9,7 @@
 #define __McuKinetisTools_CONFIG_H
 
 #if !defined(McuKinetisTools_CONFIG_PARSE_COMMAND_ENABLED)
-  #define McuKinetisTools_CONFIG_PARSE_COMMAND_ENABLED  1
+  #define McuKinetisTools_CONFIG_PARSE_COMMAND_ENABLED  (1)
     /*!< 1: shell support enabled, 0: otherwise */
 #endif
 

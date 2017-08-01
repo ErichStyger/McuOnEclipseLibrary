@@ -7,7 +7,7 @@
 **     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-06, 16:30, # CodeGen: 178
+**     Date/Time   : 2017-07-27, 17:21, # CodeGen: 191
 **     Abstract    :
 **
 **     Settings    :
@@ -155,10 +155,12 @@ void McuKinetisTools_SoftwareReset(void)
      To write to this register, you must write 0x5FA to the VECTKEY field, otherwise the processor ignores the write.
      SYSRESETREQ will cause a system reset asynchronously, so need to wait afterwards.
    */
+#if McuKinetisTools_CONFIG_CPU_IS_KINETIS
 #if McuLib_CONFIG_PEX_SDK_USED
   SCB_AIRCR = SCB_AIRCR_VECTKEY(0x5FA) | SCB_AIRCR_SYSRESETREQ_MASK;
 #else
   SCB->AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
+#endif
 #endif
   for(;;) {
     /* wait until reset */
@@ -184,6 +186,7 @@ void McuKinetisTools_SoftwareReset(void)
  */
 uint8_t McuKinetisTools_UIDGet(McuKinetisTools_UID *uid)
 {
+#if McuKinetisTools_CONFIG_CPU_IS_KINETIS
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
   sim_uid_t tmp;
   int i, j;
@@ -267,6 +270,9 @@ uint8_t McuKinetisTools_UIDGet(McuKinetisTools_UID *uid)
 #endif
 #endif /* SDK V2.0 */
   return ERR_OK;
+#else
+  return ERR_FAILED;
+#endif
 }
 
 /*
@@ -385,6 +391,7 @@ uint8_t McuKinetisTools_ParseCommand(const unsigned char* cmd, bool *handled, co
 */
 McuKinetisTools_ConstCharPtr McuKinetisTools_GetKinetisFamilyString(void)
 {
+#if McuKinetisTools_CONFIG_CPU_IS_KINETIS
 #if McuLib_CONFIG_CORTEX_M==0
   #ifdef SIM_SDID /* normal Kinetis define this */
     int32_t val;
@@ -393,7 +400,7 @@ McuKinetisTools_ConstCharPtr McuKinetisTools_GetKinetisFamilyString(void)
     if (val>=0 && val<=(int32_t)(sizeof(KinetisM0FamilyStrings)/sizeof(KinetisM0FamilyStrings[0]))) {
       return KinetisM0FamilyStrings[val];
     } else {
-      return (McuKinetisTools_ConstCharPtr)"M0 Family Id out of bounds!";
+      return (McuKinetisTools_ConstCharPtr)"M0 Family ID out of bounds!";
     }
   #elif defined(SIM_SRSID_FAMID) /* MKE02Z4 defines this, hopefully all other KE too... */
     return "KE0x Family"; /* 0000 only KE0x supported */
@@ -424,6 +431,9 @@ McuKinetisTools_ConstCharPtr McuKinetisTools_GetKinetisFamilyString(void)
 #else
   #error "Unknown architecture!"
   return (McuKinetisTools_ConstCharPtr)"ERROR";
+#endif
+#else
+  return (McuKinetisTools_ConstCharPtr)"NOT KINETIS";
 #endif
 }
 

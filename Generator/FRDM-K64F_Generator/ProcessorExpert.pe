@@ -3,7 +3,7 @@
   <Header>
     <Name>FRDM-K64F_Generator</Name>
     <SavedBy>Erich Styger Local</SavedBy>
-    <ModificationStamp>135</ModificationStamp>
+    <ModificationStamp>146</ModificationStamp>
     <Date>2016-11-25</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>188</ProjectCompNumb>
+    <ProjectCompNumb>196</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -6256,7 +6256,7 @@
           <ItemSymbol>C_HeapSize</ItemSymbol>
           <ReadOnly>false</ReadOnly>
           <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-          <Value>0</Value>
+          <Value>4096</Value>
           <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
           <Base>HEX</Base>
         </ItemState>
@@ -6850,7 +6850,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.081</BeanVersion>
+    <BeanVersion>01.082</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -7030,6 +7030,24 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <Value>McuShell</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>FolderGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>SeggerRTTSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>SEGGER_RTT</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>SeggerRTTConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>SEGGER_RTT</Value>
       </ItemState>
     </Properties>
     <Methods>
@@ -8252,7 +8270,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.052</BeanVersion>
+    <BeanVersion>01.053</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -8375,13 +8393,13 @@
         <ItemSymbol>SystemViewSrcFolderName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>SEGGER</Value>
+        <Value>SEGGER_Sysview</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>SystemViewConfigFolderName</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>SEGGER</Value>
+        <Value>SEGGER_SysView</Value>
       </ItemState>
     </Properties>
     <Methods>
