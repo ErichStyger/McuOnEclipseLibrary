@@ -96,7 +96,7 @@
 /* --------------------------------------------------- */
 /* macros dealing with tick counter */
 #if configSYSTICK_USE_LOW_POWER_TIMER
-  #if McuLib_CONFIG_NXP_SDK_USED
+  #if !McuLib_CONFIG_PEX_SDK_USED
     /*! \todo */
     #define LPTMR0_BASE_PTR             LPTMR0  /* low power timer address base */
     #define configLOW_POWER_TIMER_VECTOR_NUMBER   LPTMR0_IRQn /* low power timer IRQ number */
@@ -128,11 +128,11 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
 #if configSYSTICK_USE_LOW_POWER_TIMER
   #define TICK_NOF_BITS               16
   #define COUNTS_UP                   1 /* LPTMR is counting up */
-  #if McuLib_CONFIG_NXP_SDK_USED
+  #if !McuLib_CONFIG_PEX_SDK_USED
     #define SET_TICK_DURATION(val)      LPTMR_SetTimerPeriod(LPTMR0_BASE_PTR, val);
     #define GET_TICK_DURATION()         LPTMR0_BASE_PTR->CNR /*! \todo SDK has no access method for this */
     #define GET_TICK_CURRENT_VAL(addr)  *(addr)=LPTMR_GetCurrentTimerCount(LPTMR0_BASE_PTR)
-  #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+  #else
     #define SET_TICK_DURATION(val)      LPTMR_PDD_WriteCompareReg(LPTMR0_BASE_PTR, val)
     #define GET_TICK_DURATION()         LPTMR_PDD_ReadCompareReg(LPTMR0_BASE_PTR)
     #define GET_TICK_CURRENT_VAL(addr)  *(addr)=LPTMR_PDD_ReadCounterReg(LPTMR0_BASE_PTR)
@@ -171,10 +171,10 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
   #if 1
     #if configSYSTICK_USE_LOW_POWER_TIMER
       /* using Low Power Timer */
-      #if McuLib_CONFIG_NXP_SDK_USED
+      #if CONFIG_PEX_SDK_USEDMcuLib_CONFIG_PEX_SDK_USED
         #define LPTMR_CSR_TCF_MASK           0x80u
         #define TICK_INTERRUPT_HAS_FIRED()   (LPTMR0_BASE_PTR->CSR&LPTMR_CSR_TCF_MASK)!=0/*! \todo */  /* returns TRUE if tick interrupt had fired */
-     #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_PROCESSOR_EXPERT
+      #else
         #define TICK_INTERRUPT_HAS_FIRED()   (LPTMR_PDD_GetInterruptFlag(LPTMR0_BASE_PTR)!=0)  /* returns TRUE if tick interrupt had fired */
       #endif
       #define TICK_INTERRUPT_FLAG_RESET()  /* not needed */
@@ -775,7 +775,7 @@ void vPortStopTickTimer(void) {
 #if configCPU_FAMILY_IS_ARM_FPU(configCPU_FAMILY) /* has floating point unit */
 #if (configCOMPILER==configCOMPILER_ARM_GCC)
 /* added noinline attribute to prevent the GNU linker to optimize the following function. That symbol is required for the FreeRTOS GDB thread awareness by Segger */
-void __attribute__ ((noinline)) vPortEnableVFP(void) {
+void __attribute__ ((noinline, used)) vPortEnableVFP(void) {
   /* The FPU enable bits are in the CPACR. */
   __asm volatile (
     "  ldr.w r0, =0xE000ED88  \n" /* CAPCR, 0xE000ED88 */
@@ -980,7 +980,7 @@ portLONG uxGetTickCounterValue(void) {
 }
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_KEIL)
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 #if configSYSTICK_USE_LOW_POWER_TIMER
 void LPTMR0_IRQHandler(void) { /* low power timer */
 #else
@@ -1023,7 +1023,7 @@ void vPortTickHandler(void) {
 #endif
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_GCC)
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 #if configSYSTICK_USE_LOW_POWER_TIMER
 void LPTMR0_IRQHandler(void) { /* low power timer */
 #else
@@ -1126,12 +1126,21 @@ __asm void vPortStartFirstTask(void) {
 /* Need the 'noinline', as latest gcc with -O3 tries to inline it, and gives error message: "Error: symbol `pxCurrentTCBConst2' is already defined" */
 __attribute__((noinline))
 void vPortStartFirstTask(void) {
-#if configUSE_TOP_USED_PRIORITY
-  /* only needed for openOCD thread awareness. It needs the symbol uxTopUsedPriority present after linking */
+#if configUSE_TOP_USED_PRIORITY || configLTO_HELPER
+  /* only needed for openOCD or Segger FreeRTOS thread awareness. It needs the symbol uxTopUsedPriority present after linking */
   {
     extern volatile const int uxTopUsedPriority;
     __attribute__((__unused__)) volatile uint8_t dummy_value_for_openocd;
     dummy_value_for_openocd = uxTopUsedPriority;
+  }
+#endif
+#if( configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H == 1 && configUSE_TRACE_FACILITY==1)
+  /* reference FreeRTOSDebugConfig, otherwise it might get removed by the linker or optimizations */
+  {
+    extern const uint8_t FreeRTOSDebugConfig[];
+    if (FreeRTOSDebugConfig[0]==0) { /* just use it, so the linker cannot remove FreeRTOSDebugConfig[] */
+      for(;;); /* FreeRTOSDebugConfig[0] should always be non-zero, so this should never happen! */
+    }
   }
 #endif
 #if configHEAP_SCHEME_IDENTIFICATION
@@ -1182,7 +1191,7 @@ void vPortStartFirstTask(void) {
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_KEIL)
 #if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY) /* Cortex M4/M7 */
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __asm void SVC_Handler(void) {
 #else
 __asm void vPortSVCHandler(void) {
@@ -1211,7 +1220,7 @@ __asm void vPortSVCHandler(void) {
 }
 /*-----------------------------------------------------------*/
 #elif configCPU_FAMILY_IS_ARM_M0(configCPU_FAMILY) /* Cortex M0+ and Keil */
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __asm void SVC_Handler(void) {
 #else
 __asm void vPortSVCHandler(void) {
@@ -1223,7 +1232,7 @@ __asm void vPortSVCHandler(void) {
 #endif
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_GCC)
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __attribute__ ((naked)) void SVC_Handler(void) {
 #else
 __attribute__ ((naked)) void vPortSVCHandler(void) {
@@ -1260,7 +1269,7 @@ __asm volatile (
 /*-----------------------------------------------------------*/
 #if (configCOMPILER==configCOMPILER_ARM_KEIL)
 #if configCPU_FAMILY_IS_ARM_M4_M7(configCPU_FAMILY) /* Cortex M4 or M7 */
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __asm void PendSV_Handler(void) {
 #else
 __asm void vPortPendSVHandler(void) {
@@ -1304,7 +1313,7 @@ __asm void vPortPendSVHandler(void) {
   nop
 }
 #elif configCPU_FAMILY_IS_ARM_M0(configCPU_FAMILY) /* Keil: Cortex M0+ */
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __asm void PendSV_Handler(void) {
 #else
 __asm void vPortPendSVHandler(void) {
@@ -1359,7 +1368,7 @@ __attribute__ ((naked)) void vPortPendSVHandler_native(void);
 __attribute__ ((naked)) void PendSV_Handler_jumper(void);
 
 __attribute__ ((naked)) void vPortPendSVHandler_native(void) {
-#elif McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#elif !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __attribute__ ((naked)) void PendSV_Handler(void) {
 #else
 __attribute__ ((naked)) void vPortPendSVHandler(void) {
@@ -1486,7 +1495,7 @@ __attribute__ ((naked)) void PendSV_Handler_jumper(void) {
   __asm volatile("b vPortPendSVHandler_native \n");
 }
 
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
 __attribute__ ((naked)) void PendSV_Handler(void) {
 #else
 __attribute__ ((naked)) void vPortPendSVHandler(void) {

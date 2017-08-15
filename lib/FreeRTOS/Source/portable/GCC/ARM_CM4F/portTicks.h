@@ -82,7 +82,7 @@
 #include "FreeRTOSConfig.h"
 #include "portmacro.h"
 
-#if McuLib_CONFIG_NXP_SDK_USED
+#if !McuLib_CONFIG_PEX_SDK_USED
   extern uint32_t SystemCoreClock; /* in Kinetis SDK, this contains the system core clock speed */
 #endif
 

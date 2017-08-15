@@ -362,7 +362,7 @@ void vPortYieldHandler(void);
 #endif
 
 /* Prototypes for interrupt service handlers */
-#if McuLib_CONFIG_NXP_SDK_USED /* the SDK expects different interrupt handler names */
+#if !McuLib_CONFIG_PEX_SDK_USED /* the SDK expects different interrupt handler names */
   void SVC_Handler(void); /* SVC interrupt handler */
   void PendSV_Handler(void); /* PendSV interrupt handler */
   void SysTick_Handler(void); /* Systick interrupt handler */

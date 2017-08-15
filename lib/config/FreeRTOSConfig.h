@@ -111,8 +111,8 @@
 #define configTICK_RATE_HZ                        (100) /* frequency of tick interrupt */
 #define configSYSTICK_USE_LOW_POWER_TIMER         1 /* If using Kinetis Low Power Timer (LPTMR) instead of SysTick timer */
 #define configSYSTICK_LOW_POWER_TIMER_CLOCK_HZ    1000 /* 1 kHz LPO timer. Set to 1 if not used */
-#if McuLib_CONFIG_NXP_SDK_USED
-/* The SDK variable SystemCoreClock contains the current clock speed */
+#if McuLib_CONFIG_NXP_SDK_USED || McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_GENERIC
+/* The CMSIS variable SystemCoreClock contains the current clock speed */
   extern uint32_t SystemCoreClock;
   #define configCPU_CLOCK_HZ                      SystemCoreClock /* CPU clock frequency */
   #define configBUS_CLOCK_HZ                      SystemCoreClock /* Bus clock frequency */

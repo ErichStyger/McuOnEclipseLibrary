@@ -75,7 +75,7 @@ Revision: $Rev: 3734 $
 #define SYSVIEW_USING_PEX                         (McuLib_CONFIG_PEX_SDK_USED) /* 1: project is a Kinetis SDK Processor Expert project; 0: No Kinetis Processor Expert project */
 #define SYSVIEW_USING_FREERTOS                    SEGGER_RTT_FREERTOS_PRESENT /* 1: using FreeRTOS; 0: Bare metal */
 
-#if !SYSVIEW_USING_KINETIS_SDK
+#if SYSVIEW_USING_PEX
   #include "Cpu.h"
 #endif
 #if SYSVIEW_USING_FREERTOS

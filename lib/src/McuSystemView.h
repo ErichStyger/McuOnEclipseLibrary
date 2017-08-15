@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerSystemView
-**     Version     : Component 01.052, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.053, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-19, 09:33, # CodeGen: 161
+**     Date/Time   : 2017-08-02, 09:46, # CodeGen: 219
 **     Abstract    :
 **
 **     Settings    :
@@ -28,8 +28,8 @@
 **            Up Buffer size                               : 1024
 **          SDK                                            : McuLib
 **          Source Folders                                 : 
-**            Source Folder                                : SEGGER
-**            Config Folder                                : SEGGER
+**            Source Folder                                : SEGGER_Sysview
+**            Config Folder                                : SEGGER_SysView
 **     Contents    :
 **         OnUserStart    - void McuSystemView_OnUserStart(unsigned UserId);
 **         OnUserStop     - void McuSystemView_OnUserStop(unsigned UserId);

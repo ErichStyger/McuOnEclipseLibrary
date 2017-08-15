@@ -7,7 +7,7 @@
 **     Version     : Component 01.157, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
+**     Date/Time   : 2017-08-05, 10:40, # CodeGen: 222
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -1302,7 +1302,7 @@ void McuUtility_randomSetSeed(unsigned int seed);
 ** ===================================================================
 */
 
-#ifndef __HIWARE__ /* HIWARE compiler does not support 64bit data types */
+#ifdef __GNU__ /* HIWARE compiler does not support 64bit data types */
 int64_t McuUtility_map64(int64_t x, int64_t in_min, int64_t in_max, int64_t out_min, int64_t out_max);
 #endif
 /*

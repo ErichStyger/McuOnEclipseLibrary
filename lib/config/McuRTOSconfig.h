@@ -51,6 +51,11 @@
    /*!< 1: enable special GDB stack backtrace debug helper; 0: disabled */
 #endif
 
+#ifndef configLTO_HELPER
+  #define configLTO_HELPER                        (0 && configCPU_FAMILY_IS_ARM(configCPU_FAMILY) && (configCOMPILER==configCOMPILER_ARM_GCC))
+   /*!< 1: enable special GNU Link Time Optimizer (-lto) debug helper code; 0: disabled */
+#endif
+
 #ifndef configHEAP_SCHEME_IDENTIFICATION
   #define configHEAP_SCHEME_IDENTIFICATION        (0 && configCPU_FAMILY_IS_ARM(configCPU_FAMILY))
    /*!< 1: use constant freeRTOSMemoryScheme to identify memory scheme; 0: no constant used */

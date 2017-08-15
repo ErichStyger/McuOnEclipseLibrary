@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.546, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.549, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
+**     Date/Time   : 2017-08-04, 08:00, # CodeGen: 220
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -36,6 +36,7 @@
 **          Use Trace Facility                             : yes
 **          Debug Helpers                                  : 
 **            Enable GDB Debug Helper                      : no
+**            Enable LinkTimeOptimizer Helper              : no
 **            uxTopUsedPriority                            : no
 **            Heap Indication Constant                     : no
 **            Task C Additions                             : no
