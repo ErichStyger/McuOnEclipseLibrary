@@ -1,6 +1,8 @@
 #ifndef __McuRTOS_CONFIG_H
 #define __McuRTOS_CONFIG_H
 
+#include "McuLib.h" /* SDK and API used */
+
 /* -------------------------------------------------------------------- */
 /* Macros to identify the compiler used: */
 #define configCOMPILER_ARM_GCC                    1 /* GNU ARM gcc compiler */
@@ -34,8 +36,24 @@
 #define configCPU_FAMILY_IS_ARM_FPU(fam)          (((fam)==configCPU_FAMILY_ARM_M4F) || ((fam)==configCPU_FAMILY_ARM_M7F))
 #define configCPU_FAMILY_IS_ARM(fam)              (configCPU_FAMILY_IS_ARM_M0(fam) || configCPU_FAMILY_IS_ARM_M4(fam) || configCPU_FAMILY_IS_ARM_M7(fam))
 
-#define configCPU_FAMILY                          configCPU_FAMILY_ARM_M4F
-
+#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
+  /* determine core based on library configuration */
+  #if McuLib_CONFIG_CORTEX_M==0
+    #define configCPU_FAMILY                      configCPU_FAMILY_ARM_M0P
+  #elif McuLib_CONFIG_CORTEX_M==4 && McuLib_CONFIG_FPU_PRESENT
+    #define configCPU_FAMILY                      configCPU_FAMILY_ARM_M4F
+  #elif McuLib_CONFIG_CORTEX_M==4
+    #define configCPU_FAMILY                      configCPU_FAMILY_ARM_M4
+  #elif McuLib_CONFIG_CORTEX_M==7 && McuLib_CONFIG_FPU_PRESENT
+    #define configCPU_FAMILY                      configCPU_FAMILY_ARM_M7F
+  #elif McuLib_CONFIG_CORTEX_M==7
+    #define configCPU_FAMILY                      configCPU_FAMILY_ARM_M7
+  #else
+    #error "unsupported configuaration!"
+  #endif
+#else
+  #define configCPU_FAMILY                        configCPU_FAMILY_ARM_M4F
+#endif
 /* MPU support: portUSING_MPU_WRAPPERS is defined (or not) in portmacro.h and turns on MPU support. Currently only supported for ARM Cortex-M4/M3 ports */
 #ifndef configUSE_MPU_SUPPORT
   #define configUSE_MPU_SUPPORT                   (0 && configCPU_FAMILY_IS_ARM_M4(configCPU_FAMILY))
@@ -80,5 +98,11 @@
   #define configLINKER_HEAP_SIZE_SYMBOL           __heap_size
     /*!< Linker symbol used to denote the size of the heap, used for heap memory scheme 6 (newlib) */
 #endif
+
+#ifndef configUSE_SHELL
+  #define configUSE_SHELL                         (1)
+   /*!< 1: enable Shell and command line support; 0: disabled */
+#endif
+
 
 #endif /* __McuRTOS_CONFIG_H */

@@ -70,6 +70,10 @@
 #ifndef PORTTICKS_H_
 #define PORTTICKS_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  *  Interface header file to the Processor Expert Tick counter.
  *  This file is used to access the interface, especially for performance
@@ -140,6 +144,10 @@ portLONG uxGetTickCounterValue(void);
   #define TRC_HWTC_FREQ_HZ            FREERTOS_HWTC_FREQ_HZ
 #endif
 #endif /* configUSE_TRACE_HOOKS */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PORTTICKS_H_ */
 

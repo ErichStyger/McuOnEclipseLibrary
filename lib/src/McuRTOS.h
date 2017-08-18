@@ -7,7 +7,7 @@
 **     Version     : Component 01.549, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-04, 08:00, # CodeGen: 220
+**     Date/Time   : 2017-08-18, 14:15, # CodeGen: 228
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -269,12 +269,12 @@
 
 /* MODULE McuRTOS. */
 #include "McuLib.h" /* SDK and API used */
+#include "FreeRTOSConfig.h"
 #include "McuRTOSconfig.h" /* configuration */
 
-/* Include inherited components */
-#include "McuLib.h"
-#include "McuShell.h"
-#include "McuUtility.h"
+#if configUSE_SHELL
+  #include "McuShell.h"
+#endif
 
 /* other includes needed */
 #include "FreeRTOS.h"
@@ -285,7 +285,7 @@
 #include <stddef.h>                    /* for size_t type */
 
 /* Macro for shell support */
-#define McuRTOS_PARSE_COMMAND_ENABLED        1  /* set to 1 if method ParseCommand() is present, 0 otherwise */
+#define McuRTOS_PARSE_COMMAND_ENABLED        (configUSE_SHELL) /* set to 1 if method ParseCommand() is present, 0 otherwise */
 #define McuRTOS_GENERATE_PEX_RTOS_MACROS     1  /* set to 1 to generate the RTOS macros PEX_RTOS_INIT() and PEX_RTOS_START() */
 
 /* Macros used by Processor Expert */
@@ -1701,6 +1701,7 @@ extern "C" {
 ** ===================================================================
 */
 
+#if configUSE_SHELL
 uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
 /*
 ** ===================================================================
@@ -1717,6 +1718,7 @@ uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const McuS
 **         ---             - Error code
 ** ===================================================================
 */
+#endif
 
 void McuRTOS_Init(void);
 /*

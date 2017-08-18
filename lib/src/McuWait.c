@@ -7,14 +7,14 @@
 **     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-17, 06:33, # CodeGen: 181
+**     Date/Time   : 2017-08-18, 13:32, # CodeGen: 226
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
 **          SDK                                            : McuLib
 **          Use Cycle Counter                              : Enabled
-**            Cortex Tools                                 : McuKinetisTools
+**            Cortex Tools                                 : McuArmTools
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
 **          RTOS                                           : Enabled
@@ -155,8 +155,8 @@ void McuWait_WaitCycles(uint16_t cycles)
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   uint32_t counter = cycles;
 
-  counter += McuKinetisTools_GetCycleCounter();
-  while(McuKinetisTools_GetCycleCounter()<counter) {
+  counter += McuArmTools_GetCycleCounter();
+  while(McuArmTools_GetCycleCounter()<counter) {
     /* wait */
   }
 #else
@@ -188,8 +188,8 @@ void McuWait_WaitLongCycles(uint32_t cycles)
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   uint32_t counter = cycles;
 
-  counter += McuKinetisTools_GetCycleCounter();
-  while(McuKinetisTools_GetCycleCounter()<counter) {
+  counter += McuArmTools_GetCycleCounter();
+  while(McuArmTools_GetCycleCounter()<counter) {
     /* wait */
   }
 #else
@@ -283,9 +283,9 @@ void McuWait_Init(void)
 {
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   /* init cycle counter */
-  McuKinetisTools_InitCycleCounter();
-  McuKinetisTools_ResetCycleCounter();
-  McuKinetisTools_EnableCycleCounter();
+  McuArmTools_InitCycleCounter();
+  McuArmTools_ResetCycleCounter();
+  McuArmTools_EnableCycleCounter();
 #endif
 }
 
@@ -302,7 +302,7 @@ void McuWait_DeInit(void)
 {
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   /* disable hardware cycle counter */
-  McuKinetisTools_DisableCycleCounter();
+  McuArmTools_DisableCycleCounter();
 #endif
 }
 

@@ -7,7 +7,7 @@
 **     Version     : Component 01.196, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
+**     Date/Time   : 2017-08-18, 11:04, # CodeGen: 224
 **     Abstract    :
 **
 **     Settings    :
@@ -97,6 +97,11 @@
 /* Include inherited components */
 #include "McuLib.h"
 #include "McuSharpMemoryDisplay.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 
 
@@ -591,6 +596,10 @@ void McuGDisplay_Init(void);
 */
 
 /* END McuGDisplay. */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 /* ifndef __McuGDisplay_H */

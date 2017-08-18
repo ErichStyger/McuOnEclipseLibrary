@@ -7,7 +7,7 @@
 **     Version     : Component 01.549, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-04, 08:00, # CodeGen: 220
+**     Date/Time   : 2017-08-18, 13:20, # CodeGen: 225
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -274,6 +274,7 @@
 #endif
 
 
+#if configUSE_SHELL
 static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
   #define SHELL_MAX_NOF_TASKS 16 /* maximum number of tasks, as specified in the properties */
   UBaseType_t nofTasks, i;
@@ -536,7 +537,9 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
   } /* if */
   return res;
 }
+#endif
 
+#if configUSE_SHELL
 static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   uint8_t buf[16];
 
@@ -556,13 +559,16 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
 #endif
   return ERR_OK;
 }
+#endif
 
+#if configUSE_SHELL
 static uint8_t PrintHelp(const McuShell_StdIOType *io) {
   McuShell_SendHelpStr((unsigned char*)"McuRTOS", (unsigned char*)"Group of McuRTOS commands\r\n", io->stdOut);
   McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
   McuShell_SendHelpStr((unsigned char*)"  tasklist", (unsigned char*)"Print tasklist\r\n", io->stdOut);
   return ERR_OK;
 }
+#endif
 
 /*
 ** ===================================================================
@@ -2135,6 +2141,7 @@ bool McuRTOS_xSemaphoreTakeFromISR(xSemaphoreHandle xSemaphore, signed_portBASE_
 **         ---             - Error code
 ** ===================================================================
 */
+#if configUSE_SHELL
 uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io)
 {
   if (McuUtility_strcmp((char*)cmd, McuShell_CMD_HELP)==0 || McuUtility_strcmp((char*)cmd, "McuRTOS help")==0) {
@@ -2149,6 +2156,7 @@ uint8_t McuRTOS_ParseCommand(const unsigned char *cmd, bool *handled, const McuS
   }
   return ERR_OK;
 }
+#endif
 
 /*
 ** ===================================================================

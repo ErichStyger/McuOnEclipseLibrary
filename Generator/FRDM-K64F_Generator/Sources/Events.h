@@ -40,7 +40,7 @@
 #include "McuCriticalSection.h"
 #include "McuRingbuffer.h"
 #include "McuHardFault.h"
-#include "McuKinetisTools.h"
+#include "McuArmTools.h"
 #include "McuRTT.h"
 #include "McuShell.h"
 #include "McuSystemView.h"
