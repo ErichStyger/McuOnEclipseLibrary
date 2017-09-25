@@ -265,6 +265,23 @@ void McuDS18B20_OnRomRead(uint8_t sensor_index, uint8_t *rom_code);
 **     Returns     : Nothing
 ** ===================================================================
 */
+void McuRTOS_vOnPreSleepProcessing(portTickType expectedIdleTicks);
+/*
+** ===================================================================
+**     Event       :  McuRTOS_vOnPreSleepProcessing (module Events)
+**
+**     Component   :  McuRTOS [FreeRTOS]
+**     Description :
+**         Used in tickless idle mode only, but required in this mode.
+**         Hook for the application to enter low power mode.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         expectedIdleTicks - expected idle
+**                           time, in ticks
+**     Returns     : Nothing
+** ===================================================================
+*/
+
 /* END Events */
 
 #ifdef __cplusplus
