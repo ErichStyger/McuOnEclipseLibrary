@@ -7,7 +7,7 @@
 **     Version     : Component 01.549, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-09-25, 20:33, # CodeGen: 237
+**     Date/Time   : 2017-10-16, 18:32, # CodeGen: 238
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -286,6 +286,10 @@
 #include "event_groups.h"              /* event group API */
 #include "timers.h"                    /* timer module API */
 #include <stddef.h>                    /* for size_t type */
+
+#if configUSE_PERCEPIO_TRACE_HOOKS
+  #include "McuPercepio.h" /* Interface to Percpio Trace */
+#endif
 
 /* Macro for shell support */
 #define McuRTOS_PARSE_COMMAND_ENABLED        (configUSE_SHELL) /* set to 1 if method ParseCommand() is present, 0 otherwise */

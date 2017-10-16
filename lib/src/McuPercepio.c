@@ -7,7 +7,7 @@
 **     Version     : Component 01.127, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
+**     Date/Time   : 2017-10-16, 18:32, # CodeGen: 238
 **     Abstract    :
 **
 **     Settings    :
@@ -598,10 +598,10 @@ void McuPercepio_vTraceSetMutexName(void *mutex, char *name)
 */
 void McuPercepio_Startup(void)
 {
-#if configUSE_TRACE_HOOKS /* FreeRTOS using Percepio Trace */
+#if configUSE_PERCEPIO_TRACE_HOOKS /* FreeRTOS using Percepio Trace */
   vTraceSetFrequency(configSYSTICK_CLOCK_HZ);
   vTraceEnable(McuPercepio_CONFIG_START_TRACE_IN_STARTUP_MODE); /* snapshot trace, from startup */
-#endif /* configUSE_TRACE_HOOKS */
+#endif /* configUSE_PERCEPIO_TRACE_HOOKS */
 }
 
 /* END McuPercepio. */
