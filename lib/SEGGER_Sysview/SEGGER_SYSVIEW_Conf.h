@@ -52,14 +52,14 @@
 *                                                                    *
 **********************************************************************
 *                                                                    *
-*       SystemView version: V2.42                                    *
+*       SystemView version: V2.52a                                    *
 *                                                                    *
 **********************************************************************
 -------------------------- END-OF-HEADER -----------------------------
 
 File    : SEGGER_SYSVIEW_Conf.h
 Purpose : SEGGER SystemView configuration.
-Revision: $Rev: 5927 $
+Revision: $Rev: 6249 $
 */
 
 #ifndef SEGGER_SYSVIEW_CONF_H
@@ -184,7 +184,7 @@ Revision: $Rev: 5927 $
   #if defined(__ICCARM__)
     #define SEGGER_SYSVIEW_GET_INTERRUPT_ID()   (__get_IPSR())                  // Workaround for IAR, which might do a byte-access to 0xE000ED04. Read IPSR instead.
   #else
-  #define SEGGER_SYSVIEW_GET_INTERRUPT_ID()   ((*(U32 *)(0xE000ED04)) & 0x3F)   // Get the currently active interrupt Id. (i.e. read Cortex-M ICSR[5:0] = active vector)
+    #define SEGGER_SYSVIEW_GET_INTERRUPT_ID()   ((*(U32 *)(0xE000ED04)) & 0x3F) // Get the currently active interrupt Id. (i.e. read Cortex-M ICSR[5:0] = active vector)
   #endif
 #else
   #define SEGGER_SYSVIEW_GET_INTERRUPT_ID()   SEGGER_SYSVIEW_X_GetInterruptId() // Get the currently active interrupt Id from the user-provided function.
@@ -192,6 +192,8 @@ Revision: $Rev: 5927 $
 
 #if 1 /* << EST */
   uint32_t SEGGER_uxGetTickCounterValue(void);
+
+#define SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT 0
 #endif
 
 #endif  // SEGGER_SYSVIEW_CONF_H

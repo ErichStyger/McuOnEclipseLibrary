@@ -44,8 +44,13 @@
 
 /* specify the SDK and API used */
 #ifndef McuLib_CONFIG_SDK_VERSION_USED
+#if McuLib_CONFIG_CPU_IS_STM32
+  #define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_GENERIC
+    /*!< identify the version of SDK/API used. For STM32 we are using a generic SDK (actually the CubeMX one) */
+#else
   #define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_PROCESSOR_EXPERT
     /*!< identify the version of SDK/API used */
+#endif
 #endif
 
 /* special macro to identify a set of SDKs used */

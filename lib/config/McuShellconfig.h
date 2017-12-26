@@ -47,4 +47,13 @@
     /*!< Function name to check if there is anything available to receive and returns TRUE, otherwise FALSE */
 #endif
 
+#ifndef McuShell_CONFIG_PROMPT_STRING
+  #define McuShell_CONFIG_PROMPT_STRING    "CMD> "
+#endif
+
+#ifndef McuShell_CONFIG_PROJECT_NAME_STRING
+  #define McuShell_CONFIG_PROJECT_NAME_STRING    "My Project Name"
+#endif
+
+
 #endif /* __McuShell_CONFIG_H */

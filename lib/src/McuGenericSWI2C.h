@@ -7,7 +7,7 @@
 **     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
+**     Date/Time   : 2017-12-26, 19:07, # CodeGen: 264
 **     Abstract    :
 **
 **     Settings    :
@@ -79,6 +79,9 @@
 #include "McuLib.h" /* SDK and API used */
 #include "McuGenericSWI2Cconfig.h" /* configuration */
 
+
+#define McuGenericSWI2C_RecvBlockCustomAvailable  (1)
+  /*!< Define which can be used to check if the function RecvBlockCustom() is available */
 
 typedef enum McuGenericSWI2C_EnumStartFlags_ {
   McuGenericSWI2C_SEND_START,        /* Start is sent */

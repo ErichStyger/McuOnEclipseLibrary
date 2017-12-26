@@ -4,18 +4,27 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PercepioTrace
-**     Version     : Component 01.127, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.136, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
+**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuPercepio
-**          RTOS+Trace Version                             : V3.1.1
+**          RTOS+Trace Version                             : V3.3.0
 **          Recorder Mode                                  : Streaming
 **          Recorder Buffer Allocation                     : static
 **          Max ISR Nesting                                : 16
+**          Events Creation                                : 
+**            Include OS Tick events                       : no
+**            Include ready events                         : yes
+**            Include memory manager events                : no
+**            Include ISR tracing                          : yes
+**            Include object delete events                 : yes
+**            Include user events                          : yes
+**            Include pend function call events            : no
+**            Include event group events                   : no
 **          Snapshot Mode                                  : 
 **            Snapshot trace enable method                 : TRC_START
 **            Recorder store mode                          : Ring Buffer
@@ -36,19 +45,16 @@
 **              Number of mutex                            : 4
 **              Number of timer                            : 2
 **              Number of event groups                     : 2
+**              Number of stream buffers                   : 3
+**              Number of message buffers                  : 3
 **              Name length for ISR                        : 10
 **              Name length for queue                      : 15
 **              Name length for semaphore                  : 15
 **              Name length for mutex                      : 15
 **              Name length for timer                      : 15
 **              Name length for event group                : 15
-**            Events Creation                              : 
-**              Include OS Tick events                     : no
-**              Include ready events                       : yes
-**              Include memory manager events              : no
-**              Include ISR tracing                        : yes
-**              Include object delete events               : yes
-**              Include user events                        : yes
+**              Name length for stream buffer              : 15
+**              Name length for message buffer             : 15
 **            Heap Size below 16M                          : no
 **            Float support                                : no
 **            Use implicit IFE rules                       : yes
@@ -81,7 +87,7 @@
 **         vTraceStop                - void McuPercepio_vTraceStop(void);
 **         vTraceClear               - void McuPercepio_vTraceClear(void);
 **         uiTraceGetTraceBufferSize - dword McuPercepio_uiTraceGetTraceBufferSize(void);
-**         vTraceGetTraceBuffer      - void* McuPercepio_vTraceGetTraceBuffer(void);
+**         xTraceGetTraceBuffer      - void* McuPercepio_xTraceGetTraceBuffer(void);
 **         xTraceRegisterString      - traceString McuPercepio_xTraceRegisterString(const char* name);
 **         vTracePrint               - void McuPercepio_vTracePrint(traceString chn, const char* str);
 **         vTracePrintF              - void McuPercepio_vTracePrintF(traceLabel eventLabel, char *formatStr, ...);
@@ -177,12 +183,12 @@
 ** ===================================================================
 */
 
-#define McuPercepio_vTraceGetTraceBuffer() \
-  vTraceGetTraceBuffer()
+#define McuPercepio_xTraceGetTraceBuffer() \
+  xTraceGetTraceBuffer()
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceGetTraceBuffer (component PercepioTrace)
+**     Method      :  McuPercepio_xTraceGetTraceBuffer (component PercepioTrace)
 **     Description :
 **         Return a pointer to the recorder data structure. Use this
 **         together with uiTraceGetTraceBufferSize if you wish to

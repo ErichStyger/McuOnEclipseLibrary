@@ -52,14 +52,14 @@
 *                                                                    *
 **********************************************************************
 *                                                                    *
-*       SystemView version: V2.42                                    *
+*       SystemView version: V2.52a                                    *
 *                                                                    *
 **********************************************************************
 -------------------------- END-OF-HEADER -----------------------------
 
 File    : SEGGER_SYSVIEW.c
 Purpose : System visualization API implementation.
-Revision: $Rev: 5927 $
+Revision: $Rev: 6414 $
 
 Additional information:
   Packet format:
@@ -752,61 +752,83 @@ SendDone:
 #ifndef SEGGER_SYSVIEW_EXCLUDE_PRINTF // Define in project to avoid warnings about variable parameter list
 /*********************************************************************
 *
-*       _APrintHost()
-*
-*  Function description
-*    Prepares a string and its parameters to be formatted on the host.
-*
-*  Parameters
-*    s            Pointer to format string.
-*    Options      Options to be sent to the host.
-*    pArguments   Pointer to array of arguments for the format string.
-*    NumArguments Number of arguments in the array.
-*/
-static void _APrintHost(const char* s, U32 Options, U32* pArguments, U32 NumArguments) {
-  U8* pPayload;
-  U8* pPayloadStart;
-
-  RECORD_START(SEGGER_SYSVIEW_INFO_SIZE + SEGGER_SYSVIEW_MAX_STRING_LEN + 2 * SEGGER_SYSVIEW_QUANTA_U32 + SEGGER_SYSVIEW_MAX_ARGUMENTS * SEGGER_SYSVIEW_QUANTA_U32);
-  pPayload = _EncodeStr(pPayloadStart, s, SEGGER_SYSVIEW_MAX_STRING_LEN);
-  ENCODE_U32(pPayload, Options);
-  ENCODE_U32(pPayload, NumArguments);
-  while (NumArguments--) {
-    ENCODE_U32(pPayload, (*pArguments++));
-  }
-  _SendPacket(pPayloadStart, pPayload, SYSVIEW_EVTID_PRINT_FORMATTED);
-  RECORD_END();
-}
-
-/*********************************************************************
-*
 *       _VPrintHost()
 *
 *  Function description
-*    Prepares a string and its parameters to be formatted on the host.
+*    Send a format string and its parameters to the host.
 *
 *  Parameters
 *    s            Pointer to format string.
 *    Options      Options to be sent to the host.
 *    pParamList   Pointer to the list of arguments for the format string.
 */
-static void _VPrintHost(const char* s, U32 Options, va_list* pParamList) {
-  U32 aParas[SEGGER_SYSVIEW_MAX_ARGUMENTS];
-  U32 NumArguments;
+static int _VPrintHost(const char* s, U32 Options, va_list* pParamList) {
+  U32         aParas[SEGGER_SYSVIEW_MAX_ARGUMENTS];
+  U32*        pParas;
+  U32         NumArguments;
   const char* p;
+  char        c;
+  U8*         pPayload;
+  U8*         pPayloadStart;
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT
+  U8 HasNonScalar;
   
+  HasNonScalar = 0;
+#endif  
+  //
+  // Count number of arguments by counting '%' characters in string.
+  // If enabled, check for non-scalar modifier flags to format string on the target.
+  //
   p = s;
   NumArguments = 0;
-  while (*p) {
-    if (*p == '%') {
+  for (;;) {
+    c = *p++;
+    if (c == 0) {
+      break;
+    }
+    if (c == '%') {
+      c = *p;
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT == 0
       aParas[NumArguments++] = va_arg(*pParamList, int);
       if (NumArguments == SEGGER_SYSVIEW_MAX_ARGUMENTS) {
         break;
       }
+#else
+      if (c == 's') {
+        HasNonScalar = 1;
+        break;
+      } else {
+        aParas[NumArguments++] = va_arg(*pParamList, int);
+        if (NumArguments == SEGGER_SYSVIEW_MAX_ARGUMENTS) {
+          break;
+        }
+      }
+#endif
     }
-    p++;
   }
-  _APrintHost(s, Options, aParas, NumArguments);
+
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT
+  if (HasNonScalar) {
+    return -1;
+  }
+#endif
+  //
+  // Send string and parameters to host
+  //
+  {
+    RECORD_START(SEGGER_SYSVIEW_INFO_SIZE + SEGGER_SYSVIEW_MAX_STRING_LEN + 2 * SEGGER_SYSVIEW_QUANTA_U32 + SEGGER_SYSVIEW_MAX_ARGUMENTS * SEGGER_SYSVIEW_QUANTA_U32);
+    pPayload = _EncodeStr(pPayloadStart, s, SEGGER_SYSVIEW_MAX_STRING_LEN);
+    ENCODE_U32(pPayload, Options);
+    ENCODE_U32(pPayload, NumArguments);
+    pParas = aParas;
+    while (NumArguments--) {
+      ENCODE_U32(pPayload, (*pParas));
+      pParas++;
+    }
+    _SendPacket(pPayloadStart, pPayload, SYSVIEW_EVTID_PRINT_FORMATTED);
+    RECORD_END();
+  }
+  return 0;
 }
 
 /*********************************************************************
@@ -2521,10 +2543,23 @@ void SEGGER_SYSVIEW_SendNumModules(void) {
 */
 void SEGGER_SYSVIEW_PrintfHostEx(const char* s, U32 Options, ...) {
   va_list ParamList;
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT
+  int r;
 
+  va_start(ParamList, Options);
+  r = _VPrintHost(s, Options, &ParamList);
+  va_end(ParamList);
+
+  if (r == -1) {
+    va_start(ParamList, Options);
+    _VPrintTarget(s, Options, &ParamList);
+    va_end(ParamList);
+  }
+#else
   va_start(ParamList, Options);
   _VPrintHost(s, Options, &ParamList);
   va_end(ParamList);
+#endif
 }
 
 /*********************************************************************
@@ -2542,10 +2577,23 @@ void SEGGER_SYSVIEW_PrintfHostEx(const char* s, U32 Options, ...) {
 */
 void SEGGER_SYSVIEW_PrintfHost(const char* s, ...) {
   va_list ParamList;
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT
+  int r;
 
+  va_start(ParamList, s);
+  r = _VPrintHost(s, SEGGER_SYSVIEW_LOG, &ParamList);
+  va_end(ParamList);
+
+  if (r == -1) {
+    va_start(ParamList, s);
+    _VPrintTarget(s, SEGGER_SYSVIEW_LOG, &ParamList);
+    va_end(ParamList);
+  }
+#else
   va_start(ParamList, s);
   _VPrintHost(s, SEGGER_SYSVIEW_LOG, &ParamList);
   va_end(ParamList);
+#endif
 }
 
 /*********************************************************************
@@ -2564,10 +2612,23 @@ void SEGGER_SYSVIEW_PrintfHost(const char* s, ...) {
 */
 void SEGGER_SYSVIEW_WarnfHost(const char* s, ...) {
   va_list ParamList;
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT
+  int r;
 
+  va_start(ParamList, s);
+  r = _VPrintHost(s, SEGGER_SYSVIEW_WARNING, &ParamList);
+  va_end(ParamList);
+
+  if (r == -1) {
+    va_start(ParamList, s);
+    _VPrintTarget(s, SEGGER_SYSVIEW_WARNING, &ParamList);
+    va_end(ParamList);
+  }
+#else
   va_start(ParamList, s);
   _VPrintHost(s, SEGGER_SYSVIEW_WARNING, &ParamList);
   va_end(ParamList);
+#endif
 }
 
 /*********************************************************************
@@ -2586,10 +2647,23 @@ void SEGGER_SYSVIEW_WarnfHost(const char* s, ...) {
 */
 void SEGGER_SYSVIEW_ErrorfHost(const char* s, ...) {
   va_list ParamList;
+#if SEGGER_SYSVIEW_PRINTF_IMPLICIT_FORMAT
+  int r;
 
+  va_start(ParamList, s);
+  r = _VPrintHost(s, SEGGER_SYSVIEW_ERROR, &ParamList);
+  va_end(ParamList);
+
+  if (r == -1) {
+    va_start(ParamList, s);
+    _VPrintTarget(s, SEGGER_SYSVIEW_ERROR, &ParamList);
+    va_end(ParamList);
+  }
+#else
   va_start(ParamList, s);
   _VPrintHost(s, SEGGER_SYSVIEW_ERROR, &ParamList);
   va_end(ParamList);
+#endif
 }
 
 /*********************************************************************

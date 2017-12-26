@@ -7,7 +7,7 @@
 **     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-09-25, 20:33, # CodeGen: 237
+**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
 **     Abstract    :
 **
 **     Settings    :
@@ -348,7 +348,7 @@ uint8_t McuShell_ParseCommand(const uint8_t *cmd, bool *handled, McuShell_ConstS
     McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
     McuShell_SendStr((unsigned char*)McuShell_DASH_LINE, io->stdOut);
     McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
-    McuShell_SendStr((unsigned char*)"My Project Name", io->stdOut);
+    McuShell_SendStr((unsigned char*)McuShell_CONFIG_PROJECT_NAME_STRING, io->stdOut);
     McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
     McuShell_SendStr((unsigned char*)McuShell_DASH_LINE, io->stdOut);
     McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
@@ -389,7 +389,8 @@ uint8_t McuShell_ParseCommand(const uint8_t *cmd, bool *handled, McuShell_ConstS
 */
 void McuShell_PrintPrompt(McuShell_ConstStdIOType *io)
 {
-  McuShell_SendStr((unsigned char*)"CMD> ", io->stdOut);
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdOut); /* ensure that there is a new line */
+  McuShell_SendStr((unsigned char*)McuShell_CONFIG_PROMPT_STRING, io->stdOut);
 }
 
 /*

@@ -52,14 +52,14 @@
 *                                                                    *
 **********************************************************************
 *                                                                    *
-*       SystemView version: V2.42                                    *
+*       SystemView version: V2.52a                                    *
 *                                                                    *
 **********************************************************************
 -------------------------- END-OF-HEADER -----------------------------
 
 File    : SEGGER_SYSVIEW_FreeRTOS.h
 Purpose : Interface between FreeRTOS and SystemView.
-Revision: $Rev: 3734 $
+Revision: $Rev: 7745 $
 
 Notes:
   (1) Include this file at the end of FreeRTOSConfig.h
@@ -202,12 +202,7 @@ Notes:
 
 #define traceTASK_NOTIFY_TAKE()                                       SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_ULTASKNOTIFYTAKE, xClearCountOnExit, xTicksToWait)
 #define traceTASK_DELAY()                                             SEGGER_SYSVIEW_RecordU32(apiID_OFFSET + apiID_VTASKDELAY, xTicksToDelay)
-#if 0
-#define traceTASK_DELAY_UNTIL()                                       SEGGER_SYSVIEW_RecordVoid(apiID_OFFSET + apiID_VTASKDELAYUNTIL)
-#else /* << EST */
-#define traceTASK_DELAY_UNTIL(x)                                      SEGGER_SYSVIEW_RecordVoid(apiID_OFFSET + apiID_VTASKDELAYUNTIL)
-#endif
-#define traceTASK_DELETE( pxTCB )                                     SEGGER_SYSVIEW_RecordU32(apiID_OFFSET + apiID_VTASKDELETE, SEGGER_SYSVIEW_ShrinkId((U32)pxTCB))
+#define traceTASK_DELAY_UNTIL(xTimeToWake)                            SEGGER_SYSVIEW_RecordVoid(apiID_OFFSET + apiID_VTASKDELAYUNTIL)
 #define traceTASK_NOTIFY_GIVE_FROM_ISR()                              SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_VTASKNOTIFYGIVEFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxTCB), (U32)pxHigherPriorityTaskWoken)
 #define traceTASK_PRIORITY_INHERIT( pxTCB, uxPriority )               SEGGER_SYSVIEW_RecordU32(apiID_OFFSET + apiID_VTASKPRIORITYINHERIT, (U32)pxMutexHolder)
 #define traceTASK_RESUME( pxTCB )                                     SEGGER_SYSVIEW_RecordU32(apiID_OFFSET + apiID_VTASKRESUME, SEGGER_SYSVIEW_ShrinkId((U32)pxTCB))
@@ -221,13 +216,13 @@ Notes:
 
 #define traceQUEUE_CREATE( pxNewQueue )                               SEGGER_SYSVIEW_RecordU32x3(apiID_OFFSET + apiID_XQUEUEGENERICCREATE, uxQueueLength, uxItemSize, ucQueueType)
 #define traceQUEUE_DELETE( pxQueue )                                  SEGGER_SYSVIEW_RecordU32(apiID_OFFSET + apiID_VQUEUEDELETE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue))
-#define traceQUEUE_PEEK( pxQueue )                                    SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICRECEIVE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer), xTicksToWait, xJustPeeking)
+#define traceQUEUE_PEEK( pxQueue )                                    SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICRECEIVE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer), xTicksToWait, 1)
 #define traceQUEUE_PEEK_FROM_ISR( pxQueue )                           SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_XQUEUEPEEKFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer))
 #define traceQUEUE_PEEK_FROM_ISR_FAILED( pxQueue )                    SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_XQUEUEPEEKFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer))
-#define traceQUEUE_RECEIVE( pxQueue )                                 SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICRECEIVE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer), xTicksToWait, xJustPeeking)
-#define traceQUEUE_RECEIVE_FAILED( pxQueue )                          SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICRECEIVE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer), xTicksToWait, xJustPeeking)
-#define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )                        SEGGER_SYSVIEW_RecordU32x3(apiID_OFFSET + apiID_XQUEUERECEIVEFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer), (U32)pxHigherPriorityTaskWoken)
-#define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )                 SEGGER_SYSVIEW_RecordU32x3(apiID_OFFSET + apiID_XQUEUERECEIVEFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)pvBuffer), (U32)pxHigherPriorityTaskWoken)
+#define traceQUEUE_RECEIVE( pxQueue )                                 SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICRECEIVE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)0), xTicksToWait, 1)
+#define traceQUEUE_RECEIVE_FAILED( pxQueue )                          SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICRECEIVE, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)0), xTicksToWait, 1)
+#define traceQUEUE_RECEIVE_FROM_ISR( pxQueue )                        SEGGER_SYSVIEW_RecordU32x3(apiID_OFFSET + apiID_XQUEUERECEIVEFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)0), (U32)pxHigherPriorityTaskWoken)
+#define traceQUEUE_RECEIVE_FROM_ISR_FAILED( pxQueue )                 SEGGER_SYSVIEW_RecordU32x3(apiID_OFFSET + apiID_XQUEUERECEIVEFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), SEGGER_SYSVIEW_ShrinkId((U32)0), (U32)pxHigherPriorityTaskWoken)
 #define traceQUEUE_REGISTRY_ADD( xQueue, pcQueueName )                SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_VQUEUEADDTOREGISTRY, SEGGER_SYSVIEW_ShrinkId((U32)xQueue), (U32)pcQueueName)
 #if ( configUSE_QUEUE_SETS != 1 )
   #define traceQUEUE_SEND( pxQueue )                                    SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICSEND, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), (U32)pvItemToQueue, xTicksToWait, xCopyPosition)
@@ -237,6 +232,12 @@ Notes:
 #define traceQUEUE_SEND_FAILED( pxQueue )                             SYSVIEW_RecordU32x4(apiID_OFFSET + apiID_XQUEUEGENERICSEND, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), (U32)pvItemToQueue, xTicksToWait, xCopyPosition)
 #define traceQUEUE_SEND_FROM_ISR( pxQueue )                           SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_XQUEUEGENERICSENDFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), (U32)pxHigherPriorityTaskWoken)
 #define traceQUEUE_SEND_FROM_ISR_FAILED( pxQueue )                    SEGGER_SYSVIEW_RecordU32x2(apiID_OFFSET + apiID_XQUEUEGENERICSENDFROMISR, SEGGER_SYSVIEW_ShrinkId((U32)pxQueue), (U32)pxHigherPriorityTaskWoken)
+
+#define traceTASK_DELETE( pxTCB )                   {                                                                                                   \
+                                                      SEGGER_SYSVIEW_RecordU32(apiID_OFFSET + apiID_VTASKDELETE, SEGGER_SYSVIEW_ShrinkId((U32)pxTCB));  \
+                                                      SYSVIEW_DeleteTask((U32)pxTCB);                                                                   \
+                                                    }
+
 
 #if( portSTACK_GROWTH < 0 )
 #define traceTASK_CREATE(pxNewTCB)                  if (pxNewTCB != NULL) {                                             \
@@ -337,6 +338,7 @@ extern "C" {
 #endif
 void SYSVIEW_AddTask      (U32 xHandle, const char* pcTaskName, unsigned uxCurrentPriority, U32  pxStack, unsigned uStackHighWaterMark);
 void SYSVIEW_UpdateTask   (U32 xHandle, const char* pcTaskName, unsigned uxCurrentPriority, U32 pxStack, unsigned uStackHighWaterMark);
+void SYSVIEW_DeleteTask   (U32 xHandle);
 void SYSVIEW_SendTaskInfo (U32 TaskID, const char* sName, unsigned Prio, U32 StackBase, unsigned StackSize);
 void SYSVIEW_RecordU32x4  (unsigned Id, U32 Para0, U32 Para1, U32 Para2, U32 Para3);
 void SYSVIEW_RecordU32x5  (unsigned Id, U32 Para0, U32 Para1, U32 Para2, U32 Para3, U32 Para4);

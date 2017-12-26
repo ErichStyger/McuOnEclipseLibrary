@@ -7,7 +7,7 @@
 **     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-10-16, 20:30, # CodeGen: 250
+**     Date/Time   : 2017-12-22, 19:34, # CodeGen: 258
 **     Abstract    :
 **
 **     Settings    :
@@ -79,6 +79,8 @@
   #include "fsl_sim.h" /* system integration module */
 #elif McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_1_3
   #include "Cpu.h" /* include CPU related interfaces and defines */
+#elif McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
+  /* include device specific header file for CMSIS inside "McuArmToolsconfig.h" */
 #endif
 
 #if McuLib_CONFIG_CPU_IS_KINETIS
@@ -114,21 +116,24 @@ static const unsigned char *KinetisM0FamilyStrings[] =
 #if McuArmTools_CONFIG_PARSE_COMMAND_ENABLED
 static uint8_t PrintStatus(const McuShell_StdIOType *io)
 {
+#if McuLib_CONFIG_CPU_IS_KINETIS
   uint8_t buf[1+(16*5)+1+1]; /* "{0xAA,...0xBB}" */
   uint8_t res;
   McuArmTools_UID uid;
+#endif
 
   McuShell_SendStatusStr((unsigned char*)"McuArmTools", (unsigned char*)"\r\n", io->stdOut);
+#if McuLib_CONFIG_CPU_IS_KINETIS
   res = McuArmTools_UIDGet(&uid);
   if (res==ERR_OK) {
     res = McuArmTools_UIDtoString(&uid, buf, sizeof(buf));
   }
   if (res!=ERR_OK) {
-    McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"ERROR\r\n");
+    McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"ERROR");
   }
   McuShell_SendStatusStr((unsigned char*)"  UID", buf, io->stdOut);
   McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
-
+#endif
   McuShell_SendStatusStr((unsigned char*)"  Family", (uint8_t*)McuArmTools_GetKinetisFamilyString(), io->stdOut);
   McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
   return ERR_OK;
@@ -161,7 +166,7 @@ void McuArmTools_SoftwareReset(void)
      To write to this register, you must write 0x5FA to the VECTKEY field, otherwise the processor ignores the write.
      SYSRESETREQ will cause a system reset asynchronously, so need to wait afterwards.
    */
-#if McuLib_CONFIG_CPU_IS_KINETIS
+#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
 #if McuLib_CONFIG_PEX_SDK_USED
   SCB_AIRCR = SCB_AIRCR_VECTKEY(0x5FA) | SCB_AIRCR_SYSRESETREQ_MASK;
 #else

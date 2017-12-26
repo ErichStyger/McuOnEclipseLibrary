@@ -7,7 +7,7 @@
 **     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-18, 13:32, # CodeGen: 226
+**     Date/Time   : 2017-12-23, 09:31, # CodeGen: 262
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -77,14 +77,10 @@
 #include "McuLib.h" /* SDK and API used */
 #include "McuWaitconfig.h" /* configuration */
 
-/* Include inherited components */
-#include "McuLib.h"
-#include "McuArmTools.h"
-#include "McuRTOS.h"
-
 /* other includes needed */
 #if McuWait_CONFIG_USE_RTOS_WAIT
   /* include RTOS header files */
+  #include "McuRTOS.h"
   #include "FreeRTOS.h" /* for vTaskDelay() */
   #include "task.h"
 #endif

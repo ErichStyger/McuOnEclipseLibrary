@@ -4,15 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerRTT
-**     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.083, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-29, 17:25, # CodeGen: 205
+**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuRTT
-**          Version                                        : V5.10u
+**          Version                                        : V6.22c
 **          Number of Up Channels                          : 3
 **          Number of Down Channels                        : 3
 **          Max Blocked Interrupt Level                    : 3

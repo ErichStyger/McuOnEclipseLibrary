@@ -52,13 +52,13 @@
 *                                                                    *
 **********************************************************************
 *                                                                    *
-*       SystemView version: V2.42                                    *
+*       SystemView version: V2.52a                                    *
 *                                                                    *
 **********************************************************************
 -------------------------- END-OF-HEADER -----------------------------
 File    : SEGGER_SYSVIEW.h
 Purpose : System visualization API.
-Revision: $Rev: 5626 $
+Revision: $Rev: 5497 $
 */
 
 #ifndef SEGGER_SYSVIEW_H

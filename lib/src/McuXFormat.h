@@ -7,13 +7,13 @@
 **     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-10-16, 18:32, # CodeGen: 238
+**     Date/Time   : 2017-12-22, 20:04, # CodeGen: 259
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuXFormat
 **          SDK                                            : McuLib
-**          Floating Point                                 : no
+**          Floating Point                                 : yes
 **     Contents    :
 **         xvformat  - unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const...
 **         xformat   - unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const...

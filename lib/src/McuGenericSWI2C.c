@@ -7,7 +7,7 @@
 **     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-19, 09:33, # CodeGen: 161
+**     Date/Time   : 2017-11-30, 19:13, # CodeGen: 251
 **     Abstract    :
 **
 **     Settings    :
@@ -85,6 +85,7 @@
 #if McuGenericSWI2C_HAS_RTOS
   /* include RTOS header files */
   #include "FreeRTOS.h" /* for yielding */
+  #include "task.h"
 #endif
 
 #if McuGenericSWI2C_HAS_RTOS && McuGenericSWI2C_YIELD

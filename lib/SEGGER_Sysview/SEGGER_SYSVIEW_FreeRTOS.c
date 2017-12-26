@@ -52,14 +52,14 @@
 *                                                                    *
 **********************************************************************
 *                                                                    *
-*       SystemView version: V2.42                                    *
+*       SystemView version: V2.52a                                    *
 *                                                                    *
 **********************************************************************
 -------------------------- END-OF-HEADER -----------------------------
 
 File    : SEGGER_SYSVIEW_FreeRTOS.c
 Purpose : Interface between FreeRTOS and SystemView.
-Revision: $Rev: 3734 $
+Revision: $Rev: 7947 $
 */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -184,6 +184,47 @@ void SYSVIEW_UpdateTask(U32 xHandle, const char* pcTaskName, unsigned uxCurrentP
     SYSVIEW_SendTaskInfo(xHandle, pcTaskName, uxCurrentPriority, pxStack, uStackHighWaterMark);
   } else {
     SYSVIEW_AddTask(xHandle, pcTaskName, uxCurrentPriority, pxStack, uStackHighWaterMark);
+  }
+}
+
+/*********************************************************************
+*
+*       SYSVIEW_DeleteTask()
+*
+*  Function description
+*    Delete a task from the internal list.
+*/
+void SYSVIEW_DeleteTask(U32 xHandle) {
+  unsigned n;
+  
+  if (_NumTasks == 0) {
+    return; // Early out
+  }  
+  for (n = 0; n < _NumTasks; n++) {
+    if (_aTasks[n].xHandle == xHandle) {
+      break;
+    }
+  }
+  if (n == (_NumTasks - 1)) {  
+    //
+    // Task is last item in list.
+    // Simply zero the item and decrement number of tasks.
+    //
+    memset(&_aTasks[n], 0, sizeof(_aTasks[n]));
+    _NumTasks--;
+  } else if (n < _NumTasks) {
+    //
+    // Task is in the middle of the list.
+    // Move last item to current position and decrement number of tasks.
+    // Order of tasks does not really matter, so no need to move all following items.
+    //
+    _aTasks[n].xHandle             = _aTasks[_NumTasks - 1].xHandle;
+    _aTasks[n].pcTaskName          = _aTasks[_NumTasks - 1].pcTaskName;
+    _aTasks[n].uxCurrentPriority   = _aTasks[_NumTasks - 1].uxCurrentPriority;
+    _aTasks[n].pxStack             = _aTasks[_NumTasks - 1].pxStack;
+    _aTasks[n].uStackHighWaterMark = _aTasks[_NumTasks - 1].uStackHighWaterMark;
+    memset(&_aTasks[_NumTasks - 1], 0, sizeof(_aTasks[_NumTasks - 1]));
+    _NumTasks--;
   }
 }
 

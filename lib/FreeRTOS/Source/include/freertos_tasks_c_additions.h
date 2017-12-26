@@ -64,7 +64,7 @@
 #ifndef configUSE_HEAP_SCHEME
   #define configUSE_HEAP_SCHEME 3 /* configUSE_HEAP_SCHEME is a custom define by the McuOnEclipse port. if missing, default to scheme 3 */
 #endif
-#if ((configUSE_HEAP_SCHEME > 5) || (configUSE_HEAP_SCHEME < 1))
+#if ((configUSE_HEAP_SCHEME > 6) || (configUSE_HEAP_SCHEME < 1))
   #error "Invalid configUSE_HEAP_SCHEME setting!"
 #endif
 

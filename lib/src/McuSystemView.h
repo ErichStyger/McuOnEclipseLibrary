@@ -4,15 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerSystemView
-**     Version     : Component 01.053, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.058, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-02, 09:46, # CodeGen: 219
+**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuSystemView
-**          Version                                        : V2.42
+**          Version                                        : V2.52a
 **          Application Name                               : "Demo Application"
 **          Device Name                                    : "Cortex"
 **          RAM Base                                       : 0x20000000
@@ -21,6 +21,7 @@
 **          Number of tasks                                : 8
 **          Static Buffer                                  : yes
 **          Post Mortem                                    : no
+**          Implicit Format for printf()                   : no
 **          RTT Channel                                    : 
 **            Segger RTT                                   : McuRTT
 **            Name                                         : "SysView"
@@ -29,7 +30,7 @@
 **          SDK                                            : McuLib
 **          Source Folders                                 : 
 **            Source Folder                                : SEGGER_Sysview
-**            Config Folder                                : SEGGER_SysView
+**            Config Folder                                : SEGGER_Sysview
 **     Contents    :
 **         OnUserStart    - void McuSystemView_OnUserStart(unsigned UserId);
 **         OnUserStop     - void McuSystemView_OnUserStop(unsigned UserId);
