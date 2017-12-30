@@ -7,9 +7,9 @@
 **     Version     : Component 01.095, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-29, 17:29, # CodeGen: 168
+**     Date/Time   : 2017-12-30, 17:26, # CodeGen: 281
 **     Abstract    :
-**
+**         Module implementing a command line shell.
 **     Settings    :
 **          Component name                                 : McuShell
 **          Echo                                           : no
@@ -105,7 +105,7 @@
 ** @file McuShell.h
 ** @version 01.00
 ** @brief
-**
+**         Module implementing a command line shell.
 */         
 /*!
 **  @addtogroup McuShell_module McuShell module documentation

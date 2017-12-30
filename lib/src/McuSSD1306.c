@@ -4,13 +4,12 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.012, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-30, 12:53, # CodeGen: 276
+**     Date/Time   : 2017-12-30, 17:26, # CodeGen: 281
 **     Abstract    :
-**
-Display driver for the SSD1351 (e.g. found on Hexiwear).
+**         Display driver for the SSD1306 OLED module
 **     Settings    :
 **          Component name                                 : McuSSD1306
 **          Type                                           : 128x64
@@ -91,8 +90,7 @@ Display driver for the SSD1351 (e.g. found on Hexiwear).
 ** @file McuSSD1306.c
 ** @version 01.00
 ** @brief
-**
-Display driver for the SSD1351 (e.g. found on Hexiwear).
+**         Display driver for the SSD1306 OLED module
 */         
 /*!
 **  @addtogroup McuSSD1306_module McuSSD1306 module documentation
@@ -102,6 +100,7 @@ Display driver for the SSD1351 (e.g. found on Hexiwear).
 /* MODULE McuSSD1306. */
 
 #include "McuSSD1306.h"
+#include "McuWait.h" /* Waiting routines */
 #include McuSSD1306_CONFIG_I2C_HEADER_FILE  /* I2C driver */
 
 uint8_t McuSSD1306_DisplayBuf[((McuSSD1306_DISPLAY_HW_NOF_ROWS-1)/8)+1][McuSSD1306_DISPLAY_HW_NOF_COLUMNS]; /* buffer for the display */
@@ -799,45 +798,6 @@ void McuSSD1306_Init(void)
 #if McuSSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT
   McuSSD1306_Clear();
 #endif
-}
-
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_OnRequestBus (component SSD1306)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void McuGenericI2C_OnRequestBus1(void)
-{
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_OnReleaseBus (component SSD1306)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void McuGenericI2C_OnReleaseBus1(void)
-{
-  /* Write your code here ... */
-}
-
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_OnError (component SSD1306)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-void McuGenericI2C_OnError(void)
-{
-  /* Write your code here ... */
 }
 
 /*

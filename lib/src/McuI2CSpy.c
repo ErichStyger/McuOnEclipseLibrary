@@ -7,7 +7,7 @@
 **     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-29, 20:22, # CodeGen: 265
+**     Date/Time   : 2017-12-30, 14:26, # CodeGen: 280
 **     Abstract    :
 **          This component implements a utility to inspect devices on the I2C bus.
 **     Settings    :
@@ -478,7 +478,7 @@ void McuI2CSpy_Deinit(void)
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-void McuGenericI2C_OnRequestBus0(void)
+void McuGenericI2C_OnRequestBus(void)
 {
   /* Write your code here ... */
 }
@@ -491,7 +491,7 @@ void McuGenericI2C_OnRequestBus0(void)
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-void McuGenericI2C_OnReleaseBus0(void)
+void McuGenericI2C_OnReleaseBus(void)
 {
   /* Write your code here ... */
 }

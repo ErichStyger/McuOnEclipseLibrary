@@ -4,13 +4,12 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.012, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-30, 12:53, # CodeGen: 276
+**     Date/Time   : 2017-12-30, 17:26, # CodeGen: 281
 **     Abstract    :
-**
-Display driver for the SSD1351 (e.g. found on Hexiwear).
+**         Display driver for the SSD1306 OLED module
 **     Settings    :
 **          Component name                                 : McuSSD1306
 **          Type                                           : 128x64
@@ -91,8 +90,7 @@ Display driver for the SSD1351 (e.g. found on Hexiwear).
 ** @file McuSSD1306.h
 ** @version 01.00
 ** @brief
-**
-Display driver for the SSD1351 (e.g. found on Hexiwear).
+**         Display driver for the SSD1306 OLED module
 */         
 /*!
 **  @addtogroup McuSSD1306_module McuSSD1306 module documentation
@@ -445,12 +443,6 @@ void McuSSD1306_WriteDataWordRepeated(uint16_t data, size_t nof);
 **     Returns     : Nothing
 ** ===================================================================
 */
-
-void McuGenericI2C_OnRequestBus1(void);
-
-void McuGenericI2C_OnReleaseBus1(void);
-
-void McuGenericI2C_OnError(void);
 
 uint8_t McuSSD1306_SetContrast(uint8_t contrast);
 /*
