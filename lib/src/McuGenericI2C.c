@@ -7,7 +7,7 @@
 **     Version     : Component 01.035, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
+**     Date/Time   : 2017-12-30, 13:18, # CodeGen: 278
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -30,6 +30,7 @@
 **         ReleaseBus        - void McuGenericI2C_ReleaseBus(void);
 **         WriteBlock        - uint8_t McuGenericI2C_WriteBlock(void* data, uint16_t dataSize,...
 **         ReadBlock         - uint8_t McuGenericI2C_ReadBlock(void* data, uint16_t dataSize,...
+**         ReadBlockGeneric  - uint8_t McuGenericI2C_ReadBlockGeneric(void* data, uint16_t dataSize,...
 **         ReadAddress       - uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         WriteAddress      - uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         ReadByte          - uint8_t McuGenericI2C_ReadByte(uint8_t i2cAddr, uint8_t *data);
@@ -84,8 +85,13 @@
 
 /* MODULE McuGenericI2C. */
 
-#include "McuI2CSpy.h"
 #include "McuGenericI2C.h"
+
+#include "McuWait.h"
+#include "McuWait.h"
+#include "McuRTOS.h"
+#include "McuGenericSWI2C.h"
+
 #ifndef NULL
   #define NULL 0L
 #endif /* NULL */
@@ -143,6 +149,7 @@ uint8_t McuGenericI2C_SelectSlave(uint8_t i2cAddr)
   McuGenericI2C_RequestBus();
   if (McuGenericSWI2C_SelectSlave(i2cAddr)!=ERR_OK) {
     McuGenericI2C_ReleaseBus();
+    McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   return ERR_OK;
@@ -162,6 +169,50 @@ uint8_t McuGenericI2C_UnselectSlave(void)
 {
   McuGenericI2C_ReleaseBus();
   return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  McuGenericI2C_ReadBlockGeneric (component GenericI2C)
+**     Description :
+**         Read from the device a block with using additional control
+**         and flags.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * data            - Read buffer
+**         dataSize        - Size of read buffer
+**         flagsSend       - flags for the send transaction
+**         flagsStart      - Start flags
+**         flagsAck        - Acknowledge flags
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuGenericI2C_ReadBlockGeneric(void* data, uint16_t dataSize, McuGenericI2C_EnumSendFlags flags, McuGenericI2C_EnumStartFlags flagsStart, McuGenericI2C_EnumAckFlags flagsAck)
+{
+  uint8_t res = ERR_OK;
+  uint16_t nof;
+
+#if defined(McuGenericSWI2C_RecvBlockCustom) && McuGenericSWI2C_RecvBlockCustom==1
+  for(;;) { /* breaks */
+    res = McuGenericSWI2C_RecvBlockCustom(data, dataSize, &nof, flagsStart, flagsAck);
+    if (res!=ERR_OK) {
+      McuGenericI2C_OnError();
+      break; /* break for(;;) */
+    }
+    if (flags==McuGenericI2C_SEND_STOP) {
+      res = McuGenericSWI2C_SendStop();
+      if (res!=ERR_OK) {
+        McuGenericI2C_OnError();
+        break; /* break for(;;) */
+      }
+    }
+    break; /* break for(;;) */
+  } /* for(;;) */
+#else
+  return ERR_FAILED; /* RecvBlockCustom() is not available (e.g. not available in the Hardware I2C component */
+#endif
+  return res;
 }
 
 /*
@@ -186,11 +237,13 @@ uint8_t McuGenericI2C_ReadBlock(void* data, uint16_t dataSize, McuGenericI2C_Enu
   for(;;) { /* breaks */
     res = McuGenericSWI2C_RecvBlock(data, dataSize, &nof);
     if (res!=ERR_OK) {
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     if (flags==McuGenericI2C_SEND_STOP) {
       res = McuGenericSWI2C_SendStop();
       if (res!=ERR_OK) {
+        McuGenericI2C_OnError();
         break; /* break for(;;) */
       }
     }
@@ -222,11 +275,13 @@ uint8_t McuGenericI2C_WriteBlock(void* data, uint16_t dataSize, McuGenericI2C_En
     res = McuGenericSWI2C_SendBlock(data, dataSize, &nof);
     if (res!=ERR_OK) {
       (void)McuGenericSWI2C_SendStop();
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     if (flags==McuGenericI2C_SEND_STOP || (flags==McuGenericI2C_STOP_NOSTART)) {
       res = McuGenericSWI2C_SendStop();
       if (res!=ERR_OK) {
+        McuGenericI2C_OnError();
         break; /* break for(;;) */
       }
     }
@@ -258,6 +313,7 @@ uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t mem
   uint16_t nof;
 
   if (McuGenericI2C_SelectSlave(i2cAddr)!=ERR_OK) {
+    McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   for(;;) { /* breaks */
@@ -265,21 +321,25 @@ uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t mem
       res = McuGenericSWI2C_SendBlock((void*)memAddr, memAddrSize, &nof);
       if (res!=ERR_OK) {
         (void)McuGenericSWI2C_SendStop();
+        McuGenericI2C_OnError();
         break; /* break for(;;) */
       }
     }
     res = McuGenericSWI2C_RecvBlock(data, dataSize, &nof);
     if (res!=ERR_OK) {
       (void)McuGenericSWI2C_SendStop();
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     res = McuGenericSWI2C_SendStop();
     if (res!=ERR_OK) {
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     break; /* break for(;;) */
   } /* for(;;) */
   if (McuGenericI2C_UnselectSlave()!=ERR_OK) {
+    McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   return res;
@@ -311,9 +371,11 @@ uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t me
   uint8_t res = ERR_OK;
 
   if (McuGenericI2C_SelectSlave(i2cAddr)!=ERR_OK) {
+    McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   if (memAddrSize+dataSize>McuGenericI2C_WRITE_BUFFER_SIZE) {
+    McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   i = 0; p = memAddr;
@@ -330,15 +392,18 @@ uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t me
     res = McuGenericSWI2C_SendBlock((void*)writeBuf, i, &nof);
     if (res!=ERR_OK) {
       (void)McuGenericSWI2C_SendStop();
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     res = McuGenericSWI2C_SendStop();
     if (res!=ERR_OK) {
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     break; /* break for(;;) */
   } /* for(;;) */
   if (McuGenericI2C_UnselectSlave()!=ERR_OK) {
+    McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   return res;
@@ -357,6 +422,7 @@ void McuGenericI2C_Init(void)
 {
   McuGenericI2C_busSem = xSemaphoreCreateRecursiveMutex();
   if (McuGenericI2C_busSem==NULL) { /* semaphore creation failed */
+    McuGenericI2C_OnError();
     for(;;) {} /* error, not enough memory? */
   }
   vQueueAddToRegistry(McuGenericI2C_busSem, "McuGenericI2C_Mutex");
@@ -500,15 +566,18 @@ uint8_t McuGenericI2C_ScanDevice(uint8_t i2cAddr)
     res = McuGenericSWI2C_RecvBlock((void*)&dummy, 1, &nof);
     if (res!=ERR_OK) {
       (void)McuGenericSWI2C_SendStop();
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     res = McuGenericSWI2C_SendStop();
     if (res!=ERR_OK) {
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     break; /* break for(;;) */
   } /* for(;;) */
   if (McuGenericI2C_UnselectSlave()!=ERR_OK) {
+      McuGenericI2C_OnError();
     return ERR_FAILED;
   }
   return res;
@@ -541,11 +610,13 @@ uint8_t McuGenericI2C_ProbeACK(void* data, uint16_t dataSize, McuGenericI2C_Enum
     res = McuGenericSWI2C_SendBlock(data, dataSize, &nof);
     if (res!=ERR_OK) {
       (void)McuGenericSWI2C_SendStop();
+      McuGenericI2C_OnError();
       break; /* break for(;;) */
     }
     if (flags==McuGenericI2C_SEND_STOP) {
       res = McuGenericSWI2C_SendStop();
       if (res!=ERR_OK) {
+        McuGenericI2C_OnError();
         break; /* break for(;;) */
       }
     }

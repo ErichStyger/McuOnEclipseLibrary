@@ -4,25 +4,26 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FontDisplay
-**     Version     : Component 01.196, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.198, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-18, 11:04, # CodeGen: 224
+**     Date/Time   : 2017-12-30, 12:47, # CodeGen: 275
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuFontDisplay
 **          System                                         : 
-**            Display                                      : McuGDisplay
-**            Font                                         : McuFontCour14Normal
+**            SDK                                          : McuLib
+**            Display                                      : McuGDisplaySSD1306
+**            Font                                         : McuGFont
 **          Watchdog                                       : Disabled
 **     Contents    :
 **         GetFontHeight   - void McuFontDisplay_GetFontHeight(McuFontDisplay_Font *font,...
-**         GetStringHeight - McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(byte *str,...
-**         GetCharWidth    - void McuFontDisplay_GetCharWidth(byte ch, McuFontDisplay_PixelDim *charWidth,...
-**         GetStringWidth  - McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(byte *str,...
-**         WriteString     - void McuFontDisplay_WriteString(byte *str, McuFontDisplay_PixelColor color,...
-**         WriteChar       - void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color,...
+**         GetStringHeight - McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(uint8_t *str,...
+**         GetCharWidth    - void McuFontDisplay_GetCharWidth(uint8_t ch, McuFontDisplay_PixelDim...
+**         GetStringWidth  - McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(uint8_t *str,...
+**         WriteString     - void McuFontDisplay_WriteString(uint8_t *str, McuFontDisplay_PixelColor...
+**         WriteChar       - void McuFontDisplay_WriteChar(uint8_t ch, McuFontDisplay_PixelColor color,...
 **
 **     * Copyright (c) 2011-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
@@ -66,30 +67,22 @@
 #define __McuFontDisplay_H
 
 /* MODULE McuFontDisplay. */
-
-/* Include shared modules, which are used for whole project */
-#include "PE_Types.h"
-#include "PE_Error.h"
-#include "PE_Const.h"
-#include "IO_Map.h"
-/* Include inherited beans */
-#include "McuGDisplay.h"
-#include "McuFontCour14Normal.h"
-
-#include "Cpu.h"
+#include "McuLib.h" /* SDK and API used */
+#include "McuFontDisplayconfig.h" /* configuration */
+#include "McuGDisplaySSD1306.h" /* Graphic display interface */
+#include "McuGFont.h" /* Font interface */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef McuGDisplay_PixelDim   McuFontDisplay_PixelDim; /* type which can hold a integral type for the x/y pixel dimension. This is depending on the display used. */
-typedef McuGDisplay_PixelColor McuFontDisplay_PixelColor; /* Type definining the color type (depens on display used). */
+typedef McuGDisplaySSD1306_PixelDim   McuFontDisplay_PixelDim; /* Type which can hold a integral type for the x/y pixel dimension. This is depending on the display used. */
+typedef McuGDisplaySSD1306_PixelColor McuFontDisplay_PixelColor; /* Type defining the color type (depends on display used). */
 typedef GFONT_Callbacks McuFontDisplay_Font; /* Pointer to GFONT_Callbacks */
 
 
 
-
-void McuFontDisplay_WriteString(byte *str, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font);
+void McuFontDisplay_WriteString(uint8_t *str, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font);
 /*
 ** ===================================================================
 **     Method      :  McuFontDisplay_WriteString (component FontDisplay)
@@ -112,7 +105,7 @@ void McuFontDisplay_WriteString(byte *str, McuFontDisplay_PixelColor color, McuF
 ** ===================================================================
 */
 
-void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font);
+void McuFontDisplay_WriteChar(uint8_t ch, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font);
 /*
 ** ===================================================================
 **     Method      :  McuFontDisplay_WriteChar (component FontDisplay)
@@ -135,7 +128,7 @@ void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontD
 ** ===================================================================
 */
 
-void McuFontDisplay_GetCharWidth(byte ch, McuFontDisplay_PixelDim *charWidth, McuFontDisplay_PixelDim *totalWidth, McuFontDisplay_Font *font);
+void McuFontDisplay_GetCharWidth(uint8_t ch, McuFontDisplay_PixelDim *charWidth, McuFontDisplay_PixelDim *totalWidth, McuFontDisplay_Font *font);
 /*
 ** ===================================================================
 **     Method      :  McuFontDisplay_GetCharWidth (component FontDisplay)
@@ -156,7 +149,7 @@ void McuFontDisplay_GetCharWidth(byte ch, McuFontDisplay_PixelDim *charWidth, Mc
 ** ===================================================================
 */
 
-McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(byte *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastCharSpace);
+McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(uint8_t *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastCharSpace);
 /*
 ** ===================================================================
 **     Method      :  McuFontDisplay_GetStringWidth (component FontDisplay)
@@ -196,7 +189,7 @@ void McuFontDisplay_GetFontHeight(McuFontDisplay_Font *font, McuFontDisplay_Pixe
 ** ===================================================================
 */
 
-McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(byte *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastLineSpace);
+McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(uint8_t *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastLineSpace);
 /*
 ** ===================================================================
 **     Method      :  McuFontDisplay_GetStringHeight (component FontDisplay)

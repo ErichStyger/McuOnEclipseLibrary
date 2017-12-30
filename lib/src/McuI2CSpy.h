@@ -7,7 +7,7 @@
 **     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-03-13, 06:24, # CodeGen: 160
+**     Date/Time   : 2017-12-29, 20:22, # CodeGen: 265
 **     Abstract    :
 **          This component implements a utility to inspect devices on the I2C bus.
 **     Settings    :
@@ -153,9 +153,9 @@ uint8_t McuI2CSpy_SetBytesPerLine(uint8_t nofBytesPerLine);
 ** ===================================================================
 */
 
-void McuGenericI2C_OnRequestBus(void);
+void McuGenericI2C_OnRequestBus0(void);
 
-void McuGenericI2C_OnReleaseBus(void);
+void McuGenericI2C_OnReleaseBus0(void);
 
 uint8_t McuI2CSpy_ReadRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
 /*

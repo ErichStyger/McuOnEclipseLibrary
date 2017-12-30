@@ -66,7 +66,7 @@
 #include "BitIoLdd4.h"
 #include "Output1.h"
 #include "BitIoLdd5.h"
-#include "McuGDisplay.h"
+#include "McuGDisplaySSD1306.h"
 #include "McuSharpMemoryDisplay.h"
 #include "SCEpin1.h"
 #include "BitIoLdd6.h"
@@ -111,6 +111,7 @@
 #include "InputRB1.h"
 #include "DbgRd1.h"
 #include "McuDS18B20.h"
+#include "McuSSD1306.h"
 #include "McuLib.h"
 
 #ifdef __cplusplus

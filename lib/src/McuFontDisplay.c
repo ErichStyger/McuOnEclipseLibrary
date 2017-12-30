@@ -4,25 +4,26 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FontDisplay
-**     Version     : Component 01.196, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.198, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-18, 11:04, # CodeGen: 224
+**     Date/Time   : 2017-12-30, 13:18, # CodeGen: 278
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuFontDisplay
 **          System                                         : 
-**            Display                                      : McuGDisplay
-**            Font                                         : McuFontCour14Normal
+**            SDK                                          : McuLib
+**            Display                                      : McuGDisplaySSD1306
+**            Font                                         : McuGFont
 **          Watchdog                                       : Disabled
 **     Contents    :
 **         GetFontHeight   - void McuFontDisplay_GetFontHeight(McuFontDisplay_Font *font,...
-**         GetStringHeight - McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(byte *str,...
-**         GetCharWidth    - void McuFontDisplay_GetCharWidth(byte ch, McuFontDisplay_PixelDim *charWidth,...
-**         GetStringWidth  - McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(byte *str,...
-**         WriteString     - void McuFontDisplay_WriteString(byte *str, McuFontDisplay_PixelColor color,...
-**         WriteChar       - void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color,...
+**         GetStringHeight - McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(uint8_t *str,...
+**         GetCharWidth    - void McuFontDisplay_GetCharWidth(uint8_t ch, McuFontDisplay_PixelDim...
+**         GetStringWidth  - McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(uint8_t *str,...
+**         WriteString     - void McuFontDisplay_WriteString(uint8_t *str, McuFontDisplay_PixelColor...
+**         WriteChar       - void McuFontDisplay_WriteChar(uint8_t ch, McuFontDisplay_PixelColor color,...
 **
 **     * Copyright (c) 2011-2017, Erich Styger
 **      * Web:         https://mcuoneclipse.com
@@ -88,12 +89,12 @@
 **     Returns     : Nothing
 ** ===================================================================
 */
-void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font)
+void McuFontDisplay_WriteChar(uint8_t ch, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font)
 {
   PGFONT_CharInfo charStruct;          /* font information */
-  byte *data;                          /* actual character of string text[] */
-  byte w;                              /* counter variable row bits of character */
-  byte h;                              /* counter variable column bits of character */
+  uint8_t *data;                       /* actual character of string text[] */
+  uint8_t w;                           /* counter variable row bits of character */
+  uint8_t h;                           /* counter variable column bits of character */
   McuFontDisplay_PixelDim currY;
   McuFontDisplay_PixelDim currX;
   signed char b;                       /* bit position in byte stream */
@@ -101,7 +102,7 @@ void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontD
   if (ch=='\t') {                      /* tabulator */
    ch = ' ';                           /* use a space instead */
   }
-  charStruct = font->GetFontChar((byte)ch);
+  charStruct = font->GetFontChar((uint8_t)ch);
   if (ch=='\n') {                      /* move to a new line */
    *yCursor += font->boundingBoxHeight; /* set next cursor position */
    return;
@@ -109,7 +110,7 @@ void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontD
   if (ch=='\r') {                      /* move to beginning of line */
    return;                             /* do nothing. Only the caller may know what the beginning of line is */
   }
-  data = (byte*)charStruct->CharBMP;   /* get the pointer */
+  data = (uint8_t*)charStruct->CharBMP; /* get the pointer */
   if (data != NULL) {                  /* printable character. Only if we have a character info. This is not the case e.g. for \n */
     currY =  (McuFontDisplay_PixelDim)(*yCursor
            + font->boundingBoxHeight   /* height of box. This includes the space between lines plus the space under the base line */
@@ -124,7 +125,7 @@ void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontD
       b = 7;                           /* bit position, MSB first */
       for(;;) {                        /* breaks, prints one pixel line */
         if ((((*data)&(1<<b))>>b)==1) { /* note that we do not change the background pixels */
-          McuGDisplay_PutPixel((McuFontDisplay_PixelDim)(currX+w), currY, color);
+          McuGDisplaySSD1306_PutPixel((McuFontDisplay_PixelDim)(currX+w), currY, color);
         }
         w++;                           /* width counter */
         b--;                           /* next pixel */
@@ -169,7 +170,7 @@ void McuFontDisplay_WriteChar(byte ch, McuFontDisplay_PixelColor color, McuFontD
 **     Returns     : Nothing
 ** ===================================================================
 */
-void McuFontDisplay_WriteString(byte *str, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font)
+void McuFontDisplay_WriteString(uint8_t *str, McuFontDisplay_PixelColor color, McuFontDisplay_PixelDim *xCursor, McuFontDisplay_PixelDim *yCursor, McuFontDisplay_Font *font)
 {
   McuFontDisplay_PixelDim x = *xCursor;
 
@@ -205,11 +206,11 @@ void McuFontDisplay_WriteString(byte *str, McuFontDisplay_PixelColor color, McuF
 **     Returns     : Nothing
 ** ===================================================================
 */
-void McuFontDisplay_GetCharWidth(byte ch, McuFontDisplay_PixelDim *charWidth, McuFontDisplay_PixelDim *totalWidth, McuFontDisplay_Font *font)
+void McuFontDisplay_GetCharWidth(uint8_t ch, McuFontDisplay_PixelDim *charWidth, McuFontDisplay_PixelDim *totalWidth, McuFontDisplay_Font *font)
 {
   PGFONT_CharInfo charStruct;
 
-  charStruct = font->GetFontChar((byte)ch);
+  charStruct = font->GetFontChar((uint8_t)ch);
   if (charStruct != NULL) {
     *charWidth = (McuFontDisplay_PixelDim)(charStruct->width+charStruct->offsetX);
     *totalWidth = (McuFontDisplay_PixelDim)charStruct->dwidth;
@@ -239,7 +240,7 @@ void McuFontDisplay_GetCharWidth(byte ch, McuFontDisplay_PixelDim *charWidth, Mc
 **         ---             - Error code
 ** ===================================================================
 */
-McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(byte *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastCharSpace)
+McuFontDisplay_PixelDim McuFontDisplay_GetStringWidth(uint8_t *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastCharSpace)
 {
   unsigned char *p;                    /* pointer to the actual character */
   McuFontDisplay_PixelDim currWidth;   /* current width of string */
@@ -317,9 +318,9 @@ void McuFontDisplay_GetFontHeight(McuFontDisplay_Font *font, McuFontDisplay_Pixe
 **         ---             - Error code
 ** ===================================================================
 */
-McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(byte *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastLineSpace)
+McuFontDisplay_PixelDim McuFontDisplay_GetStringHeight(uint8_t *str, McuFontDisplay_Font *font, McuFontDisplay_PixelDim *lastLineSpace)
 {
-  word nofLines;
+  uint16_t nofLines;
   McuFontDisplay_PixelDim charHeight, totalHeight;
 
   if (*str == '\0') {

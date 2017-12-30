@@ -7,7 +7,7 @@
 **     Version     : Component 01.035, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
+**     Date/Time   : 2017-12-30, 13:18, # CodeGen: 278
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -30,6 +30,7 @@
 **         ReleaseBus        - void McuGenericI2C_ReleaseBus(void);
 **         WriteBlock        - uint8_t McuGenericI2C_WriteBlock(void* data, uint16_t dataSize,...
 **         ReadBlock         - uint8_t McuGenericI2C_ReadBlock(void* data, uint16_t dataSize,...
+**         ReadBlockGeneric  - uint8_t McuGenericI2C_ReadBlockGeneric(void* data, uint16_t dataSize,...
 **         ReadAddress       - uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         WriteAddress      - uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         ReadByte          - uint8_t McuGenericI2C_ReadByte(uint8_t i2cAddr, uint8_t *data);
@@ -88,12 +89,6 @@
 /* MODULE McuGenericI2C. */
 #include "McuLib.h" /* SDK and API used */
 #include "McuGenericI2Cconfig.h" /* configuration */
-
-/* Include inherited beans */
-#include "McuWait.h"
-#include "McuLib.h"
-#include "McuGenericSWI2C.h"
-#include "McuRTOS.h"
 
 
 #ifdef __cplusplus
@@ -334,6 +329,25 @@ uint8_t McuGenericI2C_ProbeACK(void* data, uint16_t dataSize, McuGenericI2C_Enum
 **         flags           - flags for the transaction
 **         WaitTimeUS      - Waiting time in microseconds
 **                           to wait for the ACK on the bus.
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuGenericI2C_ReadBlockGeneric(void* data, uint16_t dataSize, McuGenericI2C_EnumSendFlags flags, McuGenericI2C_EnumStartFlags flagsStart, McuGenericI2C_EnumAckFlags flagsAck);
+/*
+** ===================================================================
+**     Method      :  McuGenericI2C_ReadBlockGeneric (component GenericI2C)
+**     Description :
+**         Read from the device a block with using additional control
+**         and flags.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * data            - Read buffer
+**         dataSize        - Size of read buffer
+**         flagsSend       - flags for the send transaction
+**         flagsStart      - Start flags
+**         flagsAck        - Acknowledge flags
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
