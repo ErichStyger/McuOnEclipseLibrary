@@ -77,6 +77,7 @@
 #include "BitIoLdd7.h"
 #include "SCL1.h"
 #include "BitIoLdd8.h"
+#include "McuSSD1306.h"
 #include "McuI2CSpy.h"
 #include "McuFontHelv08Normal.h"
 #include "McuFontHelv10Normal.h"
@@ -108,7 +109,7 @@
 #include "InputRB1.h"
 #include "DbgRd1.h"
 #include "McuDS18B20.h"
-#include "McuSSD1306.h"
+#include "McuSTM32HALI2C.h"
 #include "McuLib.h"
 /* Including shared modules, which are used for whole project */
 #include "PE_Types.h"

@@ -34,5 +34,18 @@
     /*!< 1: Use a mutex to protect access to the bus; 0: no mutex used */
 #endif
 
+#if !defined(McuGenericI2C_CONFIG_WRITE_BUFFER_SIZE)
+  #define McuGenericI2C_CONFIG_WRITE_BUFFER_SIZE             (32)
+    /*!< Size of the write buffer size which defines the maximum block size which can be sent */
+#endif
+
+/* configuration of function names used for low level I2C functions */
+#include "McuGenericSWI2C.h" /* interface of low level I2C driver */
+#define McuGenericI2C_CONFIG_RECV_BLOCK                        McuGenericSWI2C_RecvBlock
+#define McuGenericI2C_CONFIG_SEND_BLOCK                        McuGenericSWI2C_SendBlock
+#define McuGenericI2C_CONFIG_SEND_STOP                         McuGenericSWI2C_SendStop
+#define McuGenericI2C_CONFIG_SELECT_SLAVE                      McuGenericSWI2C_SelectSlave
+#define McuGenericI2C_CONFIG_RECV_BLOCK_CUSTOM                 McuGenericSWI2C_RecvBlockCustom
+#define McuGenericI2C_CONFIG_RECV_BLOCK_CUSTOM_AVAILABLE       (defined(McuGenericSWI2C_RECVBLOCKCUSTOM_AVAILABLE) && (McuGenericSWI2C_RECVBLOCKCUSTOM_AVAILABLE==1))
 
 #endif /* __McuGenericI2C_CONFIG_H */

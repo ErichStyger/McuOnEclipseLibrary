@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.026, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
+**     Date/Time   : 2018-01-06, 19:00, # CodeGen: 289
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -279,6 +279,26 @@ static void SSD1306_WriteData(uint8_t data) {
 #endif
 }
 
+static void SSD1306_WriteDataBlock(uint8_t *data, size_t size) {
+  uint8_t memAddr = SSD1306_DATA_REG;
+  uint16_t txSize;
+
+  while(size>0) {
+    if (size>McuGenericI2C_WRITE_BUFFER_SIZE-1) {
+      txSize = McuGenericI2C_WRITE_BUFFER_SIZE-1; /* -1 because of memAddr */
+    } else {
+      txSize = size;
+    }
+    McuGenericI2C_WriteAddress(McuSSD1306_CONFIG_SSD1306_I2C_ADDR, &memAddr, sizeof(memAddr), data, txSize);
+    data += txSize;
+    size -= txSize;
+  }
+#if McuSSD1306_CONFIG_SSD1306_I2C_DELAY_US>0
+  McuWait_Waitus(McuSSD1306_CONFIG_SSD1306_I2C_DELAY_US);
+#endif
+}
+
+
 static uint8_t actCol = 0;
 static uint8_t actPage = 0;
 
@@ -306,12 +326,6 @@ static void SSD1306_PrintChar(uint8_t ch) {
     SSD1306_WriteData(font[((ch-0x20)*6)+i]);
   }
 }
-/* Internal method prototypes */
-static void WriteDataWord(uint16_t data);
-static void WriteDataWordRepeated(uint16_t data, size_t nof);
-static void WriteDataBlock(uint8_t *data, size_t dataSize);
-static void WriteCommand(uint8_t cmd);
-
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_ReadDataWord (component SSD1306)
@@ -337,58 +351,6 @@ uint16_t McuSSD1306_ReadDataWord(void)
 ** ===================================================================
 */
 void McuSSD1306_WriteData(uint8_t data)
-{
-}
-
-/*
-** ===================================================================
-**     Method      :  WriteDataWordRepeated (component SSD1306)
-**
-**     Description :
-**         Sends a data word to the display a number of times
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-static void WriteDataWordRepeated(uint16_t data, size_t nof)
-{
-}
-
-/*
-** ===================================================================
-**     Method      :  WriteDataBlock (component SSD1306)
-**
-**     Description :
-**         Sends a data buffer to the display
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-static void WriteDataBlock(uint8_t *data, size_t dataSize)
-{
-}
-
-/*
-** ===================================================================
-**     Method      :  WriteCommand (component SSD1306)
-**
-**     Description :
-**         Sends a command byte to the bus
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-static void WriteCommand(uint8_t cmd)
-{
-}
-
-/*
-** ===================================================================
-**     Method      :  WriteDataWord (component SSD1306)
-**
-**     Description :
-**         Sends a data word to the display
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-static void WriteDataWord(uint16_t data)
 {
 }
 
@@ -438,15 +400,9 @@ void McuSSD1306_Clear(void)
 */
 void McuSSD1306_UpdateFull(void)
 {
-  int i;
-  uint8_t *p = &McuSSD1306_DisplayBuf[0][0];
-
   SSD1306_SetPageStartAddr(0);
   SSD1306_SetColStartAddr(0);
-  for(i=0; i<sizeof(McuSSD1306_DisplayBuf); i++) {
-    SSD1306_WriteData(*p);
-    p++;
-  }
+  SSD1306_WriteDataBlock(&McuSSD1306_DisplayBuf[0][0], sizeof(McuSSD1306_DisplayBuf));
 }
 
 /*

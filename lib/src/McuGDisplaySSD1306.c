@@ -7,7 +7,7 @@
 **     Version     : Component 01.199, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-30, 14:26, # CodeGen: 280
+**     Date/Time   : 2018-01-06, 17:14, # CodeGen: 287
 **     Abstract    :
 **
 **     Settings    :
@@ -140,14 +140,14 @@ void McuGDisplaySSD1306_Clear(void)
 
   while (p<((uint8_t*)McuSSD1306_DisplayBuf)+sizeof(McuSSD1306_DisplayBuf)) {
  #if McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==1
-    *p++ = (uint8_t)(  (McuGDisplaySSD1306_COLOR_WHITE<<7)
-                  | (McuGDisplaySSD1306_COLOR_WHITE<<6)
-                  | (McuGDisplaySSD1306_COLOR_WHITE<<5)
-                  | (McuGDisplaySSD1306_COLOR_WHITE<<4)
-                  | (McuGDisplaySSD1306_COLOR_WHITE<<3)
-                  | (McuGDisplaySSD1306_COLOR_WHITE<<2)
-                  | (McuGDisplaySSD1306_COLOR_WHITE<<1)
-                  |  McuGDisplaySSD1306_COLOR_WHITE
+    *p++ = (uint8_t)(  (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<7)
+                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<6)
+                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<5)
+                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<4)
+                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<3)
+                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<2)
+                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<1)
+                  |  McuGDisplaySSD1306_COLOR_PIXEL_CLR
                  );
  #elif McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==16
     *((uint16_t*)p) = McuGDisplaySSD1306_COLOR_WHITE;

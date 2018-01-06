@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericI2C
-**     Version     : Component 01.037, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.040, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
+**     Date/Time   : 2018-01-06, 19:00, # CodeGen: 289
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -15,7 +15,7 @@
 **          Wait                                           : McuWait
 **          SDK                                            : McuLib
 **          Support STOP_NOSTART                           : no
-**          Write Buffer Size                              : 16
+**          Write Buffer Size                              : 32
 **          non-LDD I2C                                    : Enabled
 **            I2C                                          : McuGenericSWI2C
 **          LDD I2C                                        : Disabled
@@ -95,7 +95,7 @@
 extern "C" {
 #endif
 
-#define McuGenericI2C_WRITE_BUFFER_SIZE 16 /* size of internal buffer used, set in the component properties */
+#define McuGenericI2C_WRITE_BUFFER_SIZE   McuGenericI2C_CONFIG_WRITE_BUFFER_SIZE /* size of internal buffer used, set in the component properties */
 
 typedef enum McuGenericI2C_EnumSendFlags_ {
   McuGenericI2C_SEND_STOP,        /* STOP is sent */

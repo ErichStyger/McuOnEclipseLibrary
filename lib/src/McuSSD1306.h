@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.026, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
+**     Date/Time   : 2018-01-06, 17:14, # CodeGen: 287
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
