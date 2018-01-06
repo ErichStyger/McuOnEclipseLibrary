@@ -68,6 +68,11 @@
   /*!< 1: Clear display at the end of Init(); 0: Do not clear display at the end of Init() */
 #endif
 
+#ifndef McuSSD1306_CONFIG_INIT_DELAY_MS
+  #define McuSSD1306_CONFIG_INIT_DELAY_MS (5)
+  /*!< Additional delay (milliseconds) in Init(). Use zero for no delay. */
+#endif
+
 #ifndef McuSSD1306_CONFIG_USE_RAM_BUFFER
   #define McuSSD1306_CONFIG_USE_RAM_BUFFER (1)
   /*!< 1: Use RAM Buffer for display memory; 0: Do not use RAM buffer (write directly to display) */

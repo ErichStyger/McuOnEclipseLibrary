@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-30, 17:26, # CodeGen: 281
+**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -26,6 +26,7 @@
 **          Use RAM Buffer                                 : yes
 **          Clear display in init                          : no
 **          Initialize on Init                             : yes
+**          Init Delay (ms)                                : 5
 **          HW                                             : 
 **            I2C Device Address                           : 0x3C
 **            I2C Transaction Delay (us)                   : 100
@@ -41,13 +42,6 @@
 **         GetShorterSide        - McuSSD1306_PixelDim McuSSD1306_GetShorterSide(void);
 **         SetDisplayOrientation - void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation...
 **         GetDisplayOrientation - McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void);
-**         WriteData             - void McuSSD1306_WriteData(uint8_t data);
-**         WriteDataWord         - void McuSSD1306_WriteDataWord(uint16_t data);
-**         WriteDataWordRepeated - void McuSSD1306_WriteDataWordRepeated(uint16_t data, size_t nof);
-**         WriteDataBlock        - void McuSSD1306_WriteDataBlock(uint8_t *data, size_t dataSize);
-**         WriteCommand          - void McuSSD1306_WriteCommand(uint8_t cmd);
-**         OpenWindow            - void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0,...
-**         CloseWindow           - void McuSSD1306_CloseWindow(void);
 **         Clear                 - void McuSSD1306_Clear(void);
 **         UpdateFull            - void McuSSD1306_UpdateFull(void);
 **         UpdateRegion          - void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y,...
@@ -57,6 +51,7 @@
 **         DisplayInvert         - uint8_t McuSSD1306_DisplayInvert(bool invert);
 **         GetLCD                - void McuSSD1306_GetLCD(void);
 **         GiveLCD               - void McuSSD1306_GiveLCD(void);
+**         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
 **         Init                  - void McuSSD1306_Init(void);
 **
 **     * Copyright (c) 2017, Erich Styger
@@ -261,7 +256,7 @@ static unsigned char font[] = {
 #define SSD1306_EXTERNAL_VCC 0x1
 #define SSD1306_SWITCH_CAP_VCC 0x2
 
-// Scrolling #defines
+/* Scrolling #defines */
 #define SSD1306_ACTIVATE_SCROLL 0x2F
 #define SSD1306_DEACTIVATE_SCROLL 0x2E
 #define SSD1306_SET_VERTICAL_SCROLL_AREA 0xA3
@@ -269,20 +264,6 @@ static unsigned char font[] = {
 #define SSD1306_LEFT_HORIZONTAL_SCROLL 0x27
 #define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 0x29
 #define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL 0x2A
-
-#if McuSSD1306_CONFIG_SSD1306_128X64
-  #define SSD1306_LCDWIDTH                      128
-  #define SSD1306_LCDHEIGHT                     64
-  #define SSD1306_DISPLAY_HW_NOF_COLUMNS        128u /* number of columns in hardware */
-  #define SSD1306_DISPLAY_HW_NOF_ROWS           64u /* number of rows in hardware */
-  #define SSD1306_DISPLAY_HW_NOF_PAGES          8u
-#elif McuSSD1306_CONFIG_SSD1306_128X32
-  #define SSD1306_LCDWIDTH                      128
-  #define SSD1306_LCDHEIGHT                     32
-  #define SSD1306_DISPLAY_HW_NOF_COLUMNS        128u /* number of columns in hardware */
-  #define SSD1306_DISPLAY_HW_NOF_ROWS           32u /* number of rows in hardware */
-  #define SSD1306_DISPLAY_HW_NOF_PAGES          4u
-#endif
 
 static void SSD1306_WriteCommand(uint8_t cmd) {
   McuGenericI2C_WriteByteAddress8(McuSSD1306_CONFIG_SSD1306_I2C_ADDR, SSD1306_CMD_REG, cmd);
@@ -303,7 +284,7 @@ static uint8_t actPage = 0;
 
 static void SSD1306_SetPageStartAddr(uint8_t page) {
   actPage = page;
-  if(actPage>=SSD1306_DISPLAY_HW_NOF_PAGES) {
+  if(actPage>=McuSSD1306_DISPLAY_HW_NOF_PAGES) {
     return;
   }
   SSD1306_WriteCommand(0xB0 | actPage);
@@ -311,25 +292,11 @@ static void SSD1306_SetPageStartAddr(uint8_t page) {
 
 static void SSD1306_SetColStartAddr(uint8_t col){
   actCol = col;
-  if(actCol>=SSD1306_DISPLAY_HW_NOF_COLUMNS) {
+  if(actCol>=McuSSD1306_DISPLAY_HW_NOF_COLUMNS) {
     return;
   }
   SSD1306_WriteCommand(0x10 | (actCol>>4));
   SSD1306_WriteCommand(actCol & 0x0F);
-}
-
-static void SSD1306_Clear(void) {
-  uint8_t col, page;
-
-  for(page=0; page<SSD1306_DISPLAY_HW_NOF_PAGES; page++) {
-    SSD1306_SetPageStartAddr(page);
-    SSD1306_SetColStartAddr(0);
-    for(col=0; col<SSD1306_DISPLAY_HW_NOF_COLUMNS ; col++) {
-      SSD1306_WriteData(0x00);
-    }
-  }
-  actPage = 0;
-  actCol = 0;
 }
 
 static void SSD1306_PrintChar(uint8_t ch) {
@@ -339,32 +306,34 @@ static void SSD1306_PrintChar(uint8_t ch) {
     SSD1306_WriteData(font[((ch-0x20)*6)+i]);
   }
 }
+/* Internal method prototypes */
+static void WriteDataWord(uint16_t data);
+static void WriteDataWordRepeated(uint16_t data, size_t nof);
+static void WriteDataBlock(uint8_t *data, size_t dataSize);
+static void WriteCommand(uint8_t cmd);
 
-void SSD1306_PrintString(uint8_t *ch) {
-  while(*ch != '\0'){
-    if(*ch == '\n') {
-      actPage++;
-      if(actPage >= SSD1306_DISPLAY_HW_NOF_PAGES) {
-        actPage=0;
-      }
-      SSD1306_SetPageStartAddr(actPage);
-      SSD1306_SetColStartAddr(0);
-      ch++;
-    } else {
-      SSD1306_PrintChar(*ch++);
-    }
-  }
+/*
+** ===================================================================
+**     Method      :  McuSSD1306_ReadDataWord (component SSD1306)
+**
+**     Description :
+**         Writes a single word to the bus
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+uint16_t McuSSD1306_ReadDataWord(void)
+{
+  /* sorry, with the serial interface it is NOT possible to read from display memory */
+  return 0;
 }
 
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_WriteData (component SSD1306)
+**
 **     Description :
 **         Writes a data byte to the bus
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         data            - data byte to send
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 void McuSSD1306_WriteData(uint8_t data)
@@ -373,78 +342,63 @@ void McuSSD1306_WriteData(uint8_t data)
 
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_WriteDataWordRepeated (component SSD1306)
+**     Method      :  WriteDataWordRepeated (component SSD1306)
+**
 **     Description :
 **         Sends a data word to the display a number of times
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         data            - data to write
-**         nof             - How many times the data word shall be sent
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-void McuSSD1306_WriteDataWordRepeated(uint16_t data, size_t nof)
+static void WriteDataWordRepeated(uint16_t data, size_t nof)
 {
 }
 
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_WriteDataBlock (component SSD1306)
+**     Method      :  WriteDataBlock (component SSD1306)
+**
 **     Description :
 **         Sends a data buffer to the display
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**       * data            - Pointer to data to write
-**         dataSize        - 
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-void McuSSD1306_WriteDataBlock(uint8_t *data, size_t dataSize)
+static void WriteDataBlock(uint8_t *data, size_t dataSize)
 {
 }
 
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_WriteCommand (component SSD1306)
+**     Method      :  WriteCommand (component SSD1306)
+**
 **     Description :
 **         Sends a command byte to the bus
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         cmd             - the command to be sent
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-void McuSSD1306_WriteCommand(uint8_t cmd)
+static void WriteCommand(uint8_t cmd)
 {
 }
 
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_WriteDataWord (component SSD1306)
+**     Method      :  WriteDataWord (component SSD1306)
+**
 **     Description :
 **         Sends a data word to the display
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         data            - data to write
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
-void McuSSD1306_WriteDataWord(uint16_t data)
+static void WriteDataWord(uint16_t data)
 {
 }
 
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_OpenWindow (component SSD1306)
+**
 **     Description :
 **         Opens a window inside the display we want to write to.
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         x0              - 
-**         y0              - 
-**         x1              - 
-**         y1              - 
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSSD1306_PixelDim x1, McuSSD1306_PixelDim y1)
@@ -462,29 +416,36 @@ void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSS
 */
 void McuSSD1306_Clear(void)
 {
-  SSD1306_Clear();
+  int i;
+  uint8_t *p = &McuSSD1306_DisplayBuf[0][0];
+
+  for(i=0; i<sizeof(McuSSD1306_DisplayBuf); i++) {
+    *p = 0x00;
+    p++;
+  }
+  McuSSD1306_UpdateFull();
 }
 
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_UpdateFull (component SSD1306)
 **     Description :
-**         Updates the whole display. This is only a stub for this
-**         display as we are using windowing.
+**         Updates the whole display from the microcontroller RAM
+**         display buffer.
 **     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
 */
 void McuSSD1306_UpdateFull(void)
 {
-  uint8_t col, page;
+  int i;
+  uint8_t *p = &McuSSD1306_DisplayBuf[0][0];
 
-  for(page=0; page<SSD1306_DISPLAY_HW_NOF_PAGES; page++) {
-    SSD1306_SetPageStartAddr(page);
-    SSD1306_SetColStartAddr(0);
-    for(col=0; col<SSD1306_DISPLAY_HW_NOF_COLUMNS ; col++) {
-      SSD1306_WriteData(McuSSD1306_DisplayBuf[page][col]);
-    }
+  SSD1306_SetPageStartAddr(0);
+  SSD1306_SetColStartAddr(0);
+  for(i=0; i<sizeof(McuSSD1306_DisplayBuf); i++) {
+    SSD1306_WriteData(*p);
+    p++;
   }
 }
 
@@ -513,10 +474,10 @@ void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y, McuSS
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_CloseWindow (component SSD1306)
+**
 **     Description :
 **         Closes a window previously opened with OpenWindow()
-**     Parameters  : None
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 /*
@@ -567,6 +528,35 @@ McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void)
 */
 void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientation)
 {
+  currentOrientation = newOrientation;
+  switch(newOrientation) {
+    case McuSSD1306_ORIENTATION_LANDSCAPE:
+      SSD1306_WriteCommand(SSD1306_MEMORY_MODE);                     /* set memory mode */
+      SSD1306_WriteCommand(0x00);                                    /* 00b: horizontal addressing mode mode */
+      SSD1306_WriteCommand(SSD1306_SEG_REMAP | 0x01);                /* set segment re-map 128 to 0 */
+      SSD1306_WriteCommand(SSD1306_COM_SCAN_DEC);                    /* set COM output scan direction 64 to 0 */
+      break;
+    case McuSSD1306_ORIENTATION_LANDSCAPE180:
+      SSD1306_WriteCommand(SSD1306_MEMORY_MODE);                     /* set memory mode */
+      SSD1306_WriteCommand(0x00);                                    /* 00b: horizontal addressing mode mode */
+      SSD1306_WriteCommand(SSD1306_SEG_REMAP);                       /* set segment re-map 0 to 128 */
+      SSD1306_WriteCommand(SSD1306_COM_SCAN_INC);                    /* set COM output scan direction 0 to 64 */
+      break;
+    case McuSSD1306_ORIENTATION_PORTRAIT:
+      SSD1306_WriteCommand(SSD1306_MEMORY_MODE);                     /* set memory mode */
+      SSD1306_WriteCommand(0x01);                                    /* 01b: vertical addressing mode */
+      SSD1306_WriteCommand(SSD1306_SEG_REMAP | 0x01);                /* set segment re-map 128 to 0 */
+      SSD1306_WriteCommand(SSD1306_COM_SCAN_INC);                    /* set COM output scan direction 0 to 64 */
+      break;
+    case McuSSD1306_ORIENTATION_PORTRAIT180:
+      SSD1306_WriteCommand(SSD1306_MEMORY_MODE);                     /* set memory mode */
+      SSD1306_WriteCommand(0x01);                                    /* 01b: vertical addressing mode */
+      SSD1306_WriteCommand(SSD1306_SEG_REMAP);                       /* set segment re-map 0 to 128 */
+      SSD1306_WriteCommand(SSD1306_COM_SCAN_DEC);                    /* set COM output scan direction 64 to 0 */
+      break;
+    default:
+      break;
+  } /* switch */
 }
 
 /*
@@ -703,105 +693,6 @@ void McuSSD1306_InitCommChannel(void)
 
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_Init (component SSD1306)
-**     Description :
-**         Display driver initialization
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void McuSSD1306_Init(void)
-{
-#if McuSSD1306_CONFIG_SSD1306_HAS_RST
-  McuSSD1306_CONFIG_SSD1306_RESET_LOW();
-  McuWait_Waitms(1);                                                 /* wait for 1 ms */
-  McuSSD1306_CONFIG_SSD1306_RESET_HIGH();
-#endif
-  SSD1306_WriteCommand(SSD1306_DISPLAY_OFF);                         /* turn of display */
-  SSD1306_WriteCommand(SSD1306_SET_DISPLAY_CLOCK_DIV);               /* set display clock divide ratio/oscillator frequency */
-  SSD1306_WriteCommand(0x80);                                        /* the suggested ratio 0x80 */
-
-  SSD1306_WriteCommand(SSD1306_SET_MULTIPLEX);                       /* set multiplex ratio(1 to 64) */
-#if McuSSD1306_CONFIG_SSD1306_128X64
-  SSD1306_WriteCommand(0x3F);                                        /* the suggested 1/64 duty */
-#elif McuSSD1306_CONFIG_SSD1306_128X32
-  SSD1306_WriteCommand(0x1F);
-#else
-  #error "not supported"
-#endif
-
-  SSD1306_WriteCommand(SSD1306_SET_DISPLAY_OFFSET);                  /* set display offset */
-  SSD1306_WriteCommand(0x00);                                        /* no offset */
-  SSD1306_WriteCommand(SSD1306_SET_START_LINE | 0x00);               /* set start line address */
-
-  SSD1306_WriteCommand(SSD1306_COLUMN_ADDR);                         /* set start and end address of the columns */
-  SSD1306_WriteCommand(0);
-  SSD1306_WriteCommand(SSD1306_DISPLAY_HW_NOF_COLUMNS-1);
-
-  SSD1306_WriteCommand(SSD1306_PAGE_ADDR);                           /* set start and end address of the pages */
-  SSD1306_WriteCommand(0);
-  SSD1306_WriteCommand(SSD1306_DISPLAY_HW_NOF_PAGES-1);
-
-  SSD1306_WriteCommand(SSD1306_CHARGE_PUMP);                         /* set charge pump enable/disable */
-#if McuSSD1306_CONFIG_SSD1306_EXTERNAL == 1
-  SSD1306_WriteCommand(0x10);                                        /* set to disabled */
-#else
-  SSD1306_WriteCommand(0x14);                                        /* set to enabled */
-#endif
-
-  SSD1306_WriteCommand(SSD1306_MEMORY_MODE);                         /* set memory mode */
-  SSD1306_WriteCommand(0x00);
-
-  SSD1306_WriteCommand(SSD1306_SEG_REMAP | 0x01);                    /* set segment re-map 128 to 0 */
-  SSD1306_WriteCommand(SSD1306_COM_SCAN_DEC);                        /* set COM output scan direction 64 to 0 */
-  SSD1306_WriteCommand(SSD1306_SET_COM_PINS);                        /* set COM pins hardware configuration */
-#if McuSSD1306_CONFIG_SSD1306_128X64
-  SSD1306_WriteCommand(0x12);                                        /* the suggested 1/64 duty */
-#else
-  SSD1306_WriteCommand(0x02);
-#endif
-
-  SSD1306_WriteCommand(SSD1306_SET_CONTRAST);                        /* set contrast control register */
-#if McuSSD1306_CONFIG_SSD1306_128X64
-  #if McuSSD1306_CONFIG_SSD1306_EXTERNAL == 1
-  SSD1306_WriteCommand(0x9F);
-  #else
-  SSD1306_WriteCommand(0xCF);
-  #endif
-#else
-  SSD1306_WriteCommand(0x8F);
-#endif
-
-  SSD1306_WriteCommand(SSD1306_SET_PRECHARGE);                       /* set pre-charge period */
-#if McuSSD1306_CONFIG_SSD1306_EXTERNAL == 1
-  SSD1306_WriteCommand(0x22);
-#else
-  SSD1306_WriteCommand(0xF1);
-#endif
-  SSD1306_WriteCommand(0xF1);
-  SSD1306_WriteCommand(SSD1306_SET_VCOM_DETECT);                     /* set vcomh */
-  SSD1306_WriteCommand(0x40);
-
-  SSD1306_WriteCommand(SSD1306_DISPLAY_ALL_ON_RESUME);               /* disable entire display on */
-  SSD1306_WriteCommand(SSD1306_NORMAL_DISPLAY);                      /* set normal display */
-  SSD1306_WriteCommand(SSD1306_DISPLAY_ON);                          /* turn on oled panel */
-
-#if McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT); /* Portrait mode */
-#elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT180
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT180); /* Portrait mode, rotated 180° */
-#elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE); /* Landscape mode, rotated right 90° */
-#elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE180
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE180); /* Landscape mode, rotated left 90° */
-#endif
-#if McuSSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT
-  McuSSD1306_Clear();
-#endif
-}
-
-/*
-** ===================================================================
 **     Method      :  McuSSD1306_SetContrast (component SSD1306)
 **     Description :
 **         Sets the display contrast level (default:0x7F)
@@ -864,6 +755,124 @@ uint8_t McuSSD1306_DisplayInvert(bool invert)
     SSD1306_WriteCommand(SSD1306_NORMAL_DISPLAY);
   }
   return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  McuSSD1306_PrintString (component SSD1306)
+**     Description :
+**         Simple low level method printing text to the display.
+**         Newline is supported.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * str             - Pointer to string to be printed on display
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuSSD1306_PrintString(uint8_t *str)
+{
+  while(*str != '\0'){
+    if(*str == '\n') {
+      actPage++;
+      if(actPage >= McuSSD1306_DISPLAY_HW_NOF_PAGES) {
+        actPage=0;
+      }
+      SSD1306_SetPageStartAddr(actPage);
+      SSD1306_SetColStartAddr(0);
+      str++;
+    } else {
+      SSD1306_PrintChar(*str);
+      str++;
+    }
+  }
+}
+
+/*
+** ===================================================================
+**     Method      :  McuSSD1306_Init (component SSD1306)
+**     Description :
+**         Display driver initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuSSD1306_Init(void)
+{
+#if McuSSD1306_CONFIG_INIT_DELAY_MS>0
+  McuWait_Waitms(McuSSD1306_CONFIG_INIT_DELAY_MS);                   /* give hardware time to power up*/
+#endif
+#if McuSSD1306_CONFIG_SSD1306_HAS_RST
+  McuSSD1306_CONFIG_SSD1306_RESET_LOW();
+  McuWait_Waitms(1);                                                 /* wait for 1 ms */
+  McuSSD1306_CONFIG_SSD1306_RESET_HIGH();
+#endif
+  SSD1306_WriteCommand(SSD1306_DISPLAY_OFF);                         /* turn off display */
+  SSD1306_WriteCommand(SSD1306_SET_DISPLAY_CLOCK_DIV);               /* set display clock divide ratio/oscillator frequency */
+  SSD1306_WriteCommand(0x80);                                        /* the suggested ratio 0x80 */
+
+  SSD1306_WriteCommand(SSD1306_SET_MULTIPLEX);                       /* set multiplex ratio(1 to 64) */
+  SSD1306_WriteCommand(McuSSD1306_DISPLAY_HW_NOF_ROWS-1);            /* multiplex depending on number of rows */
+
+  SSD1306_WriteCommand(SSD1306_SET_DISPLAY_OFFSET);                  /* set display offset */
+  SSD1306_WriteCommand(0x00);                                        /* no offset */
+  SSD1306_WriteCommand(SSD1306_SET_START_LINE | 0x00);               /* set start line address */
+
+  SSD1306_WriteCommand(SSD1306_COLUMN_ADDR);                         /* set start and end address of the columns */
+  SSD1306_WriteCommand(0);
+  SSD1306_WriteCommand(McuSSD1306_DISPLAY_HW_NOF_COLUMNS-1);
+
+  SSD1306_WriteCommand(SSD1306_PAGE_ADDR);                           /* set start and end address of the pages */
+  SSD1306_WriteCommand(0);
+  SSD1306_WriteCommand(McuSSD1306_DISPLAY_HW_NOF_PAGES-1);
+
+  SSD1306_WriteCommand(SSD1306_CHARGE_PUMP);                         /* set charge pump enable/disable */
+#if McuSSD1306_CONFIG_SSD1306_EXTERNAL == 1
+  SSD1306_WriteCommand(0x10);                                        /* set to disabled */
+#else
+  SSD1306_WriteCommand(0x14);                                        /* set to enabled */
+#endif
+#if McuSSD1306_CONFIG_SSD1306_128X32
+  SSD1306_WriteCommand(SSD1306_SET_COM_PINS);                        /* set COM pins hardware configuration */
+  SSD1306_WriteCommand(0x02);
+  SSD1306_WriteCommand(SSD1306_SET_CONTRAST);                        /* set contrast control register */
+  SSD1306_WriteCommand(0x8F);
+#else
+  SSD1306_WriteCommand(SSD1306_SET_COM_PINS);                        /* set COM pins hardware configuration */
+  SSD1306_WriteCommand(0x12);
+  SSD1306_WriteCommand(SSD1306_SET_CONTRAST);                        /* set contrast control register */
+  #if McuSSD1306_CONFIG_SSD1306_EXTERNAL == 1
+  SSD1306_WriteCommand(0x9F);
+  #else
+  SSD1306_WriteCommand(0xCF);
+  #endif
+#endif
+
+  SSD1306_WriteCommand(SSD1306_SET_PRECHARGE);                       /* set pre-charge period */
+#if McuSSD1306_CONFIG_SSD1306_EXTERNAL == 1
+  SSD1306_WriteCommand(0x22);
+#else
+  SSD1306_WriteCommand(0xF1);
+#endif
+  SSD1306_WriteCommand(SSD1306_SET_VCOM_DETECT);                     /* set vcomh */
+  SSD1306_WriteCommand(0x40);
+
+  SSD1306_WriteCommand(SSD1306_DISPLAY_ALL_ON_RESUME);               /* disable entire display on */
+  SSD1306_WriteCommand(SSD1306_NORMAL_DISPLAY);                      /* set normal display */
+  SSD1306_WriteCommand(SSD1306_DEACTIVATE_SCROLL);                   /* Deactivate scrolling */
+  SSD1306_WriteCommand(SSD1306_DISPLAY_ON);                          /* turn on oled panel */
+
+#if McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT); /* Portrait mode */
+#elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT180
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT180); /* Portrait mode, rotated 180° */
+#elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE); /* Landscape mode, rotated right 90° */
+#elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE180
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE180); /* Landscape mode, rotated left 90° */
+#endif
+#if McuSSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT
+  McuSSD1306_Clear();
+#endif
 }
 
 /* END McuSSD1306. */

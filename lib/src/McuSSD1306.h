@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-30, 17:26, # CodeGen: 281
+**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -26,6 +26,7 @@
 **          Use RAM Buffer                                 : yes
 **          Clear display in init                          : no
 **          Initialize on Init                             : yes
+**          Init Delay (ms)                                : 5
 **          HW                                             : 
 **            I2C Device Address                           : 0x3C
 **            I2C Transaction Delay (us)                   : 100
@@ -41,13 +42,6 @@
 **         GetShorterSide        - McuSSD1306_PixelDim McuSSD1306_GetShorterSide(void);
 **         SetDisplayOrientation - void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation...
 **         GetDisplayOrientation - McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void);
-**         WriteData             - void McuSSD1306_WriteData(uint8_t data);
-**         WriteDataWord         - void McuSSD1306_WriteDataWord(uint16_t data);
-**         WriteDataWordRepeated - void McuSSD1306_WriteDataWordRepeated(uint16_t data, size_t nof);
-**         WriteDataBlock        - void McuSSD1306_WriteDataBlock(uint8_t *data, size_t dataSize);
-**         WriteCommand          - void McuSSD1306_WriteCommand(uint8_t cmd);
-**         OpenWindow            - void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0,...
-**         CloseWindow           - void McuSSD1306_CloseWindow(void);
 **         Clear                 - void McuSSD1306_Clear(void);
 **         UpdateFull            - void McuSSD1306_UpdateFull(void);
 **         UpdateRegion          - void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y,...
@@ -57,6 +51,7 @@
 **         DisplayInvert         - uint8_t McuSSD1306_DisplayInvert(bool invert);
 **         GetLCD                - void McuSSD1306_GetLCD(void);
 **         GiveLCD               - void McuSSD1306_GiveLCD(void);
+**         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
 **         Init                  - void McuSSD1306_Init(void);
 **
 **     * Copyright (c) 2017, Erich Styger
@@ -106,8 +101,15 @@
 #include <stddef.h> /* for size_t */
 
 
-#define McuSSD1306_DISPLAY_HW_NOF_COLUMNS  128u /* number of columns in hardware */
-#define McuSSD1306_DISPLAY_HW_NOF_ROWS     64u /* number of rows in hardware */
+#if McuSSD1306_CONFIG_SSD1306_128X64
+  #define McuSSD1306_DISPLAY_HW_NOF_COLUMNS  128u /* number of columns in hardware */
+  #define McuSSD1306_DISPLAY_HW_NOF_ROWS      64u /* number of rows in hardware */
+  #define McuSSD1306_DISPLAY_HW_NOF_PAGES      8u /* number of pages in hardware */
+#elif McuSSD1306_CONFIG_SSD1306_128X32
+  #define McuSSD1306_DISPLAY_HW_NOF_COLUMNS  128u /* number of columns in hardware */
+  #define McuSSD1306_DISPLAY_HW_NOF_ROWS      32u /* number of rows in hardware */
+  #define McuSSD1306_DISPLAY_HW_NOF_PAGES      4u /* number of pages in hardware */
+#endif
 
 typedef bool McuSSD1306_PixelColor;    /* type to hold color information */
 typedef uint8_t McuSSD1306_PixelDim;   /* one byte is enough to describe the x/y position */
@@ -189,8 +191,8 @@ void McuSSD1306_UpdateFull(void);
 ** ===================================================================
 **     Method      :  McuSSD1306_UpdateFull (component SSD1306)
 **     Description :
-**         Updates the whole display. This is only a stub for this
-**         display as we are using windowing.
+**         Updates the whole display from the microcontroller RAM
+**         display buffer.
 **     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
@@ -220,15 +222,10 @@ void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSS
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_OpenWindow (component SSD1306)
+**
 **     Description :
 **         Opens a window inside the display we want to write to.
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         x0              - 
-**         y0              - 
-**         x1              - 
-**         y1              - 
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 
@@ -237,10 +234,10 @@ void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSS
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_CloseWindow (component SSD1306)
+**
 **     Description :
 **         Closes a window previously opened with OpenWindow()
-**     Parameters  : None
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 
@@ -248,12 +245,10 @@ void McuSSD1306_WriteData(uint8_t data);
 /*
 ** ===================================================================
 **     Method      :  McuSSD1306_WriteData (component SSD1306)
+**
 **     Description :
 **         Writes a data byte to the bus
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         data            - data byte to send
-**     Returns     : Nothing
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 
@@ -355,29 +350,14 @@ void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientati
 ** ===================================================================
 */
 
-void McuSSD1306_WriteCommand(uint8_t cmd);
+uint16_t McuSSD1306_ReadDataWord(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_WriteCommand (component SSD1306)
+**     Method      :  McuSSD1306_ReadDataWord (component SSD1306)
+**
 **     Description :
-**         Sends a command byte to the bus
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         cmd             - the command to be sent
-**     Returns     : Nothing
-** ===================================================================
-*/
-
-void McuSSD1306_WriteDataWord(uint16_t data);
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_WriteDataWord (component SSD1306)
-**     Description :
-**         Sends a data word to the display
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         data            - data to write
-**     Returns     : Nothing
+**         Writes a single word to the bus
+**         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
 
@@ -412,34 +392,6 @@ void McuSSD1306_InitCommChannel(void);
 **         bus to the LCD is shared with other components and settings
 **         are different.
 **     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-
-void McuSSD1306_WriteDataBlock(uint8_t *data, size_t dataSize);
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_WriteDataBlock (component SSD1306)
-**     Description :
-**         Sends a data buffer to the display
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**       * data            - Pointer to data to write
-**         dataSize        - 
-**     Returns     : Nothing
-** ===================================================================
-*/
-
-void McuSSD1306_WriteDataWordRepeated(uint16_t data, size_t nof);
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_WriteDataWordRepeated (component SSD1306)
-**     Description :
-**         Sends a data word to the display a number of times
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         data            - data to write
-**         nof             - How many times the data word shall be sent
 **     Returns     : Nothing
 ** ===================================================================
 */
@@ -486,6 +438,20 @@ uint8_t McuSSD1306_DisplayInvert(bool invert);
 **                           is a pixel set.
 **     Returns     :
 **         ---             - Error code
+** ===================================================================
+*/
+
+void McuSSD1306_PrintString(uint8_t *str);
+/*
+** ===================================================================
+**     Method      :  McuSSD1306_PrintString (component SSD1306)
+**     Description :
+**         Simple low level method printing text to the display.
+**         Newline is supported.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * str             - Pointer to string to be printed on display
+**     Returns     : Nothing
 ** ===================================================================
 */
 

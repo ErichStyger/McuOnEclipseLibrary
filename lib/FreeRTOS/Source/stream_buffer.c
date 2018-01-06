@@ -27,12 +27,13 @@
  */
 
 /* Standard includes. */
-#ifdef __HIWARE__ /* << EST */
-  #ifndef UINT32_MAX
-     #define UINT32_MAX 0xffffffff
-  #endif
-#else
+#if 1 /* << EST: handle HIWARE compiler and C++ mode, where UINT32_MAX does not exist */
+#ifndef __HIWARE__ /* C89 compiler does not know stdint.h */
   #include <stdint.h>
+#endif
+#ifndef UINT32_MAX
+  #define UINT32_MAX 0xffffffff
+#endif
 #endif /* << EST */
 #include <string.h>
 

@@ -7,7 +7,7 @@
 **     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-18, 13:32, # CodeGen: 226
+**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -84,7 +84,12 @@
 **     Returns     : Nothing
 ** ===================================================================
 */
-__attribute__((naked, no_instrument_function)) void McuWait_Wait10Cycles(void)
+#ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't set 'no_instrument_function' attribute after definition */
+  __attribute__((naked))
+#else
+  __attribute__((naked, no_instrument_function))
+#endif
+void McuWait_Wait10Cycles(void)
 {
   /* This function will wait 10 CPU cycles (including call overhead). */
   /*lint -save -e522 function lacks side effect. */
@@ -109,7 +114,14 @@ __attribute__((naked, no_instrument_function)) void McuWait_Wait10Cycles(void)
 **     Returns     : Nothing
 ** ===================================================================
 */
-__attribute__((naked, no_instrument_function)) void McuWait_Wait100Cycles(void)
+#ifdef __GNUC__
+#ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't set 'no_instrument_function' attribute after definition */
+  __attribute__((naked))
+#else
+  __attribute__((naked, no_instrument_function))
+#endif
+#endif
+void McuWait_Wait100Cycles(void)
 {
   /* This function will spend 100 CPU cycles (including call overhead). */
   /*lint -save -e522 function lacks side effect. */
