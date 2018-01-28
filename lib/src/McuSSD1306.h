@@ -4,15 +4,16 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.026, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 17:14, # CodeGen: 287
+**     Date/Time   : 2018-01-28, 10:01, # CodeGen: 290
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
 **          Component name                                 : McuSSD1306
 **          Type                                           : 128x64
+**          Driver                                         : SSD1306
 **          Orientation                                    : landscape
 **          Width                                          : 128
 **          Height                                         : 64
@@ -30,6 +31,7 @@
 **          HW                                             : 
 **            I2C Device Address                           : 0x3C
 **            I2C Transaction Delay (us)                   : 100
+**            Bock Transfer                                : yes
 **            I2C                                          : McuGenericI2C
 **            Reset                                        : Disabled
 **          System                                         : 
@@ -54,7 +56,7 @@
 **         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
 **         Init                  - void McuSSD1306_Init(void);
 **
-**     * Copyright (c) 2017, Erich Styger
+**     * Copyright (c) 2017-2018, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

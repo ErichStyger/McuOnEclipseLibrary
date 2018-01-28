@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : STM32CubeI2C
-**     Version     : Component 01.003, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.004, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 19:00, # CodeGen: 289
+**     Date/Time   : 2018-01-28, 10:01, # CodeGen: 290
 **     Abstract    :
 **         Driver for STM32CubMX HAL I2C library
 **     Settings    :
@@ -24,7 +24,7 @@
 **         SendStop          - uint8_t McuSTM32HALI2C_SendStop(void);
 **         SelectSlave       - uint8_t McuSTM32HALI2C_SelectSlave(uint8_t Slv);
 **         GetSelected       - uint8_t McuSTM32HALI2C_GetSelected(uint8_t *Slv);
-**         SetDeviceHandle   - uint8_t McuSTM32HALI2C_SetDeviceHandle(void *handle);
+**         SetDeviceHandle   - uint8_t McuSTM32HALI2C_SetDeviceHandle(I2C_HandleTypeDef *handle);
 **         Deinit            - void McuSTM32HALI2C_Deinit(void);
 **         Init              - void McuSTM32HALI2C_Init(void);
 **

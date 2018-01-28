@@ -1,8 +1,8 @@
 /**
  * \file
- * \brief Application configuration file for SSD1351 display driver
+ * \brief Application configuration file for SSD1306 display driver
  *
- * This header file is a configuration header file to configure the module McuSSD1306 (SSD1351).
+ * This header file is a configuration header file to configure the module McuSSD1306 (SSD1306).
  * You can configure the defines directly in this file or with the compiler -D option.
  */
 
@@ -35,6 +35,11 @@
 #ifndef McuSSD1306_CONFIG_SSD1306_I2C_ADDR
   #define McuSSD1306_CONFIG_SSD1306_I2C_ADDR        (60)
     /*!< I2C 7bit (unshifted) device address, usually 0x3C (0b11'1100) or 0x3D (0b11'1101) */
+#endif
+
+#ifndef McuSSD1306_CONFIG_SSD1306_DRIVER_TYPE
+  #define McuSSD1306_CONFIG_SSD1306_DRIVER_TYPE        (1306)
+    /*!< Either 1306 for SSD1306 or 1106 for SH1106 */
 #endif
 
 #ifndef McuSSD1306_CONFIG_SSD1306_I2C_DELAY_US
@@ -71,6 +76,11 @@
 #ifndef McuSSD1306_CONFIG_INIT_DELAY_MS
   #define McuSSD1306_CONFIG_INIT_DELAY_MS (5)
   /*!< Additional delay (milliseconds) in Init(). Use zero for no delay. */
+#endif
+
+#ifndef McuSSD1306_CONFIG_USE_I2C_BLOCK_TRANSFER
+  #define McuSSD1306_CONFIG_USE_I2C_BLOCK_TRANSFER (1)
+  /*!< 1: use I2C Block transfer for better performance. 0: disabled, e.g. for slower displays */
 #endif
 
 #ifndef McuSSD1306_CONFIG_USE_RAM_BUFFER

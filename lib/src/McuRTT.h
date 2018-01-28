@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerRTT
-**     Version     : Component 01.083, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.084, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
+**     Date/Time   : 2018-01-28, 10:19, # CodeGen: 292
 **     Abstract    :
 **
 **     Settings    :

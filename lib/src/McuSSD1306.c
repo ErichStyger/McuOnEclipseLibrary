@@ -4,15 +4,16 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.026, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 19:00, # CodeGen: 289
+**     Date/Time   : 2018-01-28, 10:01, # CodeGen: 290
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
 **          Component name                                 : McuSSD1306
 **          Type                                           : 128x64
+**          Driver                                         : SSD1306
 **          Orientation                                    : landscape
 **          Width                                          : 128
 **          Height                                         : 64
@@ -30,6 +31,7 @@
 **          HW                                             : 
 **            I2C Device Address                           : 0x3C
 **            I2C Transaction Delay (us)                   : 100
+**            Bock Transfer                                : yes
 **            I2C                                          : McuGenericI2C
 **            Reset                                        : Disabled
 **          System                                         : 
@@ -54,7 +56,7 @@
 **         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
 **         Init                  - void McuSSD1306_Init(void);
 **
-**     * Copyright (c) 2017, Erich Styger
+**     * Copyright (c) 2017-2018, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -280,12 +282,14 @@ static void SSD1306_WriteData(uint8_t data) {
 }
 
 static void SSD1306_WriteDataBlock(uint8_t *data, size_t size) {
+#if McuSSD1306_CONFIG_USE_I2C_BLOCK_TRANSFER
+  #define SSD1306_I2C_BLOCK_SIZE   McuGenericI2C_WRITE_BUFFER_SIZE
   uint8_t memAddr = SSD1306_DATA_REG;
   uint16_t txSize;
 
   while(size>0) {
-    if (size>McuGenericI2C_WRITE_BUFFER_SIZE-1) {
-      txSize = McuGenericI2C_WRITE_BUFFER_SIZE-1; /* -1 because of memAddr */
+    if (size>SSD1306_I2C_BLOCK_SIZE-1) {
+      txSize = SSD1306_I2C_BLOCK_SIZE-1; /* -1 because of memAddr */
     } else {
       txSize = size;
     }
@@ -295,6 +299,13 @@ static void SSD1306_WriteDataBlock(uint8_t *data, size_t size) {
   }
 #if McuSSD1306_CONFIG_SSD1306_I2C_DELAY_US>0
   McuWait_Waitus(McuSSD1306_CONFIG_SSD1306_I2C_DELAY_US);
+#endif
+#else /* byte transfer only, in case there are issues with display */
+  while (size>0) {
+    SSD1306_WriteData(*data);
+    data++;
+    size--;
+  }
 #endif
 }
 
@@ -400,9 +411,22 @@ void McuSSD1306_Clear(void)
 */
 void McuSSD1306_UpdateFull(void)
 {
+#if McuSSD1306_CONFIG_SSD1306_DRIVER_TYPE==1306 /* SSD1306 */
   SSD1306_SetPageStartAddr(0);
   SSD1306_SetColStartAddr(0);
   SSD1306_WriteDataBlock(&McuSSD1306_DisplayBuf[0][0], sizeof(McuSSD1306_DisplayBuf));
+#elif McuSSD1306_CONFIG_SSD1306_DRIVER_TYPE==1106 /* SH1306 */
+  /* the SSH1306 has a 132x64 memory organization (compared to the 128x64 of the SSD1306) */
+  int page;
+
+  for(page=0; page<McuSSD1306_DISPLAY_HW_NOF_PAGES; page++) {
+    SSD1306_SetPageStartAddr(page);
+    SSD1306_SetColStartAddr(0);
+    SSD1306_WriteDataBlock(&McuSSD1306_DisplayBuf[0][0]+(page*McuSSD1306_DISPLAY_HW_NOF_COLUMNS), McuSSD1306_DISPLAY_HW_NOF_COLUMNS);
+  }
+#else
+  #error "unknown display type?"
+#endif
 }
 
 /*
