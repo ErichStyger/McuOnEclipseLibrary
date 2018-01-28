@@ -1,0 +1,4 @@
+# ignore empty generated font files
+/lib/src/McuFontCour*.c
+/lib/src/McuFontHelv*.c
+

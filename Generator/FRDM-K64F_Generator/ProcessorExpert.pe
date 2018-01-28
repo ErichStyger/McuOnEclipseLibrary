@@ -3,7 +3,7 @@
   <Header>
     <Name>FRDM-K64F_Generator</Name>
     <SavedBy>Erich Styger Local</SavedBy>
-    <ModificationStamp>180</ModificationStamp>
+    <ModificationStamp>188</ModificationStamp>
     <Date>2016-11-25</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>226</ProjectCompNumb>
+    <ProjectCompNumb>231</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -44,13 +44,6 @@
     <UserFolderName />
     <NodeName>Fonts</NodeName>
     <CompNumb>108</CompNumb>
-    <FolderType>Beans</FolderType>
-    <ExpandedAll>true</ExpandedAll>
-  </UserFolder>
-  <UserFolder>
-    <UserFolderName />
-    <NodeName>Referenced_Components</NodeName>
-    <CompNumb>223</CompNumb>
     <FolderType>Beans</FolderType>
     <ExpandedAll>true</ExpandedAll>
   </UserFolder>
@@ -6857,7 +6850,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.083</BeanVersion>
+    <BeanVersion>01.084</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -20054,7 +20047,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.064</BeanVersion>
+    <BeanVersion>01.065</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -26500,7 +26493,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -26579,6 +26572,27 @@
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value />
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value />
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
       </ItemState>
     </Properties>
     <Methods>
@@ -27235,7 +27249,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.040</BeanVersion>
+    <BeanVersion>01.041</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -29154,7 +29168,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.003</BeanVersion>
+    <BeanVersion>01.004</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -29338,7 +29352,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.026</BeanVersion>
+    <BeanVersion>01.030</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -29354,6 +29368,14 @@
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>0</Index>
         <EnumSymbVal>128x64</EnumSymbVal>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>DisplayDriver</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <EnumSymbVal>SSD1306</EnumSymbVal>
       </ItemState>
       <ItemState>
         <ItemSymbol>Orientation</ItemSymbol>
@@ -29468,6 +29490,14 @@
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Value>100</Value>
         <Base>DEC</Base>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>UseI2CBlockTransfer</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>I2C</ItemSymbol>
@@ -29929,7 +29959,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30009,6 +30039,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -30085,7 +30136,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30165,6 +30216,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -30241,7 +30313,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30321,6 +30393,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -30397,7 +30490,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30477,6 +30570,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -30553,7 +30667,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30633,6 +30747,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -30709,7 +30844,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30789,6 +30924,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -30865,7 +31021,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30945,6 +31101,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31021,7 +31198,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31101,6 +31278,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31177,7 +31375,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31257,6 +31455,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31333,7 +31552,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31413,6 +31632,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31489,7 +31729,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31569,6 +31809,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31645,7 +31906,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31725,6 +31986,27 @@
         <Index>0</Index>
         <EnumSymbVal>normal</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31801,7 +32083,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31881,6 +32163,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -31957,7 +32260,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32037,6 +32340,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -32113,7 +32437,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32193,6 +32517,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -32269,7 +32614,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32349,6 +32694,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -32425,7 +32791,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32505,6 +32871,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -32581,7 +32968,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32661,6 +33048,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -32737,7 +33145,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32817,6 +33225,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -32893,7 +33322,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32973,6 +33402,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -33049,7 +33499,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33129,6 +33579,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -33205,7 +33676,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33285,6 +33756,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -33361,7 +33853,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33441,6 +33933,27 @@
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
       </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
     </Properties>
     <Methods>
       <ItemState>
@@ -33517,7 +34030,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.125</BeanVersion>
+    <BeanVersion>01.127</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33596,6 +34109,27 @@
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
         <Index>1</Index>
         <EnumSymbVal>bold</EnumSymbVal>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>FoldersGroup</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+        <Expanded>true</Expanded>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontSrcFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>GFontConfigFolderName</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <Value>config/fonts</Value>
+        <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
       </ItemState>
     </Properties>
     <Methods>
