@@ -4,15 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.552, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.553, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 10:01, # CodeGen: 290
+**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
 **          Component name                                 : McuRTOS
-**          RTOS Version                                   : V10.0.0
+**          RTOS Version                                   : V10.0.1
 **          SDK                                            : McuLib
 **          Kinetis SDK                                    : Disabled
 **          Custom Port                                    : Custom port settings
@@ -226,10 +226,10 @@
 **         Init                                 - void McuRTOS_Init(void);
 **         Deinit                               - void McuRTOS_Deinit(void);
 **
-**     * FreeRTOS (c) Copyright 2003-2017 Richard Barry, http: www.FreeRTOS.org
+**     * FreeRTOS (c) Copyright 2003-2018 Richard Barry/Amazon, http: www.FreeRTOS.org
 **      * See separate FreeRTOS licensing terms.
 **      *
-**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2017
+**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2018
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -548,6 +548,8 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   uint8_t buf[16];
 
   McuShell_SendStatusStr((unsigned char*)"McuRTOS", (unsigned char*)"\r\n", io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"  Version", (const unsigned char*)tskKERNEL_VERSION_NUMBER, io->stdOut);
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
   McuShell_SendStatusStr((unsigned char*)"  RTOS ticks", (const unsigned char*)"", io->stdOut);
   McuUtility_Num16sToStr(buf, sizeof(buf), configTICK_RATE_HZ);
   McuShell_SendStr(buf, io->stdOut);

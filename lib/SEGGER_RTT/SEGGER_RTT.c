@@ -293,7 +293,11 @@ static void _DoInit(void) {
   p->aUp[0].SizeOfBuffer  = sizeof(_acUpBuffer);
   p->aUp[0].RdOff         = 0u;
   p->aUp[0].WrOff         = 0u;
+#if 1 /* << EST */
+  p->aUp[0].Flags         = SEGGER_RTT_CHANNEL_0_MODE_UP;
+#else
   p->aUp[0].Flags         = SEGGER_RTT_MODE_DEFAULT;
+#endif
   //
   // Initialize down buffer 0
   //
@@ -302,7 +306,11 @@ static void _DoInit(void) {
   p->aDown[0].SizeOfBuffer  = sizeof(_acDownBuffer);
   p->aDown[0].RdOff         = 0u;
   p->aDown[0].WrOff         = 0u;
+#if 1 /* << EST */
+  p->aDown[0].Flags         = SEGGER_RTT_CHANNEL_0_MODE_DOWN;
+#else
   p->aDown[0].Flags         = SEGGER_RTT_MODE_DEFAULT;
+#endif
   //
   // Finish initialization of the control block.
   // Copy Id string in three steps to make sure "SEGGER RTT" is not found

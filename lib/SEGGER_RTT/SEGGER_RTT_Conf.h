@@ -78,8 +78,9 @@ Revision: $Rev: 7859 $
 **********************************************************************
 */
 /* << EST: Additional setting to check for FreeRTOS: need to use FreeRTOS with proper BASEPRI mask to create critical sections */
-#define SEGGER_RTT_FREERTOS_PRESENT   1 /* 1: FreeRTOS enabled in project, 0: bare metal */
-#if SEGGER_RTT_FREERTOS_PRESENT
+#include "McuLib.h" /* SDK and API used */
+
+#if McuLib_CONFIG_SDK_USE_FREERTOS
   #include "portmacro.h" /* include FreeRTOS port header file for critical section handling */
 #endif
 

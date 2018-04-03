@@ -4,23 +4,24 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : XFormat
-**     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.023, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-22, 20:04, # CodeGen: 259
+**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuXFormat
 **          SDK                                            : McuLib
 **          Floating Point                                 : yes
+**          Static                                         : no
 **     Contents    :
 **         xvformat  - unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const...
 **         xformat   - unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const...
 **         xsprintf  - int McuXFormat_xsprintf(char *buf, const char *fmt, ...);
 **         xsnprintf - int McuXFormat_xsnprintf(char *buf, size_t max_len, const char *fmt, ...);
 **
-**     *  Copyright : (c) Copyright Mario Viara, 2014-2017, https://github.com/MarioViara/xprintfc
+**     *  Copyright : (c) Copyright Mario Viara, 2014-2018, https://github.com/MarioViara/xprintfc
 **      * Adopted for Processor Expert: Erich Styger
 **      * xsnprintf() contributed by Engin Lee
 **      * Web:         https://mcuoneclipse.com

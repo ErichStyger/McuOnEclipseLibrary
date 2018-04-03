@@ -512,5 +512,48 @@ int SEGGER_RTT_printf(unsigned BufferIndex, const char * sFormat, ...) {
   va_end(ParamList);
   return r;
 }
+
+#if 0 /* << EST extension to support extra format characters like %f */
+#include "McuXFormat.h"
+#include "McuWait.h"
+
+int SEGGER_printf(const char * sFormat, ...) {
+  static char buffer[256]; /* NOT reentrant! */
+  va_list args;
+  int res;
+  unsigned int avail;
+
+  va_start(args, sFormat);
+  res = xsnprintf(buffer, sizeof(buffer), sFormat, args);
+  va_end(args);
+  if (res > 0) {
+    int retry = 5;
+
+    do {
+      /* res is the number of characters written */
+      avail = SEGGER_RTT_GetUpBufferFreeSize(0);
+      if (avail>res) {
+          break; /* enough space available */
+      } else {
+        McuWait_Waitms(50);
+        retry--;
+      }
+    } while(retry>0);
+    return SEGGER_RTT_printf(0, "%s", buffer);
+  }
+  return -1; /* failed */
+}
+#else
+int SEGGER_printf(const char * sFormat, ...) {
+  va_list ParamList;
+  int res;
+
+  va_start(ParamList, sFormat);
+  res = SEGGER_RTT_vprintf(0, sFormat, &ParamList);
+  va_end(ParamList);
+  return res;
+}
+#endif
+
 /*************************** End of file ****************************/
 

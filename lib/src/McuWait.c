@@ -7,7 +7,7 @@
 **     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
+**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -96,7 +96,7 @@ void McuWait_Wait10Cycles(void)
   /* NOTE: Cortex-M0 and M4 have 1 cycle for a NOP */
   /* Compiler is GNUC */
   __asm (
-   /* bl Wai10Cycles() to here: [4] */
+   /* bl Wait10Cycles() to here: [4] */
    "nop   \n\t" /* [1] */
    "nop   \n\t" /* [1] */
    "nop   \n\t" /* [1] */

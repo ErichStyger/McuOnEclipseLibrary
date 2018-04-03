@@ -48,4 +48,14 @@
     /*!< Number of bits per pixel */
 #endif
 
+#ifndef McuGDisplaySSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT
+  #define McuGDisplaySSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT  (0)
+    /*!< 1: clear display during Init(); 0: do not clear display. */
+#endif
+
+#ifndef McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  #define McuGDisplaySSD1306_CONFIG_USE_MUTEX  (0)
+    /*!< 1: use RTOS mutex for mutual access to display. 0: do not use mutex */
+#endif
+
 #endif /* __McuGDisplaySSD1306_CONFIG_H */

@@ -4,15 +4,15 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.552, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.553, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-26, 19:07, # CodeGen: 264
+**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
 **          Component name                                 : McuRTOS
-**          RTOS Version                                   : V10.0.0
+**          RTOS Version                                   : V10.0.1
 **          SDK                                            : McuLib
 **          Kinetis SDK                                    : Disabled
 **          Custom Port                                    : Custom port settings
@@ -226,10 +226,10 @@
 **         Init                                 - void McuRTOS_Init(void);
 **         Deinit                               - void McuRTOS_Deinit(void);
 **
-**     * FreeRTOS (c) Copyright 2003-2017 Richard Barry, http: www.FreeRTOS.org
+**     * FreeRTOS (c) Copyright 2003-2018 Richard Barry/Amazon, http: www.FreeRTOS.org
 **      * See separate FreeRTOS licensing terms.
 **      *
-**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2017
+**      * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2018
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

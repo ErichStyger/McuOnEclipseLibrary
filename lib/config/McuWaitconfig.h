@@ -16,7 +16,7 @@
 #endif
 
 #ifndef McuWait_CONFIG_USE_RTOS_WAIT
-  #define McuWait_CONFIG_USE_RTOS_WAIT  (1)
+  #define McuWait_CONFIG_USE_RTOS_WAIT  (1 && McuLib_CONFIG_SDK_USE_FREERTOS)
     /*!< 1: Use RTOS wait if RTOS is present; 0: use normal busy waiting */
 #endif
 

@@ -53,6 +53,12 @@
 #endif
 #endif
 
+/* Configuration macro if FreeRTOS is used */
+#ifndef McuLib_CONFIG_SDK_USE_FREERTOS
+  #define McuLib_CONFIG_SDK_USE_FREERTOS          (1)
+    /*!< 1: Use FreeRTOS; 0: no FreeRTOS used */
+#endif
+
 /* special macro to identify a set of SDKs used */
 #define McuLib_CONFIG_NXP_SDK_USED               (   (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_1_3) \
                                                   || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_2_0) \

@@ -184,6 +184,9 @@ int     SEGGER_RTT_TerminalOut        (char TerminalId, const char* s);
 **********************************************************************
 */
 int SEGGER_RTT_printf(unsigned BufferIndex, const char * sFormat, ...);
+
+int SEGGER_printf(const char * sFormat, ...); /* << EST */
+
 #ifdef __cplusplus
   }
 #endif

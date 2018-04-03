@@ -7,7 +7,7 @@
 **     Version     : Component 01.084, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 10:19, # CodeGen: 292
+**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
 **     Abstract    :
 **
 **     Settings    :
@@ -54,7 +54,7 @@
 **         Deinit           - void McuRTT_Deinit(void);
 **         Init             - void McuRTT_Init(void);
 **
-**     * (c) Copyright Segger, 2016
+**     * (c) Copyright Segger, 2018
 **      * http      : www.segger.com
 **      * See separate Segger licensing terms.
 **      *

@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Utility
-**     Version     : Component 01.157, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.158, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-06, 13:07, # CodeGen: 285
+**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -84,7 +84,7 @@
 **         Deinit                  - void McuUtility_Deinit(void);
 **         Init                    - void McuUtility_Init(void);
 **
-**     * Copyright (c) 2014-2017, Erich Styger
+**     * Copyright (c) 2014-2018, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -2360,12 +2360,16 @@ void McuUtility_NumFloatToStr(uint8_t *dst, size_t dstSize, float val, uint8_t n
   }
   /* get fractional part */
   fractional = (uint32_t)(val*shift);
-  if (isNeg && fractional>0 && nofFracDigits>0) {
+  /* write integral part */
+  if (integral==0 && fractional==0) { /* special check to avoid writing -0 or -0.000 */
+    McuUtility_Num32sToStr(dst, dstSize, 0); /* just write the zero */
+  } else if (isNeg) { /* for negative numbers, write it with sign */
     McuUtility_strcpy(dst, dstSize, (unsigned char*)"-");
     McuUtility_strcatNum32s(dst, dstSize, (int32_t)integral);
   } else {
     McuUtility_Num32sToStr(dst, dstSize, (int32_t)integral);
   }
+  /* write fractional part */
   if (nofFracDigits>0) {
     McuUtility_chcat(dst, dstSize, '.');
     McuUtility_strcatNum32uFormatted(dst, dstSize, fractional, '0', nofFracDigits);

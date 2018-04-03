@@ -7,7 +7,7 @@
 **     Version     : Component 01.199, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 11:44, # CodeGen: 316
+**     Date/Time   : 2018-02-17, 17:12, # CodeGen: 323
 **     Abstract    :
 **
 **     Settings    :
@@ -91,6 +91,12 @@
 
 #include "McuGDisplaySSD1306.h"
 
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  #include "FreeRTOS.h"
+  #include "semphr.h"
+
+  static xSemaphoreHandle McuGDisplaySSD1306_displayMutex;
+#endif
 static const uint16_t c332to565[256] = { /* converts a 3-3-2 RBG value into a 5-6-5 RGB value */
  0x0000, 0x000A, 0x0014, 0xF81E, 0x0120, 0x012A, 0x0134, 0xF93E,
  0x0240, 0x024A, 0x0254, 0xFA5E, 0x0360, 0x036A, 0x0374, 0xFB7E,
@@ -175,6 +181,9 @@ void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   if (x>=McuGDisplaySSD1306_GetWidth() || y>=McuGDisplaySSD1306_GetHeight()) { /* values out of range */
     return;
   }
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
+#endif
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up a one pixel window */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_WRITEPIXEL(McuGDisplaySSD1306_COLOR_BLACK); /* store pixel with color information */
@@ -185,6 +194,9 @@ void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   McuGDisplaySSD1306_BUF_WORD(x,y) = McuGDisplaySSD1306_COLOR_BLACK;
 #else
   McuGDisplaySSD1306_BUF_BYTE(x,y) |= McuGDisplaySSD1306_BUF_BYTE_PIXEL_MASK(x,y);
+#endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
 #endif
 }
 
@@ -205,6 +217,9 @@ void McuGDisplaySSD1306_ClrPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   if (x>=McuGDisplaySSD1306_GetWidth() || y>=McuGDisplaySSD1306_GetHeight()) { /* values out of range */
     return;
   }
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
+#endif
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up a one pixel window */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_WRITEPIXEL(McuGDisplaySSD1306_COLOR_WHITE); /* store pixel with color information */
@@ -215,6 +230,9 @@ void McuGDisplaySSD1306_ClrPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   McuGDisplaySSD1306_BUF_WORD(x,y) = McuGDisplaySSD1306_COLOR_WHITE;
 #else
   McuGDisplaySSD1306_BUF_BYTE(x,y) &= ~McuGDisplaySSD1306_BUF_BYTE_PIXEL_MASK(x,y);
+#endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
 #endif
 }
 
@@ -257,6 +275,9 @@ void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   if (x>=McuGDisplaySSD1306_GetWidth() || y>=McuGDisplaySSD1306_GetHeight()) { /* values out of range */
     return;
   }
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
+#endif
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up window as large as the box */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_WRITEPIXEL(color); /* store pixel with color information */
@@ -276,6 +297,9 @@ void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
  #else /* multi-bit display */
   McuSSD1306_PutPixel(x, y, color);
  #endif
+#endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
 #endif
 }
 #ifdef __HC08__
@@ -331,14 +355,23 @@ void McuGDisplaySSD1306_DrawFilledBox(McuGDisplaySSD1306_PixelDim x, McuGDisplay
   x1 = (McuGDisplaySSD1306_PixelDim)(x+width-1); /* set window lower right x coordinate */
   y1 = (McuGDisplaySSD1306_PixelDim)(y+height-1); /* set window lower right y coordinate */
   pixCnt = (McuGDisplaySSD1306_PixelCount)((x1-x+1)*(y1-y+1)); /* number of pixels to write */
+  #if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
+  #endif
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x, y, x1, y1); /* set up window as large as the box */
   while (pixCnt>0) {
     McuGDisplaySSD1306_CONFIG_FCT_NAME_WRITEPIXEL(color); /* store pixel with color information */
     pixCnt--;
   } /* while */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
+  #if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
+  #endif
 #else
   y0 = y; ye = (McuGDisplaySSD1306_PixelDim)(y0+height-1);
+  #if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
+  #endif
   for(;;) { /* breaks */
     x0 = x; xe = (McuGDisplaySSD1306_PixelDim)(x0+width-1);
     for(;;) { /* process line, breaks */
@@ -353,6 +386,9 @@ void McuGDisplaySSD1306_DrawFilledBox(McuGDisplaySSD1306_PixelDim x, McuGDisplay
     }
     y0++;
   } /* for */
+  #if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
+  #endif
 #endif
 }
 
@@ -736,6 +772,9 @@ void McuGDisplaySSD1306_Draw65kBitmap(McuGDisplaySSD1306_PixelDim x1, McuGDispla
   McuGDisplaySSD1306_PixelCount pixelCount = (McuGDisplaySSD1306_PixelCount)((x2-x1+1) * (y2-y1+1));
 
 #endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
+#endif
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x1, y1, x2, y2); /* set up window as large as the box */
   if (compressed) {
@@ -779,6 +818,9 @@ void McuGDisplaySSD1306_Draw65kBitmap(McuGDisplaySSD1306_PixelDim x1, McuGDispla
   /* NYI */
   (void)x1; (void)y1; (void)x2; (void)y2; (void)bmp; (void)compressed; /* avoid compiler warning */
 #endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
+#endif
 }
 
 /*
@@ -805,6 +847,9 @@ void McuGDisplaySSD1306_Draw256BitmapHigh(McuGDisplaySSD1306_PixelDim x1, McuGDi
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_PixelCount pixelCount = (McuGDisplaySSD1306_PixelCount)((x2-x1+1) * (y2-y1+1));
 
+#endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
 #endif
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x1, y1, x2, y2); /* set up window as large as the box */
@@ -851,6 +896,9 @@ void McuGDisplaySSD1306_Draw256BitmapHigh(McuGDisplaySSD1306_PixelDim x1, McuGDi
   /* NYI */
   (void)x1; (void)y1; (void)x2; (void)y2; (void)bmp;  (void)ColorTable; (void)compressed; /* avoid compiler warning */
 #endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
+#endif
 }
 
 /*
@@ -883,6 +931,9 @@ void McuGDisplaySSD1306_Draw256BitmapLow(McuGDisplaySSD1306_PixelDim x1, McuGDis
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_PixelCount pixelCount = (McuGDisplaySSD1306_PixelCount)((x2-x1+1) * (y2-y1+1));
 
+#endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GetDisplay();
 #endif
 #if McuGDisplaySSD1306_CONFIG_USE_WINDOW_CAPABILITY
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x1, y1, x2, y2); /* set up window as large as the box */
@@ -930,6 +981,9 @@ void McuGDisplaySSD1306_Draw256BitmapLow(McuGDisplaySSD1306_PixelDim x1, McuGDis
 #else
   /* NYI */
   (void)x1; (void)y1; (void)x2; (void)y2; (void)bmp; (void)compressed; /* avoid compiler warning */
+#endif
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_GiveDisplay();
 #endif
 }
 
@@ -1026,6 +1080,9 @@ McuGDisplaySSD1306_PixelDim McuGDisplaySSD1306_GetShorterSide(void)
 */
 void McuGDisplaySSD1306_GetDisplay(void)
 {
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  xSemaphoreTakeRecursive(McuGDisplaySSD1306_displayMutex, portMAX_DELAY);
+#endif
   McuSSD1306_GetLCD();
 }
 
@@ -1042,6 +1099,9 @@ void McuGDisplaySSD1306_GetDisplay(void)
 void McuGDisplaySSD1306_GiveDisplay(void)
 {
   McuSSD1306_GiveLCD();
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  xSemaphoreGiveRecursive(McuGDisplaySSD1306_displayMutex);
+#endif
 }
 
 /*
@@ -1055,6 +1115,9 @@ void McuGDisplaySSD1306_GiveDisplay(void)
 */
 void McuGDisplaySSD1306_Init(void)
 {
+#if McuGDisplaySSD1306_CONFIG_USE_MUTEX
+  McuGDisplaySSD1306_displayMutex = xSemaphoreCreateRecursiveMutex();
+#endif
 }
 
 /* END McuGDisplaySSD1306. */
