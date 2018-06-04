@@ -1,0 +1,52 @@
+### Module positions - created on 06/04/18 13:08:14 ###
+### Printed by Pcbnew version kicad (2018-02-09 revision dba198e57)-makepkg
+## Unit = mm, Angle = deg.
+## Side : All
+# Ref     Val                         Package                                        PosX       PosY       Rot  Side
+C1        220u                        CP_Elec_6.3x7.7                             44.9580    21.9710  180.0000  top
+C2        220u                        CP_Elec_6.3x7.7                             44.9580    14.8590  180.0000  top
+C3        1u                          C_0805                                      40.7670    27.8130  270.0000  top
+C4        3n3                         C_0805                                      81.7880     5.9690  180.0000  top
+C5        3n3                         C_0805                                      22.3520   108.7120   90.0000  top
+C6        100n                        C_0805                                      42.7990    27.1780  270.0000  top
+C7        100n                        C_0805                                      37.4650    27.8130  180.0000  top
+C8        2u2                         C_0805                                      31.1150    10.0330    0.0000  top
+C9        100n                        C_0805                                      33.5280    12.9540   90.0000  top
+C10       100n                        C_0805                                      21.8440    10.2870  270.0000  top
+C11       100n                        C_0805                                      19.9390    13.7160  270.0000  top
+C12       2u2                         C_0805                                      27.1780     9.3980  180.0000  top
+C13       100n                        C_0805                                      32.2580    15.8750    0.0000  top
+C14       2u2                         C_0805                                      19.9390     9.9060   90.0000  top
+C15       100n                        C_0805                                      17.9070     9.9060   90.0000  top
+C16       100n                        C_0805                                      17.9070    13.7160  270.0000  top
+C17       100n                        C_0805                                      31.6230    22.8600  270.0000  top
+D1        LED                         LED_0805                                     2.0320   122.1740  270.0000  top
+D2        D_Schottky_x2_ACom_AKK      SOT-23                                      11.3030    12.0650    0.0000  top
+FID1      Fiducial_1mm_Dia_2mm_Outer  Fiducial_1mm_Dia_2mm_Outer                  38.3794   122.6820    0.0000  top
+FID2      Fiducial_1mm_Dia_2mm_Outer  Fiducial_1mm_Dia_2mm_Outer                   2.3114     7.0104    0.0000  top
+FID3      Fiducial_1mm_Dia_2mm_Outer  Fiducial_1mm_Dia_2mm_Outer                 115.9510    83.7692    0.0000  top
+J7        SWD Interface               Pin_Header_Straight_2x05_Pitch1.27mm_SMD     7.1120    58.4200  270.0000  top
+L1        330                         L_0805                                      24.1300     9.3980   90.0000  top
+Q1        BC847                       SOT-23                                      20.8280    54.2290  180.0000  top
+R1        100                         R_0805                                      24.8920    58.0390  180.0000  top
+R2        10k                         R_0805                                      24.8920    52.3240    0.0000  top
+R5        4k7                         R_0805                                      24.8920    55.2450    0.0000  top
+R6        470                         R_0805                                      30.8610    12.0650  180.0000  top
+R7        100k                        R_0805                                      16.0020    56.2610  180.0000  top
+R8        100k                        R_0805                                      13.0810    54.3560    0.0000  top
+R9        100k                        R_0805                                      16.8910    58.5470  180.0000  top
+R10       100                         R_0805                                       2.0320   118.1100   90.0000  top
+R11       0                           R_0805                                      27.1780    11.3030  180.0000  top
+R12       0                           R_0805                                       5.4610     9.1440  180.0000  top
+R14       10k                         R_0805                                      33.5280    22.9870   90.0000  top
+SW1       SW_FWD                      SW_SPST_B3S-1000_LONG                       20.9550   120.3960  180.0000  top
+SW2       SW_REV                      SW_SPST_B3S-1000_LONG                        9.7790   120.3960  180.0000  top
+SW4       RESET                       SW_SPST_B3S-1000_LONG                        6.0960   102.8700  270.0000  top
+U1        EE-SX1350_PCB               EESX1350_PCB_V3                             30.2260    52.5780  180.0000  top
+U2        DRV8835                     WSON-12-1EP_3x2mm_Pitch0.5mm                38.1000    30.9880  180.0000  top
+U3        EE-SX1350_PCB               EESX1350_Board                             154.2923    44.3103  180.0000  top
+U4        MK20DX128VFT                QFN-48-1EP_7x7mm_Pitch0.5mm                 25.7810    19.0500   90.0000  top
+U5        TC1262-33                   SOT-223-3_TabPin2                           11.8110     6.6040  180.0000  top
+Y1        8MHz                        Crystal_SMD_0603-4pin_6.0x3.5mm             36.8300    21.9710   90.0000  top
+Y2        32.768kHz                   R_0805                                      35.8640    15.8450  180.0000  top
+## End
