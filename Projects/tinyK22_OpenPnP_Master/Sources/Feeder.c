@@ -234,6 +234,10 @@ uint8_t FEED_ParseCommand(const unsigned char* cmd, bool *handled, const CLS1_St
         return FEED_SendCommand(buf, io);
       }
     }
+  } else if (UTIL1_strncmp((char*)cmd, "M851 ", sizeof("M851 ")-1)==0) { /* post-pick operation: "M851 <addr> <n> mm  */
+    *handled = TRUE;
+    /* We are not doing anything right now. Print 'ok' message so it can be parsed by OpenPnP Regular Expression */
+    CLS1_SendStr("ok\r\nok\r\nok\r\n", io->stdOut);
   }
   return res;
 }
