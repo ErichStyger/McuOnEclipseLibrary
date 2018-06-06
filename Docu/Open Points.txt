@@ -1,0 +1,31 @@
+Open Points and wish list :-) :
+-------------------------------
+
+Mechanical:
+- belt: ability to strengthen them with a screw (tension)
+- linear rod extension (coupled Y motors)
+- More solid down camera case
+- metal brackets for X axis (some are still 3D printed and lasercut plywood)
+- Reduce magnets for L PCB holder (issue with magnetic parts like FETs)
+
+Electronics:
+- New place for LCD (with all feeders mounted)
+- Fix electronic parts on ground plate
+- better loose part picking bins
+- noise containment for vacuum pump
+- adding pressure sensors
+- parts might 'hang' on nozzle: add pressure to 'release' it
+
+Auto-Feeder
+- Redesign to be able to move over it with the camera
+- step size of feeder (2mm vs. 4mm)
+- Metal or non-3D printed gears
+- integrated roll holder for easier feeder exchange
+- QR code for feeders
+- Improve tension of coverage tape
+
+Features:
+- LED ligths/WS2812B
+- solder paste dispenser with camera
+- vibration motor for loose part picking
+- 2nd nozzle changer
