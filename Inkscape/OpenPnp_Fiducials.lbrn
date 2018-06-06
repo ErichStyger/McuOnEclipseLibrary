@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightBurnProject MaterialHeight="0">
+    <CutSetting type="Cut">
+        <index Value="2"/>
+        <minPower Value="0"/>
+        <maxPower Value="100"/>
+        <speed Value="10"/>
+        <kerf Value="0"/>
+        <zOffset Value="0"/>
+        <startDelay Value="0"/>
+        <endDelay Value="0"/>
+        <throughPower Value="0"/>
+        <enableCutThrough Value="0"/>
+        <priority Value="1"/>
+        <frequency Value="20000"/>
+        <doOutput Value="1"/>
+        <hide Value="0"/>
+        <runBlower Value="1"/>
+        <numPasses Value="1"/>
+        <zPerPass Value="0"/>
+        <scanOpt Value="mergeAll"/>
+        <bidir Value="1"/>
+        <crossHatch Value="0"/>
+        <overscan Value="0"/>
+        <overscanPercent Value="2.5"/>
+        <floodFill Value="0"/>
+        <interval Value="0.1"/>
+        <angle Value="0"/>
+    </CutSetting>
+    <CutSetting type="Cut">
+        <index Value="3"/>
+        <minPower Value="0"/>
+        <maxPower Value="3"/>
+        <speed Value="15"/>
+        <kerf Value="0"/>
+        <zOffset Value="0"/>
+        <startDelay Value="0"/>
+        <endDelay Value="0"/>
+        <throughPower Value="0"/>
+        <enableCutThrough Value="0"/>
+        <priority Value="0"/>
+        <frequency Value="20000"/>
+        <doOutput Value="1"/>
+        <hide Value="0"/>
+        <runBlower Value="1"/>
+        <numPasses Value="1"/>
+        <zPerPass Value="0"/>
+        <scanOpt Value="mergeAll"/>
+        <bidir Value="1"/>
+        <crossHatch Value="0"/>
+        <overscan Value="0"/>
+        <overscanPercent Value="2.5"/>
+        <floodFill Value="0"/>
+        <interval Value="0.1"/>
+        <angle Value="0"/>
+    </CutSetting>
+    <Shape Type="Group">
+        <XForm>1 0 0 1 67.3431 37.3107</XForm>
+        <Children>
+            <Shape Type="Ellipse" CutIndex="2" Rx="3.95" Ry="3.95">
+                <XForm>-1 0 0 1 -48.3758 -20.4917</XForm>
+            </Shape>
+            <Shape Type="Path" CutIndex="2">
+                <XForm>1 0 0 1 0 0</XForm>
+                <V vx="-65.16806" vy="-20.491669" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-56.771923" vy="-5.9475708" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-39.979652" vy="-5.9475708" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-31.583515" vy="-20.491669" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-39.979652" vy="-35.035751" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-56.771923" vy="-35.035751" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <P T="L" p0="0" p1="1"/>
+                <P T="L" p0="1" p1="2"/>
+                <P T="L" p0="2" p1="3"/>
+                <P T="L" p0="3" p1="4"/>
+                <P T="L" p0="4" p1="5"/>
+                <P T="L" p0="5" p1="0"/>
+            </Shape>
+        </Children>
+    </Shape>
+    <Shape Type="Path" CutIndex="3">
+        <XForm>1 0 0 1 67.3431 37.3107</XForm>
+        <V vx="-31.583515" vy="-20.491676" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <V vx="-65.16806" vy="-20.491676" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <P T="L" p0="0" p1="1"/>
+    </Shape>
+    <Shape Type="Path" CutIndex="3">
+        <XForm>1 0 0 1 67.3431 37.3107</XForm>
+        <V vx="-48.509418" vy="-34.924225" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <V vx="-48.242153" vy="-5.6582184" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <P T="L" p0="0" p1="1"/>
+    </Shape>
+    <Shape Type="Path" CutIndex="3">
+        <XForm>1 0 0 1 67.3431 37.3107</XForm>
+        <V vx="-39.979649" vy="-35.035767" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <V vx="-56.771923" vy="-5.9476013" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <P T="L" p0="0" p1="1"/>
+    </Shape>
+    <Shape Type="Path" CutIndex="3">
+        <XForm>1 0 0 1 67.3431 37.3107</XForm>
+        <V vx="-39.979649" vy="-5.9476013" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <V vx="-56.771923" vy="-35.035767" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+        <P T="L" p0="0" p1="1"/>
+    </Shape>
+</LightBurnProject>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightBurnProject MaterialHeight="0">
+    <CutSetting type="Cut">
+        <index Value="2"/>
+        <minPower Value="0"/>
+        <maxPower Value="35"/>
+        <speed Value="15"/>
+        <kerf Value="0"/>
+        <zOffset Value="0"/>
+        <startDelay Value="0"/>
+        <endDelay Value="0"/>
+        <throughPower Value="0"/>
+        <enableCutThrough Value="0"/>
+        <priority Value="0"/>
+        <frequency Value="20000"/>
+        <doOutput Value="1"/>
+        <hide Value="0"/>
+        <runBlower Value="1"/>
+        <numPasses Value="1"/>
+        <zPerPass Value="0"/>
+        <scanOpt Value="mergeAll"/>
+        <bidir Value="1"/>
+        <crossHatch Value="0"/>
+        <overscan Value="0"/>
+        <overscanPercent Value="2.5"/>
+        <floodFill Value="0"/>
+        <interval Value="0.1"/>
+        <angle Value="0"/>
+    </CutSetting>
+    <Shape Type="Group" CutIndex="0">
+        <XForm>1 0 0 1 133.613 42.5</XForm>
+        <Children>
+            <Shape Type="Path" CutIndex="2">
+                <XForm>1 0 0 1 0 0</XForm>
+                <V vx="-0.071662903" vy="2.6828308" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-3.5003433" vy="0.072753906" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-72.952164" vy="0.071655273" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-77.153336" vy="3.5530167" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-77.153076" vy="32.317169" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-73.724396" vy="34.928329" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-3.5003891" vy="34.928329" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <V vx="-0.071708679" vy="32.332008" c0x="1" c0y="0" c1x="1" c1y="0" sm="0"/>
+                <P T="L" p0="0" p1="1"/>
+                <P T="L" p0="1" p1="2"/>
+                <P T="L" p0="2" p1="3"/>
+                <P T="L" p0="3" p1="4"/>
+                <P T="L" p0="4" p1="5"/>
+                <P T="L" p0="5" p1="6"/>
+                <P T="L" p0="6" p1="7"/>
+                <P T="L" p0="7" p1="0"/>
+            </Shape>
+            <Shape Type="Ellipse" CutIndex="2" Rx="1.6803831" Ry="1.6803831">
+                <XForm>-1 0 0 1 -7.08693 7.3014</XForm>
+            </Shape>
+            <Shape Type="Ellipse" CutIndex="2" Rx="1.6803831" Ry="1.6803831">
+                <XForm>-1 0 0 1 -7.08693 27.2986</XForm>
+            </Shape>
+            <Shape Type="Ellipse" CutIndex="2" Rx="1.6803831" Ry="1.6803831">
+                <XForm>-1 0 0 1 -65.5705 24.0993</XForm>
+            </Shape>
+            <Shape Type="Ellipse" CutIndex="2" Rx="1.6803831" Ry="1.6803831">
+                <XForm>-1 0 0 1 -47.8097 24.0993</XForm>
+            </Shape>
+        </Children>
+    </Shape>
+</LightBurnProject>
