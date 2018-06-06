@@ -101,13 +101,13 @@
       <placement version="1.2" id="R10" side="Top" part-id="R_0805-100" type="Place" check-fids="false">
          <location units="Millimeters" x="2.032" y="118.11" z="0.0" rotation="90.0"/>
       </placement>
-      <placement version="1.2" id="R11" side="Top" part-id="R_0805-0" type="Place" check-fids="false">
+      <placement version="1.2" id="R11" side="Top" part-id="R_0805-0" type="Ignore" check-fids="false">
          <location units="Millimeters" x="27.178" y="11.303" z="0.0" rotation="180.0"/>
       </placement>
-      <placement version="1.2" id="R12" side="Top" part-id="R_0805-0" type="Place" check-fids="false">
+      <placement version="1.2" id="R12" side="Top" part-id="R_0805-0" type="Ignore" check-fids="false">
          <location units="Millimeters" x="5.461" y="9.144" z="0.0" rotation="180.0"/>
       </placement>
-      <placement version="1.2" id="R14" side="Top" part-id="R_0805-10k" type="Place" check-fids="false">
+      <placement version="1.2" id="R14" side="Top" part-id="R_0805-10k" type="Ignore" check-fids="false">
          <location units="Millimeters" x="33.528" y="22.987" z="0.0" rotation="90.0"/>
       </placement>
       <placement version="1.2" id="SW1" side="Top" part-id="SW_SPST_B3S-1000_LONG-SW_FWD" type="Ignore" check-fids="false">
