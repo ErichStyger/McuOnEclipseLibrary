@@ -2,6 +2,8 @@
 # McuOpenPnP_Machine
 Repository for the McuOnEclipse OpenPnP machine.
 
+The AutoFeeder is a contribution from Simon Huber (https://github.com/Scavenger18/RepoPNP) (many thanks!).
+
 You can find overview videos about it on YouTube:
 - Pick&Place Maschine Overview (Embedded Computing Conference 2018 Talk): https://youtu.be/OPd62hStLSc
 - Pick&Place OpenPnP Overview (Embedded Computing Conference 2018 Talk): https://youtu.be/8GyD9tZBJVQ

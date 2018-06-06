@@ -1,0 +1,42 @@
+<openpnp-parts>
+   <part id="FIDUCIAL-HOME" name="Fiducial for visual homing" height-units="Millimeters" height="0.0" package-id="FIDU_HOME" speed="1.0"/>
+   <part id="C0805_10n" height-units="Millimeters" height="0.5" package-id="C0805" speed="1.0"/>
+   <part id="FIDUCIAL_Round_1mm" name="Fiducial" height-units="Millimeters" height="0.0" package-id="FIDUCIAL_Round_1mm" speed="1.0"/>
+   <part id="STTH4R02" name="STTH4R02 Diode" height-units="Millimeters" height="1.9" package-id="SMB" speed="1.0"/>
+   <part id="FIDUCIAL_Round_2mm" height-units="Millimeters" height="0.0" package-id="FIDUCIAL_Round_2mm" speed="1.0"/>
+   <part id="DRV5013ADQDBZR" name="TI Board Mount Hall Effect/Magnetic Sensor" height-units="Millimeters" height="0.0" package-id="SOT-23-0" speed="1.0"/>
+   <part id="KEMET-10V-220uF" name="KEMET EDH227M010A9HAA" height-units="Millimeters" height="7.7" package-id="KEMET-9H" speed="1.0"/>
+   <part id="FICUCIAL_Square_1mm" height-units="Millimeters" height="0.0" package-id="FIDUCIAL_SQUARE_1mm" speed="1.0"/>
+   <part id="AP9101C" name="https://www.mouser.ch/datasheet/2/115/AP9101C-776313.pdf" height-units="Millimeters" height="0.75" package-id="SOT-26" speed="1.0"/>
+   <part id="NX7002AK" name="https://assets.nexperia.com/documents/data-sheet/NX7002AK.pdf" height-units="Millimeters" height="1.0" package-id="SOT-23-0" speed="1.0"/>
+   <part id="LM2700MTX" name="http://www.ti.com/lit/ds/symlink/lm2700.pdf" height-units="Millimeters" height="1.2" package-id="TSSOP-14" speed="1.0"/>
+   <part id="CP_Elec_6.3x7.7-220u" height-units="Millimeters" height="7.7" package-id="CP_Elec_6.3x7.7" speed="1.0"/>
+   <part id="C_0805-1u" height-units="Millimeters" height="1.0" package-id="C_0805" speed="1.0"/>
+   <part id="C_0805-3n3" height-units="Millimeters" height="1.0" package-id="C_0805" speed="1.0"/>
+   <part id="C_0805-100n" height-units="Millimeters" height="1.0" package-id="C_0805" speed="1.0"/>
+   <part id="C_0805-2u2" height-units="Millimeters" height="1.0" package-id="C_0805" speed="1.0"/>
+   <part id="LED_0805-LED" height-units="Millimeters" height="1.0" package-id="LED_0805" speed="1.0"/>
+   <part id="SOT-23-D_Schottky_x2_ACom_AKK" height-units="Millimeters" height="1.0" package-id="SOT-23" speed="1.0"/>
+   <part id="Fiducial_1mm_Dia_2mm_Outer-Fiducial_1mm_Dia_2mm_Outer" height-units="Millimeters" height="0.0" package-id="Fiducial_1mm_Dia_2mm_Outer" speed="1.0"/>
+   <part id="Interface               Pin_Header_Straight_2x05_Pitch1.27mm_SMD-SWD" height-units="Millimeters" height="0.0" package-id="Interface               Pin_Header_Straight_2x05_Pitch1.27mm_SMD" speed="1.0"/>
+   <part id="L_0805-330" height-units="Millimeters" height="1.0" package-id="L_0805" speed="1.0"/>
+   <part id="SOT-23-BC847" name="https://assets.nexperia.com/documents/data-sheet/BC847_SER.pdf" height-units="Millimeters" height="1.0" package-id="SOT-23" speed="1.0"/>
+   <part id="R_0805-100" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+   <part id="R_0805-10k" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+   <part id="R_0805-4k7" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+   <part id="R_0805-470" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+   <part id="R_0805-100k" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+   <part id="R_0805-0" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+   <part id="SW_SPST_B3S-1000_LONG-SW_FWD" height-units="Millimeters" height="0.0" package-id="SW_SPST_B3S-1000_LONG" speed="1.0"/>
+   <part id="SW_SPST_B3S-1000_LONG-SW_REV" height-units="Millimeters" height="0.0" package-id="SW_SPST_B3S-1000_LONG" speed="1.0"/>
+   <part id="SW_SPST_B3S-1000_LONG-RESET" height-units="Millimeters" height="0.0" package-id="SW_SPST_B3S-1000_LONG" speed="1.0"/>
+   <part id="EESX1350_PCB_V3-EE-SX1350_PCB" height-units="Millimeters" height="0.0" package-id="EESX1350_PCB_V3" speed="1.0"/>
+   <part id="WSON-12-1EP_3x2mm_Pitch0.5mm-DRV8835" name="DRV8835" height-units="Millimeters" height="0.0" package-id="WSON-12-1EP_3x2mm_Pitch0.5mm" speed="1.0"/>
+   <part id="EESX1350_Board-EE-SX1350_PCB" height-units="Millimeters" height="0.0" package-id="EESX1350_Board" speed="1.0"/>
+   <part id="QFN-48-1EP_7x7mm_Pitch0.5mm-MK20DX128VFT" height-units="Millimeters" height="0.0" package-id="QFN-48-1EP_7x7mm_Pitch0.5mm" speed="1.0"/>
+   <part id="SOT-223-3_TabPin2-TC1262-33" height-units="Millimeters" height="0.0" package-id="SOT-223-3_TabPin2" speed="1.0"/>
+   <part id="Crystal_SMD_0603-4pin_6.0x3.5mm-8MHz" height-units="Millimeters" height="0.0" package-id="Crystal_SMD_0603-4pin_6.0x3.5mm" speed="1.0"/>
+   <part id="R_0805-32.768kHz" height-units="Millimeters" height="0.0" package-id="R_0805" speed="1.0"/>
+   <part id="none" height-units="Millimeters" height="0.0" package-id="FIDUCIAL-1X2" speed="1.0"/>
+   <part id="R_0805-62" height-units="Millimeters" height="0.5" package-id="R_0805" speed="1.0"/>
+</openpnp-parts>

@@ -1,0 +1,34 @@
+Default:
+CONNECT_COMMAND
+G21 ; Set millimeters mode
+G90 ; Set absolute positioning mode
+M82 ; Set absolute mode for extruder
+M84 ; Disable steppers
+
+DISABLE_COMMAND
+M84  ; Disable steppers
+M800 ; Turn off down camera LED
+M802 ; Turn off up camera LED
+M804 ; Turn off vacuum pump
+M810 ; Vacuum nozzle 1 off
+M812 ; Vacuum nozzle 2 off
+
+CamLightBottom:
+ACTUATE_BOOLEAN_COMMAND
+{True:M803}{False:M802}
+
+CamLightTop:
+ACTUATE_BOOLEAN_COMMAND
+{True:M801}{False:M800}
+
+VacuumPump:
+ACTUATE_BOOLEAN_COMMAND
+{True:M805}{False:M804}
+
+Vacuum N1:
+ACTUATE_BOOLEAN_COMMAND
+{True:M811}{False:M810}
+
+Vacuum N2:
+ACTUATE_BOOLEAN_COMMAND
+{True:M813}{False:M812}
