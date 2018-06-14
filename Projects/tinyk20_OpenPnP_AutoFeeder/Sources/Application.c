@@ -148,7 +148,6 @@ static void RunFeeder(void){
 	switch (taskState){
 		case FSM_INIT:
 			ENC_ResetCnt();
-			ENC_SetStep(4);
 			peelState = PEEL_OFF;;
 			MOT_Speed(MOT_SPROC,0,MOT_FWD);
 			MOT_Speed(MOT_TAPE,0,MOT_FWD);

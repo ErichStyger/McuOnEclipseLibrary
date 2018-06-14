@@ -70,7 +70,7 @@ static void MOT_Dir_Tape(MOT_Direction dir){
 uint8_t MOT_Speed(MOT_Device motor, uint8_t speedPercent, MOT_Direction dir){
 	uint32_t pwmVal;
 
-	if (speedPercent > MAX_SPEED){
+	if (speedPercent > MAX_SPEED) {
 		speedPercent = MAX_SPEED;
 	}
 	pwmVal = (((100-speedPercent)*0xFFFF)/100);	// 0 is 100%
@@ -98,7 +98,7 @@ static const KIN1_UID FeederMcuIDs[] = {
  * initializes motor to 0 speed (Stop)
  * sets H-Bridge Mode
  */
-void MOT_Init(){
+void MOT_Init(void) {
   KIN1_UID id;
   uint8_t res;
 

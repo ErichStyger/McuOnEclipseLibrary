@@ -4,9 +4,8 @@
  *  Created on: 25.03.2018
  *      Author: Simon
  */
+#include "platform.h"
 #include "encoder.h"
-
-
 
 #if PL_ENCODER_EN
 #include "enc1.h"
@@ -14,31 +13,25 @@
 #include "LED1.h"
 #include "LED2.h"
 #include "FRTOS1.h"
-
 #include "motor.h"
-
-
 
 #define ENC_TICK_CNT (3)
 
-static volatile bool enc_state = 0;
+static volatile bool enc_state = FALSE;
 static volatile unsigned int enc_cnt = 0; // step count
 static volatile unsigned int enc_tick = 0; // tick count
 
-static volatile unsigned int enc_step = 0;
-static volatile unsigned int enc_trigger = 0;
-
-// change if step is defined through other software part
-
+static volatile unsigned int enc_step = 4;
+static volatile unsigned int enc_trigger = 0; /* used to indicate we reached position */
 
 /*
  * Sets/Resets Trigger/Event that step count is reached
  */
-void ENC_SetTrigger(unsigned int tmp){
+void ENC_SetTrigger(unsigned int val){
 	CS1_CriticalVariable();
 
 	CS1_EnterCritical();
-	enc_trigger = tmp;
+	enc_trigger = val;
 	CS1_ExitCritical();
 }
 
@@ -48,6 +41,7 @@ void ENC_SetTrigger(unsigned int tmp){
 unsigned int ENC_GetTrigger(void){
 	CS1_CriticalVariable();
 	unsigned int tmp;
+
 	CS1_EnterCritical();
 	tmp = enc_trigger;
 	CS1_ExitCritical();
@@ -60,31 +54,27 @@ unsigned int ENC_GetTrigger(void){
  *
  * Negates LED each time state changes
  */
-unsigned int ENC_GetVal(void){
+static unsigned int ENC_GetVal(void) { /* called every 1 ms */
+	bool tmp;
 
-	bool tmp = ENC1_GetVal();
-
+	tmp = ENC1_GetVal();
 	if (enc_state != tmp){
 		enc_state = tmp;
 		enc_tick = 0;
 		LED1_Neg();
 	} else {
-		if (enc_tick == ENC_TICK_CNT){
+		if (enc_tick == ENC_TICK_CNT) {
 			enc_cnt++;
 		}
 		enc_tick++;
 	}
-
-
-    if(enc_cnt == (enc_step)){
-    	/* motor off*/
-    	//MOT_Speed(MOT_SPROC,0,MOT_FWD);
-    	ENC_SetTrigger(1);
-    	enc_cnt = 0;				// reset counter
-    	return 1;
-    } else{
-    	return 0;
-    }
+  if(enc_cnt == enc_step) {
+    ENC_SetTrigger(1);
+    enc_cnt = 0;				// reset counter
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 /*
@@ -96,23 +86,6 @@ void ENC_ResetCnt(void){
 	CS1_EnterCritical();
 	enc_cnt = 0;
 	CS1_ExitCritical();
-
-}
-
-
-
-/*
- * sets encoder step size
- */
-void ENC_SetStep(unsigned int stepSize){
-	enc_step = stepSize;
-}
-
-/*
- * returns encoder step size
- */
-unsigned int ENC_GetStep(void){
-	return enc_step;
 }
 
 /*
@@ -126,7 +99,7 @@ static void ENC_task(void *param) {
 		// if Encoder counter is done turn off sprocket motor
 		enc_val = ENC_GetVal();
 		if(enc_val==1){
-			MOT_Speed(MOT_SPROC,0,MOT_FWD);
+			MOT_Speed(MOT_SPROC, 0, MOT_FWD); /* turn off motor */
 		}
 		vTaskDelay(pdMS_TO_TICKS(1));
 	} /* for */

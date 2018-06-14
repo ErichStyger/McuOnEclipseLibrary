@@ -2,7 +2,7 @@
  * platform.h
  *
  *  Created on: 25.03.2018
- *      Author: Simon
+ *      Author: Simon Huber
  */
 
 #ifndef SOURCES_PLATFORM_H_
@@ -14,7 +14,6 @@
 #define PL_TAPE_EN			(1)		// Configuration uses Tape Peeler
 #define PL_COMM_EN			(1)		// Configuration uses UART Communication
 
-
-void PL_Init();
+void PL_Init(void);
 
 #endif /* SOURCES_PLATFORM_H_ */

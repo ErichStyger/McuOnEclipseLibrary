@@ -23,7 +23,7 @@
 /*
  * starts Communication and Encoder tasks
  */
-void PL_Init(){
+void PL_Init(void) {
 #if PL_COMM_EN
 	COMM_Init();
 #endif

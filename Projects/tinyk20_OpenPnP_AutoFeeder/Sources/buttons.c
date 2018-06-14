@@ -11,7 +11,7 @@
 #include "SW_FWD.h"
 #include "SW_REV.h"
 #if PL_TAPE_EN
-  #include "SW_MSW.h"
+  #include "SW_MSW.h" /* switch for tape */
 #endif
 
 #define LPRESS_CNT (200)		// change to react to task time delay
@@ -47,11 +47,10 @@ BUT_State BUT_GetState(BUT_Device button) {
 					but_state = BUT_IDLE;
 				}
 			}
-
-			if ((but_state == BUT_PRESS)&&(FWD_Flag == 0)){
+			if ((but_state == BUT_PRESS) && (FWD_Flag == 0)){
 			  APP_ChangeWheelPos(1);
 				FWD_Flag = 1;
-			} else if ((but_state == BUT_IDLE)&&(FWD_Flag == 1)){
+			} else if ((but_state == BUT_IDLE) && (FWD_Flag == 1)){
 				FWD_Flag = 0;
 			}
 		break;
@@ -71,13 +70,12 @@ BUT_State BUT_GetState(BUT_Device button) {
 					but_state = BUT_IDLE;
 				}
 			}
-
 			if (but_state == BUT_IDLE){
 				REV_Flag = 0;
 				REV_Flag_LPress = 0;
 				REV_Counter = 0;
 				//break;
-			}else if ((but_state == BUT_PRESS)&&(REV_Flag == 0)){
+			}else if ((but_state == BUT_PRESS) && (REV_Flag == 0)){
 				REV_Flag = 1;
 				REV_Counter = 0;
 			}  else if (but_state == BUT_PRESS){
@@ -91,7 +89,6 @@ BUT_State BUT_GetState(BUT_Device button) {
 					REV_Flag_LPress = 1;
 				}
 			}
-
 		break;
 
 #if PL_TAPE_EN

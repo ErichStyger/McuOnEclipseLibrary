@@ -15,13 +15,13 @@
 
 #define MAX_SPEED (100)
 
-typedef enum{
+typedef enum {
 	// MOT_NULL,	// 0 is not driving
 	MOT_FWD,
 	MOT_REV
 } MOT_Direction;
 
-typedef enum{
+typedef enum {
 	MOT_SPROC,
 	MOT_TAPE
 } MOT_Device;
