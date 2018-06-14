@@ -59,13 +59,13 @@
       <placement version="1.2" id="D2" side="Top" part-id="SOT-23-D_Schottky_x2_ACom_AKK" type="Place" check-fids="false">
          <location units="Millimeters" x="11.303" y="12.065" z="0.0" rotation="0.0"/>
       </placement>
-      <placement version="1.2" id="FID1" side="Top" part-id="Fiducial_1mm_Dia_2mm_Outer-Fiducial_1mm_Dia_2mm_Outer" type="Fiducial" check-fids="false">
+      <placement version="1.2" id="FID1" side="Top" part-id="FIDUCIAL_Round_1mm" type="Fiducial" check-fids="true">
          <location units="Millimeters" x="38.3794" y="122.682" z="0.0" rotation="0.0"/>
       </placement>
-      <placement version="1.2" id="FID2" side="Top" part-id="Fiducial_1mm_Dia_2mm_Outer-Fiducial_1mm_Dia_2mm_Outer" type="Fiducial" check-fids="false">
+      <placement version="1.2" id="FID2" side="Top" part-id="FIDUCIAL_Round_1mm" type="Fiducial" check-fids="true">
          <location units="Millimeters" x="2.3114" y="7.0104" z="0.0" rotation="0.0"/>
       </placement>
-      <placement version="1.2" id="FID3" side="Top" part-id="Fiducial_1mm_Dia_2mm_Outer-Fiducial_1mm_Dia_2mm_Outer" type="Fiducial" check-fids="false">
+      <placement version="1.2" id="FID3" side="Top" part-id="FIDUCIAL_Round_1mm" type="Fiducial" check-fids="true">
          <location units="Millimeters" x="115.951" y="83.7692" z="0.0" rotation="0.0"/>
       </placement>
       <placement version="1.2" id="J7" side="Top" part-id="Interface               Pin_Header_Straight_2x05_Pitch1.27mm_SMD-SWD" type="Ignore" check-fids="false">
