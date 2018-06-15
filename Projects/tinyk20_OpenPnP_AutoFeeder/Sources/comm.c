@@ -60,6 +60,23 @@ static void COMM_SendStatusOk(const unsigned char *cmd) {
 	CLS1_SendStr(buf, CLS1_GetStdio()->stdOut);
 }
 
+static uint8_t PrintHelp(const CLS1_StdIOType *io) {
+  CLS1_SendHelpStr((unsigned char*)"CMD", (unsigned char*)"Group of CMD commands\r\n", io->stdOut);
+  CLS1_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
+  CLS1_SendHelpStr((unsigned char*)"  0 FWD <n> mm", (unsigned char*)"Move feeder <n> mm forward (multiple of 2)\r\n", io->stdOut);
+  CLS1_SendHelpStr((unsigned char*)"  0 REV <n> mm", (unsigned char*)"Move feeder <n> mm backward (multiple of 2)\r\n", io->stdOut);
+  CLS1_SendHelpStr((unsigned char*)"  0 CNT",        (unsigned char*)"Count number of feeders\r\n", io->stdOut);
+  return ERR_OK;
+}
+
+static uint8_t PrintStatus(const CLS1_StdIOType *io) {
+  CLS1_SendStatusStr((unsigned char*)"COMM", (unsigned char*)"\r\n", io->stdOut);
+  CLS1_SendStatusStr((unsigned char*)"  tbd", (uint8_t*)"nothing", io->stdOut);
+  CLS1_SendStr((unsigned char*)"\r\n", io->stdOut);
+  return ERR_OK;
+}
+
+
 /*
  * Parse through received messages
  * Messages with address 0 processed
@@ -69,33 +86,37 @@ static void COMM_SendStatusOk(const unsigned char *cmd) {
  *
  * \todo improve to send back errors for handling
  */
-uint8_t COMM_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io)
-{
+uint8_t COMM_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io) {
   int32_t value;	/* signed since address decrementing falls below 0 */
   int32_t mm;
   uint8_t res;
   const unsigned char *p;
   uint8_t replyBuf[32];
 
-  /* Check if it is command, e.g. "CMD 0 FWD 4 mm" */
-  if (UTIL1_strncmp((char*)cmd, "CMD ", sizeof("CMD ")-1)==0) {
+  if (UTIL1_strcmp((char*)cmd, CLS1_CMD_HELP) == 0
+    || UTIL1_strcmp((char*)cmd, "CMD help") == 0) {
+    *handled = TRUE;
+    return PrintHelp(io);
+  } else if (   (UTIL1_strcmp((char*)cmd, CLS1_CMD_STATUS)==0)
+             || (UTIL1_strcmp((char*)cmd, "CMD status") == 0)
+            )
+  {
+    *handled = TRUE;
+    return PrintStatus(io);
+  } else if (UTIL1_strncmp((char*)cmd, "CMD ", sizeof("CMD ")-1)==0) {  /* Check if it is command, e.g. "CMD 0 FWD 4 mm" */
     p = cmd+sizeof("CMD ")-1;
 		res = UTIL1_xatoi(&p, &value); /* read address */
 		if (res==ERR_OK && value==0) { /* if address is 0 execute command */
 			if (UTIL1_strncmp((char*)p, " FWD ", sizeof(" FWD ")-1)==0) {
 				p += sizeof(" FWD ")-1;
 				res = UTIL1_xatoi(&p, &mm);
-				if (res==ERR_OK && (mm >= 2) && (mm%2 == 0)) {	/* number of steps (in mm), must be 2, 4, 6, etc */
+				if (res==ERR_OK && (mm >= ENC_STEP_SIZE_MM) && (mm%ENC_STEP_SIZE_MM == 0)) {	/* number of steps (in mm), must be 2, 4, 6, etc */
 				  if (UTIL1_strcmp(p, " mm")!=0) {
 	          COMM_SendError("missing 'mm' for command!");
 	          return ERR_FAILED;
 				  }
 				  /* here we have received a correct command */
-				  value = mm;
-				  while (value > 0) { /* execute command */
-				    APP_ChangeWheelPos(1);
-						value = value-2;
-					}
+				  ENC_RequestSteps(mm/ENC_STEP_SIZE_MM);
 				  UTIL1_strcpy(replyBuf, sizeof(replyBuf), "FWD ");
 				  UTIL1_strcatNum32s(replyBuf, sizeof(replyBuf), mm);
           UTIL1_strcat(replyBuf, sizeof(replyBuf), " mm");
@@ -109,17 +130,13 @@ uint8_t COMM_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_St
 			} else if (UTIL1_strncmp((char*)p, " REV ", sizeof(" REV ")-1)==0) {
 				p += sizeof(" REV ")-1;
         res = UTIL1_xatoi(&p, &mm);
-        if (res==ERR_OK && (mm >= 2) && (mm%2 == 0)) {  /* number of steps (in mm), must be 2, 4, 6, etc */
+        if (res==ERR_OK && (mm >= ENC_STEP_SIZE_MM) && (mm%ENC_STEP_SIZE_MM == 0)) {  /* number of steps (in mm), must be 2, 4, 6, etc */
           if (UTIL1_strcmp(p, " mm")!=0) {
             COMM_SendError("missing 'mm' for command!");
             return ERR_FAILED;
           }
           /* here we have received a correct command */
-          value = mm;
-          while (value > 0) { /* execute command */
-            APP_ChangeWheelPos(-1);
-            value = value-2;
-          }
+          ENC_RequestSteps(mm/ENC_STEP_SIZE_MM);
           UTIL1_strcpy(replyBuf, sizeof(replyBuf), "REV ");
           UTIL1_strcatNum32s(replyBuf, sizeof(replyBuf), mm);
           UTIL1_strcat(replyBuf, sizeof(replyBuf), " mm");
@@ -157,11 +174,10 @@ uint8_t COMM_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_St
 }
 
 /*
- * Iterate through recieved characters
+ * Iterate through received characters
  * changed from CLS1_ReadAndParse()
  */
-static uint8_t COMM_ReadAndParse(uint8_t *cmdBuf, size_t cmdBufSize, CLS1_ConstStdIOType *io)
-{
+static uint8_t COMM_ReadAndParse(uint8_t *cmdBuf, size_t cmdBufSize, CLS1_ConstStdIOType *io) {
   /* IMPORTANT NOTE: this function *appends* to the buffer, so the buffer needs to be initialized first! */
   uint8_t res = ERR_OK;
   size_t len;
@@ -227,8 +243,7 @@ static uint8_t COMM_ReadAndParse(uint8_t *cmdBuf, size_t cmdBufSize, CLS1_ConstS
    .keyPressed = UART_KeyPressed,
  };
 
- static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
-
+static uint8_t UART_DefaultShellBuffer[CLS1_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 
 typedef struct {
   CLS1_ConstStdIOType *stdio;
@@ -238,7 +253,6 @@ typedef struct {
 
 static const SHELL_IODesc ios[] =
 {
-//  {&CLS1_stdio, CLS1_DefaultShellBuffer, sizeof(CLS1_DefaultShellBuffer)},
   {&RTT1_stdio, RTT1_DefaultShellBuffer, sizeof(RTT1_DefaultShellBuffer)},
   {&UART_stdio, UART_DefaultShellBuffer, sizeof(UART_DefaultShellBuffer)},
 };
@@ -249,8 +263,17 @@ static const CLS1_ParseCommandCallback CmdParserTable[] =
 #if KIN1_PARSE_COMMAND_ENABLED
   KIN1_ParseCommand,
 #endif
+  COMM_ParseCommand,
   NULL /* sentinel */
 };
+
+void COMM_SendStr(const char *str, bool isError) {
+  int i;
+
+  for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
+    CLS1_SendStr(str, isError? ios[i].stdio->stdErr : ios[i].stdio->stdOut);
+  }
+}
 
 /*
  * Communication-task
@@ -263,9 +286,7 @@ static void COMM_task(void *param) {
   for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
     ios[i].buf[0] = '\0';
   }
-  for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
-    CLS1_SendStr("Starting COMM task\r\n", ios[i].stdio->stdOut);
-  }
+  COMM_SendStr("Starting COMM task\r\n", FALSE);
   for(;;) {
     /* process all I/Os */
     for(i=0;i<sizeof(ios)/sizeof(ios[0]);i++) {
@@ -273,7 +294,7 @@ static void COMM_task(void *param) {
     }
     //error_res = COMM_ReadAndParse(buffer, sizeof(buffer), CLS1_GetStdio());
     (void)COMM_ReadAndParse(buffer, sizeof(buffer), CLS1_GetStdio());
-    vTaskDelay(pdMS_TO_TICKS(20));
+    vTaskDelay(pdMS_TO_TICKS(10));
   } /* for */
 }
 
@@ -282,7 +303,7 @@ static void COMM_task(void *param) {
  */
 void COMM_Init(void){
 	buffer[0] = '\0';
-	if (xTaskCreate(COMM_task, "Comm", 600/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL) != pdPASS) {
+	if (xTaskCreate(COMM_task, "Comm", 700/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+1, NULL) != pdPASS) {
 		for(;;){} /* error! probably out of memory */
 	}
 }

@@ -41,7 +41,7 @@
 #include "BitIoLdd2.h"
 #include "SW_REV.h"
 #include "BitIoLdd3.h"
-#include "SW_MSW.h"
+#include "SW_PEELER.h"
 #include "BitIoLdd4.h"
 #include "ENC1.h"
 #include "BitIoLdd5.h"
@@ -57,6 +57,7 @@
 #include "HMODE.h"
 #include "BitIoLdd8.h"
 #include "FRTOS1.h"
+#include "RTOSCNTRLDD1.h"
 #include "UTIL1.h"
 #include "WAIT1.h"
 #include "CLS1.h"
@@ -152,82 +153,6 @@ void FRTOS1_vApplicationMallocFailedHook(void);
 **     Returns     : Nothing
 ** ===================================================================
 */
-
-/*
-** ===================================================================
-**     Event       :  AS2_OnError (module Events)
-**
-**     Component   :  AS2 [AsynchroSerial]
-**     Description :
-**         This event is called when a channel error (not the error
-**         returned by a given method) occurs. The errors can be read
-**         using <GetError> method.
-**         The event is available only when the <Interrupt
-**         service/event> property is enabled.
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void AS2_OnError(void);
-
-/*
-** ===================================================================
-**     Event       :  AS2_OnRxChar (module Events)
-**
-**     Component   :  AS2 [AsynchroSerial]
-**     Description :
-**         This event is called after a correct character is received.
-**         The event is available only when the <Interrupt
-**         service/event> property is enabled and either the <Receiver>
-**         property is enabled or the <SCI output mode> property (if
-**         supported) is set to Single-wire mode.
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void AS2_OnRxChar(void);
-
-/*
-** ===================================================================
-**     Event       :  AS2_OnTxChar (module Events)
-**
-**     Component   :  AS2 [AsynchroSerial]
-**     Description :
-**         This event is called after a character is transmitted.
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void AS2_OnTxChar(void);
-
-/*
-** ===================================================================
-**     Event       :  AS2_OnFullRxBuf (module Events)
-**
-**     Component   :  AS2 [AsynchroSerial]
-**     Description :
-**         This event is called when the input buffer is full;
-**         i.e. after reception of the last character 
-**         that was successfully placed into input buffer.
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void AS2_OnFullRxBuf(void);
-
-/*
-** ===================================================================
-**     Event       :  AS2_OnFreeTxBuf (module Events)
-**
-**     Component   :  AS2 [AsynchroSerial]
-**     Description :
-**         This event is called after the last character in output
-**         buffer is transmitted.
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-void AS2_OnFreeTxBuf(void);
 
 /* END Events */
 

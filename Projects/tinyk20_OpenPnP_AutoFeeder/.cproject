@@ -119,7 +119,7 @@
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
-			<resource resourceType="PROJECT" workspacePath="/tinyk20_PNP_V1"/>
+			<resource resourceType="PROJECT" workspacePath="/tinyk20_OpenPnP_AutoFeeder"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

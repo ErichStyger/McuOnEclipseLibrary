@@ -9,11 +9,6 @@
 #define SOURCES_APPLICATION_H_
 
 /*
- * Used to change the desired position of the wheel. A wheel position corresponds to 2 mm
- */
-void APP_ChangeWheelPos(int delta);
-
-/*
  * Initializes APP_Counter and TimeOut
  *
  */

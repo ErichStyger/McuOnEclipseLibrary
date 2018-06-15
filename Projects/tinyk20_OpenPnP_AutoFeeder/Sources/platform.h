@@ -8,6 +8,8 @@
 #ifndef SOURCES_PLATFORM_H_
 #define SOURCES_PLATFORM_H_
 
+#include "PE_Types.h"
+
 #define PL_BUTTON_EN		(1)		// Configuration uses Buttons (FW/RV)
 #define PL_ENCODER_EN		(1)		// Configuration uses Optical Encoder
 #define PL_MOTOR_EN			(1)		// Configuration uses Sprocket and/or Tape Peeler Motor

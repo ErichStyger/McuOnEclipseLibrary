@@ -35,9 +35,9 @@ static bool MOT_TAPE_INV  = FALSE;
 static void MOT_Dir_Sproc(MOT_Direction dir){
   bool tmp = TRUE;
 
-	if (dir == MOT_FWD){
+	if (dir == MOT_DIR_FWD){
 		tmp = TRUE;
-	} else if (dir == MOT_REV) {
+	} else if (dir == MOT_DIR_REV) {
 		tmp = FALSE;
 	}
 	if (MOT_SPROC_INV) {
@@ -53,9 +53,9 @@ static void MOT_Dir_Sproc(MOT_Direction dir){
 static void MOT_Dir_Tape(MOT_Direction dir){
   bool tmp = TRUE;
 
-	if (dir == MOT_FWD) {
+	if (dir == MOT_DIR_FWD) {
 		tmp = TRUE;
-	} else if (dir == MOT_REV) {
+	} else if (dir == MOT_DIR_REV) {
 		tmp = FALSE;
 	}
 	if(MOT_TAPE_INV){
@@ -67,31 +67,39 @@ static void MOT_Dir_Tape(MOT_Direction dir){
 /*
  * sets motor speed and direction
  */
-uint8_t MOT_Speed(MOT_Device motor, uint8_t speedPercent, MOT_Direction dir){
+uint8_t MOT_Speed(MOT_Device motor, int8_t speedPercent) {
 	uint32_t pwmVal;
+	uint8_t percentU;
 
-	if (speedPercent > MAX_SPEED) {
-		speedPercent = MAX_SPEED;
+  if (speedPercent > MAX_SPEED) {
+    speedPercent = MAX_SPEED;
+  } else if (speedPercent < -MAX_SPEED) {
+    speedPercent = -MAX_SPEED;
+  }
+	if (speedPercent<0) {
+	  percentU = -speedPercent;
+	} else {
+	  percentU = speedPercent;
 	}
-	pwmVal = (((100-speedPercent)*0xFFFF)/100);	// 0 is 100%
+	pwmVal = ((percentU*0xFFFF)/100);
 	if(motor == MOT_SPROC) {
-		MOT_Dir_Sproc(dir);
+		MOT_Dir_Sproc(speedPercent<0?MOT_DIR_REV:MOT_DIR_FWD);
 		PWMA_SetRatio16(pwmVal);	// sets H-Bridge speed
 		return 1;
 	} else if (motor == MOT_TAPE) {
-		MOT_Dir_Tape(dir);
+		MOT_Dir_Tape(speedPercent<0?MOT_DIR_REV:MOT_DIR_FWD);
 		PWMB_SetRatio16(pwmVal);	// sets H-Bridge speed
 		return 1;
-	} // else error?
-	else {
+	} else { /* error case */
 		return 0;
 	}
 }
 
-
 static const KIN1_UID FeederMcuIDs[] = {
   /* 0  */ {{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00,0x08,0x00,0x1C,0x00,0x0D,0x24,0x40,0x4E,0x45}},
   /* 1  */ {{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00,0x27,0x00,0x44,0x00,0x0D,0x24,0x40,0x4E,0x45}},
+  /* 2  */ {{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00,0x18,0x00,0x0A,0x00,0x0D,0x24,0x40,0x4E,0x45}},
+  /* 3  */ {{0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00,0x4D,0x00,0x3B,0x00,0x0D,0x24,0x40,0x4E,0x45}},
 };
 
 /*
@@ -112,13 +120,19 @@ void MOT_Init(void) {
   } else if (KIN1_UIDSame(&id, &FeederMcuIDs[1])) { /* Feeder 1 */
     MOT_SPROC_INV = TRUE;
     MOT_TAPE_INV  = FALSE;
+  } else if (KIN1_UIDSame(&id, &FeederMcuIDs[2])) { /* Feeder 2 */
+    MOT_SPROC_INV = FALSE;
+    MOT_TAPE_INV  = FALSE;
+  } else if (KIN1_UIDSame(&id, &FeederMcuIDs[3])) { /* Feeder 3 */
+    MOT_SPROC_INV = FALSE;
+    MOT_TAPE_INV  = TRUE;
   } else { /* default */
     MOT_SPROC_INV = TRUE;
     MOT_TAPE_INV  = FALSE;
   }
 	HMODE_SetVal();
-	MOT_Speed(MOT_SPROC, 0, MOT_FWD);
-	MOT_Speed(MOT_TAPE, 0, MOT_FWD);
+	MOT_Speed(MOT_SPROC, 0);
+	MOT_Speed(MOT_TAPE, 0);
 }
 
 #endif

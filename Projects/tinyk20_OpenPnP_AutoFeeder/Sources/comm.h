@@ -9,15 +9,17 @@
 #define SOURCES_COMM_H_
 
 #include "platform.h"
+#include "CLS1.h"
 
 #define ADD_NEWLINE (1)
 
+void COMM_SendStr(const char *str, bool isError);
 /*
  * Send Error Messages
- * \todo Improve to implement queueing of messages
  */
 void COMM_SendError(const unsigned char *cmd);
 
+uint8_t COMM_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_StdIOType *io);
 /*
  * Initialise Communication Buffer
  * Start COMM Task

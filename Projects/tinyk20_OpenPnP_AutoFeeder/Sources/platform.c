@@ -7,9 +7,6 @@
 #include "platform.h"
 #include "stdint.h"
 
-#if PL_BUTTON_EN
-	#include "buttons.h"
-#endif
 #if PL_ENCODER_EN
 	#include "encoder.h"
 #endif

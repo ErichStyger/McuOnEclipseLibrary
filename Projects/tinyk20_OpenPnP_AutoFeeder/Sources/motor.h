@@ -16,9 +16,8 @@
 #define MAX_SPEED (100)
 
 typedef enum {
-	// MOT_NULL,	// 0 is not driving
-	MOT_FWD,
-	MOT_REV
+	MOT_DIR_FWD,
+	MOT_DIR_REV
 } MOT_Direction;
 
 typedef enum {
@@ -32,7 +31,7 @@ typedef enum {
  *
  * see typedefs for direction parameters
  */
-uint8_t MOT_Speed(MOT_Device motor, uint8_t speedPercent, MOT_Direction dir);
+uint8_t MOT_Speed(MOT_Device motor, int8_t speedPercent);
 
 /*
  * Initializes motor to 0 speed (Stop)

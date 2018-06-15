@@ -8,20 +8,13 @@
 #ifndef SOURCES_HARDWARE_ENCODER_H_
 #define SOURCES_HARDWARE_ENCODER_H_
 
-/*
- * Sets/Resets Trigger/Event state that step count is reached
- */
-void ENC_SetTrigger(unsigned int val);
+#include "platform.h"
+#include <stdint.h>
 
-/*
-* Returns Trigger/Event state that step count is reached
-*/
-unsigned int ENC_GetTrigger(void);
+#define ENC_STEP_SIZE_MM   (2) /* encoder on sprocket is for 2 mm steps */
 
-/*
- * resets step counter
- */
-void ENC_ResetCnt(void);
+/* request ENC_STEP_SIZE_MM mm forward or backward steps */
+void ENC_RequestSteps(int8_t nofSteps);
 
 /*
  * initializes counters and flags
