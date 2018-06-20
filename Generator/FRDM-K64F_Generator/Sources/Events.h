@@ -112,6 +112,9 @@
 #include "InputRB1.h"
 #include "DbgRd1.h"
 #include "McuDS18B20.h"
+#include "McuFatFS.h"
+#include "McuSDCard.h"
+#include "SS1.h"
 #include "McuSTM32HALI2C.h"
 #include "McuLib.h"
 

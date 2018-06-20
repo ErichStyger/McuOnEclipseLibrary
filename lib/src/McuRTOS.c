@@ -7,7 +7,7 @@
 **     Version     : Component 01.553, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
+**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -35,11 +35,11 @@
 **          Thread Local Storage Pointers                  : 0
 **          Use Trace Facility                             : yes
 **          Debug Helpers                                  : 
-**            Enable GDB Debug Helper                      : no
-**            Enable LinkTimeOptimizer Helper              : no
-**            uxTopUsedPriority                            : no
-**            Heap Indication Constant                     : no
-**            Task C Additions                             : no
+**            Enable GDB Debug Helper                      : yes
+**            Enable LinkTimeOptimizer Helper              : yes
+**            uxTopUsedPriority                            : yes
+**            Heap Indication Constant                     : yes
+**            Task C Additions                             : yes
 **            Record Stack High Address                    : yes
 **          Segger System Viewer Trace                     : Disabled
 **          Percepio Trace                                 : Disabled
@@ -439,6 +439,8 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
         case eReady:     McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"Ready"); break;
         case eSuspended: McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"Suspended"); break;
         case eBlocked:   McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"Blocked"); break;
+        case eDeleted:   McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"Deleted"); break;
+        case eInvalid:   McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"Invalid"); break;
         default:         McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"UNKNOWN!"); break;
       }
       buf[0] = '\0';

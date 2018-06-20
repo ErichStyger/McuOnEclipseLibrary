@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericI2C
-**     Version     : Component 01.041, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.042, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 11:44, # CodeGen: 316
+**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -45,7 +45,7 @@
 **         Deinit            - void McuGenericI2C_Deinit(void);
 **         Init              - void McuGenericI2C_Init(void);
 **
-**     * Copyright (c) 2013-2017, Erich Styger
+**     * Copyright (c) 2013-2018, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -290,7 +290,15 @@ uint8_t McuGenericI2C_WriteBlock(void* data, uint16_t dataSize, McuGenericI2C_En
   uint8_t res = ERR_OK;
 
   for(;;) { /* breaks */
+#if McuGenericI2C_CONFIG_SUPPORT_STOP_NO_START
+    if (McuGenericI2C_STOP_NOSTART==flags) {
+      res = McuGenericI2C_CONFIG_SEND_BLOCK_CONTINUE(data, dataSize, &nof);
+    } else {
+      res = McuGenericI2C_CONFIG_SEND_BLOCK(data, dataSize, &nof);
+    }
+#else
     res = McuGenericI2C_CONFIG_SEND_BLOCK(data, dataSize, &nof);
+#endif
     if (res!=ERR_OK) {
       (void)McuGenericI2C_CONFIG_SEND_STOP();
       #if McuGenericI2C_CONFIG_USE_ON_ERROR_EVENT

@@ -39,10 +39,18 @@
     /*!< Size of the write buffer size which defines the maximum block size which can be sent */
 #endif
 
+#if !defined(McuGenericI2C_CONFIG_SUPPORT_STOP_NO_START)
+  #define McuGenericI2C_CONFIG_SUPPORT_STOP_NO_START      (0)
+    /*!< 1: send a STOP condition without sending a new START condition. Currently only supported for the GenericSWI2C component. 0: send a STOP for every START */
+#endif
+
 /* configuration of function names used for low level I2C functions */
 #include "McuGenericSWI2C.h" /* interface of low level I2C driver */
 #define McuGenericI2C_CONFIG_RECV_BLOCK                        McuGenericSWI2C_RecvBlock
 #define McuGenericI2C_CONFIG_SEND_BLOCK                        McuGenericSWI2C_SendBlock
+#if McuGenericI2C_CONFIG_SUPPORT_STOP_NO_START
+#define McuGenericI2C_CONFIG_SEND_BLOCK_CONTINUE               McuGenericSWI2C_SendBlockContinue
+#endif
 #define McuGenericI2C_CONFIG_SEND_STOP                         McuGenericSWI2C_SendStop
 #define McuGenericI2C_CONFIG_SELECT_SLAVE                      McuGenericSWI2C_SelectSlave
 #define McuGenericI2C_CONFIG_RECV_BLOCK_CUSTOM                 McuGenericSWI2C_RecvBlockCustom

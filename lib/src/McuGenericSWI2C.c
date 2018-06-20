@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericSWI2C
-**     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.023, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 11:44, # CodeGen: 316
+**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
 **     Abstract    :
 **
 **     Settings    :
@@ -19,6 +19,7 @@
 **          SDK                                            : McuLib
 **          Wait                                           : McuWait
 **          Yield                                          : yes
+**          Timeout Counter Value                          : 65535
 **     Contents    :
 **         ResetBus          - bool McuGenericSWI2C_ResetBus(void);
 **         SendChar          - uint8_t McuGenericSWI2C_SendChar(uint8_t Chr);
@@ -173,7 +174,7 @@ static void Write(uint8_t Data)
     Shift = (uint8_t)(Shift >> 1);
     SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
     Delay();
-    timeout = 65535U;
+    timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
     while((SCL_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
       McuGenericSWI2C_OSYIELD();
@@ -206,7 +207,7 @@ static uint8_t Read(void)
   for (I = 0x08U; I != 0U; I--) {
     SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
     Delay();
-    timeout = 65535U;
+    timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
     while((SCL_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
       McuGenericSWI2C_OSYIELD();
@@ -240,7 +241,7 @@ static bool GetAck(void)
   Delay();
   SCL_SetDir((bool)INPUT);       /* CLOCK HIGH PULSE */
   Delay();
-  timeout = 65535U;
+  timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
   while((SCL_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
     timeout--;
     McuGenericSWI2C_OSYIELD();
@@ -273,7 +274,7 @@ void McuGenericSWI2C_SendAck(bool Ack)
   Delay();
   SCL_SetDir((bool)INPUT);       /* HIGH CLOCK PULSE */
   Delay();
-  timeout = 65535U;
+  timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
   while((SCL_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
     timeout--;
     McuGenericSWI2C_OSYIELD();
@@ -394,7 +395,7 @@ uint8_t McuGenericSWI2C_SendChar(uint8_t Chr)
     SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
     Delay();                       /* CLOCK HIGH PULSE & BUS FREE TIME */
     /* check that we have a valid start condition: SDA needs to be high */
-    timeout = 65535U;
+    timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
     while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
       McuGenericSWI2C_OSYIELD();
@@ -477,7 +478,7 @@ uint8_t McuGenericSWI2C_RecvChar(uint8_t *Chr)
     SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
     Delay();                     /* CLOCK HIGH PULSE & BUS FREE TIME */
     /* check that we have a valid start condition: SDA needs to be high */
-    timeout = 65535U;
+    timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
     while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
       McuGenericSWI2C_OSYIELD();
@@ -573,7 +574,7 @@ uint8_t McuGenericSWI2C_SendBlock(void *Ptr, uint16_t Siz, uint16_t *Snt)
     SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
     Delay();                     /* CLOCK HIGH PULSE + BUS FREE TIME */
     /* check that we have a valid start condition: SDA needs to be high */
-    timeout = 65535U;
+    timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
     while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
       McuGenericSWI2C_OSYIELD();
@@ -614,7 +615,7 @@ uint8_t McuGenericSWI2C_SendBlock(void *Ptr, uint16_t Siz, uint16_t *Snt)
     ++(*Snt);
   }
   Delay();
-  timeout = 65535U;
+  timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
   while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
     timeout--;
     McuGenericSWI2C_OSYIELD();
@@ -694,7 +695,7 @@ uint8_t McuGenericSWI2C_SendBlockContinue(void *Ptr, uint16_t Siz, uint16_t *Snt
     ++(*Snt);
   }
   Delay();
-  timeout = 65535U;
+  timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
   while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
     timeout--;
     McuGenericSWI2C_OSYIELD();
@@ -748,7 +749,7 @@ uint8_t McuGenericSWI2C_RecvBlockCustom(void *Ptr, uint16_t Siz, uint16_t *Rcv, 
       SCL_SetDir((bool)INPUT);     /* CLOCK HIGH PULSE */
       Delay();                     /* CLOCK HIGH PULSE + BUS FREE TIME */
       /* check that we have a valid start condition: SDA needs to be high */
-      timeout = 65535U;
+      timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
       while((SDA_GetVal()==0U) && (timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
         timeout--;
         McuGenericSWI2C_OSYIELD();
@@ -781,7 +782,7 @@ uint8_t McuGenericSWI2C_RecvBlockCustom(void *Ptr, uint16_t Siz, uint16_t *Rcv, 
   } /* McuGenericSWI2C_SEND_START */
   for (I = 0U; I < Siz; I++) {
     *((uint8_t *)Ptr + I) = Read();
-    timeout = 65535U;
+    timeout = McuGenericSWI2C_CONFIG_TIMEOUT_COUNTER_VALUE;
     while((SDA_GetVal()==0U)&&(timeout!=0U)) { /* WAIT FOR CLOCK HIGH PULSE */
       timeout--;
       McuGenericSWI2C_OSYIELD();

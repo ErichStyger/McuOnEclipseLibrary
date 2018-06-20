@@ -7,7 +7,7 @@
 **     Version     : Component 01.158, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
+**     Date/Time   : 2018-06-20, 13:08, # CodeGen: 327
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -132,7 +132,7 @@
 /* other includes needed */
 #include <string.h>
 #include <stddef.h> /* for size_t */
-
+/* special version */
 
 #ifdef __cplusplus
 extern "C" {

@@ -4,10 +4,10 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PercepioTrace
-**     Version     : Component 01.136, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.138, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
+**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
 **     Abstract    :
 **
 **     Settings    :
@@ -25,6 +25,7 @@
 **            Include user events                          : yes
 **            Include pend function call events            : no
 **            Include event group events                   : no
+**            Include queue events                         : yes
 **          Snapshot Mode                                  : 
 **            Snapshot trace enable method                 : TRC_START
 **            Recorder store mode                          : Ring Buffer
@@ -103,12 +104,12 @@
 **         vTraceClearError          - byte McuPercepio_vTraceClearError(int resetErrorMessage);
 **         Startup                   - void McuPercepio_Startup(void);
 **
-**     * (c) Copyright Percepio AB, 2013-2017
+**     * (c) Copyright Percepio AB, 2013-2018
 **      * http      : www.percepio.se
 **      * mail      : info@percepio.com
 **      * See separate Percepio licensing terms.
 **      *
-**      * Processor Expert Component: (c) Copyright Erich Styger, 2013-2016
+**      * Processor Expert Component: (c) Copyright Erich Styger, 2013-2018
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

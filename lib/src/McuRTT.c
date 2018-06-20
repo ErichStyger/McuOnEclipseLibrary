@@ -4,18 +4,19 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerRTT
-**     Version     : Component 01.084, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.086, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
+**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuRTT
-**          Version                                        : V6.22c
+**          Version                                        : V6.32b
 **          Number of Up Channels                          : 3
 **          Number of Down Channels                        : 3
 **          Max Blocked Interrupt Level                    : 3
+**          Syscalls                                       : no
 **          Channel 0                                      : Enabled
 **            Name                                         : "Terminal"
 **            Up Buffer Size (Tx)                          : 512
@@ -58,7 +59,7 @@
 **      * http      : www.segger.com
 **      * See separate Segger licensing terms.
 **      *
-**      * Processor Expert port: Copyright (c) 2016, Erich Styger
+**      * Processor Expert port: Copyright (c) 2016-2018, Erich Styger
 **      * Web:         https://mcuoneclipse.com
 **      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
