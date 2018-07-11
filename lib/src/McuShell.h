@@ -4,10 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.097, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
+**     Version     : Component 01.098, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-03-31, 08:14, # CodeGen: 324
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -27,18 +26,17 @@
 **          Multi Command                                  : Enabled
 **            Length                                       : 32
 **            Separator                                    : ;
+**          Utility                                        : McuUtility
+**          Default Serial                                 : Enabled
+**            Console Interface                            : McuRTT
+**          Semaphore                                      : no
+**          Critical Section                               : McuCriticalSection
 **          History                                        : yes
 **            Number of History Items                      : 4
 **            Stored Characters                            : 32
 **            Char for Next                                : \t
 **            Char for Previous                            : \e
-**          Mutex                                          : no
-**          SDK                                            : McuLib
-**          Default Serial                                 : Enabled
-**            Console Interface                            : McuRTT
-**          Utility                                        : McuUtility
-**          XFormat                                        : McuXFormat
-**          Critical Section                               : McuCriticalSection
+**          Kinetis SDK                                    : McuLib
 **     Contents    :
 **         PrintPrompt                  - void McuShell_PrintPrompt(McuShell_ConstStdIOType *io);
 **         SendNum8u                    - void McuShell_SendNum8u(uint8_t val, McuShell_StdIO_OutErr_FctType io);
@@ -74,32 +72,32 @@
 **         Init                         - void McuShell_Init(void);
 **         Deinit                       - void McuShell_Deinit(void);
 **
-**     * Copyright (c) 2014-2018, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2014-2018, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuShell.h
@@ -211,7 +209,8 @@ extern "C" {
 void McuShell_SendStr(const uint8_t *str, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendStr (component Shell)
+**     Method      :  SendStr (component Shell)
+**
 **     Description :
 **         Prints a string using an I/O function
 **     Parameters  :
@@ -226,7 +225,8 @@ void McuShell_SendStr(const uint8_t *str, McuShell_StdIO_OutErr_FctType io);
 uint8_t McuShell_ParseCommand(const uint8_t *cmd, bool *handled, McuShell_ConstStdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_ParseCommand (component Shell)
+**     Method      :  ParseCommand (component Shell)
+**
 **     Description :
 **         Parses a shell command. Use 'help' to get a list of
 **         supported commands.
@@ -248,7 +248,8 @@ uint8_t McuShell_ParseCommand(const uint8_t *cmd, bool *handled, McuShell_ConstS
 void McuShell_SendNum32s(int32_t val, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendNum32s (component Shell)
+**     Method      :  SendNum32s (component Shell)
+**
 **     Description :
 **         Sends a 32bit signed number to the given I/O
 **     Parameters  :
@@ -262,7 +263,8 @@ void McuShell_SendNum32s(int32_t val, McuShell_StdIO_OutErr_FctType io);
 void McuShell_SendNum16s(int16_t val, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendNum16s (component Shell)
+**     Method      :  SendNum16s (component Shell)
+**
 **     Description :
 **         Sends a 16bit signed number to the given I/O
 **     Parameters  :
@@ -276,7 +278,8 @@ void McuShell_SendNum16s(int16_t val, McuShell_StdIO_OutErr_FctType io);
 void McuShell_PrintPrompt(McuShell_ConstStdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_PrintPrompt (component Shell)
+**     Method      :  PrintPrompt (component Shell)
+**
 **     Description :
 **         Prints the prompt to the stdOut channel
 **     Parameters  :
@@ -289,7 +292,8 @@ void McuShell_PrintPrompt(McuShell_ConstStdIOType *io);
 bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell_ConstStdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_ReadLine (component Shell)
+**     Method      :  ReadLine (component Shell)
+**
 **     Description :
 **         Reads a line from stdIn and returns TRUE if we have a line,
 **         FALSE otherwise.
@@ -309,7 +313,8 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
 uint8_t McuShell_PrintStatus(McuShell_ConstStdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_PrintStatus (component Shell)
+**     Method      :  PrintStatus (component Shell)
+**
 **     Description :
 **         Prints various available system status information
 **     Parameters  :
@@ -323,7 +328,8 @@ uint8_t McuShell_PrintStatus(McuShell_ConstStdIOType *io);
 void McuShell_PrintCommandFailed(const uint8_t *cmd, McuShell_ConstStdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_PrintCommandFailed (component Shell)
+**     Method      :  PrintCommandFailed (component Shell)
+**
 **     Description :
 **         Prints a standard message for failed or unknown commands
 **     Parameters  :
@@ -337,7 +343,8 @@ void McuShell_PrintCommandFailed(const uint8_t *cmd, McuShell_ConstStdIOType *io
 uint8_t McuShell_ParseWithCommandTable(const uint8_t *cmd, McuShell_ConstStdIOType *io, McuShell_ConstParseCommandCallback *parseCallback);
 /*
 ** ===================================================================
-**     Method      :  McuShell_ParseWithCommandTable (component Shell)
+**     Method      :  ParseWithCommandTable (component Shell)
+**
 **     Description :
 **         Parses a shell command. It handles first the internal
 **         commands and will call the provided callback.
@@ -356,7 +363,8 @@ uint8_t McuShell_ParseWithCommandTable(const uint8_t *cmd, McuShell_ConstStdIOTy
 McuShell_ConstStdIOTypePtr McuShell_GetStdio(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_GetStdio (component Shell)
+**     Method      :  GetStdio (component Shell)
+**
 **     Description :
 **         Returns the default stdio channel. This method is only
 **         available if a shell is enabled in the component properties.
@@ -369,7 +377,8 @@ McuShell_ConstStdIOTypePtr McuShell_GetStdio(void);
 void McuShell_SendNum32u(uint32_t val, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendNum32u (component Shell)
+**     Method      :  SendNum32u (component Shell)
+**
 **     Description :
 **         Sends a 32bit unsigned number to the given I/O
 **     Parameters  :
@@ -383,7 +392,8 @@ void McuShell_SendNum32u(uint32_t val, McuShell_StdIO_OutErr_FctType io);
 void McuShell_SendNum16u(uint16_t val, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendNum16u (component Shell)
+**     Method      :  SendNum16u (component Shell)
+**
 **     Description :
 **         Sends a 16bit unsigned number to the given I/O
 **     Parameters  :
@@ -397,7 +407,8 @@ void McuShell_SendNum16u(uint16_t val, McuShell_StdIO_OutErr_FctType io);
 void McuShell_SendNum8u(uint8_t val, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendNum8u (component Shell)
+**     Method      :  SendNum8u (component Shell)
+**
 **     Description :
 **         Sends an 8bit unsigned number to the given I/O
 **     Parameters  :
@@ -411,7 +422,8 @@ void McuShell_SendNum8u(uint8_t val, McuShell_StdIO_OutErr_FctType io);
 void McuShell_SendNum8s(int8_t val, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendNum8s (component Shell)
+**     Method      :  SendNum8s (component Shell)
+**
 **     Description :
 **         Sends an 8bit signed number to the given I/O
 **     Parameters  :
@@ -425,7 +437,8 @@ void McuShell_SendNum8s(int8_t val, McuShell_StdIO_OutErr_FctType io);
 void McuShell_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_Init (component Shell)
+**     Method      :  Init (component Shell)
+**
 **     Description :
 **         Initializes the module, especially creates the mutex
 **         semaphore if an RTOS is used.
@@ -437,7 +450,8 @@ void McuShell_Init(void);
 void McuShell_RequestSerial(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_RequestSerial (component Shell)
+**     Method      :  RequestSerial (component Shell)
+**
 **     Description :
 **         Used to get mutual access to the shell console. Only has an
 **         effect if using an RTOS with semaphore for the console
@@ -450,7 +464,8 @@ void McuShell_RequestSerial(void);
 void McuShell_ReleaseSerial(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_ReleaseSerial (component Shell)
+**     Method      :  ReleaseSerial (component Shell)
+**
 **     Description :
 **         Used to release mutual access to the shell console. Only has
 **         an effect if using an RTOS with semaphore for the console
@@ -463,7 +478,8 @@ void McuShell_ReleaseSerial(void);
 void McuShell_SendHelpStr(const uint8_t *strCmd, const uint8_t *strHelp, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendHelpStr (component Shell)
+**     Method      :  SendHelpStr (component Shell)
+**
 **     Description :
 **         Prints a string using an I/O function, formated for the
 **         'help' command
@@ -479,7 +495,8 @@ void McuShell_SendHelpStr(const uint8_t *strCmd, const uint8_t *strHelp, McuShel
 void McuShell_SendStatusStr(const uint8_t *strItem, const uint8_t *strStatus, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendStatusStr (component Shell)
+**     Method      :  SendStatusStr (component Shell)
+**
 **     Description :
 **         Prints a status string using an I/O function, formated for
 **         the 'status' command
@@ -495,7 +512,8 @@ void McuShell_SendStatusStr(const uint8_t *strItem, const uint8_t *strStatus, Mc
 void McuShell_ReadChar(uint8_t *c);
 /*
 ** ===================================================================
-**     Method      :  McuShell_ReadChar (component Shell)
+**     Method      :  ReadChar (component Shell)
+**
 **     Description :
 **         Reads a character (blocking)
 **     Parameters  :
@@ -509,7 +527,8 @@ void McuShell_ReadChar(uint8_t *c);
 void McuShell_SendChar(uint8_t ch);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendChar (component Shell)
+**     Method      :  SendChar (component Shell)
+**
 **     Description :
 **         Sends a character (blocking)
 **     Parameters  :
@@ -522,7 +541,8 @@ void McuShell_SendChar(uint8_t ch);
 bool McuShell_KeyPressed(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_KeyPressed (component Shell)
+**     Method      :  KeyPressed (component Shell)
+**
 **     Description :
 **         Checks if a key has been pressed (a character is present in
 **         the input buffer)
@@ -535,7 +555,8 @@ bool McuShell_KeyPressed(void);
 void McuShell_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_Deinit (component Shell)
+**     Method      :  Deinit (component Shell)
+**
 **     Description :
 **         De-Initializes the module, especially frees the mutex
 **         semaphore if an RTOS is used.
@@ -547,7 +568,8 @@ void McuShell_Deinit(void);
 void* McuShell_GetSemaphore(void);
 /*
 ** ===================================================================
-**     Method      :  McuShell_GetSemaphore (component Shell)
+**     Method      :  GetSemaphore (component Shell)
+**
 **     Description :
 **         Return the semaphore of the shell.
 **     Parameters  : None
@@ -560,7 +582,8 @@ void* McuShell_GetSemaphore(void);
 uint8_t McuShell_ReadAndParseWithCommandTable(uint8_t *cmdBuf, size_t cmdBufSize, McuShell_ConstStdIOType *io, McuShell_ConstParseCommandCallback *parseCallback);
 /*
 ** ===================================================================
-**     Method      :  McuShell_ReadAndParseWithCommandTable (component Shell)
+**     Method      :  ReadAndParseWithCommandTable (component Shell)
+**
 **     Description :
 **         Reads characters from the default input channel and appends
 **         it to the buffer. Once a new line has been detected, the
@@ -586,7 +609,8 @@ uint8_t McuShell_ReadAndParseWithCommandTable(uint8_t *cmdBuf, size_t cmdBufSize
 uint8_t McuShell_IterateTable(const uint8_t *cmd, bool *handled, McuShell_ConstStdIOType *io, McuShell_ConstParseCommandCallback *parserTable);
 /*
 ** ===================================================================
-**     Method      :  McuShell_IterateTable (component Shell)
+**     Method      :  IterateTable (component Shell)
+**
 **     Description :
 **         Parses a shell command. It handles first the internal
 **         commands and will call the provided callback.
@@ -608,7 +632,8 @@ uint8_t McuShell_IterateTable(const uint8_t *cmd, bool *handled, McuShell_ConstS
 uint8_t McuShell_SetStdio(McuShell_ConstStdIOTypePtr stdio);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SetStdio (component Shell)
+**     Method      :  SetStdio (component Shell)
+**
 **     Description :
 **         Sets an StdIO structure which is returned by GetStdio()
 **     Parameters  :
@@ -622,7 +647,8 @@ uint8_t McuShell_SetStdio(McuShell_ConstStdIOTypePtr stdio);
 void McuShell_SendData(const uint8_t *data, uint16_t dataSize, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendData (component Shell)
+**     Method      :  SendData (component Shell)
+**
 **     Description :
 **         Sends data using an I/O function. Unlike SendStr(), with
 **         this method it is possible to send binary data, including
@@ -639,7 +665,8 @@ void McuShell_SendData(const uint8_t *data, uint16_t dataSize, McuShell_StdIO_Ou
 bool McuShell_IsHistoryCharacter(uint8_t ch, uint8_t *cmdBuf, size_t cmdBufIdx, bool *isPrev);
 /*
 ** ===================================================================
-**     Method      :  McuShell_IsHistoryCharacter (component Shell)
+**     Method      :  IsHistoryCharacter (component Shell)
+**
 **     Description :
 **         Returns TRUE if character is a history character
 **     Parameters  :
@@ -658,7 +685,8 @@ bool McuShell_IsHistoryCharacter(uint8_t ch, uint8_t *cmdBuf, size_t cmdBufIdx, 
 void McuShell_SendCh(uint8_t ch, McuShell_StdIO_OutErr_FctType io);
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendCh (component Shell)
+**     Method      :  SendCh (component Shell)
+**
 **     Description :
 **         Prints a character using an I/O function
 **     Parameters  :
@@ -672,7 +700,8 @@ void McuShell_SendCh(uint8_t ch, McuShell_StdIO_OutErr_FctType io);
 unsigned McuShell_printf(const char *fmt, ...);
 /*
 ** ===================================================================
-**     Method      :  McuShell_printf (component Shell)
+**     Method      :  printf (component Shell)
+**
 **     Description :
 **         Printf() style function using XFormat component, using the
 **         shell default I/O handler.
@@ -690,7 +719,6 @@ void McuShell_printfPutChar(void *arg, char c);
 **     Method      :  McuShell_printfPutChar (component Shell)
 **
 **     Description :
-**         Helper routine for printf
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
@@ -698,7 +726,8 @@ void McuShell_printfPutChar(void *arg, char c);
 unsigned McuShell_printfIO(McuShell_ConstStdIOType *io, const char *fmt, ...);
 /*
 ** ===================================================================
-**     Method      :  McuShell_printfIO (component Shell)
+**     Method      :  printfIO (component Shell)
+**
 **     Description :
 **         Printf() style function using XFormat component, using a
 **         custom I/O handler.
@@ -714,7 +743,8 @@ unsigned McuShell_printfIO(McuShell_ConstStdIOType *io, const char *fmt, ...);
 void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch));
 /*
 ** ===================================================================
-**     Method      :  McuShell_SendCharFct (component Shell)
+**     Method      :  SendCharFct (component Shell)
+**
 **     Description :
 **         Method to send a character using a standard I/O handle.
 **     Parameters  :
@@ -736,12 +766,4 @@ void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch));
 /* ifndef __McuShell_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

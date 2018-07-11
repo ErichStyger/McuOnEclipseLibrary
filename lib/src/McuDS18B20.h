@@ -6,9 +6,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : DS18B20
 **     Version     : Component 01.017, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-06-19, 11:54, # CodeGen: 186
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 This is a component for the Maxim DS18B20 1-Wire temperature sensor.
@@ -18,7 +17,6 @@ This is a component for the Maxim DS18B20 1-Wire temperature sensor.
 **          Connection mode                                : One slave
 **          One Wire                                       : McuOneWire
 **          SDK                                            : McuLib
-**          Wait                                           : McuWait
 **          Shell                                          : Enabled
 **            Shell                                        : McuShell
 **            Utility                                      : McuUtility
@@ -37,33 +35,33 @@ This is a component for the Maxim DS18B20 1-Wire temperature sensor.
 **         Init                    - void McuDS18B20_Init(void);
 **         Deinit                  - void McuDS18B20_Deinit(void);
 **
-**     * Copyright (c) Original implementation: Omar Isaí Pinales Ayala, 2014, all rights reserved.
-**      * Updated and maintained by Erich Styger, 2014-2017
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) Original implementation: Omar Isaí Pinales Ayala, 2014, all rights reserved.
+**  * Updated and maintained by Erich Styger, 2014-2017
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuDS18B20.h
@@ -106,7 +104,8 @@ typedef enum {
 uint8_t McuDS18B20_StartConversion(uint8_t sensor_index);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_StartConversion (component DS18B20)
+**     Method      :  StartConversion (component DS18B20)
+**
 **     Description :
 **         Starts the conversion of temperature in the sensor.
 **     Parameters  :
@@ -121,7 +120,8 @@ uint8_t McuDS18B20_StartConversion(uint8_t sensor_index);
 uint8_t McuDS18B20_SetResolution(uint8_t sensor_index, DS18B20_ResolutionBits resolution);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_SetResolution (component DS18B20)
+**     Method      :  SetResolution (component DS18B20)
+**
 **     Description :
 **         Sets the resolution
 **     Parameters  :
@@ -143,7 +143,8 @@ uint8_t McuDS18B20_SetResolution(uint8_t sensor_index, DS18B20_ResolutionBits re
 uint8_t McuDS18B20_ReadTemperature(uint8_t sensor_index);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_ReadTemperature (component DS18B20)
+**     Method      :  ReadTemperature (component DS18B20)
+**
 **     Description :
 **         Read the temperature value from the sensor and stores it in
 **         memory
@@ -159,7 +160,8 @@ uint8_t McuDS18B20_ReadTemperature(uint8_t sensor_index);
 uint8_t McuDS18B20_GetTemperatureRaw(uint16_t sensor_index, uint32_t *raw);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_GetTemperature (component DS18B20)
+**     Method      :  GetTemperature (component DS18B20)
+**
 **     Description :
 **         Gets the temperature from memory.
 **     Parameters  :
@@ -174,7 +176,8 @@ uint8_t McuDS18B20_GetTemperatureRaw(uint16_t sensor_index, uint32_t *raw);
 bool McuDS18B20_isBusy(void);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_isBusy (component DS18B20)
+**     Method      :  isBusy (component DS18B20)
+**
 **     Description :
 **         Returns TRUE if there are a operation in progress.
 **     Parameters  : None
@@ -187,7 +190,8 @@ bool McuDS18B20_isBusy(void);
 uint8_t McuDS18B20_GetRomCode(uint8_t sensor_index, uint8_t **romCodePtr);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_GetRomCode (component DS18B20)
+**     Method      :  GetRomCode (component DS18B20)
+**
 **     Description :
 **         Gets the rom code from the memory.
 **     Parameters  :
@@ -204,7 +208,8 @@ uint8_t McuDS18B20_GetRomCode(uint8_t sensor_index, uint8_t **romCodePtr);
 uint8_t McuDS18B20_ReadRom(uint8_t sensor_index);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_ReadRom (component DS18B20)
+**     Method      :  ReadRom (component DS18B20)
+**
 **     Description :
 **         Starts to read the rom code and saves it in memory.
 **     Parameters  :
@@ -219,7 +224,8 @@ uint8_t McuDS18B20_ReadRom(uint8_t sensor_index);
 void McuDS18B20_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_Init (component DS18B20)
+**     Method      :  Init (component DS18B20)
+**
 **     Description :
 **         Initializes the device.
 **     Parameters  : None
@@ -230,7 +236,8 @@ void McuDS18B20_Init(void);
 uint8_t McuDS18B20_GetTemperatureFloat(uint8_t sensor_index, float *temperature);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_GetTemperatureFloat (component DS18B20)
+**     Method      :  GetTemperatureFloat (component DS18B20)
+**
 **     Description :
 **         Returns the temperature from memory in floating point format.
 **     Parameters  :
@@ -247,7 +254,8 @@ uint8_t McuDS18B20_GetTemperatureFloat(uint8_t sensor_index, float *temperature)
 uint8_t McuDS18B20_ParseCommand(const unsigned char* cmd, bool *handled, const McuShell_StdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_ParseCommand (component DS18B20)
+**     Method      :  ParseCommand (component DS18B20)
+**
 **     Description :
 **         Shell Command Line parser. Method is only available if Shell
 **         is enabled in the component properties.
@@ -265,7 +273,8 @@ uint8_t McuDS18B20_ParseCommand(const unsigned char* cmd, bool *handled, const M
 void McuDS18B20_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_Deinit (component DS18B20)
+**     Method      :  Deinit (component DS18B20)
+**
 **     Description :
 **         Driver deinitialization routine
 **     Parameters  : None
@@ -276,7 +285,8 @@ void McuDS18B20_Deinit(void);
 uint8_t McuDS18B20_ReadResolution(uint8_t sensor_index);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_ReadResolution (component DS18B20)
+**     Method      :  ReadResolution (component DS18B20)
+**
 **     Description :
 **         Read the sensor resolution sensor and stores it in memory
 **     Parameters  :
@@ -291,7 +301,8 @@ uint8_t McuDS18B20_ReadResolution(uint8_t sensor_index);
 uint8_t McuDS18B20_SearchAndAssignROMCodes(void);
 /*
 ** ===================================================================
-**     Method      :  McuDS18B20_SearchAndAssignROMCodes (component DS18B20)
+**     Method      :  SearchAndAssignROMCodes (component DS18B20)
+**
 **     Description :
 **         Scans the devices on the bus and assigns the ROM codes to
 **         the list of available sensors
@@ -311,12 +322,4 @@ uint8_t McuDS18B20_SearchAndAssignROMCodes(void);
 /* ifndef __McuDS18B20_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

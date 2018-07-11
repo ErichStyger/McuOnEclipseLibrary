@@ -5,44 +5,12 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.203, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-06-20, 13:08, # CodeGen: 327
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
-**          Component name                                 : McuFatFS
-**          FatFs Version                                  : R0.12 (Patch 3, 29-April-2016)
-**          Tiny                                           : no
-**          Volumes                                        : 1
-**          Drives                                         : 1
-**            Drive0                                       : McuSDCard
-**          FS_MINIMIZE                                    : 0
-**          Maximum Sector Size                            : 512
-**          Relative Path                                  : Enabled with f_getcwd()
-**          Code Page                                      : U.S. (OEM)
-**          File Sharing                                   : 0
-**          Multipartion                                   : no
-**          Fast Seek                                      : yes
-**          Use Find                                       : Disable (0)
-**          String Functions                               : enable
-**          LFN                                            : Long File Name Support
-**            Use LFN                                      : Disable
-**            exFAT                                        : no
-**            Max LFN Length                               : 255
-**            LFN Unicode                                  : no
-**          Write enabled                                  : Enabled
-**            Use TimeDate                                 : Enabled
-**              Realtime clock                             : McuTimeDate
-**          Reentrant                                      : Enabled
-**            Timeout ticks                                : 1000
-**            Handle                                       : HANDLE
-**            User Sync Functions                          : no
-**            RTOS                                         : Enabled
-**              RTOS                                       : McuRTOS
-**              Use dynamic heap                           : yes
-**          Utility                                        : McuUtility
-**          Shell                                          : Disabled
+**
 **     Contents    :
 **         open             - FRESULT McuFatFS_open(FIL *fp, const XCHAR *path, BYTE mode);
 **         close            - FRESULT McuFatFS_close(FIL *fp);
@@ -89,28 +57,30 @@
 **         Deinit           - uint8_t McuFatFS_Deinit(void);
 **         Init             - uint8_t McuFatFS_Init(void);
 **
-**     Copyright (c) 2014-2017,  Erich Styger
-**     Web: http://mcuoneclipse.com/
-**     SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**     Git: https://github.com/ErichStyger/McuOnEclipse_PEx
-**     All rights reserved.
-**     Redistribution and use in source and binary forms, with or without modification,
-**     are permitted provided that the following conditions are met:
-**     - Redistributions of source code must retain the above copyright notice, this list
-**       of conditions and the following disclaimer.
-**     - Redistributions in binary form must reproduce the above copyright notice, this
-**       list of conditions and the following disclaimer in the documentation and/or
-**       other materials provided with the distribution.
-**     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**     ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**     DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**     ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**     (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**     LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**     ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** Copyright (c) 2014-2017,  Erich Styger
+** Web: http://mcuoneclipse.com/
+** SourceForge: https://sourceforge.net/projects/mcuoneclipse
+** Git: https://github.com/ErichStyger/McuOnEclipse_PEx
+** All rights reserved.
+** 
+** Redistribution and use in source and binary forms, with or without modification,
+** are permitted provided that the following conditions are met:
+** - Redistributions of source code must retain the above copyright notice, this list
+**   of conditions and the following disclaimer.
+** - Redistributions in binary form must reproduce the above copyright notice, this
+**   list of conditions and the following disclaimer in the documentation and/or
+**   other materials provided with the distribution.
+** 
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+** ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+** WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+** DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+** ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+** (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+** LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+** ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+** SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuFatFS.h
@@ -176,7 +146,8 @@
   f_open(fp, path, mode)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_open (component FAT_FileSystem)
+**     Method      :  open (component FAT_FileSystem)
+**
 **     Description :
 **         Open/Create a file
 **     Parameters  :
@@ -216,7 +187,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_close (component FAT_FileSystem)
+**     Method      :  close (component FAT_FileSystem)
+**
 **     Description :
 **         Close a file
 **     Parameters  :
@@ -233,7 +205,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_read (component FAT_FileSystem)
+**     Method      :  read (component FAT_FileSystem)
+**
 **     Description :
 **         Read file
 **     Parameters  :
@@ -252,7 +225,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_write (component FAT_FileSystem)
+**     Method      :  write (component FAT_FileSystem)
+**
 **     Description :
 **         Write to a file
 **     Parameters  :
@@ -272,7 +246,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_opendir (component FAT_FileSystem)
+**     Method      :  opendir (component FAT_FileSystem)
+**
 **     Description :
 **         Open a directory
 **     Parameters  :
@@ -292,7 +267,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_readdir (component FAT_FileSystem)
+**     Method      :  readdir (component FAT_FileSystem)
+**
 **     Description :
 **         Read a directory item
 **     Parameters  :
@@ -309,7 +285,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_lseek (component FAT_FileSystem)
+**     Method      :  lseek (component FAT_FileSystem)
+**
 **     Description :
 **         The f_lseek function moves the file read/write pointer of an
 **         open file object. It can also be used to increase the file
@@ -328,7 +305,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_unlink (component FAT_FileSystem)
+**     Method      :  unlink (component FAT_FileSystem)
+**
 **     Description :
 **         Remove a file or directory
 **     Parameters  :
@@ -344,7 +322,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_mount (component FAT_FileSystem)
+**     Method      :  mount (component FAT_FileSystem)
+**
 **     Description :
 **         Mount/unmount a logical drive
 **     Parameters  :
@@ -363,7 +342,8 @@
 #define McuFatFS_getfree(path, nclst, fs) f_getfree(path, nclst, fs)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_getfree (component FAT_FileSystem)
+**     Method      :  getfree (component FAT_FileSystem)
+**
 **     Description :
 **         Get Number of Free Clusters
 **     Parameters  :
@@ -384,7 +364,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_sync (component FAT_FileSystem)
+**     Method      :  sync (component FAT_FileSystem)
+**
 **     Description :
 **         Flush cached data of a writing file
 **     Parameters  :
@@ -399,7 +380,8 @@
   f_rename(path_old, path_new)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_rename (component FAT_FileSystem)
+**     Method      :  rename (component FAT_FileSystem)
+**
 **     Description :
 **         Delete a file or directory
 **     Parameters  :
@@ -415,7 +397,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_isWriteProtected (component FAT_FileSystem)
+**     Method      :  isWriteProtected (component FAT_FileSystem)
+**
 **     Description :
 **         Determines if the file system is write protected.
 **     Parameters  :
@@ -431,7 +414,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
   f_mkdir(path)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_mkdir (component FAT_FileSystem)
+**     Method      :  mkdir (component FAT_FileSystem)
+**
 **     Description :
 **         Creates a directory
 **     Parameters  :
@@ -447,7 +431,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_chmod (component FAT_FileSystem)
+**     Method      :  chmod (component FAT_FileSystem)
+**
 **     Description :
 **         Changes the attribute of a file or directory
 **         Following attribute flags to be set in one or more
@@ -478,7 +463,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_truncate (component FAT_FileSystem)
+**     Method      :  truncate (component FAT_FileSystem)
+**
 **     Description :
 **         Truncates the file size.
 **         The truncate() function truncates the file size to the
@@ -498,7 +484,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_stat (component FAT_FileSystem)
+**     Method      :  stat (component FAT_FileSystem)
+**
 **     Description :
 **         The f_stat gets the information of a file or directory. For
 **         details of the infomation, refer to the FILINFO structure
@@ -519,7 +506,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_utime (component FAT_FileSystem)
+**     Method      :  utime (component FAT_FileSystem)
+**
 **     Description :
 **         The f_utime function changes the timestamp of a file or
 **         directory
@@ -539,7 +527,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_mkfs (component FAT_FileSystem)
+**     Method      :  mkfs (component FAT_FileSystem)
+**
 **     Description :
 **         The f_mkfs fucntion creates a file system on the drive.
 **     Parameters  :
@@ -573,7 +562,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_chdir (component FAT_FileSystem)
+**     Method      :  chdir (component FAT_FileSystem)
+**
 **     Description :
 **         The f_chdir function changes the current directory of the
 **         logical drive. The current directory of a drive is
@@ -594,7 +584,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_chdrive (component FAT_FileSystem)
+**     Method      :  chdrive (component FAT_FileSystem)
+**
 **     Description :
 **         The f_chdrive function changes the current drive. The
 **         initial value of the current drive number is 0. Note that
@@ -613,7 +604,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_getcwd (component FAT_FileSystem)
+**     Method      :  getcwd (component FAT_FileSystem)
+**
 **     Description :
 **         The f_getcwd function retrieves the current directory of the
 **         current drive in full path string including drive number.
@@ -631,7 +623,8 @@ bool McuFatFS_isWriteProtected(uint8_t *drvStr);
 char* McuFatFS_errFResultMsg(int errNo);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_errFResultMsg (component FAT_FileSystem)
+**     Method      :  errFResultMsg (component FAT_FileSystem)
+**
 **     Description :
 **         Returns for a given FatFs FRESULT error code a string
 **     Parameters  :
@@ -645,7 +638,8 @@ char* McuFatFS_errFResultMsg(int errNo);
 char* McuFatFS_errDResultMsg(int errNo);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_errDResultMsg (component FAT_FileSystem)
+**     Method      :  errDResultMsg (component FAT_FileSystem)
+**
 **     Description :
 **         Returns for a given FatFs DRESULT error code a string
 **     Parameters  :
@@ -660,7 +654,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_isDiskPresent (component FAT_FileSystem)
+**     Method      :  isDiskPresent (component FAT_FileSystem)
+**
 **     Description :
 **         Determines if the disk is present or not (e.g. disk inserted).
 **     Parameters  :
@@ -676,7 +671,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_gets (component FAT_FileSystem)
+**     Method      :  f_gets (component FAT_FileSystem)
+**
 **     Description :
 **         Get a string from the file
 **     Parameters  :
@@ -695,7 +691,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_puts (component FAT_FileSystem)
+**     Method      :  f_puts (component FAT_FileSystem)
+**
 **     Description :
 **         Put a string to the file
 **     Parameters  :
@@ -712,7 +709,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_putc (component FAT_FileSystem)
+**     Method      :  f_putc (component FAT_FileSystem)
+**
 **     Description :
 **         Put a character to the file
 **     Parameters  :
@@ -729,7 +727,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_printf (component FAT_FileSystem)
+**     Method      :  f_printf (component FAT_FileSystem)
+**
 **     Description :
 **         Put a formatted string to the file
 **     Parameters  :
@@ -747,7 +746,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_eof (component FAT_FileSystem)
+**     Method      :  f_eof (component FAT_FileSystem)
+**
 **     Description :
 **         Wrapper to to the f_eof() macro. Returns 1 if at the end of
 **         the file, 0 otherwise.
@@ -764,7 +764,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_error (component FAT_FileSystem)
+**     Method      :  f_error (component FAT_FileSystem)
+**
 **     Description :
 **         Wrapper to to the f_eof() macro. Returns 1 if at the end of
 **         the file, 0 otherwise.
@@ -781,7 +782,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_tell (component FAT_FileSystem)
+**     Method      :  f_tell (component FAT_FileSystem)
+**
 **     Description :
 **         Wrapper to to the f_tell() macro. Returns the file
 **         read/write pointer (0 on file open).
@@ -798,7 +800,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_size (component FAT_FileSystem)
+**     Method      :  f_size (component FAT_FileSystem)
+**
 **     Description :
 **         Wrapper to to the f_size() macro. Returns the file size.
 **     Parameters  :
@@ -812,7 +815,8 @@ bool McuFatFS_isDiskPresent(uint8_t *drvStr);
 uint8_t McuFatFS_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_Init (component FAT_FileSystem)
+**     Method      :  Init (component FAT_FileSystem)
+**
 **     Description :
 **         Initializes the device driver.
 **     Parameters  : None
@@ -824,7 +828,8 @@ uint8_t McuFatFS_Init(void);
 uint8_t McuFatFS_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_Deinit (component FAT_FileSystem)
+**     Method      :  Deinit (component FAT_FileSystem)
+**
 **     Description :
 **         Deinitializes the driver.
 **     Parameters  : None
@@ -836,7 +841,8 @@ uint8_t McuFatFS_Deinit(void);
 uint32_t McuFatFS_get_fattime(void);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_get_fattime (component FAT_FileSystem)
+**     Method      :  get_fattime (component FAT_FileSystem)
+**
 **     Description :
 **         Returns the current time
 **     Parameters  : None
@@ -849,7 +855,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_getlabel(path, label, vsn)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_getlabel (component FAT_FileSystem)
+**     Method      :  f_getlabel (component FAT_FileSystem)
+**
 **     Description :
 **         Get volume label
 **     Parameters  :
@@ -868,7 +875,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_setlabel(label);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_setlabel (component FAT_FileSystem)
+**     Method      :  f_setlabel (component FAT_FileSystem)
+**
 **     Description :
 **         Set Volume Label 
 **     Parameters  :
@@ -883,7 +891,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_expand(fp, fsz, opt);
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_expand (component FAT_FileSystem)
+**     Method      :  f_expand (component FAT_FileSystem)
+**
 **     Description :
 **         Allocate a Contiguous Blocks to the File
 **     Parameters  :
@@ -901,7 +910,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_findfirst(dp, fno, path, pattern)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_findfirst (component FAT_FileSystem)
+**     Method      :  f_findfirst (component FAT_FileSystem)
+**
 **     Description :
 **         Find FirstFile
 **     Parameters  :
@@ -919,7 +929,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_findnext(dp, fno)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_findnext (component FAT_FileSystem)
+**     Method      :  f_findnext (component FAT_FileSystem)
+**
 **     Description :
 **         Find Next File
 **     Parameters  :
@@ -935,7 +946,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_opendir(dp, path)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_opendir (component FAT_FileSystem)
+**     Method      :  f_opendir (component FAT_FileSystem)
+**
 **     Description :
 **         Open a directory
 **     Parameters  :
@@ -951,7 +963,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_closedir(dp)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_closedir (component FAT_FileSystem)
+**     Method      :  f_closedir (component FAT_FileSystem)
+**
 **     Description :
 **         Close a directory
 **     Parameters  :
@@ -966,7 +979,8 @@ uint32_t McuFatFS_get_fattime(void);
   f_readdir(dj, fno)
 /*
 ** ===================================================================
-**     Method      :  McuFatFS_f_readdir (component FAT_FileSystem)
+**     Method      :  f_readdir (component FAT_FileSystem)
+**
 **     Description :
 **         Read a directory item
 **     Parameters  :
@@ -984,12 +998,4 @@ uint32_t McuFatFS_get_fattime(void);
 /* ifndef __McuFatFS_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

@@ -4,12 +4,11 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerSystemView
-**     Version     : Component 01.058, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
+**     Version     : Component 01.059, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-20, 13:16, # CodeGen: 255
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
-**
+**          This component implements and integrates the SEGGER Systemview library for FreeRTOS.
 **     Settings    :
 **          Component name                                 : McuSystemView
 **          Version                                        : V2.52a
@@ -47,44 +46,45 @@
 **         ErrorfTarget   - void McuSystemView_ErrorfTarget(const char *s, ...);
 **         EnableEvents   - void McuSystemView_EnableEvents(uint32_t EnableMask);
 **         DisableEvents  - void McuSystemView_DisableEvents(uint32_t DisableMask);
+**         Deinit         - void McuSystemView_Deinit(void);
 **         Init           - void McuSystemView_Init(void);
 **
-**     * (c) Copyright Segger, 2017
-**      * http      : www.segger.com
-**      * See separate Segger licensing terms.
-**      *
-**      * Processor Expert port: Copyright (c) 2016-2017, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * (c) Copyright Segger, 2017
+**  * http      : www.segger.com
+**  * See separate Segger licensing terms.
+**  *
+**  * Processor Expert port: Copyright (c) 2016-2017, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuSystemView.h
 ** @version 01.00
 ** @brief
-**
+**          This component implements and integrates the SEGGER Systemview library for FreeRTOS.
 */         
 /*!
 **  @addtogroup McuSystemView_module McuSystemView module documentation
@@ -110,7 +110,8 @@
 void McuSystemView_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_Init (component SeggerSystemView)
+**     Method      :  Init (component SeggerSystemView)
+**
 **     Description :
 **         Driver Initialization
 **     Parameters  : None
@@ -123,7 +124,8 @@ void McuSystemView_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_OnUserStart (component SeggerSystemView)
+**     Method      :  OnUserStart (component SeggerSystemView)
+**
 **     Description :
 **         Send a user event start, such as start of a subroutine for
 **         profiling.
@@ -139,7 +141,8 @@ void McuSystemView_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_OnUserStop (component SeggerSystemView)
+**     Method      :  OnUserStop (component SeggerSystemView)
+**
 **     Description :
 **         Send a user event stop, such as return of a subroutine for
 **         profiling.
@@ -154,7 +157,8 @@ void McuSystemView_Init(void);
   SEGGER_SYSVIEW_RecordEnterISR()
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_RecordEnterISR (component SeggerSystemView)
+**     Method      :  RecordEnterISR (component SeggerSystemView)
+**
 **     Description :
 **         Records the enter of an ISR. Place this call at the
 **         beginning of the interrupt service routine.
@@ -167,7 +171,8 @@ void McuSystemView_Init(void);
   SEGGER_SYSVIEW_RecordExitISR()
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_RecordExitISR (component SeggerSystemView)
+**     Method      :  RecordExitISR (component SeggerSystemView)
+**
 **     Description :
 **         Records the end of the ISR. Call this function at the end of
 **         the ISR to be recorded.
@@ -180,7 +185,8 @@ void McuSystemView_Init(void);
   SEGGER_SYSVIEW_Print(s)
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_Print (component SeggerSystemView)
+**     Method      :  Print (component SeggerSystemView)
+**
 **     Description :
 **         Prints a string to the host
 **     Parameters  :
@@ -194,7 +200,8 @@ void McuSystemView_Init(void);
   SEGGER_SYSVIEW_Warn(s)
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_Warn (component SeggerSystemView)
+**     Method      :  Warn (component SeggerSystemView)
+**
 **     Description :
 **         Prints a warning string to the host
 **     Parameters  :
@@ -208,7 +215,8 @@ void McuSystemView_Init(void);
   SEGGER_SYSVIEW_Error(s)
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_Error (component SeggerSystemView)
+**     Method      :  Error (component SeggerSystemView)
+**
 **     Description :
 **         Prints an error string to the host
 **     Parameters  :
@@ -221,7 +229,8 @@ void McuSystemView_Init(void);
 #define McuSystemView_PrintfHost    SEGGER_SYSVIEW_PrintfHost
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_PrintfHost (component SeggerSystemView)
+**     Method      :  PrintfHost (component SeggerSystemView)
+**
 **     Description :
 **         Prints a string using printf() to the host which is
 **         processed on the host
@@ -235,7 +244,8 @@ void McuSystemView_Init(void);
 #define McuSystemView_PrintfTarget   SEGGER_SYSVIEW_PrintfTarget
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_PrintfTarget (component SeggerSystemView)
+**     Method      :  PrintfTarget (component SeggerSystemView)
+**
 **     Description :
 **         Prints a string using printf() to the host which is
 **         processed target
@@ -249,7 +259,8 @@ void McuSystemView_Init(void);
 #define McuSystemView_WarnfHost  SEGGER_SYSVIEW_WarnfHost
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_WarnfHost (component SeggerSystemView)
+**     Method      :  WarnfHost (component SeggerSystemView)
+**
 **     Description :
 **         Prints a warning string using printf() to the host which is
 **         processed on the host
@@ -263,7 +274,8 @@ void McuSystemView_Init(void);
 #define McuSystemView_WarnfTarget   SEGGER_SYSVIEW_WarnfTarget
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_WarnfTarget (component SeggerSystemView)
+**     Method      :  WarnfTarget (component SeggerSystemView)
+**
 **     Description :
 **         Prints a warning string using printf() to the host which is
 **         processed on the target
@@ -277,7 +289,8 @@ void McuSystemView_Init(void);
 #define McuSystemView_ErrorfHost   SEGGER_SYSVIEW_ErrorfHost
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_ErrorfHost (component SeggerSystemView)
+**     Method      :  ErrorfHost (component SeggerSystemView)
+**
 **     Description :
 **         Prints an error string using printf() to the host which is
 **         processed on the host
@@ -291,7 +304,8 @@ void McuSystemView_Init(void);
 #define McuSystemView_ErrorfTarget   SEGGER_SYSVIEW_ErrorfTarget
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_ErrorfTarget (component SeggerSystemView)
+**     Method      :  ErrorfTarget (component SeggerSystemView)
+**
 **     Description :
 **         Prints an error string using printf() to the host which is
 **         processed on the target
@@ -307,7 +321,8 @@ void McuSystemView_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_DisableEvents (component SeggerSystemView)
+**     Method      :  DisableEvents (component SeggerSystemView)
+**
 **     Description :
 **         Disable standard SystemView events to not be generated.
 **     Parameters  :
@@ -322,12 +337,25 @@ void McuSystemView_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuSystemView_EnableEvents (component SeggerSystemView)
+**     Method      :  EnableEvents (component SeggerSystemView)
+**
 **     Description :
 **         Enables standard SystemView events to be generated.
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **         EnableMask      - Events to be enabled
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuSystemView_Deinit(void);
+/*
+** ===================================================================
+**     Method      :  Deinit (component SeggerSystemView)
+**
+**     Description :
+**         Driver de-initialization
+**     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
 */
@@ -338,12 +366,4 @@ void McuSystemView_Init(void);
 /* ifndef __McuSystemView_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

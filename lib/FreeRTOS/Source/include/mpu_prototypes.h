@@ -68,7 +68,7 @@ void * MPU_pvTaskGetThreadLocalStoragePointer( TaskHandle_t xTaskToQuery, BaseTy
 BaseType_t MPU_xTaskCallApplicationTaskHook( TaskHandle_t xTask, void *pvParameter );
 TaskHandle_t MPU_xTaskGetIdleTaskHandle( void );
 UBaseType_t MPU_uxTaskGetSystemState( TaskStatus_t * const pxTaskStatusArray, const UBaseType_t uxArraySize, uint32_t * const pulTotalRunTime );
-void MPU_vTaskList( char * pcWriteBuffer );
+void MPU_vTaskList( char * pcWriteBuffer, size_t bufSize);
 void MPU_vTaskGetRunTimeStats( char *pcWriteBuffer );
 BaseType_t MPU_xTaskGenericNotify( TaskHandle_t xTaskToNotify, uint32_t ulValue, eNotifyAction eAction, uint32_t *pulPreviousNotificationValue );
 BaseType_t MPU_xTaskNotifyWait( uint32_t ulBitsToClearOnEntry, uint32_t ulBitsToClearOnExit, uint32_t *pulNotificationValue, TickType_t xTicksToWait );

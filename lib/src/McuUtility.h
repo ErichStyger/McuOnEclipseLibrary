@@ -5,14 +5,12 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Utility
 **     Version     : Component 01.158, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-06-20, 13:08, # CodeGen: 327
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
 **          Component name                                 : McuUtility
-**          SDK                                            : McuLib
 **     Contents    :
 **         strcpy                  - void McuUtility_strcpy(uint8_t *dst, size_t dstSize, const unsigned char *src);
 **         strcat                  - void McuUtility_strcat(uint8_t *dst, size_t dstSize, const unsigned char *src);
@@ -84,32 +82,32 @@
 **         Deinit                  - void McuUtility_Deinit(void);
 **         Init                    - void McuUtility_Init(void);
 **
-**     * Copyright (c) 2014-2018, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2014-2018, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuUtility.h
@@ -146,7 +144,8 @@ typedef enum {
 void McuUtility_strcpy(uint8_t *dst, size_t dstSize, const unsigned char *src);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcpy (component Utility)
+**     Method      :  strcpy (component Utility)
+**
 **     Description :
 **         Same as normal strcpy, but safe as it does not write beyond
 **         the buffer.
@@ -163,7 +162,8 @@ void McuUtility_strcpy(uint8_t *dst, size_t dstSize, const unsigned char *src);
 void McuUtility_strcat(uint8_t *dst, size_t dstSize, const unsigned char *src);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcat (component Utility)
+**     Method      :  strcat (component Utility)
+**
 **     Description :
 **         Same as normal strcat, but safe as it does not write beyond
 **         the buffer.
@@ -180,7 +180,8 @@ void McuUtility_strcat(uint8_t *dst, size_t dstSize, const unsigned char *src);
 void McuUtility_Num16sToStr(uint8_t *dst, size_t dstSize, int16_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num16sToStr (component Utility)
+**     Method      :  Num16sToStr (component Utility)
+**
 **     Description :
 **         Converts a signed 16bit value into a string.
 **     Parameters  :
@@ -196,7 +197,8 @@ void McuUtility_Num16sToStr(uint8_t *dst, size_t dstSize, int16_t val);
 void McuUtility_Num16sToStrFormatted(uint8_t *dst, size_t dstSize, int16_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num16sToStrFormatted (component Utility)
+**     Method      :  Num16sToStrFormatted (component Utility)
+**
 **     Description :
 **         Converts a 16bit signed value to string.
 **     Parameters  :
@@ -214,7 +216,8 @@ void McuUtility_Num16sToStrFormatted(uint8_t *dst, size_t dstSize, int16_t val, 
 void McuUtility_strcatNum16s(uint8_t *dst, size_t dstSize, int16_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum16s (component Utility)
+**     Method      :  strcatNum16s (component Utility)
+**
 **     Description :
 **         Appends a 16bit signed value to a string buffer.
 **     Parameters  :
@@ -230,7 +233,8 @@ void McuUtility_strcatNum16s(uint8_t *dst, size_t dstSize, int16_t val);
 void McuUtility_strcatNum16sFormatted(uint8_t *dst, size_t dstSize, int16_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum16sFormatted (component Utility)
+**     Method      :  strcatNum16sFormatted (component Utility)
+**
 **     Description :
 **         Appends a 16bit signed value to a string buffer in a
 **         formatted way.
@@ -249,7 +253,8 @@ void McuUtility_strcatNum16sFormatted(uint8_t *dst, size_t dstSize, int16_t val,
 void McuUtility_strcatNum8Hex(uint8_t *dst, size_t dstSize, uint8_t num);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum8Hex (component Utility)
+**     Method      :  strcatNum8Hex (component Utility)
+**
 **     Description :
 **         Appends a 8bit unsigned value to a string buffer as hex
 **         number (without a 0x prefix).
@@ -266,7 +271,8 @@ void McuUtility_strcatNum8Hex(uint8_t *dst, size_t dstSize, uint8_t num);
 void McuUtility_strcatNum16Hex(uint8_t *dst, size_t dstSize, uint16_t num);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum16Hex (component Utility)
+**     Method      :  strcatNum16Hex (component Utility)
+**
 **     Description :
 **         Appends a 16bit unsigned value to a string buffer as hex
 **         number (without a 0x prefix).
@@ -283,7 +289,8 @@ void McuUtility_strcatNum16Hex(uint8_t *dst, size_t dstSize, uint16_t num);
 void McuUtility_strcatNum32s(uint8_t *dst, size_t dstSize, int32_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum32s (component Utility)
+**     Method      :  strcatNum32s (component Utility)
+**
 **     Description :
 **         Appends a 32bit signed value to a string buffer.
 **     Parameters  :
@@ -299,7 +306,8 @@ void McuUtility_strcatNum32s(uint8_t *dst, size_t dstSize, int32_t val);
 void McuUtility_Num32sToStr(uint8_t *dst, size_t dstSize, int32_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num32sToStr (component Utility)
+**     Method      :  Num32sToStr (component Utility)
+**
 **     Description :
 **         Converts a signed 32bit value into a string.
 **     Parameters  :
@@ -315,7 +323,8 @@ void McuUtility_Num32sToStr(uint8_t *dst, size_t dstSize, int32_t val);
 void McuUtility_strcatNum32Hex(uint8_t *dst, size_t dstSize, uint32_t num);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum32Hex (component Utility)
+**     Method      :  strcatNum32Hex (component Utility)
+**
 **     Description :
 **         Appends a 16bit unsigned value to a string buffer as hex
 **         number (without a 0x prefix).
@@ -332,7 +341,8 @@ void McuUtility_strcatNum32Hex(uint8_t *dst, size_t dstSize, uint32_t num);
 bool McuUtility_IsLeapYear(uint16_t year);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_IsLeapYear (component Utility)
+**     Method      :  IsLeapYear (component Utility)
+**
 **     Description :
 **         Returns true if a given year is a leap year
 **     Parameters  :
@@ -346,7 +356,8 @@ bool McuUtility_IsLeapYear(uint16_t year);
 uint8_t McuUtility_WeekDay(uint16_t year, uint8_t month, uint8_t day);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_WeekDay (component Utility)
+**     Method      :  WeekDay (component Utility)
+**
 **     Description :
 **         Returns the weekday for a given date >= 1.Jan.1900
 **     Parameters  :
@@ -364,7 +375,8 @@ uint8_t McuUtility_WeekDay(uint16_t year, uint8_t month, uint8_t day);
 void McuUtility_chcat(uint8_t *dst, size_t dstSize, uint8_t ch);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_chcat (component Utility)
+**     Method      :  chcat (component Utility)
+**
 **     Description :
 **         Adds a single character to a zero byte terminated string
 **         buffer. It cares about buffer overflow.
@@ -381,7 +393,8 @@ void McuUtility_chcat(uint8_t *dst, size_t dstSize, uint8_t ch);
 void McuUtility_strcatNum32u(uint8_t *dst, size_t dstSize, uint32_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum32u (component Utility)
+**     Method      :  strcatNum32u (component Utility)
+**
 **     Description :
 **         Appends a 32bit signed value to a string buffer.
 **     Parameters  :
@@ -397,7 +410,8 @@ void McuUtility_strcatNum32u(uint8_t *dst, size_t dstSize, uint32_t val);
 void McuUtility_Num32uToStr(uint8_t *dst, size_t dstSize, uint32_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num32uToStr (component Utility)
+**     Method      :  Num32uToStr (component Utility)
+**
 **     Description :
 **         Converts an unsigned 32bit value into a string.
 **     Parameters  :
@@ -413,7 +427,8 @@ void McuUtility_Num32uToStr(uint8_t *dst, size_t dstSize, uint32_t val);
 void McuUtility_strcatNum32uFormatted(uint8_t *dst, size_t dstSize, uint32_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum32uFormatted (component Utility)
+**     Method      :  strcatNum32uFormatted (component Utility)
+**
 **     Description :
 **         Appends a 32bit unsigned value to a string buffer in a
 **         formatted way.
@@ -432,7 +447,8 @@ void McuUtility_strcatNum32uFormatted(uint8_t *dst, size_t dstSize, uint32_t val
 void McuUtility_Num32uToStrFormatted(uint8_t *dst, size_t dstSize, uint32_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num32uToStrFormatted (component Utility)
+**     Method      :  Num32uToStrFormatted (component Utility)
+**
 **     Description :
 **         Converts a 32bit unsigned value to string.
 **     Parameters  :
@@ -450,7 +466,8 @@ void McuUtility_Num32uToStrFormatted(uint8_t *dst, size_t dstSize, uint32_t val,
 void McuUtility_strcatNum24Hex(uint8_t *dst, size_t dstSize, uint32_t num);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum24Hex (component Utility)
+**     Method      :  strcatNum24Hex (component Utility)
+**
 **     Description :
 **         Appends a 32bit unsigned value to a string buffer as hex
 **         number (without a 0x prefix). Only 24bits are used.
@@ -467,7 +484,8 @@ void McuUtility_strcatNum24Hex(uint8_t *dst, size_t dstSize, uint32_t num);
 uint8_t McuUtility_ReadEscapedName(const unsigned char *filename, uint8_t *destname, size_t maxlen, size_t *lenRead, size_t *lenWritten, const char *terminators);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ReadEscapedName (component Utility)
+**     Method      :  ReadEscapedName (component Utility)
+**
 **     Description :
 **         Scans an escaped name from a string. This is useful e.g. for
 **         double quoted file names.
@@ -499,7 +517,8 @@ uint8_t McuUtility_ReadEscapedName(const unsigned char *filename, uint8_t *destn
 uint8_t McuUtility_xatoi(const unsigned char **str, int32_t *res);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_xatoi (component Utility)
+**     Method      :  xatoi (component Utility)
+**
 **     Description :
 **         Custom atoi() (ascii to int) implementation by Elm Chan
 **     Parameters  :
@@ -515,7 +534,8 @@ uint8_t McuUtility_xatoi(const unsigned char **str, int32_t *res);
 uint8_t McuUtility_ScanDate(const unsigned char **str, uint8_t *day, uint8_t *month, uint16_t *year);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDate (component Utility)
+**     Method      :  ScanDate (component Utility)
+**
 **     Description :
 **         Scans a date in the format "dd.mm.yyyy" or "dd-mm-yyyy". For
 **         yy it will expand it to 20yy.
@@ -535,7 +555,8 @@ uint8_t McuUtility_ScanDate(const unsigned char **str, uint8_t *day, uint8_t *mo
 uint8_t McuUtility_ScanTime(const unsigned char **str, uint8_t *hour, uint8_t *minute, uint8_t *second, uint8_t *hSecond);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanTime (component Utility)
+**     Method      :  ScanTime (component Utility)
+**
 **     Description :
 **         Scans a time string in the format "hh:mm:ss,hh" with the
 **         part for the ",hh" is optional.
@@ -559,7 +580,8 @@ uint8_t McuUtility_ScanTime(const unsigned char **str, uint8_t *hour, uint8_t *m
 uint8_t McuUtility_ScanDecimal16uNumber(const unsigned char **str, uint16_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal16uNumber (component Utility)
+**     Method      :  ScanDecimal16uNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 16bit unsigned number
 **     Parameters  :
@@ -575,7 +597,8 @@ uint8_t McuUtility_ScanDecimal16uNumber(const unsigned char **str, uint16_t *val
 uint8_t McuUtility_ScanDecimal8uNumber(const unsigned char **str, uint8_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal8uNumber (component Utility)
+**     Method      :  ScanDecimal8uNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 8bit unsigned number
 **     Parameters  :
@@ -591,7 +614,8 @@ uint8_t McuUtility_ScanDecimal8uNumber(const unsigned char **str, uint8_t *val);
 void McuUtility_Num16uToStr(uint8_t *dst, size_t dstSize, uint16_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num16uToStr (component Utility)
+**     Method      :  Num16uToStr (component Utility)
+**
 **     Description :
 **         Converts a signed 16bit value into a string.
 **     Parameters  :
@@ -607,7 +631,8 @@ void McuUtility_Num16uToStr(uint8_t *dst, size_t dstSize, uint16_t val);
 void McuUtility_Num8sToStr(uint8_t *dst, size_t dstSize, signed char val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num8sToStr (component Utility)
+**     Method      :  Num8sToStr (component Utility)
+**
 **     Description :
 **         Converts a signed 8bit value into a string.
 **     Parameters  :
@@ -623,7 +648,8 @@ void McuUtility_Num8sToStr(uint8_t *dst, size_t dstSize, signed char val);
 void McuUtility_Num8uToStr(uint8_t *dst, size_t dstSize, uint8_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num8uToStr (component Utility)
+**     Method      :  Num8uToStr (component Utility)
+**
 **     Description :
 **         Converts an unsigned 8bit value into a string.
 **     Parameters  :
@@ -639,7 +665,8 @@ void McuUtility_Num8uToStr(uint8_t *dst, size_t dstSize, uint8_t val);
 void McuUtility_Num16uToStrFormatted(uint8_t *dst, size_t dstSize, uint16_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num16uToStrFormatted (component Utility)
+**     Method      :  Num16uToStrFormatted (component Utility)
+**
 **     Description :
 **         Converts a 16bit unsigned value to string.
 **     Parameters  :
@@ -657,7 +684,8 @@ void McuUtility_Num16uToStrFormatted(uint8_t *dst, size_t dstSize, uint16_t val,
 void McuUtility_Num32sToStrFormatted(uint8_t *dst, size_t dstSize, int32_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Num32sToStrFormatted (component Utility)
+**     Method      :  Num32sToStrFormatted (component Utility)
+**
 **     Description :
 **         Converts a 32bit signed value to string.
 **     Parameters  :
@@ -675,7 +703,8 @@ void McuUtility_Num32sToStrFormatted(uint8_t *dst, size_t dstSize, int32_t val, 
 void McuUtility_strcatNum16u(uint8_t *dst, size_t dstSize, uint16_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum16u (component Utility)
+**     Method      :  strcatNum16u (component Utility)
+**
 **     Description :
 **         Appends a 16bit unsigned value to a string buffer.
 **     Parameters  :
@@ -691,7 +720,8 @@ void McuUtility_strcatNum16u(uint8_t *dst, size_t dstSize, uint16_t val);
 void McuUtility_strcatNum16uFormatted(uint8_t *dst, size_t dstSize, uint16_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum16uFormatted (component Utility)
+**     Method      :  strcatNum16uFormatted (component Utility)
+**
 **     Description :
 **         Appends a 16bit unsigned value to a string buffer in a
 **         formatted way.
@@ -710,7 +740,8 @@ void McuUtility_strcatNum16uFormatted(uint8_t *dst, size_t dstSize, uint16_t val
 void McuUtility_strcatNum32sFormatted(uint8_t *dst, size_t dstSize, int32_t val, char fill, uint8_t nofFill);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum32sFormatted (component Utility)
+**     Method      :  strcatNum32sFormatted (component Utility)
+**
 **     Description :
 **         Appends a 32bit signed value to a string buffer in a
 **         formatted way.
@@ -729,7 +760,8 @@ void McuUtility_strcatNum32sFormatted(uint8_t *dst, size_t dstSize, int32_t val,
 uint8_t McuUtility_ScanDecimal32uNumber(const unsigned char **str, uint32_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal32uNumber (component Utility)
+**     Method      :  ScanDecimal32uNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 32bit unsigned number
 **     Parameters  :
@@ -745,7 +777,8 @@ uint8_t McuUtility_ScanDecimal32uNumber(const unsigned char **str, uint32_t *val
 void McuUtility_strcatNum8u(uint8_t *dst, size_t dstSize, uint8_t val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum8u (component Utility)
+**     Method      :  strcatNum8u (component Utility)
+**
 **     Description :
 **         Appends a 8bit unsigned value to a string buffer.
 **     Parameters  :
@@ -761,7 +794,8 @@ void McuUtility_strcatNum8u(uint8_t *dst, size_t dstSize, uint8_t val);
 void McuUtility_strcatNum8s(uint8_t *dst, size_t dstSize, signed char val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum8s (component Utility)
+**     Method      :  strcatNum8s (component Utility)
+**
 **     Description :
 **         Appends a 8bit signed value to a string buffer.
 **     Parameters  :
@@ -779,7 +813,8 @@ void McuUtility_strcatNum8s(uint8_t *dst, size_t dstSize, signed char val);
 
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcmp (component Utility)
+**     Method      :  strcmp (component Utility)
+**
 **     Description :
 **         Wrapper to the standard strcmp() routine
 **     Parameters  :
@@ -797,7 +832,8 @@ void McuUtility_strcatNum8s(uint8_t *dst, size_t dstSize, signed char val);
 
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strncmp (component Utility)
+**     Method      :  strncmp (component Utility)
+**
 **     Description :
 **         Wrapper to the standard strncmp() routine
 **     Parameters  :
@@ -816,7 +852,8 @@ void McuUtility_strcatNum8s(uint8_t *dst, size_t dstSize, signed char val);
 
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strlen (component Utility)
+**     Method      :  strlen (component Utility)
+**
 **     Description :
 **         Wrapper to the standard strlen() function.
 **     Parameters  :
@@ -830,7 +867,8 @@ void McuUtility_strcatNum8s(uint8_t *dst, size_t dstSize, signed char val);
 uint8_t McuUtility_ScanHex32uNumber(const unsigned char **str, uint32_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanHex32uNumber (component Utility)
+**     Method      :  ScanHex32uNumber (component Utility)
+**
 **     Description :
 **         Scans a hexadecimal 32bit number, starting with 0x
 **     Parameters  :
@@ -846,7 +884,8 @@ uint8_t McuUtility_ScanHex32uNumber(const unsigned char **str, uint32_t *val);
 uint8_t McuUtility_ScanHex16uNumber(const unsigned char **str, uint16_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanHex16uNumber (component Utility)
+**     Method      :  ScanHex16uNumber (component Utility)
+**
 **     Description :
 **         Scans a hexadecimal 16bit number, starting with 0x
 **     Parameters  :
@@ -862,7 +901,8 @@ uint8_t McuUtility_ScanHex16uNumber(const unsigned char **str, uint16_t *val);
 uint8_t McuUtility_ScanHex8uNumber(const unsigned char **str, uint8_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanHex8uNumber (component Utility)
+**     Method      :  ScanHex8uNumber (component Utility)
+**
 **     Description :
 **         Scans a hexadecimal 8bit number, starting with 0x
 **     Parameters  :
@@ -878,7 +918,8 @@ uint8_t McuUtility_ScanHex8uNumber(const unsigned char **str, uint8_t *val);
 uint8_t McuUtility_strtailcmp(const uint8_t *str, const uint8_t *tail);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strtailcmp (component Utility)
+**     Method      :  strtailcmp (component Utility)
+**
 **     Description :
 **         Compares the tail of a string and returns 0 if it matches, 1
 **         otherwise
@@ -895,7 +936,8 @@ uint8_t McuUtility_strtailcmp(const uint8_t *str, const uint8_t *tail);
 uint8_t McuUtility_strCutTail(uint8_t *str, uint8_t *tail);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strCutTail (component Utility)
+**     Method      :  strCutTail (component Utility)
+**
 **     Description :
 **         Removes a tailing substring from a string. The string passed
 **         will be modified (the tail is cut by writing a zero byte to
@@ -913,7 +955,8 @@ uint8_t McuUtility_strCutTail(uint8_t *str, uint8_t *tail);
 uint8_t McuUtility_ScanHex8uNumberNoPrefix(const unsigned char **str, uint8_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanHex8uNumberNoPrefix (component Utility)
+**     Method      :  ScanHex8uNumberNoPrefix (component Utility)
+**
 **     Description :
 **         Scans a hexadecimal 8bit number, without 0x
 **     Parameters  :
@@ -929,7 +972,8 @@ uint8_t McuUtility_ScanHex8uNumberNoPrefix(const unsigned char **str, uint8_t *v
 void McuUtility_strcatNum32sDotValue100(uint8_t *dst, size_t dstSize, int32_t num);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNum32sDotValue100 (component Utility)
+**     Method      :  strcatNum32sDotValue100 (component Utility)
+**
 **     Description :
 **         Appends a 32bit signed value to a string buffer. The value
 **         is in 1/100 units.  For example for the value -13456 it will
@@ -947,7 +991,8 @@ void McuUtility_strcatNum32sDotValue100(uint8_t *dst, size_t dstSize, int32_t nu
 uint8_t McuUtility_ScanDecimal8sNumber(const unsigned char **str, signed char *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal8sNumber (component Utility)
+**     Method      :  ScanDecimal8sNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 8bit signed number
 **     Parameters  :
@@ -963,7 +1008,8 @@ uint8_t McuUtility_ScanDecimal8sNumber(const unsigned char **str, signed char *v
 uint8_t McuUtility_ScanDecimal16sNumber(const unsigned char **str, int16_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal16sNumber (component Utility)
+**     Method      :  ScanDecimal16sNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 16bit signed number
 **     Parameters  :
@@ -979,7 +1025,8 @@ uint8_t McuUtility_ScanDecimal16sNumber(const unsigned char **str, int16_t *val)
 uint8_t McuUtility_ScanDecimal32sNumber(const unsigned char **str, int32_t *val);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal32sNumber (component Utility)
+**     Method      :  ScanDecimal32sNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 32bit signed number
 **     Parameters  :
@@ -995,7 +1042,8 @@ uint8_t McuUtility_ScanDecimal32sNumber(const unsigned char **str, int32_t *val)
 int16_t McuUtility_strFind(uint8_t *str, uint8_t *subStr);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strFind (component Utility)
+**     Method      :  strFind (component Utility)
+**
 **     Description :
 **         Searches a substring inside a string and returns the
 **         position.
@@ -1013,7 +1061,8 @@ int16_t McuUtility_strFind(uint8_t *str, uint8_t *subStr);
 uint8_t McuUtility_ScanSeparatedNumbers(const unsigned char **str, uint8_t *values, uint8_t nofValues, char separator, McuUtility_SeparatedNumberType numberType);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanSeparatedNumbers (component Utility)
+**     Method      :  ScanSeparatedNumbers (component Utility)
+**
 **     Description :
 **         Scans multiple numbers separated by character, e.g. "123.68.
 **         5.3"
@@ -1034,7 +1083,8 @@ uint8_t McuUtility_ScanSeparatedNumbers(const unsigned char **str, uint8_t *valu
 uint8_t McuUtility_ScanDoubleQuotedString(const uint8_t **cmd, uint8_t *buf, size_t bufSize);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDoubleQuotedString (component Utility)
+**     Method      :  ScanDoubleQuotedString (component Utility)
+**
 **     Description :
 **         Scans a string inside double quotes and returns it without
 **         the double quotes.
@@ -1053,7 +1103,8 @@ uint8_t McuUtility_ScanDoubleQuotedString(const uint8_t **cmd, uint8_t *buf, siz
 uint8_t McuUtility_ScanDecimal32sDotNumber(const unsigned char **str, int32_t *integral, uint32_t *fractional, uint8_t *nofFractionalZeros);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_ScanDecimal32sDotNumber (component Utility)
+**     Method      :  ScanDecimal32sDotNumber (component Utility)
+**
 **     Description :
 **         Scans a decimal 32bit signed number with a following dot
 **         (fractional part), e.g. "-34587.0248", it will return the
@@ -1078,7 +1129,8 @@ uint8_t McuUtility_ScanDecimal32sDotNumber(const unsigned char **str, int32_t *i
 void McuUtility_strcatPad(uint8_t *dst, size_t dstSize, const unsigned char *src, char padChar, uint8_t srcPadSize);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatPad (component Utility)
+**     Method      :  strcatPad (component Utility)
+**
 **     Description :
 **         Same as normal strcat, but safe as it does not write beyond
 **         the buffer. The buffer will be filled with a pad character
@@ -1099,7 +1151,8 @@ void McuUtility_strcatPad(uint8_t *dst, size_t dstSize, const unsigned char *src
 void McuUtility_NumFloatToStr(uint8_t *dst, size_t dstSize, float val, uint8_t nofFracDigits);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_NumFloatToStr (component Utility)
+**     Method      :  NumFloatToStr (component Utility)
+**
 **     Description :
 **         Converts a float value into a string.
 **     Parameters  :
@@ -1117,7 +1170,8 @@ void McuUtility_NumFloatToStr(uint8_t *dst, size_t dstSize, float val, uint8_t n
 void McuUtility_strcatNumFloat(uint8_t *dst, size_t dstSize, float val, uint8_t nofFracDigits);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_strcatNumFloat (component Utility)
+**     Method      :  strcatNumFloat (component Utility)
+**
 **     Description :
 **         Converts a float value into a string.
 **     Parameters  :
@@ -1135,7 +1189,8 @@ void McuUtility_strcatNumFloat(uint8_t *dst, size_t dstSize, float val, uint8_t 
 uint16_t McuUtility_GetValue16LE(uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_GetValue16LE (component Utility)
+**     Method      :  GetValue16LE (component Utility)
+**
 **     Description :
 **         Returns a 16bit Little Endian value from memory
 **     Parameters  :
@@ -1149,7 +1204,8 @@ uint16_t McuUtility_GetValue16LE(uint8_t *dataP);
 uint32_t McuUtility_GetValue24LE(uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_GetValue24LE (component Utility)
+**     Method      :  GetValue24LE (component Utility)
+**
 **     Description :
 **         Returns a 24bit Little Endian value from memory
 **     Parameters  :
@@ -1163,7 +1219,8 @@ uint32_t McuUtility_GetValue24LE(uint8_t *dataP);
 uint32_t McuUtility_GetValue32LE(uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_GetValue32LE (component Utility)
+**     Method      :  GetValue32LE (component Utility)
+**
 **     Description :
 **         Returns a 32bit Little Endian value from memory
 **     Parameters  :
@@ -1177,7 +1234,8 @@ uint32_t McuUtility_GetValue32LE(uint8_t *dataP);
 void McuUtility_SetValue16LE(uint16_t data, uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_SetValue16LE (component Utility)
+**     Method      :  SetValue16LE (component Utility)
+**
 **     Description :
 **         Stores a 16bit value in memory as Little Endian
 **     Parameters  :
@@ -1191,7 +1249,8 @@ void McuUtility_SetValue16LE(uint16_t data, uint8_t *dataP);
 void McuUtility_SetValue24LE(uint32_t data, uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_SetValue24LE (component Utility)
+**     Method      :  SetValue24LE (component Utility)
+**
 **     Description :
 **         Stores a 24bit value in memory as Little Endian
 **     Parameters  :
@@ -1205,7 +1264,8 @@ void McuUtility_SetValue24LE(uint32_t data, uint8_t *dataP);
 void McuUtility_SetValue32LE(uint32_t data, uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_SetValue32LE (component Utility)
+**     Method      :  SetValue32LE (component Utility)
+**
 **     Description :
 **         Stores a 32bit value in memory as Little Endian
 **     Parameters  :
@@ -1219,7 +1279,8 @@ void McuUtility_SetValue32LE(uint32_t data, uint8_t *dataP);
 void McuUtility_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Deinit (component Utility)
+**     Method      :  Deinit (component Utility)
+**
 **     Description :
 **         Driver De-Initialization
 **     Parameters  : None
@@ -1230,7 +1291,8 @@ void McuUtility_Deinit(void);
 void McuUtility_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_Init (component Utility)
+**     Method      :  Init (component Utility)
+**
 **     Description :
 **         Driver Initialization
 **     Parameters  : None
@@ -1241,7 +1303,8 @@ void McuUtility_Init(void);
 int32_t McuUtility_map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_min, int32_t out_max);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_map (component Utility)
+**     Method      :  map (component Utility)
+**
 **     Description :
 **         Maps a value from one range to another
 **     Parameters  :
@@ -1259,7 +1322,8 @@ int32_t McuUtility_map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_mi
 int32_t McuUtility_constrain(int32_t val, int32_t min, int32_t max);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_constrain (component Utility)
+**     Method      :  constrain (component Utility)
+**
 **     Description :
 **         Makes sure that a given input value is inside a given range.
 **     Parameters  :
@@ -1275,7 +1339,8 @@ int32_t McuUtility_constrain(int32_t val, int32_t min, int32_t max);
 int32_t McuUtility_random(int32_t min, int32_t max);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_random (component Utility)
+**     Method      :  random (component Utility)
+**
 **     Description :
 **         Provides a random value. You have to call intialize the
 **         random number generator with randomSetSeed() first!
@@ -1291,7 +1356,8 @@ int32_t McuUtility_random(int32_t min, int32_t max);
 void McuUtility_randomSetSeed(unsigned int seed);
 /*
 ** ===================================================================
-**     Method      :  McuUtility_randomSetSeed (component Utility)
+**     Method      :  randomSetSeed (component Utility)
+**
 **     Description :
 **         Sets a seed for the random number generator
 **     Parameters  :
@@ -1307,7 +1373,8 @@ int64_t McuUtility_map64(int64_t x, int64_t in_min, int64_t in_max, int64_t out_
 #endif
 /*
 ** ===================================================================
-**     Method      :  McuUtility_map64 (component Utility)
+**     Method      :  map64 (component Utility)
+**
 **     Description :
 **         Maps a value from one range to another, using 64bit math
 **     Parameters  :
@@ -1332,12 +1399,4 @@ int64_t McuUtility_map64(int64_t x, int64_t in_min, int64_t in_max, int64_t out_
 /* ifndef __McuUtility_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

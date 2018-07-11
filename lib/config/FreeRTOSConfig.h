@@ -67,8 +67,8 @@
 #define configUSE_MALLOC_FAILED_HOOK              1 /* 1: use MallocFailed hook; 0: no MallocFailed hook */
 #define configUSE_MALLOC_FAILED_HOOK_NAME         McuRTOS_vApplicationMallocFailedHook
 #define configTICK_RATE_HZ                        (1000) /* frequency of tick interrupt */
-#define configSYSTICK_USE_LOW_POWER_TIMER         1 /* If using Kinetis Low Power Timer (LPTMR) instead of SysTick timer */
-#define configSYSTICK_LOW_POWER_TIMER_CLOCK_HZ    1000 /* 1 kHz LPO timer. Set to 1 if not used */
+#define configSYSTICK_USE_LOW_POWER_TIMER         0 /* If using Kinetis Low Power Timer (LPTMR) instead of SysTick timer */
+#define configSYSTICK_LOW_POWER_TIMER_CLOCK_HZ    1 /* 1 kHz LPO timer. Set to 1 if not used */
 #if McuLib_CONFIG_NXP_SDK_USED || McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_GENERIC
 /* The CMSIS variable SystemCoreClock contains the current clock speed */
   extern uint32_t SystemCoreClock;

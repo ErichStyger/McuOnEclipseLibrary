@@ -5,16 +5,12 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Wait
 **     Version     : Component 01.082, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-23, 09:31, # CodeGen: 262
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
 **          Component name                                 : McuWait
-**          SDK                                            : McuLib
-**          Use Cycle Counter                              : Enabled
-**            Cortex Tools                                 : McuArmTools
 **          Manual Clock Values                            : Disabled
 **          Delay100usFunction                             : Delay100US
 **          RTOS                                           : Enabled
@@ -32,32 +28,32 @@
 **         Init           - void McuWait_Init(void);
 **         DeInit         - void McuWait_DeInit(void);
 **
-**     * Copyright (c) 2013-2017, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2013-2017, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuWait.h
@@ -110,7 +106,8 @@ extern "C" {
 void McuWait_Wait10Cycles(void);
 /*
 ** ===================================================================
-**     Method      :  McuWait_Wait10Cycles (component Wait)
+**     Method      :  Wait10Cycles (component Wait)
+**
 **     Description :
 **         Wait for 10 CPU cycles.
 **     Parameters  : None
@@ -121,7 +118,8 @@ void McuWait_Wait10Cycles(void);
 void McuWait_Wait100Cycles(void);
 /*
 ** ===================================================================
-**     Method      :  McuWait_Wait100Cycles (component Wait)
+**     Method      :  Wait100Cycles (component Wait)
+**
 **     Description :
 **         Wait for 100 CPU cycles.
 **     Parameters  : None
@@ -132,7 +130,8 @@ void McuWait_Wait100Cycles(void);
 void McuWait_WaitCycles(uint16_t cycles);
 /*
 ** ===================================================================
-**     Method      :  McuWait_WaitCycles (component Wait)
+**     Method      :  WaitCycles (component Wait)
+**
 **     Description :
 **         Wait for a specified number of CPU cycles (16bit data type).
 **     Parameters  :
@@ -145,7 +144,8 @@ void McuWait_WaitCycles(uint16_t cycles);
 void McuWait_Waitms(uint16_t ms);
 /*
 ** ===================================================================
-**     Method      :  McuWait_Waitms (component Wait)
+**     Method      :  Waitms (component Wait)
+**
 **     Description :
 **         Wait for a specified time in milliseconds.
 **     Parameters  :
@@ -168,7 +168,8 @@ void McuWait_Waitms(uint16_t ms);
        )
 /*
 ** ===================================================================
-**     Method      :  McuWait_Waitus (component Wait)
+**     Method      :  Waitus (component Wait)
+**
 **     Description :
 **         Wait for a specified time in microseconds.
 **     Parameters  :
@@ -192,7 +193,8 @@ void McuWait_Waitms(uint16_t ms);
        )
 /*
 ** ===================================================================
-**     Method      :  McuWait_Waitns (component Wait)
+**     Method      :  Waitns (component Wait)
+**
 **     Description :
 **         Wait for a specified time in nano seconds.
 **     Parameters  :
@@ -209,7 +211,8 @@ void McuWait_Waitms(uint16_t ms);
 #endif
 /*
 ** ===================================================================
-**     Method      :  McuWait_WaitOSms (component Wait)
+**     Method      :  WaitOSms (component Wait)
+**
 **     Description :
 **         If an RTOS is enabled, this routine will use a non-blocking
 **         wait method. Otherwise it will do a busy/blocking wait.
@@ -221,7 +224,8 @@ void McuWait_Waitms(uint16_t ms);
 void McuWait_WaitLongCycles(uint32_t cycles);
 /*
 ** ===================================================================
-**     Method      :  McuWait_WaitLongCycles (component Wait)
+**     Method      :  WaitLongCycles (component Wait)
+**
 **     Description :
 **         Wait for a specified number of CPU cycles (32bit data type).
 **     Parameters  :
@@ -234,7 +238,8 @@ void McuWait_WaitLongCycles(uint32_t cycles);
 void McuWait_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuWait_Init (component Wait)
+**     Method      :  Init (component Wait)
+**
 **     Description :
 **         Driver initialization routine.
 **     Parameters  : None
@@ -245,7 +250,8 @@ void McuWait_Init(void);
 void McuWait_DeInit(void);
 /*
 ** ===================================================================
-**     Method      :  McuWait_DeInit (component Wait)
+**     Method      :  DeInit (component Wait)
+**
 **     Description :
 **         Driver de-initialization routine
 **     Parameters  : None
@@ -263,12 +269,4 @@ void McuWait_DeInit(void);
 /* ifndef __McuWait_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

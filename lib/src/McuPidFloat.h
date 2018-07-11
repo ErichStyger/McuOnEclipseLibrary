@@ -6,23 +6,11 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PID_Float
 **     Version     : Component 01.006, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-12-20, 21:25, # CodeGen: 114
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
-**          Component Name                                 : McuPidFloat
-**          SDK                                            : McuLib
-**          K                                              : 0.1
-**          Ti                                             : 100
-**          Td                                             : 0
-**          T                                              : 0.01
-**          Control Variable                               : 
-**            Type of U                                    : UINT16
-**            Min U value                                  : 0
-**            Max U value                                  : 65000
-**            Max rate of change                           : 0
 **     Contents    :
 **         Control - void McuPidFloat_Control(float error, void* *u);
 **         Reset   - void McuPidFloat_Reset(void);
@@ -30,12 +18,12 @@
 **         Set_Ti  - void McuPidFloat_Set_Ti(float t);
 **         Set_Td  - void McuPidFloat_Set_Td(float t);
 **
-**     * (c) Copyright Carlos Alvarez, 2013
-**      * For non-commercial use only.
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
+** * (c) Copyright Carlos Alvarez, 2013
+**  * For non-commercial use only.
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
 ** ###################################################################*/
 /*!
 ** @file McuPidFloat.h
@@ -64,7 +52,8 @@
 void McuPidFloat_Set_Td(float t);
 /*
 ** ===================================================================
-**     Method      :  McuPidFloat_Set_Td (component PID_Float)
+**     Method      :  Set_Td (component PID_Float)
+**
 **     Description :
 **         Change the Td parameter.
 **     Parameters  :
@@ -77,7 +66,8 @@ void McuPidFloat_Set_Td(float t);
 void McuPidFloat_Set_Ti(float t);
 /*
 ** ===================================================================
-**     Method      :  McuPidFloat_Set_Ti (component PID_Float)
+**     Method      :  Set_Ti (component PID_Float)
+**
 **     Description :
 **         Change the Ti parameter.
 **     Parameters  :
@@ -90,7 +80,8 @@ void McuPidFloat_Set_Ti(float t);
 void McuPidFloat_Set_K(float k);
 /*
 ** ===================================================================
-**     Method      :  McuPidFloat_Set_K (component PID_Float)
+**     Method      :  Set_K (component PID_Float)
+**
 **     Description :
 **         Change the K parameter.
 **     Parameters  :
@@ -103,7 +94,8 @@ void McuPidFloat_Set_K(float k);
 void McuPidFloat_Reset(void);
 /*
 ** ===================================================================
-**     Method      :  McuPidFloat_Reset (component PID_Float)
+**     Method      :  Reset (component PID_Float)
+**
 **     Description :
 **         Reset the PID.
 **     Parameters  : None
@@ -114,7 +106,8 @@ void McuPidFloat_Reset(void);
 void McuPidFloat_Control(float error, uint16_t *u);
 /*
 ** ===================================================================
-**     Method      :  McuPidFloat_Control (component PID_Float)
+**     Method      :  Control (component PID_Float)
+**
 **     Description :
 **         Control function. Must be called every T time.
 **     Parameters  :
@@ -132,12 +125,4 @@ void McuPidFloat_Control(float error, uint16_t *u);
 /* ifndef __McuPidFloat_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

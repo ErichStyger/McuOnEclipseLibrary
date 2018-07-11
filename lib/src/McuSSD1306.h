@@ -5,9 +5,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
 **     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 10:01, # CodeGen: 290
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -56,32 +55,32 @@
 **         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
 **         Init                  - void McuSSD1306_Init(void);
 **
-**     * Copyright (c) 2017-2018, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2017-2018, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuSSD1306.h
@@ -169,7 +168,8 @@ typedef enum {
 void McuSSD1306_Clear(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_Clear (component SSD1306)
+**     Method      :  Clear (component SSD1306)
+**
 **     Description :
 **         Clears the whole display memory.
 **     Parameters  : None
@@ -180,7 +180,8 @@ void McuSSD1306_Clear(void);
 void McuSSD1306_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_Init (component SSD1306)
+**     Method      :  Init (component SSD1306)
+**
 **     Description :
 **         Display driver initialization
 **     Parameters  : None
@@ -191,7 +192,8 @@ void McuSSD1306_Init(void);
 void McuSSD1306_UpdateFull(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_UpdateFull (component SSD1306)
+**     Method      :  UpdateFull (component SSD1306)
+**
 **     Description :
 **         Updates the whole display from the microcontroller RAM
 **         display buffer.
@@ -206,7 +208,8 @@ void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y, McuSS
 #define McuSSD1306_UpdateRegion(x,y,w,h) /* nothing to do, as this display type does not require a refresh */
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_UpdateRegion (component SSD1306)
+**     Method      :  UpdateRegion (component SSD1306)
+**
 **     Description :
 **         Updates a region of the display. This is only a stub for
 **         this display as we are using windowing.
@@ -226,7 +229,6 @@ void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSS
 **     Method      :  McuSSD1306_OpenWindow (component SSD1306)
 **
 **     Description :
-**         Opens a window inside the display we want to write to.
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
@@ -238,7 +240,6 @@ void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSS
 **     Method      :  McuSSD1306_CloseWindow (component SSD1306)
 **
 **     Description :
-**         Closes a window previously opened with OpenWindow()
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
@@ -249,7 +250,6 @@ void McuSSD1306_WriteData(uint8_t data);
 **     Method      :  McuSSD1306_WriteData (component SSD1306)
 **
 **     Description :
-**         Writes a data byte to the bus
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
@@ -257,7 +257,8 @@ void McuSSD1306_WriteData(uint8_t data);
 McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GetDisplayOrientation (component SSD1306)
+**     Method      :  GetDisplayOrientation (component SSD1306)
+**
 **     Description :
 **         Returns the current display orientation
 **     Parameters  : None
@@ -269,7 +270,8 @@ McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void);
 void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientation);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_SetDisplayOrientation (component SSD1306)
+**     Method      :  SetDisplayOrientation (component SSD1306)
+**
 **     Description :
 **         Sets the display orientation. If you enable this method,
 **         then the orientation of the display can be changed at
@@ -295,7 +297,8 @@ void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientati
 #endif
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GetWidth (component SSD1306)
+**     Method      :  GetWidth (component SSD1306)
+**
 **     Description :
 **         Returns the width of the display in pixels (in x direction)
 **     Parameters  : None
@@ -317,7 +320,8 @@ void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientati
 #endif
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GetHeight (component SSD1306)
+**     Method      :  GetHeight (component SSD1306)
+**
 **     Description :
 **         Returns the height of the display in pixels (in y direction)
 **     Parameters  : None
@@ -330,7 +334,8 @@ void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientati
   McuSSD1306_HW_LONGER_SIDE
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GetLongerSide (component SSD1306)
+**     Method      :  GetLongerSide (component SSD1306)
+**
 **     Description :
 **         Returns the size of the longer side of the display
 **     Parameters  : None
@@ -343,7 +348,8 @@ void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation newOrientati
   McuSSD1306_HW_SHORTER_SIDE
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GetShorterSide (component SSD1306)
+**     Method      :  GetShorterSide (component SSD1306)
+**
 **     Description :
 **         Returns the size of the shorter side of the display
 **     Parameters  : None
@@ -358,7 +364,6 @@ uint16_t McuSSD1306_ReadDataWord(void);
 **     Method      :  McuSSD1306_ReadDataWord (component SSD1306)
 **
 **     Description :
-**         Writes a single word to the bus
 **         This method is internal. It is used by Processor Expert only.
 ** ===================================================================
 */
@@ -366,7 +371,8 @@ uint16_t McuSSD1306_ReadDataWord(void);
 void McuSSD1306_GetLCD(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GetLCD (component SSD1306)
+**     Method      :  GetLCD (component SSD1306)
+**
 **     Description :
 **         Method to be called for mutual exclusive access to the LCD
 **     Parameters  : None
@@ -377,7 +383,8 @@ void McuSSD1306_GetLCD(void);
 void McuSSD1306_GiveLCD(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_GiveLCD (component SSD1306)
+**     Method      :  GiveLCD (component SSD1306)
+**
 **     Description :
 **         Method to be called for mutual exclusive access to the LCD
 **     Parameters  : None
@@ -388,7 +395,8 @@ void McuSSD1306_GiveLCD(void);
 void McuSSD1306_InitCommChannel(void);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_InitCommChannel (component SSD1306)
+**     Method      :  InitCommChannel (component SSD1306)
+**
 **     Description :
 **         Method to initialize communication to the LCD. Needed if the
 **         bus to the LCD is shared with other components and settings
@@ -401,7 +409,8 @@ void McuSSD1306_InitCommChannel(void);
 uint8_t McuSSD1306_SetContrast(uint8_t contrast);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_SetContrast (component SSD1306)
+**     Method      :  SetContrast (component SSD1306)
+**
 **     Description :
 **         Sets the display contrast level (default:0x7F)
 **     Parameters  :
@@ -416,7 +425,8 @@ uint8_t McuSSD1306_SetContrast(uint8_t contrast);
 uint8_t McuSSD1306_DisplayOn(bool on);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_DisplayOn (component SSD1306)
+**     Method      :  DisplayOn (component SSD1306)
+**
 **     Description :
 **         Turns the display on or off (sleep)
 **     Parameters  :
@@ -430,7 +440,8 @@ uint8_t McuSSD1306_DisplayOn(bool on);
 uint8_t McuSSD1306_DisplayInvert(bool invert);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_DisplayInvert (component SSD1306)
+**     Method      :  DisplayInvert (component SSD1306)
+**
 **     Description :
 **         Used to inverse the display. In normal mode, 1 one in the
 **         display RAM is a pixel set and a 0 means pixel clear.
@@ -446,7 +457,8 @@ uint8_t McuSSD1306_DisplayInvert(bool invert);
 void McuSSD1306_PrintString(uint8_t *str);
 /*
 ** ===================================================================
-**     Method      :  McuSSD1306_PrintString (component SSD1306)
+**     Method      :  PrintString (component SSD1306)
+**
 **     Description :
 **         Simple low level method printing text to the display.
 **         Newline is supported.
@@ -463,12 +475,4 @@ void McuSSD1306_PrintString(uint8_t *str);
 /* ifndef __McuSSD1306_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

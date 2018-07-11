@@ -5,9 +5,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PercepioTrace
 **     Version     : Component 01.138, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
@@ -16,27 +15,13 @@
 **          Recorder Mode                                  : Streaming
 **          Recorder Buffer Allocation                     : static
 **          Max ISR Nesting                                : 16
-**          Events Creation                                : 
-**            Include OS Tick events                       : no
-**            Include ready events                         : yes
-**            Include memory manager events                : no
-**            Include ISR tracing                          : yes
-**            Include object delete events                 : yes
-**            Include user events                          : yes
-**            Include pend function call events            : no
-**            Include event group events                   : no
-**            Include queue events                         : yes
 **          Snapshot Mode                                  : 
-**            Snapshot trace enable method                 : TRC_START
 **            Recorder store mode                          : Ring Buffer
 **            Scheduling only                              : no
 **            Description string                           : FreeRTOS+Trace
 **            Description max length                       : 80
 **            Event buffer size                            : 1200
 **            Symbol table size                            : 400
-**            Use Trace Assert                             : yes
-**            ISR Tailchaining Threshold                   : 0
-**            Separate User Event Buffer                   : Disabled
 **            Objects                                      : 
 **              Number of tasks                            : 10
 **              Name length for task                       : configMAX_TASK_NAME_LEN
@@ -46,24 +31,26 @@
 **              Number of mutex                            : 4
 **              Number of timer                            : 2
 **              Number of event groups                     : 2
-**              Number of stream buffers                   : 3
-**              Number of message buffers                  : 3
 **              Name length for ISR                        : 10
 **              Name length for queue                      : 15
 **              Name length for semaphore                  : 15
 **              Name length for mutex                      : 15
 **              Name length for timer                      : 15
 **              Name length for event group                : 15
-**              Name length for stream buffer              : 15
-**              Name length for message buffer             : 15
+**            Events Creation                              : 
+**              Include OS Tick events                     : no
+**              Include ready events                       : yes
+**              Include memory manager events              : no
+**              Include ISR tracing                        : yes
+**              Include object delete events               : yes
+**              Include user events                        : yes
 **            Heap Size below 16M                          : no
 **            Float support                                : no
 **            Use implicit IFE rules                       : yes
 **            Use 16bit Object Handles                     : no
+**          Segger RTT                                     : Enabled
+**            Segger RTT                                   : McuRTT
 **          Streaming Mode                                 : 
-**            Segger RTT                                   : Enabled
-**              Segger RTT                                 : McuRTT
-**            Streaming trace enable method                : TRC_START
 **            Up Buffer Index                              : 2
 **            Up Buffer Size                               : 1024
 **            Down Buffer Index                            : 2
@@ -104,37 +91,37 @@
 **         vTraceClearError          - byte McuPercepio_vTraceClearError(int resetErrorMessage);
 **         Startup                   - void McuPercepio_Startup(void);
 **
-**     * (c) Copyright Percepio AB, 2013-2018
-**      * http      : www.percepio.se
-**      * mail      : info@percepio.com
-**      * See separate Percepio licensing terms.
-**      *
-**      * Processor Expert Component: (c) Copyright Erich Styger, 2013-2018
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * (c) Copyright Percepio AB, 2013-2018
+**  * http      : www.percepio.se
+**  * mail      : info@percepio.com
+**  * See separate Percepio licensing terms.
+**  *
+**  * Processor Expert Component: (c) Copyright Erich Styger, 2013-2018
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuPercepio.h
@@ -172,7 +159,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_uiTraceGetTraceBufferSize (component PercepioTrace)
+**     Method      :  uiTraceGetTraceBufferSize (component PercepioTrace)
+**
 **     Description :
 **         Gets the size of the recorder data structure. For use
 **         together with vTraceGetTraceBuffer if you wish to implement
@@ -189,7 +177,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_xTraceGetTraceBuffer (component PercepioTrace)
+**     Method      :  xTraceGetTraceBuffer (component PercepioTrace)
+**
 **     Description :
 **         Return a pointer to the recorder data structure. Use this
 **         together with uiTraceGetTraceBufferSize if you wish to
@@ -205,7 +194,8 @@
   uiTraceStart()
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_uiTraceStart (component PercepioTrace)
+**     Method      :  uiTraceStart (component PercepioTrace)
+**
 **     Description :
 **         Starts the trace.
 **     Parameters  : None
@@ -220,7 +210,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceStop (component PercepioTrace)
+**     Method      :  vTraceStop (component PercepioTrace)
+**
 **     Description :
 **         Stops the trace.
 **     Parameters  : None
@@ -233,7 +224,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceClear (component PercepioTrace)
+**     Method      :  vTraceClear (component PercepioTrace)
+**
 **     Description :
 **         Clears the trace.
 **     Parameters  : None
@@ -246,7 +238,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_xTraceRegisterString (component PercepioTrace)
+**     Method      :  xTraceRegisterString (component PercepioTrace)
+**
 **     Description :
 **         Register strings in the recorder, e.g. for names of user
 **         event channels.
@@ -263,7 +256,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTracePrint (component PercepioTrace)
+**     Method      :  vTracePrint (component PercepioTrace)
+**
 **     Description :
 **         Generates a User Event with a text label. The label is
 **         created/looked up in the symbol table using
@@ -281,7 +275,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTracePrintF (component PercepioTrace)
+**     Method      :  vTracePrintF (component PercepioTrace)
+**
 **     Description :
 **         Advanced user event - like printf (but limited formatting
 **         support - will improve)
@@ -299,7 +294,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceSetQueueName (component PercepioTrace)
+**     Method      :  vTraceSetQueueName (component PercepioTrace)
+**
 **     Description :
 **         Assigns a name to a FreeRTOS Queue, Semaphore or Mutex. This
 **         function should  be called right after creation of the
@@ -319,7 +315,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_xTraceSetISRProperties (component PercepioTrace)
+**     Method      :  xTraceSetISRProperties (component PercepioTrace)
+**
 **     Description :
 **         Registers an Interrupt Service Routine in the recorder
 **         library, This must be called before using
@@ -342,7 +339,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceStoreISRBegin (component PercepioTrace)
+**     Method      :  vTraceStoreISRBegin (component PercepioTrace)
+**
 **     Description :
 **         Registers the beginning of an Interrupt Service Routine.
 **         This must not be interrupted by another ISR containing
@@ -362,7 +360,8 @@
 
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceStoreISREnd (component PercepioTrace)
+**     Method      :  vTraceStoreISREnd (component PercepioTrace)
+**
 **     Description :
 **         Registers the end of an Interrupt Service Routine. This must
 **         not be interrupted by another ISR containing recorder
@@ -383,7 +382,8 @@
 void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fileName);
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vGetGDBDumpCommand (component PercepioTrace)
+**     Method      :  vGetGDBDumpCommand (component PercepioTrace)
+**
 **     Description :
 **         Gets the gdb command to dump the trace data to a file.
 **         Useful for copy-pasting it to the gdb console.
@@ -402,7 +402,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
   vTraceSetStopHook(stopHookFunction)
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceSetStopHook (component PercepioTrace)
+**     Method      :  vTraceSetStopHook (component PercepioTrace)
+**
 **     Description :
 **         Sets a function to be called when the recorder is stopped.
 **     Parameters  :
@@ -416,7 +417,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
   xTraceGetLastError()
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_xTraceGetLastError (component PercepioTrace)
+**     Method      :  xTraceGetLastError (component PercepioTrace)
+**
 **     Description :
 **         Gives the last error message, if any. NULL if no error
 **         message is stored. Any error message is also presented when
@@ -431,7 +433,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
   vTraceClearError(resetErrorMessage)
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceClearError (component PercepioTrace)
+**     Method      :  vTraceClearError (component PercepioTrace)
+**
 **     Description :
 **         Removes any previous error message generated by recorder
 **         calling vTraceError. By calling this function, it may be
@@ -452,7 +455,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
   vTraceEnable(startOption)
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceEnable (component PercepioTrace)
+**     Method      :  vTraceEnable (component PercepioTrace)
+**
 **     Description :
 **         
 **     Parameters  :
@@ -491,7 +495,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
   vTraceSetSemaphoreName(semaphore, name)
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceSetSemaphoreName (component PercepioTrace)
+**     Method      :  vTraceSetSemaphoreName (component PercepioTrace)
+**
 **     Description :
 **         Assigns a name to a FreeRTOS Queue, Semaphore or Mutex. This
 **         function should  be called right after creation of the
@@ -510,7 +515,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
   vTraceSetMutexName(mutex, name)
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_vTraceSetMutexName (component PercepioTrace)
+**     Method      :  vTraceSetMutexName (component PercepioTrace)
+**
 **     Description :
 **         Assigns a name to a FreeRTOS Queue, Semaphore or Mutex. This
 **         function should  be called right after creation of the
@@ -528,7 +534,8 @@ void McuPercepio_vGetGDBDumpCommand(uint8_t *buf, uint16_t bufSize, uint8_t *fil
 void McuPercepio_Startup(void);
 /*
 ** ===================================================================
-**     Method      :  McuPercepio_Startup (component PercepioTrace)
+**     Method      :  Startup (component PercepioTrace)
+**
 **     Description :
 **         Routine called during startup. Depending on the mode and
 **         settings, it starts tracing and might block!
@@ -543,12 +550,4 @@ void McuPercepio_Startup(void);
 /* ifndef __McuPercepio_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

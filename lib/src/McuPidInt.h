@@ -5,9 +5,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : PID_Int
 **     Version     : Component 01.009, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-01-10, 19:33, # CodeGen: 126
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
@@ -37,32 +36,32 @@
 **         SetPoint - void McuPidInt_SetPoint(int32_t value);
 **         GetPoint - int32_t McuPidInt_GetPoint(void);
 **
-**     * Copyright (c) 2012-2016, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2012-2016, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuPidInt.h
@@ -91,7 +90,8 @@
 void McuPidInt_Control(void);
 /*
 ** ===================================================================
-**     Method      :  McuPidInt_Control (component PID_Int)
+**     Method      :  Control (component PID_Int)
+**
 **     Description :
 **         Performs the PID control calculation.
 **     Parameters  : None
@@ -102,7 +102,8 @@ void McuPidInt_Control(void);
 void McuPidInt_SetPoint(int32_t value);
 /*
 ** ===================================================================
-**     Method      :  McuPidInt_SetPoint (component PID_Int)
+**     Method      :  SetPoint (component PID_Int)
+**
 **     Description :
 **         Specifies the value to be reached by the PID controller.
 **     Parameters  :
@@ -115,7 +116,8 @@ void McuPidInt_SetPoint(int32_t value);
 int32_t McuPidInt_GetPoint(void);
 /*
 ** ===================================================================
-**     Method      :  McuPidInt_GetPoint (component PID_Int)
+**     Method      :  GetPoint (component PID_Int)
+**
 **     Description :
 **         Returns the current set point value
 **     Parameters  : None
@@ -127,7 +129,8 @@ int32_t McuPidInt_GetPoint(void);
 int32_t McuPidInt_PID(int32_t setPoint, int32_t currValue);
 /*
 ** ===================================================================
-**     Method      :  McuPidInt_PID (component PID_Int)
+**     Method      :  PID (component PID_Int)
+**
 **     Description :
 **         Performs PID calculation
 **     Parameters  :
@@ -145,12 +148,4 @@ int32_t McuPidInt_PID(int32_t setPoint, int32_t currValue);
 /* ifndef __McuPidInt_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

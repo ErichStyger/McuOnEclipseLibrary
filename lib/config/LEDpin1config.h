@@ -14,12 +14,17 @@
 
 #ifndef LEDpin1_CONFIG_GPIO_NAME
   #define LEDpin1_CONFIG_GPIO_NAME       GPIOA
-    /*!< name of GPIO, is pointer to GPIO_Type */
+    /*!< name of GPIO, is pointer to GPIO_Type, not used for S32K SDK */
 #endif
 
 #ifndef LEDpin1_CONFIG_PIN_NUMBER
   #define LEDpin1_CONFIG_PIN_NUMBER      0u
     /*!< number of pin, type unsigned integer */
+#endif
+
+#ifndef LEDpin1_CONFIG_PIN_SYMBOL
+  #define LEDpin1_CONFIG_PIN_SYMBOL      LED_RED
+    /*!< symbolic name for pin, used for NXP SDK V1.3 */
 #endif
 
 #ifndef LEDpin1_CONFIG_INIT_PIN_VALUE
@@ -45,7 +50,5 @@
   #define LEDpin1_CONFIG_PULL_RESISTOR  0
   /*!< pull resistor setting. 0: no pull resistor, 1: pull-up, 2: pull-down, 3: pull-up or no pull, 4: pull-down or no pull: 4: autoselect-pull */
 #endif
-
-
 
 #endif /* __LEDpin1_CONFIG_H */

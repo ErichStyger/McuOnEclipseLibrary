@@ -4,23 +4,13 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.199, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
+**     Version     : Component 01.200, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 11:44, # CodeGen: 316
+**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
 **     Abstract    :
-**
+**          Graphical display driver for LCD or other displays
 **     Settings    :
-**          Component name                                 : McuGDisplaySSD1306
-**          SDK                                            : McuLib
-**          Inverted Pixels                                : no
-**          Memory Buffer                                  : Enabled
-**            Orientation                                  : Landscape
-**          Clear screen on Init                           : no
-**          Hardware                                       : 
-**            Display                                      : McuSSD1306
-**          Watchdog                                       : Disabled
-**          RTOS                                           : Disabled
+**
 **     Contents    :
 **         PutPixel          - void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x,...
 **         SetPixel          - void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x,...
@@ -47,40 +37,41 @@
 **         GetShorterSide    - McuGDisplaySSD1306_PixelDim McuGDisplaySSD1306_GetShorterSide(void);
 **         GetDisplay        - void McuGDisplaySSD1306_GetDisplay(void);
 **         GiveDisplay       - void McuGDisplaySSD1306_GiveDisplay(void);
+**         Deinit            - void McuGDisplaySSD1306_Deinit(void);
 **         Init              - void McuGDisplaySSD1306_Init(void);
 **
-**     * Copyright (c) 2013-2017, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2013-2017, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuGDisplaySSD1306.h
 ** @version 01.00
 ** @brief
-**
+**          Graphical display driver for LCD or other displays
 */         
 /*!
 **  @addtogroup McuGDisplaySSD1306_module McuGDisplaySSD1306 module documentation
@@ -191,7 +182,8 @@ typedef McuSSD1306_DisplayOrientation McuGDisplaySSD1306_DisplayOrientation;
 void McuGDisplaySSD1306_Clear(void);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_Clear (component GDisplay)
+**     Method      :  Clear (component GDisplay)
+**
 **     Description :
 **         Clears the display buffer.
 **     Parameters  : None
@@ -202,7 +194,8 @@ void McuGDisplaySSD1306_Clear(void);
 void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_SetPixel (component GDisplay)
+**     Method      :  SetPixel (component GDisplay)
+**
 **     Description :
 **         Sets a pixel in the display buffer
 **     Parameters  :
@@ -216,7 +209,8 @@ void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
 void McuGDisplaySSD1306_ClrPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_ClrPixel (component GDisplay)
+**     Method      :  ClrPixel (component GDisplay)
+**
 **     Description :
 **         Clears a single pixel in the display.
 **     Parameters  :
@@ -230,7 +224,8 @@ void McuGDisplaySSD1306_ClrPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
 #define McuGDisplaySSD1306_UpdateFull()   McuSSD1306_UpdateFull()
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_UpdateFull (component GDisplay)
+**     Method      :  UpdateFull (component GDisplay)
+**
 **     Description :
 **         Updates the image on the display. This is needed in case the
 **         display requires a periodic refresh. For display using
@@ -244,7 +239,8 @@ void McuGDisplaySSD1306_ClrPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
 void McuGDisplaySSD1306_DrawFilledBox(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelDim width, McuGDisplaySSD1306_PixelDim height, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawFilledBox (component GDisplay)
+**     Method      :  DrawFilledBox (component GDisplay)
+**
 **     Description :
 **         Draws a rectangle box (filled)
 **     Parameters  :
@@ -261,7 +257,8 @@ void McuGDisplaySSD1306_DrawFilledBox(McuGDisplaySSD1306_PixelDim x, McuGDisplay
 void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_PutPixel (component GDisplay)
+**     Method      :  PutPixel (component GDisplay)
+**
 **     Description :
 **         
 **     Parameters  :
@@ -276,7 +273,8 @@ void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
 void McuGDisplaySSD1306_DrawBox(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelDim width, McuGDisplaySSD1306_PixelDim height, McuGDisplaySSD1306_PixelDim lineWidth, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawBox (component GDisplay)
+**     Method      :  DrawBox (component GDisplay)
+**
 **     Description :
 **         Draws a rectangle line box
 **     Parameters  :
@@ -294,7 +292,8 @@ void McuGDisplaySSD1306_DrawBox(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD130
 void McuGDisplaySSD1306_DrawMonoBitmap(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, PIMAGE image, McuGDisplaySSD1306_PixelColor pixelColor, McuGDisplaySSD1306_PixelColor backgroundColor);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawMonoBitmap (component GDisplay)
+**     Method      :  DrawMonoBitmap (component GDisplay)
+**
 **     Description :
 **         Draws a B/W bitmap.
 **     Parameters  :
@@ -314,7 +313,8 @@ void McuGDisplaySSD1306_DrawMonoBitmap(McuGDisplaySSD1306_PixelDim x, McuGDispla
 void McuGDisplaySSD1306_DrawHLine(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelDim length, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawHLine (component GDisplay)
+**     Method      :  DrawHLine (component GDisplay)
+**
 **     Description :
 **         Draws a horizontal line
 **     Parameters  :
@@ -330,7 +330,8 @@ void McuGDisplaySSD1306_DrawHLine(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1
 void McuGDisplaySSD1306_DrawVLine(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelDim length, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawVLine (component GDisplay)
+**     Method      :  DrawVLine (component GDisplay)
+**
 **     Description :
 **         Draws a vertical line
 **     Parameters  :
@@ -346,7 +347,8 @@ void McuGDisplaySSD1306_DrawVLine(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1
 void McuGDisplaySSD1306_DrawBarChart(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelDim width, McuGDisplaySSD1306_PixelDim height, uint8_t *data, uint8_t nofData, McuGDisplaySSD1306_PixelColor barColor, uint8_t borderWidth, McuGDisplaySSD1306_PixelColor borderColor, uint8_t borderSpace);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawBarChart (component GDisplay)
+**     Method      :  DrawBarChart (component GDisplay)
+**
 **     Description :
 **         Draws a series of bars for a chart
 **     Parameters  :
@@ -372,7 +374,8 @@ void McuGDisplaySSD1306_DrawBarChart(McuGDisplaySSD1306_PixelDim x, McuGDisplayS
 void McuGDisplaySSD1306_DrawColorBitmap(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, PIMAGE image);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawColorBitmap (component GDisplay)
+**     Method      :  DrawColorBitmap (component GDisplay)
+**
 **     Description :
 **         Draws a color bitmap. Pixel data is in 3-3-2 RGB format.
 **     Parameters  :
@@ -388,7 +391,8 @@ void McuGDisplaySSD1306_DrawColorBitmap(McuGDisplaySSD1306_PixelDim x, McuGDispl
 void McuGDisplaySSD1306_DrawLine(McuGDisplaySSD1306_PixelDim xstart, McuGDisplaySSD1306_PixelDim ystart, McuGDisplaySSD1306_PixelDim xend, McuGDisplaySSD1306_PixelDim yend, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawLine (component GDisplay)
+**     Method      :  DrawLine (component GDisplay)
+**
 **     Description :
 **         Draws a line using the Bresenham method
 **     Parameters  :
@@ -405,7 +409,8 @@ void McuGDisplaySSD1306_DrawLine(McuGDisplaySSD1306_PixelDim xstart, McuGDisplay
 void McuGDisplaySSD1306_DrawCircle(McuGDisplaySSD1306_PixelDim x0, McuGDisplaySSD1306_PixelDim y0, McuGDisplaySSD1306_PixelDim radius, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawCircle (component GDisplay)
+**     Method      :  DrawCircle (component GDisplay)
+**
 **     Description :
 **         Draws a circle using the Bresenham method
 **     Parameters  :
@@ -421,7 +426,8 @@ void McuGDisplaySSD1306_DrawCircle(McuGDisplaySSD1306_PixelDim x0, McuGDisplaySS
 void McuGDisplaySSD1306_Draw65kBitmap(McuGDisplaySSD1306_PixelDim x1, McuGDisplaySSD1306_PixelDim y1, McuGDisplaySSD1306_PixelDim x2, McuGDisplaySSD1306_PixelDim y2, uint16_t *bmp, bool compressed);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_Draw65kBitmap (component GDisplay)
+**     Method      :  Draw65kBitmap (component GDisplay)
+**
 **     Description :
 **         Draws a 65k color bitmap (compressed or uncompressed)
 **     Parameters  :
@@ -439,7 +445,8 @@ void McuGDisplaySSD1306_Draw65kBitmap(McuGDisplaySSD1306_PixelDim x1, McuGDispla
 void McuGDisplaySSD1306_Draw256BitmapLow(McuGDisplaySSD1306_PixelDim x1, McuGDisplaySSD1306_PixelDim y1, McuGDisplaySSD1306_PixelDim x2, McuGDisplaySSD1306_PixelDim y2, uint8_t *bmp, bool compressed);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_Draw256BitmapLow (component GDisplay)
+**     Method      :  Draw256BitmapLow (component GDisplay)
+**
 **     Description :
 **         Draws a 256 color bitmap (compressed or uncompressed)
 **     Parameters  :
@@ -457,7 +464,8 @@ void McuGDisplaySSD1306_Draw256BitmapLow(McuGDisplaySSD1306_PixelDim x1, McuGDis
 void McuGDisplaySSD1306_Draw256BitmapHigh(McuGDisplaySSD1306_PixelDim x1, McuGDisplaySSD1306_PixelDim y1, McuGDisplaySSD1306_PixelDim x2, McuGDisplaySSD1306_PixelDim y2, uint8_t *bmp, McuGDisplaySSD1306_PixelColor *ColorTable, bool compressed);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_Draw256BitmapHigh (component GDisplay)
+**     Method      :  Draw256BitmapHigh (component GDisplay)
+**
 **     Description :
 **         Draws a 256 color bitmap (compressed or uncompressed) with a
 **         color table.
@@ -479,7 +487,8 @@ void McuGDisplaySSD1306_Draw256BitmapHigh(McuGDisplaySSD1306_PixelDim x1, McuGDi
 
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_UpdateRegion (component GDisplay)
+**     Method      :  UpdateRegion (component GDisplay)
+**
 **     Description :
 **         Update a region of the display.
 **     Parameters  :
@@ -495,7 +504,8 @@ void McuGDisplaySSD1306_Draw256BitmapHigh(McuGDisplaySSD1306_PixelDim x1, McuGDi
 void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDisplaySSD1306_PixelDim y0, McuGDisplaySSD1306_PixelDim radius, McuGDisplaySSD1306_PixelColor color);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_DrawFilledCircle (component GDisplay)
+**     Method      :  DrawFilledCircle (component GDisplay)
+**
 **     Description :
 **         Draws a circle using the Bresenham method
 **     Parameters  :
@@ -511,7 +521,8 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 #define McuGDisplaySSD1306_GetWidth McuSSD1306_GetLongerSide
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_GetWidth (component GDisplay)
+**     Method      :  GetWidth (component GDisplay)
+**
 **     Description :
 **         Returns the width of the display in pixels (in x direction)
 **     Parameters  : None
@@ -523,7 +534,8 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 #define McuGDisplaySSD1306_GetHeight McuSSD1306_GetShorterSide
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_GetHeight (component GDisplay)
+**     Method      :  GetHeight (component GDisplay)
+**
 **     Description :
 **         Returns the height of the display in pixels (in y direction)
 **     Parameters  : None
@@ -535,7 +547,8 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 #define McuGDisplaySSD1306_GetLongerSide McuSSD1306_GetLongerSide
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_GetLongerSide (component GDisplay)
+**     Method      :  GetLongerSide (component GDisplay)
+**
 **     Description :
 **         Returns the size of the longer side of the display
 **     Parameters  : None
@@ -547,7 +560,8 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 #define McuGDisplaySSD1306_GetShorterSide McuSSD1306_GetShorterSide
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_GetShorterSide (component GDisplay)
+**     Method      :  GetShorterSide (component GDisplay)
+**
 **     Description :
 **         Returns the size of the shorter side of the display
 **     Parameters  : None
@@ -559,7 +573,8 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 void McuGDisplaySSD1306_GetDisplay(void);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_GetDisplay (component GDisplay)
+**     Method      :  GetDisplay (component GDisplay)
+**
 **     Description :
 **         Method used to reserve the display (for mutual exclusive
 **         access)
@@ -571,7 +586,8 @@ void McuGDisplaySSD1306_GetDisplay(void);
 void McuGDisplaySSD1306_GiveDisplay(void);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_GiveDisplay (component GDisplay)
+**     Method      :  GiveDisplay (component GDisplay)
+**
 **     Description :
 **         Returns the display after having it reserved with
 **         GetDisplay()
@@ -583,9 +599,22 @@ void McuGDisplaySSD1306_GiveDisplay(void);
 void McuGDisplaySSD1306_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuGDisplaySSD1306_Init (component GDisplay)
+**     Method      :  Init (component GDisplay)
+**
 **     Description :
-**         
+**         Driver initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuGDisplaySSD1306_Deinit(void);
+/*
+** ===================================================================
+**     Method      :  Deinit (component GDisplay)
+**
+**     Description :
+**         Driver de-initialization
 **     Parameters  : None
 **     Returns     : Nothing
 ** ===================================================================
@@ -601,12 +630,4 @@ void McuGDisplaySSD1306_Init(void);
 /* ifndef __McuGDisplaySSD1306_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

@@ -65,11 +65,14 @@ Revision: $Rev: 9599 $
 */
 #if (defined __GNUC__) && !(defined __SES_ARM) && !(defined __CROSSWORKS_ARM)
 
+#if 0 /* << EST moved to below */
 #include <reent.h>  // required for _write_r
+#endif
 #include "SEGGER_RTT.h"
 
 #if McuRTT_CONFIG_PROVIDE_SYSCALLS /* << EST */
 #include <stdio.h> /* for EOF */ /* << EST */
+#include <reent.h>  // required for _write_r  // << EST moved from above
 
 /*********************************************************************
 *

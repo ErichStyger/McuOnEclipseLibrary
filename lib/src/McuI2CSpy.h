@@ -5,9 +5,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : I2CSpy
 **     Version     : Component 01.014, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-12-30, 14:26, # CodeGen: 280
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **          This component implements a utility to inspect devices on the I2C bus.
 **     Settings    :
@@ -16,7 +15,6 @@
 **          Default Address                                : 0x0
 **          Default Address Size                           : 1
 **          Default Bytes per Line                         : 8
-**          SDK                                            : McuLib
 **          Shell                                          : Enabled
 **            Shell                                        : McuShell
 **            Utility                                      : McuUtility
@@ -31,32 +29,32 @@
 **         Deinit           - void McuI2CSpy_Deinit(void);
 **         Init             - uint8_t McuI2CSpy_Init(void);
 **
-**     * Copyright (c) 2013-2017, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2013-2017, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuI2CSpy.h
@@ -89,7 +87,8 @@
 uint8_t McuI2CSpy_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_Init (component I2CSpy)
+**     Method      :  Init (component I2CSpy)
+**
 **     Description :
 **         Initialization method
 **     Parameters  : None
@@ -101,7 +100,8 @@ uint8_t McuI2CSpy_Init(void);
 void McuI2CSpy_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_Deinit (component I2CSpy)
+**     Method      :  Deinit (component I2CSpy)
+**
 **     Description :
 **         Deinitialization method
 **     Parameters  : None
@@ -112,7 +112,8 @@ void McuI2CSpy_Deinit(void);
 uint8_t McuI2CSpy_SetDeviceAddress(uint8_t addr);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_SetDeviceAddress (component I2CSpy)
+**     Method      :  SetDeviceAddress (component I2CSpy)
+**
 **     Description :
 **         Sets the I2C Device address to be used
 **     Parameters  :
@@ -126,7 +127,8 @@ uint8_t McuI2CSpy_SetDeviceAddress(uint8_t addr);
 uint8_t McuI2CSpy_SetAddressSize(uint8_t size);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_SetAddressSize (component I2CSpy)
+**     Method      :  SetAddressSize (component I2CSpy)
+**
 **     Description :
 **         Specifies the address size of the I2C device memory
 **     Parameters  :
@@ -141,7 +143,8 @@ uint8_t McuI2CSpy_SetAddressSize(uint8_t size);
 uint8_t McuI2CSpy_SetBytesPerLine(uint8_t nofBytesPerLine);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_SetBytesPerLine (component I2CSpy)
+**     Method      :  SetBytesPerLine (component I2CSpy)
+**
 **     Description :
 **         Sets the number of bytes per line for the Dump shell command
 **     Parameters  :
@@ -160,7 +163,8 @@ void McuGenericI2C_OnReleaseBus(void);
 uint8_t McuI2CSpy_ReadRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_ReadRegData (component I2CSpy)
+**     Method      :  ReadRegData (component I2CSpy)
+**
 **     Description :
 **         Reads data starting from a register address from the current
 **         device
@@ -178,7 +182,8 @@ uint8_t McuI2CSpy_ReadRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
 uint8_t McuI2CSpy_WriteRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_WriteRegData (component I2CSpy)
+**     Method      :  WriteRegData (component I2CSpy)
+**
 **     Description :
 **         Writes data starting from a register address to the current
 **         device
@@ -195,7 +200,8 @@ uint8_t McuI2CSpy_WriteRegData(uint32_t addr, uint8_t *data, uint16_t dataSize);
 uint8_t McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_ParseCommand (component I2CSpy)
+**     Method      :  ParseCommand (component I2CSpy)
+**
 **     Description :
 **         Shell Command Line parser
 **     Parameters  :
@@ -212,7 +218,8 @@ uint8_t McuI2CSpy_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
 uint8_t McuI2CSpy_GetDeviceAddress(void);
 /*
 ** ===================================================================
-**     Method      :  McuI2CSpy_GetDeviceAddress (component I2CSpy)
+**     Method      :  GetDeviceAddress (component I2CSpy)
+**
 **     Description :
 **         Returns the current I2C Device address used
 **     Parameters  : None
@@ -227,12 +234,4 @@ uint8_t McuI2CSpy_GetDeviceAddress(void);
 /* ifndef __McuI2CSpy_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

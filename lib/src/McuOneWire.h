@@ -6,9 +6,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : OneWire
 **     Version     : Component 01.151, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-07-09, 10:44, # CodeGen: 188
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **          This is a component implementing the 1-Wire protocol.
 **     Settings    :
@@ -25,7 +24,7 @@
 **            F: Read delay time                           : 55
 **            H: Reset low time (us)                       : 480
 **            I: Reset response time (us)                  : 70
-**            J: Reset wait time after reading device presence (us): 410
+**            J: Reset wait time after reading device presence (us) : 410
 **            Total slot time (us)                         : 100
 **          Buffers                                        : 
 **            Input                                        : RBInput
@@ -57,33 +56,33 @@
 **         Deinit        - void McuOneWire%.Init(void) McuOneWire_Deinit(void);
 **         Init          - void McuOneWire%.Init(void) McuOneWire_Init(void);
 **
-**     * Copyright (c) Original implementation: Omar Isaí Pinales Ayala, 2014, all rights reserved.
-**      * Updated and maintained by Erich Styger, 2014-2017
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) Original implementation: Omar Isaí Pinales Ayala, 2014, all rights reserved.
+**  * Updated and maintained by Erich Styger, 2014-2017
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuOneWire.h
@@ -117,7 +116,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_Count (component OneWire)
+**     Method      :  Count (component OneWire)
+**
 **     Description :
 **         Returns the number of elements stored on input buffer that
 **         are ready to read.
@@ -129,7 +129,8 @@ extern "C" {
 uint8_t McuOneWire_Count(void);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_Receive (component OneWire)
+**     Method      :  Receive (component OneWire)
+**
 **     Description :
 **         Programs a read operation after the master send all in
 **         output buffer. Don't use a SendReset while the data is
@@ -145,7 +146,8 @@ uint8_t McuOneWire_Count(void);
 uint8_t McuOneWire_Receive(uint8_t counter);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_SendByte (component OneWire)
+**     Method      :  SendByte (component OneWire)
+**
 **     Description :
 **         Sends a single byte
 **     Parameters  :
@@ -158,7 +160,8 @@ uint8_t McuOneWire_Receive(uint8_t counter);
 uint8_t McuOneWire_SendByte(uint8_t data);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_SendBytes (component OneWire)
+**     Method      :  SendBytes (component OneWire)
+**
 **     Description :
 **         Sends multiple bytes
 **     Parameters  :
@@ -172,7 +175,8 @@ uint8_t McuOneWire_SendByte(uint8_t data);
 uint8_t McuOneWire_SendBytes(uint8_t *data, uint8_t count);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_SendReset (component OneWire)
+**     Method      :  SendReset (component OneWire)
+**
 **     Description :
 **         Sends a reset to the bus
 **     Parameters  : None
@@ -183,7 +187,8 @@ uint8_t McuOneWire_SendBytes(uint8_t *data, uint8_t count);
 uint8_t McuOneWire_SendReset(void);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_GetByte (component OneWire)
+**     Method      :  GetByte (component OneWire)
+**
 **     Description :
 **         Get a single byte from the bus
 **     Parameters  :
@@ -196,7 +201,8 @@ uint8_t McuOneWire_SendReset(void);
 uint8_t McuOneWire_GetByte(uint8_t *data);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_GetBytes (component OneWire)
+**     Method      :  GetBytes (component OneWire)
+**
 **     Description :
 **         Gets multiple bytes from the bus
 **     Parameters  :
@@ -210,7 +216,8 @@ uint8_t McuOneWire_GetByte(uint8_t *data);
 uint8_t McuOneWire_GetBytes(uint8_t *data, uint8_t count);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_Init (component OneWire)
+**     Method      :  Init (component OneWire)
+**
 **     Description :
 **         Initializes this device.
 **     Parameters  : None
@@ -221,7 +228,8 @@ void McuOneWire_Init(void);
 void McuOneWire_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_Deinit (component OneWire)
+**     Method      :  Deinit (component OneWire)
+**
 **     Description :
 **         Driver de-initialization
 **     Parameters  : None
@@ -232,7 +240,8 @@ void McuOneWire_Deinit(void);
 uint8_t McuOneWire_CalcCRC(uint8_t *data, uint8_t dataSize);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_CalcCRC (component OneWire)
+**     Method      :  CalcCRC (component OneWire)
+**
 **     Description :
 **         Calculates the CRC over a number of bytes
 **     Parameters  :
@@ -247,7 +256,8 @@ uint8_t McuOneWire_CalcCRC(uint8_t *data, uint8_t dataSize);
 uint8_t McuOneWire_ParseCommand(const unsigned char* cmd, bool *handled, const McuShell_StdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_ParseCommand (component OneWire)
+**     Method      :  ParseCommand (component OneWire)
+**
 **     Description :
 **         Shell Command Line parser. Method is only available if Shell
 **         is enabled in the component properties.
@@ -265,7 +275,8 @@ uint8_t McuOneWire_ParseCommand(const unsigned char* cmd, bool *handled, const M
 uint8_t McuOneWire_ReadRomCode(uint8_t *romCodeBuffer);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_ReadRomCode (component OneWire)
+**     Method      :  ReadRomCode (component OneWire)
+**
 **     Description :
 **         Read the ROM code. Only works with one device on the bus.
 **     Parameters  :
@@ -280,7 +291,8 @@ uint8_t McuOneWire_ReadRomCode(uint8_t *romCodeBuffer);
 uint8_t McuOneWire_strcatRomCode(uint8_t *buf, size_t bufSize, uint8_t *romCode);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_strcatRomCode (component OneWire)
+**     Method      :  strcatRomCode (component OneWire)
+**
 **     Description :
 **         Appends the ROM code to a string.
 **     Parameters  :
@@ -296,7 +308,8 @@ uint8_t McuOneWire_strcatRomCode(uint8_t *buf, size_t bufSize, uint8_t *romCode)
 void McuOneWire_ResetSearch(void);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_ResetSearch (component OneWire)
+**     Method      :  ResetSearch (component OneWire)
+**
 **     Description :
 **         Reset the search state
 **     Parameters  : None
@@ -307,7 +320,8 @@ void McuOneWire_ResetSearch(void);
 void McuOneWire_TargetSearch(uint8_t familyCode);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_TargetSearch (component OneWire)
+**     Method      :  TargetSearch (component OneWire)
+**
 **     Description :
 **         
 **     Parameters  :
@@ -321,7 +335,8 @@ void McuOneWire_TargetSearch(uint8_t familyCode);
 bool McuOneWire_Search(uint8_t *newAddr, bool search_mode);
 /*
 ** ===================================================================
-**     Method      :  McuOneWire_Search (component OneWire)
+**     Method      :  Search (component OneWire)
+**
 **     Description :
 **         
 **     Parameters  :
@@ -345,13 +360,5 @@ bool McuOneWire_Search(uint8_t *newAddr, bool search_mode);
 /* ifndef __McuOneWire_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */
 

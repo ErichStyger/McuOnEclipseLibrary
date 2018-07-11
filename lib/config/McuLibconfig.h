@@ -9,12 +9,14 @@
 #define __McuLib_CONFIG_H
 
 /* identification of CPU/core used. __CORTEX_M is defined in CMSIS-Core.
-   Otherwise CPU Family is set automatically by Processor Expert: detected: Kinetis (supported: "Kinetis", "HCS08")
+   Otherwise CPU Family is set automatically by Processor Expert: detected: Kinetis (supported: "Kinetis", "S32K", "HCS08")
 */
 #define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M    (1 || defined(__CORTEX_M))
   /*!< 1: ARM Cortex-M family, 0 otherwise */
 #define McuLib_CONFIG_CPU_IS_KINETIS         (1 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
   /*!< 1: NXP Kinetis CPU family, 0: otherwise */
+#define McuLib_CONFIG_CPU_IS_S32K            (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+  /*!< 1: NXP S32K CPU family, 0: otherwise */
 #define McuLib_CONFIG_CPU_IS_LPC             (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
   /*!< 1: NXP LPC CPU family, 0: otherwise */
 #define McuLib_CONFIG_CPU_IS_STM32           (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
@@ -41,6 +43,8 @@
   /*!< using NXP Kinetis SDK V2.0 */
 #define McuLib_CONFIG_SDK_MCUXPRESSO_2_0      4
   /*!< same as Kinetis SDK v2.0 */
+#define McuLib_CONFIG_SDK_S32K                5
+  /*!< SDK for S32K */
 
 /* specify the SDK and API used */
 #ifndef McuLib_CONFIG_SDK_VERSION_USED
@@ -63,6 +67,7 @@
 #define McuLib_CONFIG_NXP_SDK_USED               (   (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_1_3) \
                                                   || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_2_0) \
                                                   || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_MCUXPRESSO_2_0) \
+                                                  || (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_S32K) \
                                                  )
   /*!< Using one of the Freescale/NXP SDKs */
 

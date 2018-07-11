@@ -5,15 +5,14 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : KinetisTools
 **     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-08-18, 14:15, # CodeGen: 228
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuArmTools
-**          SDK                                            : McuLib
 **          Utility                                        : McuUtility
+**          SDK                                            : McuLib
 **          Shell                                          : Enabled
 **            Shell                                        : McuShell
 **     Contents    :
@@ -33,32 +32,32 @@
 **         GetCycleCounter        - uint32_t McuArmTools_GetCycleCounter(void);
 **         ParseCommand           - uint8_t McuArmTools_ParseCommand(const unsigned char* cmd, bool *handled,...
 **
-**     * Copyright (c) 2014-2017, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2014-2017, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuArmTools.h
@@ -129,7 +128,8 @@ extern "C" {
 uint8_t McuArmTools_ParseCommand(const unsigned char* cmd, bool *handled, const McuShell_StdIOType *io);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_ParseCommand (component KinetisTools)
+**     Method      :  ParseCommand (component KinetisTools)
+**
 **     Description :
 **         Shell Command Line parser. Method is only available if Shell
 **         is enabled in the component properties.
@@ -148,7 +148,8 @@ uint8_t McuArmTools_ParseCommand(const unsigned char* cmd, bool *handled, const 
 void McuArmTools_SoftwareReset(void);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_SoftwareReset (component KinetisTools)
+**     Method      :  SoftwareReset (component KinetisTools)
+**
 **     Description :
 **         Performs a reset of the device
 **     Parameters  : None
@@ -159,7 +160,8 @@ void McuArmTools_SoftwareReset(void);
 uint8_t McuArmTools_UIDGet(McuArmTools_UID *uid);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_UIDGet (component KinetisTools)
+**     Method      :  UIDGet (component KinetisTools)
+**
 **     Description :
 **         Return the 128bit UID of the device
 **     Parameters  :
@@ -173,7 +175,8 @@ uint8_t McuArmTools_UIDGet(McuArmTools_UID *uid);
 bool McuArmTools_UIDSame(const McuArmTools_UID *src, const McuArmTools_UID *dst);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_UIDSame (component KinetisTools)
+**     Method      :  UIDSame (component KinetisTools)
+**
 **     Description :
 **         Compares two UID
 **     Parameters  :
@@ -188,7 +191,8 @@ bool McuArmTools_UIDSame(const McuArmTools_UID *src, const McuArmTools_UID *dst)
 uint8_t McuArmTools_UIDtoString(const McuArmTools_UID *uid, uint8_t *buf, size_t bufSize);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_UIDtoString (component KinetisTools)
+**     Method      :  UIDtoString (component KinetisTools)
+**
 **     Description :
 **         Returns the value of the UID as string
 **     Parameters  :
@@ -204,7 +208,8 @@ uint8_t McuArmTools_UIDtoString(const McuArmTools_UID *uid, uint8_t *buf, size_t
 McuArmTools_ConstCharPtr McuArmTools_GetKinetisFamilyString(void);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_GetKinetisFamilyString (component KinetisTools)
+**     Method      :  GetKinetisFamilyString (component KinetisTools)
+**
 **     Description :
 **         Determines the Kinetis Familiy based on SIM_SDID register
 **     Parameters  : None
@@ -216,7 +221,8 @@ McuArmTools_ConstCharPtr McuArmTools_GetKinetisFamilyString(void);
 void* McuArmTools_GetPC(void);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_GetPC (component KinetisTools)
+**     Method      :  GetPC (component KinetisTools)
+**
 **     Description :
 **         returns the program counter
 **     Parameters  : None
@@ -228,7 +234,8 @@ void* McuArmTools_GetPC(void);
 void* McuArmTools_GetSP(void);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_GetSP (component KinetisTools)
+**     Method      :  GetSP (component KinetisTools)
+**
 **     Description :
 **         returns the stack pointer
 **     Parameters  : None
@@ -240,7 +247,8 @@ void* McuArmTools_GetSP(void);
 void McuArmTools_SetPSP(void *setval);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_SetPSP (component KinetisTools)
+**     Method      :  SetPSP (component KinetisTools)
+**
 **     Description :
 **         sets the process stack pointer
 **     Parameters  :
@@ -253,7 +261,8 @@ void McuArmTools_SetPSP(void *setval);
 void McuArmTools_SetLR(uint32_t setval);
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_SetLR (component KinetisTools)
+**     Method      :  SetLR (component KinetisTools)
+**
 **     Description :
 **         Sets the link register
 **     Parameters  :
@@ -269,7 +278,8 @@ void McuArmTools_SetLR(uint32_t setval);
   /*!< TRCENA: Enable trace and debug block DEMCR (Debug Exception and Monitor Control Register */
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_InitCycleCounter (component KinetisTools)
+**     Method      :  InitCycleCounter (component KinetisTools)
+**
 **     Description :
 **         Initializes the cycle counter, available if the core has a
 **         DWT (Data Watchpoint and Trace) unit, usually present on
@@ -286,7 +296,8 @@ void McuArmTools_SetLR(uint32_t setval);
   /*!< Reset cycle counter */
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_ResetCycleCounter (component KinetisTools)
+**     Method      :  ResetCycleCounter (component KinetisTools)
+**
 **     Description :
 **         Reset the cycle counter (set it to zero)
 **     Parameters  : None
@@ -301,7 +312,8 @@ void McuArmTools_SetLR(uint32_t setval);
   /*!< Enable cycle counter */
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_EnableCycleCounter (component KinetisTools)
+**     Method      :  EnableCycleCounter (component KinetisTools)
+**
 **     Description :
 **         Enables counting the cycles.
 **     Parameters  : None
@@ -316,7 +328,8 @@ void McuArmTools_SetLR(uint32_t setval);
   /*!< Disable cycle counter */
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_DisableCycleCounter (component KinetisTools)
+**     Method      :  DisableCycleCounter (component KinetisTools)
+**
 **     Description :
 **         Disables the cycle counter.
 **     Parameters  : None
@@ -331,7 +344,8 @@ void McuArmTools_SetLR(uint32_t setval);
   /*!< Read cycle counter register */
 /*
 ** ===================================================================
-**     Method      :  McuArmTools_GetCycleCounter (component KinetisTools)
+**     Method      :  GetCycleCounter (component KinetisTools)
+**
 **     Description :
 **         Return the current cycle counter value
 **     Parameters  : None
@@ -351,12 +365,4 @@ void McuArmTools_SetLR(uint32_t setval);
 /* ifndef __McuArmTools_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

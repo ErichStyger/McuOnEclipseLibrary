@@ -5,9 +5,8 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SeggerRTT
 **     Version     : Component 01.086, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-05-14, 20:15, # CodeGen: 326
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
@@ -55,36 +54,36 @@
 **         Deinit           - void McuRTT_Deinit(void);
 **         Init             - void McuRTT_Init(void);
 **
-**     * (c) Copyright Segger, 2018
-**      * http      : www.segger.com
-**      * See separate Segger licensing terms.
-**      *
-**      * Processor Expert port: Copyright (c) 2016-2018, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * (c) Copyright Segger, 2018
+**  * http      : www.segger.com
+**  * See separate Segger licensing terms.
+**  *
+**  * Processor Expert port: Copyright (c) 2016-2018, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuRTT.h
@@ -127,7 +126,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_Read (component SeggerRTT)
+**     Method      :  Read (component SeggerRTT)
+**
 **     Description :
 **         Read from buffer
 **     Parameters  :
@@ -146,7 +146,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_Write (component SeggerRTT)
+**     Method      :  Write (component SeggerRTT)
+**
 **     Description :
 **         Write to buffer
 **     Parameters  :
@@ -166,7 +167,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_WriteString (component SeggerRTT)
+**     Method      :  WriteString (component SeggerRTT)
+**
 **     Description :
 **         Write to buffer
 **     Parameters  :
@@ -185,7 +187,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_GetKey (component SeggerRTT)
+**     Method      :  GetKey (component SeggerRTT)
+**
 **     Description :
 **         Returns a character/key
 **     Parameters  : None
@@ -199,7 +202,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_WaitKey (component SeggerRTT)
+**     Method      :  WaitKey (component SeggerRTT)
+**
 **     Description :
 **         Waits for a key and returns it.
 **     Parameters  : None
@@ -213,7 +217,8 @@ extern "C" {
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_HasKey (component SeggerRTT)
+**     Method      :  HasKey (component SeggerRTT)
+**
 **     Description :
 **         Checks if at least one character for reading is available in
 **         the SEGGER RTT buffer
@@ -227,7 +232,8 @@ extern "C" {
 bool McuRTT_StdIOKeyPressed(void);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_StdIOKeyPressed (component SeggerRTT)
+**     Method      :  StdIOKeyPressed (component SeggerRTT)
+**
 **     Description :
 **         StdIO handler for Shell
 **     Parameters  : None
@@ -240,7 +246,8 @@ bool McuRTT_StdIOKeyPressed(void);
 void McuRTT_StdIOReadChar(uint8_t *c);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_StdIOReadChar (component SeggerRTT)
+**     Method      :  StdIOReadChar (component SeggerRTT)
+**
 **     Description :
 **         StdIO Handler for reading a character. It returns a zero
 **         byte if there is no character in input buffer.
@@ -255,7 +262,8 @@ void McuRTT_StdIOReadChar(uint8_t *c);
 void McuRTT_StdIOSendChar(uint8_t ch);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_StdIOSendChar (component SeggerRTT)
+**     Method      :  StdIOSendChar (component SeggerRTT)
+**
 **     Description :
 **         StdIO handler to sends a character.
 **     Parameters  :
@@ -268,7 +276,8 @@ void McuRTT_StdIOSendChar(uint8_t ch);
 uint8_t McuRTT_RecvChar(uint8_t *c);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_RecvChar (component SeggerRTT)
+**     Method      :  RecvChar (component SeggerRTT)
+**
 **     Description :
 **         Receives a character from channel 0. Returns ERR_RXEMPTY if
 **         no character available
@@ -284,7 +293,8 @@ uint8_t McuRTT_RecvChar(uint8_t *c);
 uint8_t McuRTT_SendChar(uint8_t ch);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_SendChar (component SeggerRTT)
+**     Method      :  SendChar (component SeggerRTT)
+**
 **     Description :
 **         Sends a character to channel 0.
 **     Parameters  :
@@ -301,7 +311,8 @@ uint8_t McuRTT_SendChar(uint8_t ch);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_GetCharsInRxBuf (component SeggerRTT)
+**     Method      :  GetCharsInRxBuf (component SeggerRTT)
+**
 **     Description :
 **         Returns the number of characters in the receive buffer.
 **     Parameters  : None
@@ -315,7 +326,8 @@ void McuRTT_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_Init (component SeggerRTT)
+**     Method      :  Init (component SeggerRTT)
+**
 **     Description :
 **         Initializes the RTT Control Block.
 **     Parameters  : None
@@ -328,7 +340,8 @@ void McuRTT_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_TerminalOut (component SeggerRTT)
+**     Method      :  TerminalOut (component SeggerRTT)
+**
 **     Description :
 **         Writes a string to the given terminal without changing the
 **         terminal for channel 0.
@@ -346,7 +359,8 @@ void McuRTT_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_SetTerminal (component SeggerRTT)
+**     Method      :  SetTerminal (component SeggerRTT)
+**
 **     Description :
 **          Sets the terminal to be used for output on channel 0.
 **     Parameters  :
@@ -362,7 +376,8 @@ void McuRTT_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_ConfigUpBuffer (component SeggerRTT)
+**     Method      :  ConfigUpBuffer (component SeggerRTT)
+**
 **     Description :
 **         Configures the Up (device to host) buffer
 **     Parameters  :
@@ -384,7 +399,8 @@ void McuRTT_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_ConfigDownBuffer (component SeggerRTT)
+**     Method      :  ConfigDownBuffer (component SeggerRTT)
+**
 **     Description :
 **         Configures the Down (host to device) buffer
 **     Parameters  :
@@ -406,7 +422,8 @@ void McuRTT_Init(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuRTT_printf (component SeggerRTT)
+**     Method      :  printf (component SeggerRTT)
+**
 **     Description :
 **         Stores a formatted string in SEGGER RTT control block. This
 **         data is sent to the host.
@@ -424,7 +441,8 @@ void McuRTT_Init(void);
 void McuRTT_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_Deinit (component SeggerRTT)
+**     Method      :  Deinit (component SeggerRTT)
+**
 **     Description :
 **         Driver deinitialization
 **     Parameters  : None
@@ -435,7 +453,8 @@ void McuRTT_Deinit(void);
 McuShell_ConstStdIOTypePtr McuRTT_GetStdio(void);
 /*
 ** ===================================================================
-**     Method      :  McuRTT_GetStdio (component SeggerRTT)
+**     Method      :  GetStdio (component SeggerRTT)
+**
 **     Description :
 **         Returns a pointer to the standard I/O
 **     Parameters  : None
@@ -454,12 +473,4 @@ McuShell_ConstStdIOTypePtr McuRTT_GetStdio(void);
 /* ifndef __McuRTT_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

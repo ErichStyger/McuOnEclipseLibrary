@@ -4,12 +4,11 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GFont
-**     Version     : Component 01.127, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
+**     Version     : Component 01.129, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-01-28, 11:55, # CodeGen: 321
+**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
 **     Abstract    :
-**
+**          Driver for graphical fonts
 **     Settings    :
 **          Component name                                 : McuFontHelv10Bold
 **          SDK                                            : McuLib
@@ -17,48 +16,47 @@
 **          Name                                           : Helv
 **          Size                                           : 10
 **          Style                                          : bold
-**          SourceFolders                                  : 
-**            Source Folder                                : fonts
-**            Config Folder                                : config/fonts
 **     Contents    :
 **         GetFontChar           - PGFONT_CharInfo McuFontHelv10Bold_GetFontChar(uint8_t ch);
 **         GetBoxHeight          - uint8_t McuFontHelv10Bold_GetBoxHeight(void);
 **         GetFont               - PGFONT_Callbacks McuFontHelv10Bold_GetFont(void);
 **         GetUnderlineBoxHeight - uint8_t McuFontHelv10Bold_GetUnderlineBoxHeight(void);
 **         GetLineSpaceHeight    - uint8_t McuFontHelv10Bold_GetLineSpaceHeight(void);
+**         Deinit                - void McuFontHelv10Bold_Deinit(void);
+**         Init                  - void McuFontHelv10Bold_Init(void);
 **
-**     * Copyright (c) 2011-2018, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2011-2018, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuFontHelv10Bold.h
 ** @version 01.00
 ** @brief
-**
+**          Driver for graphical fonts
 */         
 /*!
 **  @addtogroup McuFontHelv10Bold_module McuFontHelv10Bold module documentation
@@ -79,7 +77,7 @@
 
 #ifndef __BWUserType_PConstByte
 #define __BWUserType_PConstByte
-  typedef const uint8_t *PConstByte;   /* Pointer to a constant uint8_t. */
+  typedef const uint8_t *PConstByte;   /* Pointer to a constant byte. */
 #endif
 #ifndef __BWUserType_GFONT_CharInfo
 #define __BWUserType_GFONT_CharInfo
@@ -119,7 +117,8 @@
 PGFONT_CharInfo McuFontHelv10Bold_GetFontChar(uint8_t ch);
 /*
 ** ===================================================================
-**     Method      :  McuFontHelv10Bold_GetFontChar (component GFont)
+**     Method      :  GetFontChar (component GFont)
+**
 **     Description :
 **         Returns for a given character the corresponding font bitmap.
 **     Parameters  :
@@ -133,7 +132,8 @@ PGFONT_CharInfo McuFontHelv10Bold_GetFontChar(uint8_t ch);
 uint8_t McuFontHelv10Bold_GetBoxHeight(void);
 /*
 ** ===================================================================
-**     Method      :  McuFontHelv10Bold_GetBoxHeight (component GFont)
+**     Method      :  GetBoxHeight (component GFont)
+**
 **     Description :
 **         Function to get the height of the bounding box.
 **     Parameters  : None
@@ -145,7 +145,8 @@ uint8_t McuFontHelv10Bold_GetBoxHeight(void);
 PGFONT_Callbacks McuFontHelv10Bold_GetFont(void);
 /*
 ** ===================================================================
-**     Method      :  McuFontHelv10Bold_GetFont (component GFont)
+**     Method      :  GetFont (component GFont)
+**
 **     Description :
 **         Returns callbacks for fonts to be used by the font driver.
 **     Parameters  : None
@@ -159,7 +160,8 @@ PGFONT_Callbacks McuFontHelv10Bold_GetFont(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuFontHelv10Bold_GetLineSpaceHeight (component GFont)
+**     Method      :  GetLineSpaceHeight (component GFont)
+**
 **     Description :
 **         Returns the size of the line space height
 **     Parameters  : None
@@ -173,12 +175,37 @@ PGFONT_Callbacks McuFontHelv10Bold_GetFont(void);
 
 /*
 ** ===================================================================
-**     Method      :  McuFontHelv10Bold_GetUnderlineBoxHeight (component GFont)
+**     Method      :  GetUnderlineBoxHeight (component GFont)
+**
 **     Description :
 **         Returns the size of the underline box height
 **     Parameters  : None
 **     Returns     :
 **         ---             - Error code
+** ===================================================================
+*/
+
+void McuFontHelv10Bold_Deinit(void);
+/*
+** ===================================================================
+**     Method      :  Deinit (component GFont)
+**
+**     Description :
+**         Driver de-initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuFontHelv10Bold_Init(void);
+/*
+** ===================================================================
+**     Method      :  Init (component GFont)
+**
+**     Description :
+**         Driver initialization
+**     Parameters  : None
+**     Returns     : Nothing
 ** ===================================================================
 */
 
@@ -188,12 +215,4 @@ PGFONT_Callbacks McuFontHelv10Bold_GetFont(void);
 /* ifndef __McuFontHelv10Bold_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */

@@ -5,14 +5,12 @@
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SharpMemDisplay
 **     Version     : Component 01.010, Driver 01.00, CPU db: 3.00.000
-**     Repository  : Legacy User Components
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2017-05-06, 16:30, # CodeGen: 178
+**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuSharpMemoryDisplay
-**          Display                                        : 96x96
 **          Properties                                     : 
 **            Width                                        : 96
 **            Height                                       : 96
@@ -22,7 +20,6 @@
 **            Bits per pixel                               : 1
 **            Window capability                            : no
 **            Display Memory Write                         : no
-**            Use RAM Buffer                               : yes
 **          Invert Display                                 : no
 **          CS                                             : SCE
 **          HW non-LDD                                     : Enabled
@@ -31,7 +28,6 @@
 **          HW LDD                                         : Disabled
 **          System                                         : 
 **            Wait                                         : McuWait
-**            SDK                                          : McuLib
 **            Initialize on Init                           : yes
 **     Contents    :
 **         GetWidth              - McuSharpMemoryDisplay_PixelDim McuSharpMemoryDisplay_GetWidth(void);
@@ -50,32 +46,32 @@
 **         Init                  - void McuSharpMemoryDisplay_Init(void);
 **         Deinit                - void McuSharpMemoryDisplay_Deinit(void);
 **
-**     * Copyright (c) 2016-2017, Erich Styger
-**      * Web:         https://mcuoneclipse.com
-**      * SourceForge: https://sourceforge.net/projects/mcuoneclipse
-**      * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
-**      * All rights reserved.
-**      *
-**      * Redistribution and use in source and binary forms, with or without modification,
-**      * are permitted provided that the following conditions are met:
-**      *
-**      * - Redistributions of source code must retain the above copyright notice, this list
-**      *   of conditions and the following disclaimer.
-**      *
-**      * - Redistributions in binary form must reproduce the above copyright notice, this
-**      *   list of conditions and the following disclaimer in the documentation and/or
-**      *   other materials provided with the distribution.
-**      *
-**      * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-**      * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-**      * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-**      * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-**      * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-**      * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-**      * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-**      * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-**      * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-**      * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+** * Copyright (c) 2016-2017, Erich Styger
+**  * Web:         https://mcuoneclipse.com
+**  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
+**  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
+**  * All rights reserved.
+**  *
+**  * Redistribution and use in source and binary forms, with or without modification,
+**  * are permitted provided that the following conditions are met:
+**  *
+**  * - Redistributions of source code must retain the above copyright notice, this list
+**  *   of conditions and the following disclaimer.
+**  *
+**  * - Redistributions in binary form must reproduce the above copyright notice, this
+**  *   list of conditions and the following disclaimer in the documentation and/or
+**  *   other materials provided with the distribution.
+**  *
+**  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+**  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+**  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+**  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+**  * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+**  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+**  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+**  * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+**  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+**  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ** ###################################################################*/
 /*!
 ** @file McuSharpMemoryDisplay.h
@@ -162,7 +158,8 @@ typedef enum {
 void McuSharpMemoryDisplay_Clear(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_Clear (component SharpMemDisplay)
+**     Method      :  Clear (component SharpMemDisplay)
+**
 **     Description :
 **         Clears the whole display memory.
 **     Parameters  : None
@@ -173,7 +170,8 @@ void McuSharpMemoryDisplay_Clear(void);
 void McuSharpMemoryDisplay_Init(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_Init (component SharpMemDisplay)
+**     Method      :  Init (component SharpMemDisplay)
+**
 **     Description :
 **         Display driver initialization
 **     Parameters  : None
@@ -184,7 +182,8 @@ void McuSharpMemoryDisplay_Init(void);
 void McuSharpMemoryDisplay_UpdateRegion(McuSharpMemoryDisplay_PixelDim x, McuSharpMemoryDisplay_PixelDim y, McuSharpMemoryDisplay_PixelDim w, McuSharpMemoryDisplay_PixelDim h);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_UpdateRegion (component SharpMemDisplay)
+**     Method      :  UpdateRegion (component SharpMemDisplay)
+**
 **     Description :
 **         Updates a region of the display
 **     Parameters  :
@@ -200,7 +199,8 @@ void McuSharpMemoryDisplay_UpdateRegion(McuSharpMemoryDisplay_PixelDim x, McuSha
 void McuSharpMemoryDisplay_UpdateFull(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_UpdateFull (component SharpMemDisplay)
+**     Method      :  UpdateFull (component SharpMemDisplay)
+**
 **     Description :
 **         Updates the whole display
 **     Parameters  : None
@@ -211,7 +211,8 @@ void McuSharpMemoryDisplay_UpdateFull(void);
 McuSharpMemoryDisplay_DisplayOrientation McuSharpMemoryDisplay_GetDisplayOrientation(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GetDisplayOrientation (component SharpMemDisplay)
+**     Method      :  GetDisplayOrientation (component SharpMemDisplay)
+**
 **     Description :
 **         Returns the current display orientation
 **     Parameters  : None
@@ -225,7 +226,8 @@ McuSharpMemoryDisplay_DisplayOrientation McuSharpMemoryDisplay_GetDisplayOrienta
 
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GetWidth (component SharpMemDisplay)
+**     Method      :  GetWidth (component SharpMemDisplay)
+**
 **     Description :
 **         Returns the width of the display in pixels
 **     Parameters  : None
@@ -239,7 +241,8 @@ McuSharpMemoryDisplay_DisplayOrientation McuSharpMemoryDisplay_GetDisplayOrienta
 
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GetHeight (component SharpMemDisplay)
+**     Method      :  GetHeight (component SharpMemDisplay)
+**
 **     Description :
 **         Returns the height of the display in pixels
 **     Parameters  : None
@@ -253,7 +256,8 @@ McuSharpMemoryDisplay_DisplayOrientation McuSharpMemoryDisplay_GetDisplayOrienta
 
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GetLongerSide (component SharpMemDisplay)
+**     Method      :  GetLongerSide (component SharpMemDisplay)
+**
 **     Description :
 **         Returns the longer side of the display in pixels
 **     Parameters  : None
@@ -267,7 +271,8 @@ McuSharpMemoryDisplay_DisplayOrientation McuSharpMemoryDisplay_GetDisplayOrienta
 
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GetShorterSide (component SharpMemDisplay)
+**     Method      :  GetShorterSide (component SharpMemDisplay)
+**
 **     Description :
 **         Returns the shorter side of the display in pixels
 **     Parameters  : None
@@ -279,7 +284,8 @@ McuSharpMemoryDisplay_DisplayOrientation McuSharpMemoryDisplay_GetDisplayOrienta
 void McuSharpMemoryDisplay_SetDisplayOrientation(McuSharpMemoryDisplay_DisplayOrientation newOrientation);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_SetDisplayOrientation (component SharpMemDisplay)
+**     Method      :  SetDisplayOrientation (component SharpMemDisplay)
+**
 **     Description :
 **         Sets current display orientation
 **     Parameters  :
@@ -293,7 +299,8 @@ void McuSharpMemoryDisplay_SetDisplayOrientation(McuSharpMemoryDisplay_DisplayOr
 void McuSharpMemoryDisplay_GetLCD(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GetLCD (component SharpMemDisplay)
+**     Method      :  GetLCD (component SharpMemDisplay)
+**
 **     Description :
 **         Method to be called for mutual exclusive access to the LCD
 **     Parameters  : None
@@ -304,7 +311,8 @@ void McuSharpMemoryDisplay_GetLCD(void);
 void McuSharpMemoryDisplay_GiveLCD(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_GiveLCD (component SharpMemDisplay)
+**     Method      :  GiveLCD (component SharpMemDisplay)
+**
 **     Description :
 **         Method to be called for mutual exclusive access to the LCD
 **     Parameters  : None
@@ -315,7 +323,8 @@ void McuSharpMemoryDisplay_GiveLCD(void);
 void McuSharpMemoryDisplay_Deinit(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_Deinit (component SharpMemDisplay)
+**     Method      :  Deinit (component SharpMemDisplay)
+**
 **     Description :
 **         Module Deinitialization
 **     Parameters  : None
@@ -326,7 +335,8 @@ void McuSharpMemoryDisplay_Deinit(void);
 void McuSharpMemoryDisplay_UpdateLine(uint8_t line, uint8_t *dataP);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_UpdateLine (component SharpMemDisplay)
+**     Method      :  UpdateLine (component SharpMemDisplay)
+**
 **     Description :
 **         Updates a single line on the LCD
 **     Parameters  :
@@ -341,7 +351,8 @@ void McuSharpMemoryDisplay_UpdateLine(uint8_t line, uint8_t *dataP);
 void McuSharpMemoryDisplay_ToggleVCOM(void);
 /*
 ** ===================================================================
-**     Method      :  McuSharpMemoryDisplay_ToggleVCOM (component SharpMemDisplay)
+**     Method      :  ToggleVCOM (component SharpMemDisplay)
+**
 **     Description :
 **         Command used if EXTMODE=L. This function toggles the VCOM if
 **         no other command is executed
@@ -356,12 +367,4 @@ void McuSharpMemoryDisplay_ToggleVCOM(void);
 /* ifndef __McuSharpMemoryDisplay_H */
 /*!
 ** @}
-*/
-/*
-** ###################################################################
-**
-**     This file was created by Processor Expert 10.5 [05.21]
-**     for the Freescale Kinetis series of microcontrollers.
-**
-** ###################################################################
 */
