@@ -6,7 +6,7 @@
 **     Component   : GenericTimeDate
 **     Version     : Component 01.061, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-07-12, 15:44, # CodeGen: 337
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -764,7 +764,9 @@ uint8_t McuTimeDate_ParseCommand(const unsigned char *cmd, bool *handled, const 
         time.Hour = hour;
         time.Min = minute;
         time.Sec = second;
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
         time.Sec100 = 0;
+#endif
         date.Day = day;
         date.Month = month;
         date.Year = year;
@@ -1402,7 +1404,9 @@ void McuTimeDate_UnixSecondsToTimeDateCustom(int32_t seconds, int8_t offset_hour
     time->Hour = hours;
     time->Min = minutes;
     time->Sec = (uint8_t)seconds;
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
     time->Sec100 = 0;
+#endif
   }
 }
 
