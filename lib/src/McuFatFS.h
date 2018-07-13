@@ -6,56 +6,72 @@
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.203, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-07-13, 14:18, # CodeGen: 338
 **     Abstract    :
 **
 **     Settings    :
 **
 **     Contents    :
-**         open             - FRESULT McuFatFS_open(FIL *fp, const XCHAR *path, BYTE mode);
-**         close            - FRESULT McuFatFS_close(FIL *fp);
-**         read             - FRESULT McuFatFS_read(FIL *fp, void *buff, UINT btr, UINT *br);
-**         write            - FRESULT McuFatFS_write(FIL *fp, const *void buff, UINT btw, UINT *bw);
-**         opendir          - FRESULT McuFatFS_opendir(DIR *dj, const XCHAR *path);
-**         readdir          - FRESULT McuFatFS_readdir(DIR *dj, FILINFO *fno);
-**         lseek            - FRESULT McuFatFS_lseek(FIL *fp, DWORD ofs);
-**         unlink           - FRESULT McuFatFS_unlink(const XCHAR *path);
-**         mount            - FRESULT McuFatFS_mount(FATFS *fs, const TCHAR* path, byte opt);
-**         getfree          - FRESULT McuFatFS_getfree(const XCHAR *path, dword *nclst, FATFS **fatfs);
-**         sync             - FRESULT McuFatFS_sync(FIL *fp);
-**         rename           - FRESULT McuFatFS_rename(const XCHAR *path_old, const XCHAR *path_new);
-**         isWriteProtected - bool McuFatFS_isWriteProtected(uint8_t *drvStr);
-**         isDiskPresent    - bool McuFatFS_isDiskPresent(uint8_t *drvStr);
-**         mkdir            - FRESULT McuFatFS_mkdir(const XCHAR *path);
-**         chmod            - FRESULT McuFatFS_chmod(const TCHAR* FileName, uint8_t Attribute, uint8_t...
-**         truncate         - FRESULT McuFatFS_truncate(FIL *FileObject);
-**         stat             - FRESULT McuFatFS_stat(const TCHAR* FileName, FILINFO* FileInfo);
-**         utime            - FRESULT McuFatFS_utime(const TCHAR* FileName, const FILINFO* TimeDate);
-**         mkfs             - FRESULT McuFatFS_mkfs(byte drive, uint8_t PartitioningRule, UINT  AllocSize);
-**         chdir            - FRESULT McuFatFS_chdir(const TCHAR* Path);
-**         chdrive          - FRESULT McuFatFS_chdrive(uint8_t Drive);
-**         getcwd           - FRESULT McuFatFS_getcwd(TCHAR* Buffer, UINT BufferLen);
-**         errFResultMsg    - char* McuFatFS_errFResultMsg(int errNo);
-**         errDResultMsg    - char* McuFatFS_errDResultMsg(int errNo);
-**         f_gets           - McuFatFS_CHARP McuFatFS_f_gets(TCHAR* buff, int len, FIL *fil);
-**         f_puts           - McuFatFS_INT McuFatFS_f_puts(const TCHAR* str, FIL *fil);
-**         f_putc           - McuFatFS_INT McuFatFS_f_putc(TCHAR c, FIL *fil);
-**         f_printf         - McuFatFS_INT McuFatFS_f_printf(FIL* fil, const TCHAR* str, ...);
-**         f_eof            - byte McuFatFS_f_eof(FIL *fil);
-**         f_error          - uint8_t McuFatFS_f_error(FIL *fil);
-**         f_tell           - dword McuFatFS_f_tell(FIL *fil);
-**         f_size           - dword McuFatFS_f_size(FIL *fil);
-**         f_getlabel       - FRESULT McuFatFS_f_getlabel(const TCHAR* path, TCHAR* label, DWORD* vsn);
-**         f_setlabel       - FRESULT McuFatFS_f_setlabel(const TCHAR* label);
-**         f_expand         - FRESULT McuFatFS_f_expand(FIL* fp, FSIZE_t fsz, BYTE opt);
-**         f_findfirst      - FRESULT McuFatFS_f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const...
-**         f_findnext       - FRESULT McuFatFS_f_findnext(DIR* dp, FILINFO* fno);
-**         f_opendir        - FRESULT McuFatFS_f_opendir(DIR* dp, const TCHAR* path);
-**         f_readdir        - FRESULT McuFatFS_f_readdir(DIR *dj, FILINFO *fno);
-**         f_closedir       - FRESULT McuFatFS_f_closedir(DIR* dp);
-**         get_fattime      - uint32_t McuFatFS_get_fattime(void);
-**         Deinit           - uint8_t McuFatFS_Deinit(void);
-**         Init             - uint8_t McuFatFS_Init(void);
+**         open              - FRESULT McuFatFS_open(FIL *fp, const XCHAR *path, BYTE mode);
+**         close             - FRESULT McuFatFS_close(FIL *fp);
+**         read              - FRESULT McuFatFS_read(FIL *fp, void *buff, UINT btr, UINT *br);
+**         write             - FRESULT McuFatFS_write(FIL *fp, const *void buff, UINT btw, UINT *bw);
+**         opendir           - FRESULT McuFatFS_opendir(DIR *dj, const XCHAR *path);
+**         readdir           - FRESULT McuFatFS_readdir(DIR *dj, FILINFO *fno);
+**         lseek             - FRESULT McuFatFS_lseek(FIL *fp, DWORD ofs);
+**         unlink            - FRESULT McuFatFS_unlink(const XCHAR *path);
+**         mount             - FRESULT McuFatFS_mount(FATFS *fs, const TCHAR* path, byte opt);
+**         getfree           - FRESULT McuFatFS_getfree(const XCHAR *path, dword *nclst, FATFS **fatfs);
+**         sync              - FRESULT McuFatFS_sync(FIL *fp);
+**         rename            - FRESULT McuFatFS_rename(const XCHAR *path_old, const XCHAR *path_new);
+**         isWriteProtected  - bool McuFatFS_isWriteProtected(uint8_t *drvStr);
+**         isDiskPresent     - bool McuFatFS_isDiskPresent(uint8_t *drvStr);
+**         mkdir             - FRESULT McuFatFS_mkdir(const XCHAR *path);
+**         chmod             - FRESULT McuFatFS_chmod(const TCHAR* FileName, uint8_t Attribute, uint8_t...
+**         truncate          - FRESULT McuFatFS_truncate(FIL *FileObject);
+**         stat              - FRESULT McuFatFS_stat(const TCHAR* FileName, FILINFO* FileInfo);
+**         utime             - FRESULT McuFatFS_utime(const TCHAR* FileName, const FILINFO* TimeDate);
+**         mkfs              - FRESULT McuFatFS_mkfs(byte drive, uint8_t PartitioningRule, UINT  AllocSize);
+**         chdir             - FRESULT McuFatFS_chdir(const TCHAR* Path);
+**         chdrive           - FRESULT McuFatFS_chdrive(uint8_t Drive);
+**         getcwd            - FRESULT McuFatFS_getcwd(TCHAR* Buffer, UINT BufferLen);
+**         errFResultMsg     - char* McuFatFS_errFResultMsg(int errNo);
+**         errDResultMsg     - char* McuFatFS_errDResultMsg(int errNo);
+**         f_gets            - McuFatFS_CHARP McuFatFS_f_gets(TCHAR* buff, int len, FIL *fil);
+**         f_puts            - McuFatFS_INT McuFatFS_f_puts(const TCHAR* str, FIL *fil);
+**         f_putc            - McuFatFS_INT McuFatFS_f_putc(TCHAR c, FIL *fil);
+**         f_printf          - McuFatFS_INT McuFatFS_f_printf(FIL* fil, const TCHAR* str, ...);
+**         f_eof             - byte McuFatFS_f_eof(FIL *fil);
+**         f_error           - uint8_t McuFatFS_f_error(FIL *fil);
+**         f_tell            - dword McuFatFS_f_tell(FIL *fil);
+**         f_size            - dword McuFatFS_f_size(FIL *fil);
+**         f_getlabel        - FRESULT McuFatFS_f_getlabel(const TCHAR* path, TCHAR* label, DWORD* vsn);
+**         f_setlabel        - FRESULT McuFatFS_f_setlabel(const TCHAR* label);
+**         f_expand          - FRESULT McuFatFS_f_expand(FIL* fp, FSIZE_t fsz, BYTE opt);
+**         f_findfirst       - FRESULT McuFatFS_f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const...
+**         f_findnext        - FRESULT McuFatFS_f_findnext(DIR* dp, FILINFO* fno);
+**         f_opendir         - FRESULT McuFatFS_f_opendir(DIR* dp, const TCHAR* path);
+**         f_readdir         - FRESULT McuFatFS_f_readdir(DIR *dj, FILINFO *fno);
+**         f_closedir        - FRESULT McuFatFS_f_closedir(DIR* dp);
+**         get_fattime       - uint32_t McuFatFS_get_fattime(void);
+**         ParseCommand      - uint8_t McuFatFS_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         CheckCardPresence - uint8_t McuFatFS_CheckCardPresence(bool *cardMounted, uint8_t *drive, FATFS...
+**         MountFileSystem   - uint8_t McuFatFS_MountFileSystem(FATFS *fileSystemObject, uint8_t...
+**         UnMountFileSystem - uint8_t McuFatFS_UnMountFileSystem(uint8_t *logicalDrive, const...
+**         PrintDirectory    - uint8_t McuFatFS_PrintDirectory(const uint8_t *dirName, const...
+**         CopyFile          - uint8_t McuFatFS_CopyFile(const uint8_t*srcFileName, const uint8_t...
+**         DeleteFile        - uint8_t McuFatFS_DeleteFile(const uint8_t *fileName, const...
+**         CreateFile        - uint8_t McuFatFS_CreateFile(const uint8_t *fileName, const...
+**         PrintFile         - uint8_t McuFatFS_PrintFile(const uint8_t *fileName, const...
+**         PrintHexFile      - uint8_t McuFatFS_PrintHexFile(const uint8_t *fileName, const...
+**         MakeDirectory     - uint8_t McuFatFS_MakeDirectory(const uint8_t *dirName, const...
+**         ChangeDirectory   - uint8_t McuFatFS_ChangeDirectory(const uint8_t *dirName, const...
+**         RenameFile        - uint8_t McuFatFS_RenameFile(const uint8_t *srcFileName, const uint8_t...
+**         PrintSector       - uint8_t McuFatFS_PrintSector(uint8_t drive, uint32_t sectorNo, const...
+**         PrintDiskInfo     - uint8_t McuFatFS_PrintDiskInfo(uint8_t *drive, const...
+**         Benchmark         - uint8_t McuFatFS_Benchmark(const %@Shell@'ModuleName'%.StdIOType *io);
+**         Deinit            - uint8_t McuFatFS_Deinit(void);
+**         Init              - uint8_t McuFatFS_Init(void);
 **
 ** Copyright (c) 2014-2017,  Erich Styger
 ** Web: http://mcuoneclipse.com/
@@ -121,6 +137,7 @@
 #include "McuTimeDate.h"
 #include "McuRTOS.h"
 #include "McuUtility.h"
+#include "McuShell.h"
 #include "ff.h"
 #include "diskio.h"
 
@@ -136,7 +153,7 @@
   typedef int McuFatFS_INT;            /* alias to int type. */
 #endif
 
-#define McuFatFS_PARSE_COMMAND_ENABLED  0 /* set to 1 if method ParseCommand() is present, 0 otherwise */
+#define McuFatFS_PARSE_COMMAND_ENABLED  1  /* set to 1 if method ParseCommand() is present, 0 otherwise */
 
 #define McuFatFS_USE_RTOS_DYNAMIC_MEMORY  (1 && configSUPPORT_DYNAMIC_ALLOCATION)  /* 1: use RTOS dynamic memory allocation, 0: use static memory */
 
@@ -846,6 +863,281 @@ uint32_t McuFatFS_get_fattime(void);
 **     Description :
 **         Returns the current time
 **     Parameters  : None
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  ParseCommand (component FAT_FileSystem)
+**
+**     Description :
+**         Shell Command Line parser. This method is enabled/disabled
+**         depending on if you have the Shell enabled/disabled in the
+**         properties.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cmd             - Pointer to command string
+**       * handled         - Pointer to variable which tells if
+**                           the command has been handled or not
+**       * io              - Pointer to I/O structure
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_CheckCardPresence(bool *cardMounted, uint8_t *drive, FATFS *fileSystemObject, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  CheckCardPresence (component FAT_FileSystem)
+**
+**     Description :
+**         This method checks if card has been inserted or removed and
+**         mounts or unmounts the file system.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cardMounted     - Pointer to initialize this
+**                           variable to FALSE on the caller side the
+**                           first time.
+**       * drive           - drive string, or ""
+**       * fileSystemObject - Pointer to file
+**                           system object
+**         io              - Pointer to io handler to be used. Can be
+**                           NULL, then no messages are written.
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_MountFileSystem(FATFS *fileSystemObject, uint8_t *logicalDrive, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  MountFileSystem (component FAT_FileSystem)
+**
+**     Description :
+**         Mounts a file system
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * fileSystemObject - Pointer to a
+**                           file system object
+**       * logicalDrive    - Pointer to the drive
+**                           string, or ""
+**       * io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_UnMountFileSystem(uint8_t *logicalDrive, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  UnMountFileSystem (component FAT_FileSystem)
+**
+**     Description :
+**         Mounts a file system
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * logicalDrive    - Pointer to the drive
+**                           string, or ""
+**       * io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_PrintDirectory(const uint8_t *dirName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  PrintDirectory (component FAT_FileSystem)
+**
+**     Description :
+**         Prints a directory
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         dirName         - Directory folder to be printed
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_CopyFile(const uint8_t*srcFileName, const uint8_t *dstFileName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  CopyFile (component FAT_FileSystem)
+**
+**     Description :
+**         Copy a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         srcFileName     - Source file name
+**         dstFileName     - Destination file name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_DeleteFile(const uint8_t *fileName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  DeleteFile (component FAT_FileSystem)
+**
+**     Description :
+**         Deletes a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Filename of file to be deleted
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_PrintFile(const uint8_t *fileName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  PrintFile (component FAT_FileSystem)
+**
+**     Description :
+**         Prints the content of a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Name of file to be printed
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_MakeDirectory(const uint8_t *dirName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  MakeDirectory (component FAT_FileSystem)
+**
+**     Description :
+**         Creates a directory
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         dirName         - Directory name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_ChangeDirectory(const uint8_t *dirName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  ChangeDirectory (component FAT_FileSystem)
+**
+**     Description :
+**         Changes to a directory
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         dirName         - Directory name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_RenameFile(const uint8_t *srcFileName, const uint8_t *dstFileName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  RenameFile (component FAT_FileSystem)
+**
+**     Description :
+**         Renames a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         srcFileName     - Source file name
+**         dstFileName     - Destination file name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_PrintSector(uint8_t drive, uint32_t sectorNo, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  PrintSector (component FAT_FileSystem)
+**
+**     Description :
+**         Prints information about the current disk
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         drive           - drive number, starting with zero
+**         sectorNo        - sector number
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_PrintDiskInfo(uint8_t *drive, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  PrintDiskInfo (component FAT_FileSystem)
+**
+**     Description :
+**         Prints information about the current disk
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * drive           - Drive string, can be NULL or e.g.
+**                           pointing to "0"
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_Benchmark(const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  Benchmark (component FAT_FileSystem)
+**
+**     Description :
+**         Performs a disk benchmark
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_PrintHexFile(const uint8_t *fileName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  PrintHexFile (component FAT_FileSystem)
+**
+**     Description :
+**         Prints the content of a file in hexadecimal format, useful
+**         for binary files.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Name of file to be printed
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFatFS_CreateFile(const uint8_t *fileName, const McuShell_StdIOType *io);
+/*
+** ===================================================================
+**     Method      :  CreateFile (component FAT_FileSystem)
+**
+**     Description :
+**         Creates an empty file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Filename of file to be created
+**         io              - Pointer to I/O handler
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================

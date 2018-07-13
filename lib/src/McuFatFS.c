@@ -6,56 +6,72 @@
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.203, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-07-13, 14:18, # CodeGen: 338
 **     Abstract    :
 **
 **     Settings    :
 **
 **     Contents    :
-**         open             - FRESULT McuFatFS_open(FIL *fp, const XCHAR *path, BYTE mode);
-**         close            - FRESULT McuFatFS_close(FIL *fp);
-**         read             - FRESULT McuFatFS_read(FIL *fp, void *buff, UINT btr, UINT *br);
-**         write            - FRESULT McuFatFS_write(FIL *fp, const *void buff, UINT btw, UINT *bw);
-**         opendir          - FRESULT McuFatFS_opendir(DIR *dj, const XCHAR *path);
-**         readdir          - FRESULT McuFatFS_readdir(DIR *dj, FILINFO *fno);
-**         lseek            - FRESULT McuFatFS_lseek(FIL *fp, DWORD ofs);
-**         unlink           - FRESULT McuFatFS_unlink(const XCHAR *path);
-**         mount            - FRESULT McuFatFS_mount(FATFS *fs, const TCHAR* path, byte opt);
-**         getfree          - FRESULT McuFatFS_getfree(const XCHAR *path, dword *nclst, FATFS **fatfs);
-**         sync             - FRESULT McuFatFS_sync(FIL *fp);
-**         rename           - FRESULT McuFatFS_rename(const XCHAR *path_old, const XCHAR *path_new);
-**         isWriteProtected - bool McuFatFS_isWriteProtected(uint8_t *drvStr);
-**         isDiskPresent    - bool McuFatFS_isDiskPresent(uint8_t *drvStr);
-**         mkdir            - FRESULT McuFatFS_mkdir(const XCHAR *path);
-**         chmod            - FRESULT McuFatFS_chmod(const TCHAR* FileName, uint8_t Attribute, uint8_t...
-**         truncate         - FRESULT McuFatFS_truncate(FIL *FileObject);
-**         stat             - FRESULT McuFatFS_stat(const TCHAR* FileName, FILINFO* FileInfo);
-**         utime            - FRESULT McuFatFS_utime(const TCHAR* FileName, const FILINFO* TimeDate);
-**         mkfs             - FRESULT McuFatFS_mkfs(byte drive, uint8_t PartitioningRule, UINT  AllocSize);
-**         chdir            - FRESULT McuFatFS_chdir(const TCHAR* Path);
-**         chdrive          - FRESULT McuFatFS_chdrive(uint8_t Drive);
-**         getcwd           - FRESULT McuFatFS_getcwd(TCHAR* Buffer, UINT BufferLen);
-**         errFResultMsg    - char* McuFatFS_errFResultMsg(int errNo);
-**         errDResultMsg    - char* McuFatFS_errDResultMsg(int errNo);
-**         f_gets           - McuFatFS_CHARP McuFatFS_f_gets(TCHAR* buff, int len, FIL *fil);
-**         f_puts           - McuFatFS_INT McuFatFS_f_puts(const TCHAR* str, FIL *fil);
-**         f_putc           - McuFatFS_INT McuFatFS_f_putc(TCHAR c, FIL *fil);
-**         f_printf         - McuFatFS_INT McuFatFS_f_printf(FIL* fil, const TCHAR* str, ...);
-**         f_eof            - byte McuFatFS_f_eof(FIL *fil);
-**         f_error          - uint8_t McuFatFS_f_error(FIL *fil);
-**         f_tell           - dword McuFatFS_f_tell(FIL *fil);
-**         f_size           - dword McuFatFS_f_size(FIL *fil);
-**         f_getlabel       - FRESULT McuFatFS_f_getlabel(const TCHAR* path, TCHAR* label, DWORD* vsn);
-**         f_setlabel       - FRESULT McuFatFS_f_setlabel(const TCHAR* label);
-**         f_expand         - FRESULT McuFatFS_f_expand(FIL* fp, FSIZE_t fsz, BYTE opt);
-**         f_findfirst      - FRESULT McuFatFS_f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const...
-**         f_findnext       - FRESULT McuFatFS_f_findnext(DIR* dp, FILINFO* fno);
-**         f_opendir        - FRESULT McuFatFS_f_opendir(DIR* dp, const TCHAR* path);
-**         f_readdir        - FRESULT McuFatFS_f_readdir(DIR *dj, FILINFO *fno);
-**         f_closedir       - FRESULT McuFatFS_f_closedir(DIR* dp);
-**         get_fattime      - uint32_t McuFatFS_get_fattime(void);
-**         Deinit           - uint8_t McuFatFS_Deinit(void);
-**         Init             - uint8_t McuFatFS_Init(void);
+**         open              - FRESULT McuFatFS_open(FIL *fp, const XCHAR *path, BYTE mode);
+**         close             - FRESULT McuFatFS_close(FIL *fp);
+**         read              - FRESULT McuFatFS_read(FIL *fp, void *buff, UINT btr, UINT *br);
+**         write             - FRESULT McuFatFS_write(FIL *fp, const *void buff, UINT btw, UINT *bw);
+**         opendir           - FRESULT McuFatFS_opendir(DIR *dj, const XCHAR *path);
+**         readdir           - FRESULT McuFatFS_readdir(DIR *dj, FILINFO *fno);
+**         lseek             - FRESULT McuFatFS_lseek(FIL *fp, DWORD ofs);
+**         unlink            - FRESULT McuFatFS_unlink(const XCHAR *path);
+**         mount             - FRESULT McuFatFS_mount(FATFS *fs, const TCHAR* path, byte opt);
+**         getfree           - FRESULT McuFatFS_getfree(const XCHAR *path, dword *nclst, FATFS **fatfs);
+**         sync              - FRESULT McuFatFS_sync(FIL *fp);
+**         rename            - FRESULT McuFatFS_rename(const XCHAR *path_old, const XCHAR *path_new);
+**         isWriteProtected  - bool McuFatFS_isWriteProtected(uint8_t *drvStr);
+**         isDiskPresent     - bool McuFatFS_isDiskPresent(uint8_t *drvStr);
+**         mkdir             - FRESULT McuFatFS_mkdir(const XCHAR *path);
+**         chmod             - FRESULT McuFatFS_chmod(const TCHAR* FileName, uint8_t Attribute, uint8_t...
+**         truncate          - FRESULT McuFatFS_truncate(FIL *FileObject);
+**         stat              - FRESULT McuFatFS_stat(const TCHAR* FileName, FILINFO* FileInfo);
+**         utime             - FRESULT McuFatFS_utime(const TCHAR* FileName, const FILINFO* TimeDate);
+**         mkfs              - FRESULT McuFatFS_mkfs(byte drive, uint8_t PartitioningRule, UINT  AllocSize);
+**         chdir             - FRESULT McuFatFS_chdir(const TCHAR* Path);
+**         chdrive           - FRESULT McuFatFS_chdrive(uint8_t Drive);
+**         getcwd            - FRESULT McuFatFS_getcwd(TCHAR* Buffer, UINT BufferLen);
+**         errFResultMsg     - char* McuFatFS_errFResultMsg(int errNo);
+**         errDResultMsg     - char* McuFatFS_errDResultMsg(int errNo);
+**         f_gets            - McuFatFS_CHARP McuFatFS_f_gets(TCHAR* buff, int len, FIL *fil);
+**         f_puts            - McuFatFS_INT McuFatFS_f_puts(const TCHAR* str, FIL *fil);
+**         f_putc            - McuFatFS_INT McuFatFS_f_putc(TCHAR c, FIL *fil);
+**         f_printf          - McuFatFS_INT McuFatFS_f_printf(FIL* fil, const TCHAR* str, ...);
+**         f_eof             - byte McuFatFS_f_eof(FIL *fil);
+**         f_error           - uint8_t McuFatFS_f_error(FIL *fil);
+**         f_tell            - dword McuFatFS_f_tell(FIL *fil);
+**         f_size            - dword McuFatFS_f_size(FIL *fil);
+**         f_getlabel        - FRESULT McuFatFS_f_getlabel(const TCHAR* path, TCHAR* label, DWORD* vsn);
+**         f_setlabel        - FRESULT McuFatFS_f_setlabel(const TCHAR* label);
+**         f_expand          - FRESULT McuFatFS_f_expand(FIL* fp, FSIZE_t fsz, BYTE opt);
+**         f_findfirst       - FRESULT McuFatFS_f_findfirst(DIR* dp, FILINFO* fno, const TCHAR* path, const...
+**         f_findnext        - FRESULT McuFatFS_f_findnext(DIR* dp, FILINFO* fno);
+**         f_opendir         - FRESULT McuFatFS_f_opendir(DIR* dp, const TCHAR* path);
+**         f_readdir         - FRESULT McuFatFS_f_readdir(DIR *dj, FILINFO *fno);
+**         f_closedir        - FRESULT McuFatFS_f_closedir(DIR* dp);
+**         get_fattime       - uint32_t McuFatFS_get_fattime(void);
+**         ParseCommand      - uint8_t McuFatFS_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         CheckCardPresence - uint8_t McuFatFS_CheckCardPresence(bool *cardMounted, uint8_t *drive, FATFS...
+**         MountFileSystem   - uint8_t McuFatFS_MountFileSystem(FATFS *fileSystemObject, uint8_t...
+**         UnMountFileSystem - uint8_t McuFatFS_UnMountFileSystem(uint8_t *logicalDrive, const...
+**         PrintDirectory    - uint8_t McuFatFS_PrintDirectory(const uint8_t *dirName, const...
+**         CopyFile          - uint8_t McuFatFS_CopyFile(const uint8_t*srcFileName, const uint8_t...
+**         DeleteFile        - uint8_t McuFatFS_DeleteFile(const uint8_t *fileName, const...
+**         CreateFile        - uint8_t McuFatFS_CreateFile(const uint8_t *fileName, const...
+**         PrintFile         - uint8_t McuFatFS_PrintFile(const uint8_t *fileName, const...
+**         PrintHexFile      - uint8_t McuFatFS_PrintHexFile(const uint8_t *fileName, const...
+**         MakeDirectory     - uint8_t McuFatFS_MakeDirectory(const uint8_t *dirName, const...
+**         ChangeDirectory   - uint8_t McuFatFS_ChangeDirectory(const uint8_t *dirName, const...
+**         RenameFile        - uint8_t McuFatFS_RenameFile(const uint8_t *srcFileName, const uint8_t...
+**         PrintSector       - uint8_t McuFatFS_PrintSector(uint8_t drive, uint32_t sectorNo, const...
+**         PrintDiskInfo     - uint8_t McuFatFS_PrintDiskInfo(uint8_t *drive, const...
+**         Benchmark         - uint8_t McuFatFS_Benchmark(const %@Shell@'ModuleName'%.StdIOType *io);
+**         Deinit            - uint8_t McuFatFS_Deinit(void);
+**         Init              - uint8_t McuFatFS_Init(void);
 **
 ** Copyright (c) 2014-2017,  Erich Styger
 ** Web: http://mcuoneclipse.com/
@@ -193,6 +209,499 @@ DRESULT disk_ioctl (
   return RES_PARERR;
 }
 /*-----------------------------------------------------------------------*/
+#define McuFatFS_8_3_SIZE       sizeof("12345678.txt") /* length of a 8.3 file name (13 including the zero byte) */
+
+#if McuFatFS_USE_LFN == 0               /* No LFN */
+#define McuFatFS_DEF_NAMEBUF(name)      uint8_t name[McuFatFS_8_3_SIZE]
+#define McuFatFS_PTR_NAMEBUF(name)      &name[0]
+#define McuFatFS_SIZE_NAMEBUF(name)     sizeof(name)
+#define McuFatFS_INIT_NAMEBUF(name)
+#define McuFatFS_FREE_NAMEBUF(name)
+
+#elif McuFatFS_USE_LFN == 1             /* LFN with static LFN working buffer */
+static TCHAR McuFatFS_FileName[McuFatFS_MAX_LFN+1];
+#define McuFatFS_DEF_NAMEBUF(name)
+#define McuFatFS_PTR_NAMEBUF(name)      &McuFatFS_FileName[0]
+#define McuFatFS_SIZE_NAMEBUF(name)     sizeof(McuFatFS_FileName)
+#define McuFatFS_INIT_NAMEBUF(name)
+#define McuFatFS_FREE_NAMEBUF(name)
+
+#elif McuFatFS_USE_LFN == 2             /* LFN with dynamic LFN working buffer on the stack */
+#define McuFatFS_DEF_NAMEBUF(name)      uint8_t name[McuFatFS_MAX_LFN+1]
+#define McuFatFS_PTR_NAMEBUF(name)      &name[0]
+#define McuFatFS_SIZE_NAMEBUF(name)     sizeof(name)
+#define McuFatFS_INIT_NAMEBUF(name)
+#define McuFatFS_FREE_NAMEBUF(name)
+
+#elif McuFatFS_USE_LFN == 3             /* LFN with dynamic LFN working buffer on the heap */
+#define McuFatFS_DEF_NAMEBUF(name)      uint8_t *name
+#define McuFatFS_PTR_NAMEBUF(name)      name
+#define McuFatFS_SIZE_NAMEBUF(name)     (McuFatFS_MAX_LFN+1)
+#define McuFatFS_INIT_NAMEBUF(name)     { name = ff_memalloc(McuFatFS_MAX_LFN+1); \
+                                          if (!name) { \
+                                            McuShell_SendStr((unsigned char*)"ff_memalloc failed!", io->stdErr); \
+                                            return ERR_FAILED; \
+                                          } \
+                                        }
+#define McuFatFS_FREE_NAMEBUF(name)     ff_memfree(name)
+
+#else
+  #error Wrong LFN configuration.
+#endif
+
+static void FatFsFResultMsg(uint8_t *msg, McuFatFS_FRESULT errNo, const McuShell_StdIOType *io) {
+  unsigned char buf[sizeof("1234")];
+
+  McuShell_SendStr((unsigned char*)"ERROR: ", io->stdErr);
+  McuShell_SendStr(msg, io->stdErr);
+  McuShell_SendStr((unsigned char*)": (", io->stdErr);
+  McuUtility_Num16sToStr(buf, sizeof(buf), (int16_t)errNo);
+  McuShell_SendStr(buf, io->stdErr);
+  McuShell_SendStr((unsigned char*)") ", io->stdErr);
+  McuShell_SendStr((unsigned char*)McuFatFS_errFResultMsg((int)errNo), io->stdErr);
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdErr);
+}
+
+static void FatFsDResultMsg(uint8_t *msg, McuFatFS_DRESULT errNo, const McuShell_StdIOType *io) {
+  unsigned char buf[sizeof("1234")];
+
+  McuShell_SendStr((unsigned char*)"ERROR: ", io->stdErr);
+  McuShell_SendStr(msg, io->stdErr);
+  McuShell_SendStr((unsigned char*)": (", io->stdErr);
+  McuUtility_Num16sToStr(buf, sizeof(buf), (int16_t)errNo);
+  McuShell_SendStr(buf, io->stdErr);
+  McuShell_SendStr((unsigned char*)") ", io->stdErr);
+  McuShell_SendStr((unsigned char*)McuFatFS_errDResultMsg((int)errNo), io->stdErr);
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdErr);
+}
+
+static void CmdUsageError(const unsigned char *cmd, uint8_t *usage, const McuShell_StdIOType *io) {
+  McuShell_SendStr((unsigned char*)"*** error while reading command: ", io->stdErr);
+  McuShell_SendStr(cmd, io->stdErr);
+  McuShell_SendStr((unsigned char*)"\r\n*** Usage: ", io->stdErr);
+  McuShell_SendStr((unsigned char*)usage, io->stdErr);
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdErr);
+}
+
+static void PrintInASCII(uint8_t *buf, size_t bufSize, size_t LineLen, uint8_t nonASCIIchar, uint8_t fillChar, const McuShell_StdIOType *io) {
+  unsigned int i;
+  uint8_t ch;
+
+  /* print in ASCII */
+  McuShell_SendCh(' ', io->stdOut);
+  for (i=0; i<bufSize; i++) {
+    ch = buf[i];
+    if (ch >= ' ' && ch <= 0x7f) {
+      McuShell_SendCh(ch, io->stdOut);
+    } else {
+      McuShell_SendCh(nonASCIIchar, io->stdOut); /* place holder */
+    }
+  }
+  for (/*empty*/; i<LineLen; i++) { /* fill up line */
+    McuShell_SendCh(fillChar, io->stdOut);
+  }
+}
+
+/*!
+ * \brief Writes a directory listing of the given path
+ * \param[in] dirPathPtr Pointer to a directory path string. Pass "\\" for the root directory
+ * \param[in] io Callback to write directory output
+ * \return Error code, otherwise ERR_OK
+ */
+static uint8_t PrintDir(const uint8_t *dirPathPtr, const McuShell_StdIOType *io) {
+  McuFatFS_FILINFO fInfo;
+  McuFatFS_FRESULT fres;
+  uint32_t p1;
+  UINT s1, s2;
+  McuFatFS_DIR dir;  /* Directory object */
+  uint8_t buf[sizeof("yyyy-mm-dd hh:ss")+1];
+#if !McuFatFS_FS_READONLY
+  McuFatFS_FATFS *fs;
+#endif
+
+  McuShell_SendStr((unsigned char*)"Directory of ", io->stdOut);
+  McuShell_SendStr(dirPathPtr, io->stdOut);
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  fres = McuFatFS_f_opendir(&dir, (const TCHAR*)dirPathPtr);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"opendir failed", fres, io);
+    return ERR_FAULT;
+  }
+  p1 = s1 = s2 = 0;
+  for(;;) {
+    fres = McuFatFS_readdir(&dir, &fInfo);
+    if (fres != FR_OK) {
+      FatFsFResultMsg((unsigned char*)"readdir failed", fres, io);
+      break;
+    }
+    if (!fInfo.fname[0]) { /* end of directory list */
+      break;
+    }
+    /* file attributes */
+    if (fInfo.fattrib & AM_DIR) { /* directory */
+      s2++;
+      io->stdOut('D');
+    } else {
+      s1++;
+      p1 += fInfo.fsize;
+      io->stdOut('-');
+    }
+    if (fInfo.fattrib & AM_RDO) { /* read only */
+      io->stdOut('R');
+    } else {
+      io->stdOut('-');
+    }
+    if (fInfo.fattrib & AM_HID) { /* hidden */
+      io->stdOut('H');
+    } else {
+      io->stdOut('-');
+    }
+    if (fInfo.fattrib & AM_SYS) { /* system */
+      io->stdOut('S');
+    } else {
+      io->stdOut('-');
+    }
+    if (fInfo.fattrib & AM_ARC) { /* archive */
+      io->stdOut('A');
+    } else {
+      io->stdOut('-');
+    }
+    io->stdOut(' ');
+    /* file date & time */
+    buf[0] = '\0';
+    McuUtility_strcatNum16sFormatted(buf, sizeof(buf), (int16_t)((fInfo.fdate >> 9) + 1980), ' ', 4); /* year */
+    McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"-");
+    McuUtility_strcatNum16sFormatted(buf, sizeof(buf), (int16_t)((fInfo.fdate >> 5) & 15), '0', 2); /* month */
+    McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"-");
+    McuUtility_strcatNum16sFormatted(buf, sizeof(buf), (int16_t)(fInfo.fdate & 31), '0', 2); /* day */
+    McuUtility_strcat(buf, sizeof(buf), (unsigned char*)" ");
+    McuUtility_strcatNum16sFormatted(buf, sizeof(buf), (int16_t)((fInfo.ftime >> 11)), '0', 2); /* hour */
+    McuUtility_strcat(buf, sizeof(buf), (unsigned char*)":");
+    McuUtility_strcatNum16sFormatted(buf, sizeof(buf), (int16_t)((fInfo.ftime >> 5) & 63), '0', 2); /* minute */
+    McuShell_SendStr(buf, io->stdOut);
+    io->stdOut(' ');
+    buf[0] = '\0';
+    /* file size */
+    McuUtility_strcatNum32uFormatted(buf, sizeof(buf), fInfo.fsize, ' ', 10); /* size */
+    McuShell_SendStr(buf, io->stdOut);
+    /* file name */
+    io->stdOut(' ');
+    McuShell_SendStr((unsigned char*)fInfo.fname, io->stdOut);
+#if McuFatFS_USE_LFN
+    io->stdOut(' ');
+    McuShell_SendStr((unsigned char*)fInfo.altname, io->stdOut);
+#endif
+    io->stdOut('\r');
+    io->stdOut('\n');
+  }
+  /* number of files and bytes used */
+  buf[0] = '\0';
+  McuUtility_strcatNum16u(buf, sizeof(buf), (uint16_t)s1);
+  McuShell_SendStr(buf, io->stdOut);
+  McuShell_SendStr((unsigned char*)" File(s), ", io->stdOut);
+  buf[0] = '\0';
+  McuUtility_strcatNum32u(buf, sizeof(buf), p1);
+  McuShell_SendStr(buf, io->stdOut);
+  McuShell_SendStr((unsigned char*)" bytes total\r\n", io->stdOut);
+  /* number of directories and number of free bytes */
+  buf[0] = '\0';
+  McuUtility_strcatNum16u(buf, sizeof(buf), (uint16_t)s2);
+  McuShell_SendStr(buf, io->stdOut);
+  McuShell_SendStr((unsigned char*)" Dir(s)", io->stdOut);
+#if !McuFatFS_FS_READONLY
+  /* number of free bytes */
+  fres = McuFatFS_getfree((const TCHAR*)dirPathPtr, &p1, &fs);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"getfree failed", fres, io);
+  } else {
+    io->stdOut(',');
+    io->stdOut(' ');
+    buf[0] = '\0';
+    McuUtility_strcatNum32s(buf, sizeof(buf), (long)(p1*fs->csize/2));
+    McuShell_SendStr(buf, io->stdOut);
+    McuShell_SendStr((unsigned char*)" KBytes free", io->stdOut);
+  }
+#endif
+  (void)McuFatFS_f_closedir(&dir); /* close directory */
+  io->stdOut('\r');
+  io->stdOut('\n');
+  return ERR_OK;
+}
+
+static uint8_t DirCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "dir" */
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (*(cmd+sizeof("dir")-1)== ' ') { /* space after "dir": read name */
+    if (McuUtility_ReadEscapedName(cmd+sizeof("dir"), McuFatFS_PTR_NAMEBUF(fileName),
+          McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+       )
+    {
+      /* ok, have now directory name */
+    } else {
+      McuShell_SendStr((unsigned char*)"reading directory name failed!\r\n", io->stdErr);
+      res = ERR_FAILED;
+    }
+  } else { /* use current directory */
+#if McuFatFS_FS_RPATH >= 2
+    McuFatFS_FRESULT fres;
+    fres = McuFatFS_getcwd((TCHAR*)McuFatFS_PTR_NAMEBUF(fileName), McuFatFS_SIZE_NAMEBUF(fileName));
+    if(fres!=FR_OK) {
+      FatFsFResultMsg((unsigned char*)"getcwd failed", fres, io);
+      res = ERR_FAILED;
+    } else {
+      /* ok, have now directory name */
+    }
+#else
+    McuUtility_strcpy(McuFatFS_PTR_NAMEBUF(fileName), McuFatFS_SIZE_NAMEBUF(fileName), (unsigned char*)"\\"); /* use root */
+#endif
+  }
+  if (res == ERR_OK) {
+    res = McuFatFS_PrintDirectory(McuFatFS_PTR_NAMEBUF(fileName), io);
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+}
+
+static uint8_t CopyCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "copy" */
+  uint8_t res = ERR_OK;
+  size_t lenRead;
+  McuFatFS_DEF_NAMEBUF(fileName);
+  McuFatFS_DEF_NAMEBUF(fileName2);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  McuFatFS_INIT_NAMEBUF(fileName2);
+  if (   (McuUtility_ReadEscapedName(cmd+sizeof("copy"), McuFatFS_PTR_NAMEBUF(fileName),
+          McuFatFS_SIZE_NAMEBUF(fileName), &lenRead, NULL, NULL)==ERR_OK)
+      && *(cmd+sizeof("copy")+lenRead)==' '
+      && (McuUtility_ReadEscapedName(cmd+sizeof("copy")+lenRead+1, McuFatFS_PTR_NAMEBUF(fileName2),
+          McuFatFS_SIZE_NAMEBUF(fileName2), NULL, NULL, NULL)==ERR_OK)
+     )
+  {
+    res = McuFatFS_CopyFile(McuFatFS_PTR_NAMEBUF(fileName), McuFatFS_PTR_NAMEBUF(fileName2), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"copy srcFileName dstFileName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  McuFatFS_FREE_NAMEBUF(fileName2);
+  return res;
+}
+
+static uint8_t DeleteCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "delete" */
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (McuUtility_ReadEscapedName(cmd+sizeof("delete"), McuFatFS_PTR_NAMEBUF(fileName),
+        McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+     )
+  {
+    res = McuFatFS_DeleteFile(McuFatFS_PTR_NAMEBUF(fileName), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"delete fileName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+}
+
+static uint8_t MkdirCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "mkdir" */
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (McuUtility_ReadEscapedName(cmd+sizeof("mkdir"), McuFatFS_PTR_NAMEBUF(fileName),
+        McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+     )
+  {
+    res = McuFatFS_MakeDirectory(McuFatFS_PTR_NAMEBUF(fileName), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"mkdir directoryName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+}
+
+static uint8_t RenameCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "rename" */
+  uint8_t res = ERR_OK;
+  size_t lenRead;
+  McuFatFS_DEF_NAMEBUF(fileName);
+  McuFatFS_DEF_NAMEBUF(fileName2);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  McuFatFS_INIT_NAMEBUF(fileName2);
+  if (   (McuUtility_ReadEscapedName(cmd+sizeof("rename"), McuFatFS_PTR_NAMEBUF(fileName),
+          McuFatFS_SIZE_NAMEBUF(fileName), &lenRead, NULL, NULL)==ERR_OK)
+      && *(cmd+sizeof("rename")+lenRead)==' '
+      && (McuUtility_ReadEscapedName(cmd+sizeof("rename")+lenRead+1,
+          McuFatFS_PTR_NAMEBUF(fileName2),
+          McuFatFS_SIZE_NAMEBUF(fileName2), NULL, NULL, NULL)==ERR_OK)
+     )
+  {
+    res = McuFatFS_RenameFile((unsigned char*)McuFatFS_PTR_NAMEBUF(fileName), (unsigned char*)McuFatFS_PTR_NAMEBUF(fileName2), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"rename srcFileName dstFileName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  McuFatFS_FREE_NAMEBUF(fileName2);
+  return res;
+}
+
+static uint8_t SectorCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "sector" */
+  uint8_t res;
+  uint32_t sectorNo;
+  const unsigned char *p = cmd+sizeof("printsector");
+
+  res = McuUtility_ScanDecimal32uNumber(&p, &sectorNo);
+  if (res == ERR_OK) { /* format fine */
+    res = McuFatFS_PrintSector(0, sectorNo, io);
+    if (res!=ERR_OK) {
+      return res;
+    }
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"printsector <number>", io);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+static uint8_t PrintCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "print" */
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (McuUtility_ReadEscapedName(cmd+sizeof("print"), McuFatFS_PTR_NAMEBUF(fileName),
+        McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+     )
+  {
+    res = McuFatFS_PrintFile(McuFatFS_PTR_NAMEBUF(fileName), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"print fileName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+}
+
+static uint8_t PrintHexCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "printhex" */
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (McuUtility_ReadEscapedName(cmd+sizeof("printhex"), McuFatFS_PTR_NAMEBUF(fileName),
+        McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+     )
+  {
+    res = McuFatFS_PrintHexFile(McuFatFS_PTR_NAMEBUF(fileName), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"printhex fileName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+}
+
+
+static uint8_t CdCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "cd" */
+#if McuFatFS_FS_RPATH > 0
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (*(cmd+sizeof("cd")-1)== ' ') { /* space after "cd": read name */
+    if (McuUtility_ReadEscapedName(cmd+sizeof("cd"), McuFatFS_PTR_NAMEBUF(fileName),
+          McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+       )
+    {
+      res = McuFatFS_ChangeDirectory(McuFatFS_PTR_NAMEBUF(fileName), io);
+    } else {
+      McuShell_SendStr((unsigned char*)"reading directory name failed!\r\n", io->stdErr);
+      res = ERR_FAILED;
+    }
+  } else { /* print current directory */
+#if McuFatFS_FS_RPATH >= 2
+    McuFatFS_FRESULT fres;
+
+    fres = McuFatFS_getcwd((TCHAR*)McuFatFS_PTR_NAMEBUF(fileName), McuFatFS_SIZE_NAMEBUF(fileName));
+    if(fres!=FR_OK) {
+      FatFsFResultMsg((unsigned char*)"getcwd failed", fres, io);
+      res = ERR_FAILED;
+    } else {
+      McuShell_SendStr(McuFatFS_PTR_NAMEBUF(fileName), io->stdOut);
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    }
+#else
+    McuUtility_strcpy(McuFatFS_PTR_NAMEBUF(fileName), McuFatFS_SIZE_NAMEBUF(fileName), (unsigned char*)"\\"); /* use root */
+#endif
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+#else
+  (void)cmd;
+  #warning "relative directories not enabled in FatFS!"
+  McuShell_SendStr((unsigned char*)"relative directories not available in file system\r\n", io->stdErr);
+  return ERR_FAILED;
+#endif
+}
+
+
+static uint8_t CreateCmd(const unsigned char *cmd, const McuShell_ConstStdIOType *io) {
+  /* precondition: cmd starts with "create" */
+  uint8_t res = ERR_OK;
+  McuFatFS_DEF_NAMEBUF(fileName);
+
+  McuFatFS_INIT_NAMEBUF(fileName);
+  if (McuUtility_ReadEscapedName(cmd+sizeof("create"), McuFatFS_PTR_NAMEBUF(fileName),
+        McuFatFS_SIZE_NAMEBUF(fileName), NULL, NULL, NULL)==ERR_OK
+     )
+  {
+    res = McuFatFS_CreateFile(McuFatFS_PTR_NAMEBUF(fileName), io);
+  } else {
+    CmdUsageError(cmd, (unsigned char*)"create fileName", io);
+    res = ERR_FAILED;
+  }
+  McuFatFS_FREE_NAMEBUF(fileName);
+  return res;
+}
+
+static uint8_t PrintStatus(const McuShell_StdIOType *io) {
+  McuShell_SendStatusStr((unsigned char*)"McuFatFS", (unsigned char*)"\r\n", io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"  present", McuFatFS_isDiskPresent((uint8_t*)"0")?(unsigned char*)"drive0: yes\r\n":(unsigned char*)"drive0: no\r\n", io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"  protected", McuFatFS_isWriteProtected((uint8_t*)"0")?(unsigned char*)"drive0: yes\r\n":(unsigned char*)"drive0: no\r\n", io->stdOut);
+  return ERR_OK;
+}
+
+static uint8_t PrintHelp(const McuShell_StdIOType *io) {
+  McuShell_SendHelpStr((unsigned char*)"McuFatFS", (unsigned char*)"Group of McuFatFS commands\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  cd [<directoryName>]", (const unsigned char*)"Change the current directory or display the name of the current directory\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  dir [<directoryName>]", (const unsigned char*)"Prints a directory\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  copy <src> <dst>", (const unsigned char*)"Copy a file\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  delete <filename>", (const unsigned char*)"Delete a file\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  create <filename>", (const unsigned char*)"Create a file\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  mkdir <directory>", (const unsigned char*)"Create a directory\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  rename <src> <dst>", (const unsigned char*)"Rename a file\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  print <filename>", (const unsigned char*)"Print a file\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  printhex <filename>", (const unsigned char*)"Print a file as hexdump\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  printsector <number>", (const unsigned char*)"Print disk sector\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  diskinfo", (const unsigned char*)"Print disk information\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  benchmark", (const unsigned char*)"Run disk benchmark\r\n", io->stdOut);
+  return ERR_OK;
+}
+
 
 /* Unicode support functions */
 #if _USE_LFN  /* Unicode - OEM code conversion */
@@ -1180,6 +1689,1036 @@ uint32_t get_fattime(void) {
 }
 #endif /*!_FS_READONLY*/
 
+
+/*
+** ===================================================================
+**     Method      :  ParseCommand (component FAT_FileSystem)
+**
+**     Description :
+**         Shell Command Line parser. This method is enabled/disabled
+**         depending on if you have the Shell enabled/disabled in the
+**         properties.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cmd             - Pointer to command string
+**       * handled         - Pointer to variable which tells if
+**                           the command has been handled or not
+**       * io              - Pointer to I/O structure
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuFatFS_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io)
+{
+  if (McuUtility_strcmp((char*)cmd, McuShell_CMD_HELP)==0 || McuUtility_strcmp((char*)cmd, "McuFatFS help")==0) {
+    *handled = TRUE;
+    return PrintHelp(io);
+  } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuFatFS status")==0)) {
+    *handled = TRUE;
+    return PrintStatus(io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS cd", sizeof("McuFatFS cd")-1)==0) {
+    *handled = TRUE;
+    return CdCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS dir", sizeof("McuFatFS dir")-1)==0) {
+    *handled = TRUE;
+    return DirCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS copy ", sizeof("McuFatFS copy ")-1)==0) {
+    *handled = TRUE;
+    return CopyCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS delete ", sizeof("McuFatFS delete ")-1)==0) {
+    *handled = TRUE;
+    return DeleteCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS create ", sizeof("McuFatFS create ")-1)==0) {
+    *handled = TRUE;
+    return CreateCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS mkdir ", sizeof("McuFatFS mkdir ")-1)==0) {
+    *handled = TRUE;
+    return MkdirCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS rename ", sizeof("McuFatFS rename ")-1)==0) {
+    *handled = TRUE;
+    return RenameCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS printhex ", sizeof("McuFatFS printhex ")-1)==0) {
+    *handled = TRUE;
+    return PrintHexCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS printsector ", sizeof("McuFatFS printsector ")-1)==0) {
+    *handled = TRUE;
+    return SectorCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFatFS print ", sizeof("McuFatFS print ")-1)==0) {
+    *handled = TRUE;
+    return PrintCmd(cmd+sizeof("McuFatFS"), io);
+  } else if (McuUtility_strcmp((char*)cmd, "McuFatFS diskinfo")==0) {
+    *handled = TRUE;
+    return McuFatFS_PrintDiskInfo(NULL, io);
+  } else if (McuUtility_strcmp((char*)cmd, "McuFatFS benchmark")==0) {
+    *handled = TRUE;
+    return McuFatFS_Benchmark(io);
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  CheckCardPresence (component FAT_FileSystem)
+**
+**     Description :
+**         This method checks if card has been inserted or removed and
+**         mounts or unmounts the file system.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cardMounted     - Pointer to initialize this
+**                           variable to FALSE on the caller side the
+**                           first time.
+**       * drive           - drive string, or ""
+**       * fileSystemObject - Pointer to file
+**                           system object
+**         io              - Pointer to io handler to be used. Can be
+**                           NULL, then no messages are written.
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuFatFS_CheckCardPresence(bool *cardMounted, uint8_t *drive, FATFS *fileSystemObject, const McuShell_StdIOType *io)
+{
+  if (drive==NULL) { /* backward compatibility with drive numbers before (which could be zero or NULL) */
+    drive = (unsigned char*)"";
+  }
+  if (!(*cardMounted) && McuFatFS_isDiskPresent(drive)) {
+    /* card inserted */
+    if (McuFatFS_MountFileSystem(fileSystemObject, drive, io)==ERR_OK) {
+      *cardMounted = TRUE;
+      if (io!=NULL) {
+        McuShell_SendStr((unsigned char*)"File System mounted\r\n", io->stdOut);
+      }
+    } else {
+      return ERR_FAILED;
+    }
+  } else if (*cardMounted && !McuFatFS_isDiskPresent(drive)) {
+    /* card removed */
+    if (McuFatFS_UnMountFileSystem(drive, io)==ERR_OK) {
+      *cardMounted = FALSE;
+      if (io!=NULL) {
+        McuShell_SendStr((unsigned char*)"File System unmounted\r\n", io->stdOut);
+      }
+    } else {
+      return ERR_FAILED;
+    }
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  MountFileSystem (component FAT_FileSystem)
+**
+**     Description :
+**         Mounts a file system
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * fileSystemObject - Pointer to a
+**                           file system object
+**       * logicalDrive    - Pointer to the drive
+**                           string, or ""
+**       * io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Mounts the file system for a drive
+ * \param[in] fileSystemObject Pointer to the file system object
+ * \param[in] logicalDrive The drive number to be used
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_MountFileSystem(FATFS *fileSystemObject, uint8_t *logicalDrive, const McuShell_StdIOType *io)
+{
+  McuFatFS_FRESULT fres;
+
+  fres = McuFatFS_mount(fileSystemObject, (const TCHAR*)logicalDrive, 0);
+  if (fres != FR_OK) {
+    if (io!=NULL) {
+      FatFsFResultMsg((unsigned char*)"mount failed", fres, io);
+    }
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  UnMountFileSystem (component FAT_FileSystem)
+**
+**     Description :
+**         Mounts a file system
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * logicalDrive    - Pointer to the drive
+**                           string, or ""
+**       * io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Unmounts the file system for a drive
+ * \param[in] logicalDrive The drive number to be used
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_UnMountFileSystem(uint8_t *logicalDrive, const McuShell_StdIOType *io)
+{
+  McuFatFS_FRESULT fres;
+
+  fres = McuFatFS_mount(NULL, (const TCHAR*)logicalDrive, 0);
+  if (fres != FR_OK) {
+    if (io!=NULL) {
+      FatFsFResultMsg((unsigned char*)"unmount failed", fres, io);
+    }
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  PrintDirectory (component FAT_FileSystem)
+**
+**     Description :
+**         Prints a directory
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         dirName         - Directory folder to be printed
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Prints a directory listing
+ * \param[in] dirName Directory to be used
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_PrintDirectory(const uint8_t *dirName, const McuShell_StdIOType *io)
+{
+  uint8_t res;
+
+  res = PrintDir(dirName, io);
+  if (res != ERR_OK) {
+    McuShell_SendStr((unsigned char*)"PrintDir failed\r\n", io->stdErr);
+    return res;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  CopyFile (component FAT_FileSystem)
+**
+**     Description :
+**         Copy a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         srcFileName     - Source file name
+**         dstFileName     - Destination file name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Copy the source file to a destination file
+ * \param[in] srcFileName Source file name
+ * \param[in] dstFileName Destination file name
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_CopyFile(const uint8_t*srcFileName, const uint8_t *dstFileName, const McuShell_StdIOType *io)
+{
+#if !McuFatFS_FS_READONLY
+  McuFatFS_FIL fsrc, fdst;  /* file objects */
+  McuFatFS_FRESULT fres;
+  uint8_t buffer[32];   /* copy buffer */
+  UINT br, bw;          /* file read/write counters */
+  uint8_t res =  ERR_OK;
+
+  if (McuFatFS_isWriteProtected((uint8_t*)"")) {
+    McuShell_SendStr((unsigned char*)"disk is write protected!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  /* open source file */
+  fres = McuFatFS_open(&fsrc, (const TCHAR*)srcFileName, FA_OPEN_EXISTING | FA_READ);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"open source file failed", fres, io);
+    return ERR_FAILED;
+  }
+  /* create destination file */
+  fres = McuFatFS_open(&fdst, (const TCHAR*)dstFileName, FA_CREATE_ALWAYS | FA_WRITE);
+  if (fres != FR_OK) {
+    (void)McuFatFS_close(&fsrc); /* close the source file which we have open */
+    FatFsFResultMsg((unsigned char*)"open destination file failed", fres, io);
+    return ERR_FAILED;
+  }
+  /* now copy source to destination */
+  for (;;) {
+    fres = McuFatFS_read(&fsrc, buffer, sizeof(buffer), &br);
+    if (fres != FR_OK) {
+      FatFsFResultMsg((unsigned char*)"reading source file failed", fres, io);
+      res = ERR_FAILED;
+      break;
+    }
+    if (br == 0) { /* EOF */
+      break; /* get out of loop */
+    }
+    fres = McuFatFS_write(&fdst, buffer, br, &bw);
+    if (fres != FR_OK) {
+      FatFsFResultMsg((unsigned char*)"writing destination file failed", fres, io);
+      res = ERR_FAILED;
+      break;
+    }
+    if (bw < br) {
+      McuShell_SendStr((unsigned char*)"failed writing destination file, or disk full\r\n", io->stdErr);
+      res = ERR_FAILED;
+      break;
+    }
+  } /* for */
+  /* close all files */
+  fres = McuFatFS_close(&fsrc);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"closing source file failed", fres, io);
+    res = ERR_FAILED;
+  }
+  fres = McuFatFS_close(&fdst);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"closing destination file failed", fres, io);
+    res = ERR_FAILED;
+  }
+  return res;
+#else
+  (void)srcFileName; /* unused argument */
+  (void)dstFileName; /* unused argument */
+  McuShell_SendStr((unsigned char*)"File System is in Read-Only mode\r\n", io->stdErr);
+  return ERR_FAILED;
+#endif
+}
+
+/*
+** ===================================================================
+**     Method      :  DeleteFile (component FAT_FileSystem)
+**
+**     Description :
+**         Deletes a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Filename of file to be deleted
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Deletes a file
+ * \param[in] fileName Name of file to be deleted
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_DeleteFile(const uint8_t *fileName, const McuShell_StdIOType *io)
+{
+  McuFatFS_FRESULT fres;
+
+  if (McuFatFS_isWriteProtected((uint8_t*)"")) {
+    McuShell_SendStr((unsigned char*)"disk is write protected!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  fres = McuFatFS_unlink((const TCHAR*)fileName);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"unlink failed", fres, io);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  CreateFile (component FAT_FileSystem)
+**
+**     Description :
+**         Creates an empty file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Filename of file to be created
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuFatFS_CreateFile(const uint8_t *fileName, const McuShell_StdIOType *io)
+{
+  McuFatFS_FRESULT fres;
+  FIL fp;
+
+  if (McuFatFS_isWriteProtected((uint8_t*)"")) {
+    McuShell_SendStr((unsigned char*)"disk is write protected!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  fres = McuFatFS_open(&fp, (const TCHAR*)fileName, FA_CREATE_NEW);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"creating new file failed", fres, io);
+    return ERR_FAILED;
+  }
+  fres = McuFatFS_close(&fp);
+  if (fres != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"closing file failed", fres, io);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  PrintFile (component FAT_FileSystem)
+**
+**     Description :
+**         Prints the content of a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Name of file to be printed
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Print the content of a file
+ * \param[in] fileName Name of file to be printed
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_PrintFile(const uint8_t *fileName, const McuShell_StdIOType *io)
+{
+  McuFatFS_FIL file;
+  McuFatFS_FRESULT fres;
+  UINT nofRead = 0;
+  uint8_t buf[32];
+  uint8_t res = ERR_OK;
+
+  fres = McuFatFS_open(&file, (const TCHAR *)fileName, FA_READ);
+  if (fres == FR_OK) {
+    do {
+      nofRead = 0;
+      fres=McuFatFS_read(&file, buf, sizeof(buf)-1, &nofRead); /* read one byte less for zero byte */
+      if (fres != FR_OK) {
+        McuShell_SendStr((unsigned char*)"fread failed\r\n", io->stdErr);
+        res = ERR_FAILED;
+      } else {
+        buf[nofRead] = '\0'; /* terminate buffer */
+        McuShell_SendStr(buf, io->stdOut);
+      }
+    } while(nofRead>0 && fres==FR_OK);
+    fres=McuFatFS_close(&file);
+    if (fres != FR_OK) {
+      McuShell_SendStr((unsigned char*)"fclose failed\r\n", io->stdErr);
+      res = ERR_FAILED;
+    }
+  } else {
+    FatFsFResultMsg((unsigned char*)"open file failed", fres, io);
+    res = ERR_FAILED;
+  }
+  McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  return res;
+}
+
+/*
+** ===================================================================
+**     Method      :  PrintHexFile (component FAT_FileSystem)
+**
+**     Description :
+**         Prints the content of a file in hexadecimal format, useful
+**         for binary files.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         fileName        - Name of file to be printed
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuFatFS_PrintHexFile(const uint8_t *fileName, const McuShell_StdIOType *io)
+{
+  McuFatFS_FIL file;
+  McuFatFS_FRESULT fres;
+  UINT nofRead = 0;
+  #define PRINT_HEX_NOF_BYTES_PER_LINE 16
+  uint8_t filebuf[PRINT_HEX_NOF_BYTES_PER_LINE];
+  uint8_t buf[16];
+  uint8_t res = ERR_OK;
+  uint32_t address;
+  UINT i;
+
+  fres = McuFatFS_open(&file, (const TCHAR *)fileName, FA_READ);
+  if (fres == FR_OK) {
+    address = 0;
+    do {
+      nofRead = 0;
+      fres=McuFatFS_read(&file, filebuf, sizeof(filebuf), &nofRead); /* read one byte less for zero byte */
+      if (fres != FR_OK) {
+        McuShell_SendStr((unsigned char*)"fread failed\r\n", io->stdErr);
+        res = ERR_FAILED;
+      } else if (nofRead>0) {
+        for(i=0; i<nofRead; i++) {
+          if ((i%PRINT_HEX_NOF_BYTES_PER_LINE)==0) { /* new line to make things readable */
+            McuShell_SendStr((unsigned char*)"0x", io->stdOut);
+            buf[0] = '\0';
+            McuUtility_strcatNum32Hex(buf, sizeof(buf), address);
+            McuShell_SendStr(buf, io->stdOut);
+            McuShell_SendStr((unsigned char*)": ", io->stdOut);
+            address += PRINT_HEX_NOF_BYTES_PER_LINE;
+          }
+          buf[0] = '\0';
+          McuUtility_strcatNum8Hex(buf, sizeof(buf), filebuf[i]);
+          McuShell_SendStr(buf, io->stdOut);
+          McuShell_SendStr((unsigned char*)" ", io->stdOut);
+        }
+        /* fill up line if not a full line */
+        for (/*empty*/; i<PRINT_HEX_NOF_BYTES_PER_LINE; i++) {
+          McuShell_SendStr((unsigned char*)"-- ", io->stdOut);
+        }
+        /* print in ASCII */
+        PrintInASCII(&filebuf[0], nofRead, PRINT_HEX_NOF_BYTES_PER_LINE, '.', '-', io);
+        McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+      }
+    } while(nofRead>0 && fres==FR_OK);
+    fres=McuFatFS_close(&file);
+    if (fres != FR_OK) {
+      McuShell_SendStr((unsigned char*)"fclose failed\r\n", io->stdErr);
+      res = ERR_FAILED;
+    }
+  } else {
+    FatFsFResultMsg((unsigned char*)"open file failed\r\n", fres, io);
+    res = ERR_FAILED;
+  }
+  return res;
+}
+
+/*
+** ===================================================================
+**     Method      :  MakeDirectory (component FAT_FileSystem)
+**
+**     Description :
+**         Creates a directory
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         dirName         - Directory name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Creates a new directory
+ * \param[in] dirName Name of the directory to be created
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_MakeDirectory(const uint8_t *dirName, const McuShell_StdIOType *io)
+{
+  McuFatFS_FRESULT fres;
+
+  if (McuFatFS_isWriteProtected((uint8_t*)"")) {
+    McuShell_SendStr((unsigned char*)"disk is write protected!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  fres = McuFatFS_mkdir((const TCHAR*)dirName);
+  if(fres!=FR_OK) {
+    FatFsFResultMsg((unsigned char*)"mkdir failed", fres, io);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  ChangeDirectory (component FAT_FileSystem)
+**
+**     Description :
+**         Changes to a directory
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         dirName         - Directory name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuFatFS_ChangeDirectory(const uint8_t *dirName, const McuShell_StdIOType *io)
+{
+#if McuFatFS_FS_RPATH > 0
+  McuFatFS_FRESULT fres;
+
+  if ((fres=McuFatFS_chdir((const TCHAR*)dirName)) != FR_OK) {
+    FatFsFResultMsg((unsigned char*)"chdir failed", fres, io);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+#else
+  (void)dirName;
+  #warning "relative directories not enabled in FatFS!"
+  McuShell_SendStr((unsigned char*)"cd command not available as relative directories not enable in file system\r\n", io->stdErr);
+  return ERR_FAILED;
+#endif
+}
+
+/*
+** ===================================================================
+**     Method      :  RenameFile (component FAT_FileSystem)
+**
+**     Description :
+**         Renames a file
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         srcFileName     - Source file name
+**         dstFileName     - Destination file name
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Renames a file
+ * \param[in] srcFileName Source/existing file name
+ * \param[in] dstFileName Destination/new file name
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_RenameFile(const uint8_t *srcFileName, const uint8_t *dstFileName, const McuShell_StdIOType *io)
+{
+  McuFatFS_FRESULT fres;
+
+  if (McuFatFS_isWriteProtected((uint8_t*)"")) {
+    McuShell_SendStr((unsigned char*)"disk is write protected!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  fres = McuFatFS_rename((const TCHAR*)srcFileName, (const TCHAR*)dstFileName);
+  if(fres!=FR_OK) {
+    FatFsFResultMsg((unsigned char*)"rename failed", fres, io);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  PrintSector (component FAT_FileSystem)
+**
+**     Description :
+**         Prints information about the current disk
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         drive           - drive number, starting with zero
+**         sectorNo        - sector number
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+#if McuFatFS_USE_RTOS_DYNAMIC_MEMORY
+  #define SECTOR_BUF_SIZE0   McuSDCard_BLOCK_SIZE
+#else
+  static uint8_t print_buf0[McuSDCard_BLOCK_SIZE];
+  #define SECTOR_BUF_SIZE0   sizeof(print_buf0)
+#endif
+uint8_t McuFatFS_PrintSector(uint8_t drive, uint32_t sectorNo, const McuShell_StdIOType *io)
+{
+  #define PRINT_SECTOR_NOF_BYTES_PER_LINE  16
+  uint16_t i;
+  unsigned char buf[8];
+  McuFatFS_DRESULT dres;
+#if McuFatFS_USE_RTOS_DYNAMIC_MEMORY
+  #if configFRTOS_MEMORY_SCHEME==1 /* this scheme does not allow deallocation of memory */
+    static unsigned char *print_buf0=NULL; /* use global buffer pointer, allocated only once, and not deallocated! */
+  #else
+    unsigned char *print_buf0;
+  #endif
+#endif
+
+  if ((disk_initialize(drive)&STA_NOINIT)!=(DSTATUS)RES_OK) {
+    McuShell_SendStr((unsigned char*)"disk initialize failed\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+#if McuFatFS_USE_RTOS_DYNAMIC_MEMORY
+  #if configFRTOS_MEMORY_SCHEME==1 /* this scheme does not allow deallocation of memory */
+  if (print_buf0==NULL) { /* only if not allocated yet */
+    print_buf0 = pvPortMalloc(SECTOR_BUF_SIZE0);
+  }
+  #else
+  print_buf0 = pvPortMalloc(SECTOR_BUF_SIZE0);
+  #endif
+  if (print_buf0 == NULL) {
+    McuShell_SendStr((unsigned char*)"allocating memory failed\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+#endif
+  dres = disk_read(drive, &print_buf0[0], sectorNo, 1);
+  if (dres==RES_OK) { /* read one sector */
+    McuShell_SendStr((unsigned char*)"dumping disk sector: 0x", io->stdOut);
+    buf[0] = '\0';
+    McuUtility_strcatNum32Hex(buf, sizeof(buf), sectorNo);
+    McuShell_SendStr(buf, io->stdOut);
+    McuShell_SendStr((unsigned char*)", sector size ", io->stdOut);
+    McuShell_SendNum32u(SECTOR_BUF_SIZE0, io->stdOut);
+    for(i=0; i<SECTOR_BUF_SIZE0; i++) {
+      if ((i%PRINT_SECTOR_NOF_BYTES_PER_LINE)==0) { /* new line to make things readable */
+        if (i!=0) { /* not for first line */
+          PrintInASCII(&print_buf0[i-PRINT_SECTOR_NOF_BYTES_PER_LINE], PRINT_SECTOR_NOF_BYTES_PER_LINE, PRINT_SECTOR_NOF_BYTES_PER_LINE, '.', '-', io);
+        }
+        McuShell_SendStr((unsigned char*)"\r\n0x", io->stdOut);
+        buf[0] = '\0';
+        McuUtility_strcatNum16Hex(buf, sizeof(buf), i);
+        McuShell_SendStr(buf, io->stdOut);
+        McuShell_SendStr((unsigned char*)": ", io->stdOut);
+      }
+      buf[0] = '\0';
+      McuUtility_strcatNum8Hex(buf, sizeof(buf), (uint8_t)print_buf0[i]);
+      McuShell_SendStr(buf, io->stdOut);
+      McuShell_SendStr((unsigned char*)" ", io->stdOut);
+    }
+    PrintInASCII(&print_buf0[i-PRINT_SECTOR_NOF_BYTES_PER_LINE], PRINT_SECTOR_NOF_BYTES_PER_LINE, PRINT_SECTOR_NOF_BYTES_PER_LINE, '.', '-', io);
+    McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  } else {
+    FatFsDResultMsg((unsigned char*)"disk_read failed", dres, io);
+  }
+#if McuFatFS_USE_RTOS_DYNAMIC_MEMORY
+  #if configFRTOS_MEMORY_SCHEME!=1 /* this scheme does not allow deallocation of memory */
+    vPortFree(print_buf0);
+  #endif
+#endif
+  if (dres==RES_OK) {
+    return ERR_OK;
+  } else {
+    return ERR_FAILED;
+  }
+}
+
+/*
+** ===================================================================
+**     Method      :  PrintDiskInfo (component FAT_FileSystem)
+**
+**     Description :
+**         Prints information about the current disk
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * drive           - Drive string, can be NULL or e.g.
+**                           pointing to "0"
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*!
+ * \brief Prints information about the disk
+ * \param[in] drive Disk drive number, starting with zero
+ * \param[in] io IO handler for output
+ * \return Error code, ERR_OK for success.
+ */
+uint8_t McuFatFS_PrintDiskInfo(uint8_t *drive, const McuShell_StdIOType *io)
+{
+  /* see for details:
+   * http://www.retroleum.co.uk/electronics-articles/basic-mmc-card-access/
+   */
+  uint8_t buf[8];
+  int32_t val32;
+  int16_t val16;
+  int8_t val8;
+  uint8_t buff[64];
+  uint8_t driverVersion; /* 0: SPI, 1: SDHC_LDD */
+
+  if (!McuFatFS_isDiskPresent(drive)) {
+    McuShell_SendStr((unsigned char*)"disk not present!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  if ((disk_initialize(StrToDriveNumber(drive))&STA_NOINIT)!=0) {
+    McuShell_SendStr((unsigned char*)"disk initialize failed!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  if (disk_ioctl(0, MMC_GET_DRIVER_VERSION, &driverVersion)!=RES_OK) {
+    McuShell_SendStr((unsigned char*)"failed identification of driver version\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  McuShell_SendStatusStr((unsigned char*)"Card type", (unsigned char*)"", io->stdOut);
+  if (disk_ioctl(0, MMC_GET_TYPE, &val8)==RES_OK) {
+    if (val8&CT_SD1) {
+      McuShell_SendStr((unsigned char*)"SD1 ", io->stdOut);
+    }
+    if (val8&CT_SD2) {
+      McuShell_SendStr((unsigned char*)"SD2 ", io->stdOut);
+    }
+    if (val8&CT_BLOCK) {
+      McuShell_SendStr((unsigned char*)"BLOCK ", io->stdOut);
+    }
+    if (val8&CT_MMC) {
+      McuShell_SendStr((unsigned char*)"MMC ", io->stdOut);
+    }
+    if (val8&CT_SDC) {
+      McuShell_SendStr((unsigned char*)"SDC ", io->stdOut);
+    }
+    if (val8&CT_ATA) {
+      McuShell_SendStr((unsigned char*)"ATA ", io->stdOut);
+    }
+    McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  } else {
+    McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+  }
+  if (driverVersion==0) { /* only SPI cards implement this */
+    McuShell_SendStatusStr((unsigned char*)"SDC version", (unsigned char*)"", io->stdOut);
+    if (disk_ioctl(0, MMC_GET_SDC_VERSION, &val8)==RES_OK) {
+      if (val8==1) {
+        McuShell_SendStr((unsigned char*)"SDC ver 1.XX or MMC\r\n", io->stdOut);
+      } else if (val8==2) {
+        McuShell_SendStr((unsigned char*)"SDC ver 2.00\r\n", io->stdOut);
+      } else {
+        McuShell_SendStr((unsigned char*)"unknown\r\n", io->stdOut);
+      }
+    } else {
+      McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+    }
+  }
+  McuShell_SendStatusStr((unsigned char*)"Sector count", (unsigned char*)"", io->stdOut);
+  if (disk_ioctl(0, GET_SECTOR_COUNT, &val32)==RES_OK) {
+    McuUtility_Num32sToStr(buf, sizeof(buf), val32);
+    McuShell_SendStr(buf, io->stdOut);
+    McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  } else {
+    McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+  }
+  McuShell_SendStatusStr((unsigned char*)"Sector size", (unsigned char*)"", io->stdOut);
+  if (disk_ioctl(0, GET_SECTOR_SIZE, &val16)==RES_OK) {
+    McuUtility_Num16sToStr(buf, sizeof(buf), val16);
+    McuShell_SendStr(buf, io->stdOut);
+    McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  } else {
+    McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+  }
+  McuShell_SendStatusStr((unsigned char*)"READ_BL_LEN", (unsigned char*)"", io->stdOut);
+  if (disk_ioctl(0, MMC_GET_READ_BL_LEN, &val16)==RES_OK) {
+    McuUtility_Num16sToStr(buf, sizeof(buf), val16);
+    McuShell_SendStr(buf, io->stdOut);
+    McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+  } else {
+    McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+  }
+  if (driverVersion==0) { /* only SPI cards implement this */
+    McuShell_SendStatusStr((unsigned char*)"Block size", (unsigned char*)"", io->stdOut);
+    if (disk_ioctl(0, GET_BLOCK_SIZE, &val32)==RES_OK) {
+      McuUtility_Num32sToStr(buf, sizeof(buf), val32);
+      McuShell_SendStr(buf, io->stdOut);
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    } else {
+      McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+    }
+    McuShell_SendStatusStr((unsigned char*)"CSD", (unsigned char*)"", io->stdOut);
+    if (disk_ioctl(0, MMC_GET_CSD, &buff[0])==RES_OK) {
+      for(val8=0; val8<16; val8++) {
+        buf[0] = '\0';
+        McuUtility_strcatNum8Hex(buf, sizeof(buf), (uint8_t)buff[val8]);
+        McuShell_SendStr(buf, io->stdOut);
+        McuShell_SendStr((unsigned char*)" ", io->stdOut);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    } else {
+      McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+    }
+    McuShell_SendStatusStr((unsigned char*)"CID", (unsigned char*)"", io->stdOut);
+    if (disk_ioctl(0, MMC_GET_CID, &buff[0])==RES_OK) {
+      for(val8=0; val8<16; val8++) {
+        buf[0] = '\0';
+        McuUtility_strcatNum8Hex(buf, sizeof(buf), (uint8_t)buff[val8]);
+        McuShell_SendStr(buf, io->stdOut);
+        McuShell_SendStr((unsigned char*)" ", io->stdOut);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n               Manufacturer ", io->stdOut);
+      for(val8=3; val8<=8; val8++) {
+        io->stdOut(buff[val8]);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n               Serial Number ", io->stdOut);
+      buf[0] = '\0';
+      McuUtility_strcatNum32Hex(buf, sizeof(buf), (uint32_t)((buff[0xa]<<24)|(buff[0xb]<<16)|(buff[0xc]<<8)|buff[0xd]));
+      McuShell_SendStr(buf, io->stdOut);
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    } else {
+      McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+    }
+    McuShell_SendStatusStr((unsigned char*)"OCR", (unsigned char*)"", io->stdOut);
+    if (disk_ioctl(0, MMC_GET_OCR, &buff[0])==RES_OK) {
+      for(val8=0; val8<4; val8++) {
+        buf[0] = '\0';
+        McuUtility_strcatNum8Hex(buf, sizeof(buf), (uint8_t)buff[val8]);
+        McuShell_SendStr(buf, io->stdOut);
+        McuShell_SendStr((unsigned char*)" ", io->stdOut);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    } else {
+      McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+    }
+    McuShell_SendStatusStr((unsigned char*)"SD Status", (unsigned char*)"", io->stdOut);
+    if (disk_ioctl(0, MMC_GET_SDSTAT, &buff[0])==RES_OK) {
+      for(val8=0; val8<64; val8++) {
+        buf[0] = '\0';
+        if (val8!=0 && (val8%16)==0) { /* new line to make things readable */
+          McuShell_SendStr((unsigned char*)"\r\n               ", io->stdOut);
+        }
+        McuUtility_strcatNum8Hex(buf, sizeof(buf), (uint8_t)buff[val8]);
+       McuShell_SendStr(buf, io->stdOut);
+       McuShell_SendStr((unsigned char*)" ", io->stdOut);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    } else {
+      McuShell_SendStr((unsigned char*)"ERROR\r\n", io->stdOut);
+    }
+  }
+  if (driverVersion==1) { /* only LLD_SDHD cards implement this */
+    buff[1] = sizeof(buf)-2; /* size of buffer */
+    buff[0] = MMC_GET_LLD_CMD_HIGH_CAPACITY; /* cmd */
+    if (disk_ioctl(0, MMC_GET_LLD_INFO, &buff[0])==RES_OK) {
+      McuShell_SendStatusStr((unsigned char*)"High capacity", (unsigned char*)(buff[2]!=0?"yes\r\n":"no\r\n"), io->stdOut);
+    }
+    buff[0] = MMC_GET_LLD_CMD_HIGH_SPEED; /* cmd */
+    if (disk_ioctl(0, MMC_GET_LLD_INFO, &buff[0])==RES_OK) {
+      McuShell_SendStatusStr((unsigned char*)"High speed", (unsigned char*)(buff[2]!=0?"yes\r\n":"no\r\n"), io->stdOut);
+    }
+    buff[0] = MMC_GET_LLD_CMD_LOW_VOLTAGE; /* cmd */
+    if (disk_ioctl(0, MMC_GET_LLD_INFO, &buff[0])==RES_OK) {
+      McuShell_SendStatusStr((unsigned char*)"Low voltage", (unsigned char*)(buff[2]!=0?"yes\r\n":"no\r\n"), io->stdOut);
+    }
+    buff[0] = MMC_GET_LLD_CMD_DATA_WIDTHS; /* cmd */
+    if (disk_ioctl(0, MMC_GET_LLD_INFO, &buff[0])==RES_OK) {
+      McuShell_SendStatusStr((unsigned char*)"Data widths", (unsigned char*)"", io->stdOut);
+      if (buff[2]&0x1) {
+        McuShell_SendStr((unsigned char*)"1 ", io->stdOut);
+      }
+      if (buff[2]&0x2) {
+        McuShell_SendStr((unsigned char*)"4 ", io->stdOut);
+      }
+      if (buff[2]&0x4) {
+        McuShell_SendStr((unsigned char*)"8 ", io->stdOut);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    }
+    buff[0] = MMC_GET_LLD_CMD_OPERATIONS; /* cmd */
+    if (disk_ioctl(0, MMC_GET_LLD_INFO, &buff[0])==RES_OK) {
+      McuShell_SendStatusStr((unsigned char*)"Operations", (unsigned char*)"", io->stdOut);
+      if (buff[2]&0x1) {
+        McuShell_SendStr((unsigned char*)"BlockRead ", io->stdOut);
+      }
+      if (buff[2]&0x2) {
+        McuShell_SendStr((unsigned char*)"BlockWrite ", io->stdOut);
+      }
+      if (buff[2]&0x4) {
+        McuShell_SendStr((unsigned char*)"BlockErase ", io->stdOut);
+      }
+      if (buff[2]&0x8) {
+        McuShell_SendStr((unsigned char*)"WriteProtect ", io->stdOut);
+      }
+      if (buff[2]&0x10) {
+        McuShell_SendStr((unsigned char*)"I/O ", io->stdOut);
+      }
+      McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
+    }
+  }
+  return ERR_OK;
+}
+
+/*
+** ===================================================================
+**     Method      :  Benchmark (component FAT_FileSystem)
+**
+**     Description :
+**         Performs a disk benchmark
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         io              - Pointer to I/O handler
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+/*! \brief Simple benchmark function: first we are going to write a file, then we will copy it */
+uint8_t McuFatFS_Benchmark(const McuShell_StdIOType *io)
+{
+  static FIL fp;
+  uint16_t i;
+  UINT bw;
+  uint8_t read_buf[10];
+  TIMEREC time, startTime;
+  int32_t start_mseconds, mseconds;
+
+  if (McuFatFS_isWriteProtected((uint8_t*)"")) {
+    McuShell_SendStr((unsigned char*)"disk is write protected!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  /* write benchmark */
+  McuShell_SendStr((const unsigned char*)"Benchmark: write/copy/read a 100kB file:\r\n", io->stdOut);
+  McuShell_SendStr((const unsigned char*)"Delete existing benchmark files...\r\n", io->stdOut);
+  (void)McuFatFS_DeleteFile((const unsigned char*)"./bench.txt", io);
+  (void)McuFatFS_DeleteFile((const unsigned char*)"./copy.txt", io);
+
+  McuShell_SendStr((const unsigned char*)"Create benchmark file...\r\n", io->stdOut);
+  (void)McuTimeDate_GetTime(&startTime);
+  if (McuFatFS_open(&fp, (const TCHAR*)"./bench.txt", FA_CREATE_ALWAYS|FA_WRITE)!=FR_OK) {
+    McuShell_SendStr((const unsigned char*)"*** Failed opening benchmark file!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  for(i=0;i<10240;i++) {
+    if (McuFatFS_write(&fp, "benchmark ", sizeof("benchmark ")-1, &bw)!=FR_OK) {
+      McuShell_SendStr((const unsigned char*)"*** Failed writing file!\r\n", io->stdErr);
+      (void)McuFatFS_close(&fp);
+      return ERR_FAILED;
+    }
+  }
+  (void)McuFatFS_close(&fp);
+  (void)McuTimeDate_GetTime(&time);
+  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000 + startTime.Sec100*10;
+  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000 + time.Sec100*10 - start_mseconds;
+  McuShell_SendNum32s(mseconds, io->stdOut);
+  McuShell_SendStr((const unsigned char*)" ms for writing (", io->stdOut);
+  McuShell_SendNum32s((100*1000)/mseconds, io->stdOut);
+  McuShell_SendStr((const unsigned char*)" kB/s)\r\n", io->stdOut);
+
+  /* read benchmark */
+  McuShell_SendStr((const unsigned char*)"Read 100kB benchmark file...\r\n", io->stdOut);
+  (void)McuTimeDate_GetTime(&startTime);
+  if (McuFatFS_open(&fp, (const TCHAR*)"./bench.txt", FA_READ)!=FR_OK) {
+    McuShell_SendStr((const unsigned char*)"*** Failed opening benchmark file!\r\n", io->stdErr);
+    return ERR_FAILED;
+  }
+  for(i=0;i<10240;i++) {
+    if (McuFatFS_read(&fp, &read_buf[0], sizeof(read_buf), &bw)!=FR_OK) {
+      McuShell_SendStr((const unsigned char*)"*** Failed reading file!\r\n", io->stdErr);
+      (void)McuFatFS_close(&fp);
+      return ERR_FAILED;
+    }
+  }
+  (void)McuFatFS_close(&fp);
+  (void)McuTimeDate_GetTime(&time);
+  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000 + startTime.Sec100*10;
+  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000 + time.Sec100*10 - start_mseconds;
+  McuShell_SendNum32s(mseconds, io->stdOut);
+  McuShell_SendStr((const unsigned char*)" ms for reading (", io->stdOut);
+  McuShell_SendNum32s((100*1000)/mseconds, io->stdOut);
+  McuShell_SendStr((const unsigned char*)" kB/s)\r\n", io->stdOut);
+
+  /* copy benchmark */
+  McuShell_SendStr((const unsigned char*)"Copy 100kB file...\r\n", io->stdOut);
+  (void)McuTimeDate_GetTime(&startTime);
+  (void)McuFatFS_CopyFile((const unsigned char*)"./bench.txt", (const unsigned char*)"./copy.txt", io);
+  (void)McuTimeDate_GetTime(&time);
+  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000 + startTime.Sec100*10;
+  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000 + time.Sec100*10 - start_mseconds;
+  McuShell_SendNum32s(mseconds, io->stdOut);
+  McuShell_SendStr((const unsigned char*)" ms for copy (", io->stdOut);
+  McuShell_SendNum32s((100*1000)/mseconds, io->stdOut);
+  McuShell_SendStr((const unsigned char*)" kB/s)\r\n", io->stdOut);
+  McuShell_SendStr((const unsigned char*)"done!\r\n", io->stdOut);
+  return ERR_OK;
+}
 
 /*
 ** ===================================================================
