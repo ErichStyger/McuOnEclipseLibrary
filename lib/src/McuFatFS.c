@@ -6,7 +6,7 @@
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.203, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-13, 14:18, # CodeGen: 338
+**     Date/Time   : 2018-07-13, 17:25, # CodeGen: 339
 **     Abstract    :
 **
 **     Settings    :
@@ -2675,8 +2675,16 @@ uint8_t McuFatFS_Benchmark(const McuShell_StdIOType *io)
   }
   (void)McuFatFS_close(&fp);
   (void)McuTimeDate_GetTime(&time);
-  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000 + startTime.Sec100*10;
-  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000 + time.Sec100*10 - start_mseconds;
+  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  + startTime.Sec100*10
+#endif
+  ;
+  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  + time.Sec100*10
+#endif
+  - start_mseconds;
   McuShell_SendNum32s(mseconds, io->stdOut);
   McuShell_SendStr((const unsigned char*)" ms for writing (", io->stdOut);
   McuShell_SendNum32s((100*1000)/mseconds, io->stdOut);
@@ -2698,8 +2706,16 @@ uint8_t McuFatFS_Benchmark(const McuShell_StdIOType *io)
   }
   (void)McuFatFS_close(&fp);
   (void)McuTimeDate_GetTime(&time);
-  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000 + startTime.Sec100*10;
-  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000 + time.Sec100*10 - start_mseconds;
+  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  + startTime.Sec100*10
+#endif
+  ;
+  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  + time.Sec100*10
+#endif
+  - start_mseconds;
   McuShell_SendNum32s(mseconds, io->stdOut);
   McuShell_SendStr((const unsigned char*)" ms for reading (", io->stdOut);
   McuShell_SendNum32s((100*1000)/mseconds, io->stdOut);
@@ -2710,8 +2726,16 @@ uint8_t McuFatFS_Benchmark(const McuShell_StdIOType *io)
   (void)McuTimeDate_GetTime(&startTime);
   (void)McuFatFS_CopyFile((const unsigned char*)"./bench.txt", (const unsigned char*)"./copy.txt", io);
   (void)McuTimeDate_GetTime(&time);
-  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000 + startTime.Sec100*10;
-  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000 + time.Sec100*10 - start_mseconds;
+  start_mseconds = startTime.Hour*60*60*1000 + startTime.Min*60*1000 + startTime.Sec*1000
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  + startTime.Sec100*10
+#endif
+  ;
+  mseconds = time.Hour*60*60*1000 + time.Min*60*1000 + time.Sec*1000
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  + time.Sec100*10
+#endif
+  - start_mseconds;
   McuShell_SendNum32s(mseconds, io->stdOut);
   McuShell_SendStr((const unsigned char*)" ms for copy (", io->stdOut);
   McuShell_SendNum32s((100*1000)/mseconds, io->stdOut);
