@@ -1,3 +1,10 @@
+/**
+ * \file
+ * \brief Configuration header file for HardFault
+ *
+ * This header file is used to configure settings of the HardFault module.
+ */
+
 #ifndef __McuHardFault_CONFIG_H
 #define __McuHardFault_CONFIG_H
 

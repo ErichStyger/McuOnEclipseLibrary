@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : KinetisTools
-**     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.040, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-07-21, 19:41, # CodeGen: 340
 **     Abstract    :
 **
 **     Settings    :
@@ -31,8 +31,10 @@
 **         DisableCycleCounter    - void McuArmTools_DisableCycleCounter(void);
 **         GetCycleCounter        - uint32_t McuArmTools_GetCycleCounter(void);
 **         ParseCommand           - uint8_t McuArmTools_ParseCommand(const unsigned char* cmd, bool *handled,...
+**         Deinit                 - void McuArmTools_Deinit(void);
+**         Init                   - void McuArmTools_Init(void);
 **
-** * Copyright (c) 2014-2017, Erich Styger
+** * Copyright (c) 2014-2018, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -354,6 +356,30 @@ void McuArmTools_SetLR(uint32_t setval);
 ** ===================================================================
 */
 #endif
+
+void McuArmTools_Deinit(void);
+/*
+** ===================================================================
+**     Method      :  Deinit (component KinetisTools)
+**
+**     Description :
+**         Driver de-initialization routine
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuArmTools_Init(void);
+/*
+** ===================================================================
+**     Method      :  Init (component KinetisTools)
+**
+**     Description :
+**         Driver initialization routine
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
 
 /* END McuArmTools. */
 

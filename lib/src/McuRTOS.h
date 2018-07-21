@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.557, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.558, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2018-07-21, 19:41, # CodeGen: 340
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -55,7 +55,7 @@
 **              MPU                                        : no
 **              SysTick                                    : Enabled
 **                Core Clock                               : yes
-**              Low Power Timer                            : Enabled
+**              Low Power Timer                            : Disabled
 **            non-LDD SWI                                  : Disabled
 **            Preemptive                                   : yes
 **            Optimized Task Selection                     : no
@@ -261,13 +261,14 @@
 **  @{
 */         
 
+
 #ifndef __McuRTOS_H
 #define __McuRTOS_H
 
 /* MODULE McuRTOS. */
 #include "McuLib.h" /* SDK and API used */
 #include "FreeRTOSConfig.h"
-#include "McuRTOSconfig.h" /* configuration */
+#include "McuRTOSconfig.h" /* configuration file for component */
 
 #if configUSE_SHELL
   #include "McuShell.h"

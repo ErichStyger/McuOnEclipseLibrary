@@ -4,11 +4,11 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : HardFault
-**     Version     : Component 01.020, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.021, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-07-21, 19:41, # CodeGen: 340
 **     Abstract    :
-**          Component to simplify hard faults for ARM/Kinetis.
+**          Component to simplify hard faults for ARM (Kinetis, S32K).
 **     Settings    :
 **          Component name                                 : McuHardFault
 **     Contents    :
@@ -16,7 +16,7 @@
 **         Deinit           - void McuHardFault_Deinit(void);
 **         Init             - void McuHardFault_Init(void);
 **
-** * Copyright (c) 2014-2017, Erich Styger
+** * Copyright (c) 2014-2018, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -47,7 +47,7 @@
 ** @file McuHardFault.h
 ** @version 01.00
 ** @brief
-**          Component to simplify hard faults for ARM/Kinetis.
+**          Component to simplify hard faults for ARM (Kinetis, S32K).
 */         
 /*!
 **  @addtogroup McuHardFault_module McuHardFault module documentation

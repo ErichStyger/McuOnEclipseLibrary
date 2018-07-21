@@ -57,6 +57,7 @@
 #endif
 #endif
 
+
 /* Configuration macro if FreeRTOS is used */
 #ifndef McuLib_CONFIG_SDK_USE_FREERTOS
   #define McuLib_CONFIG_SDK_USE_FREERTOS          (1)
