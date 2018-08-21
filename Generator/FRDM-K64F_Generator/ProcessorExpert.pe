@@ -3,7 +3,7 @@
   <Header>
     <Name>FRDM-K64F_Generator</Name>
     <SavedBy>Erich Styger Local</SavedBy>
-    <ModificationStamp>204</ModificationStamp>
+    <ModificationStamp>207</ModificationStamp>
     <Date>2016-11-25</Date>
     <IDE>Eclipse IDE</IDE>
     <PEversion>1.12.2.RT7_b1550-0615</PEversion>
@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>252</ProjectCompNumb>
+    <ProjectCompNumb>255</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -8370,7 +8370,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.059</BeanVersion>
+    <BeanVersion>01.060</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -8383,7 +8383,7 @@
         <ItemSymbol>SystemViewVersion</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Value>V2.52a</Value>
+        <Value>V2.52b</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>SysViewAppName</ItemSymbol>
@@ -23196,7 +23196,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.029</BeanVersion>
+    <BeanVersion>01.030</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -24905,7 +24905,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.200</BeanVersion>
+    <BeanVersion>01.202</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -26633,7 +26633,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30156,7 +30156,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30357,7 +30357,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30558,7 +30558,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30759,7 +30759,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -30960,7 +30960,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31161,7 +31161,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31362,7 +31362,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31563,7 +31563,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31764,7 +31764,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -31965,7 +31965,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32166,7 +32166,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32367,7 +32367,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32568,7 +32568,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32769,7 +32769,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -32970,7 +32970,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33171,7 +33171,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33372,7 +33372,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33573,7 +33573,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33774,7 +33774,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -33975,7 +33975,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -34176,7 +34176,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -34377,7 +34377,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -34578,7 +34578,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -34779,7 +34779,7 @@
     <UserFolderName>Fonts</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.129</BeanVersion>
+    <BeanVersion>01.130</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>

@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericSWSPI
-**     Version     : Component 01.029, Driver 01.15, CPU db: 3.00.000
+**     Version     : Component 01.030, Driver 01.15, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
 **     Abstract    :
 **
 **     Settings    :
@@ -23,7 +23,7 @@
 **         Deinit                - void McuGenericSWSPI_Deinit(void);
 **         Init                  - void McuGenericSWSPI_Init(void);
 **
-** * Copyright (c) 2013-2017, Erich Styger
+** * Copyright (c) 2013-2018, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

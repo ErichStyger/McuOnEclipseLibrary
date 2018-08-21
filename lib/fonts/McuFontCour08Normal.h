@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GFont
-**     Version     : Component 01.129, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.130, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
 **     Abstract    :
 **          Driver for graphical fonts
 **     Settings    :

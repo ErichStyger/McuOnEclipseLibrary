@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.200, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.202, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
 **     Abstract    :
 **          Graphical display driver for LCD or other displays
 **     Settings    :
@@ -40,7 +40,7 @@
 **         Deinit            - void McuGDisplaySSD1306_Deinit(void);
 **         Init              - void McuGDisplaySSD1306_Init(void);
 **
-** * Copyright (c) 2013-2017, Erich Styger
+** * Copyright (c) 2013-2018, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -134,26 +134,7 @@ static const uint16_t c332to565[256] = { /* converts a 3-3-2 RBG value into a 5-
 */
 void McuGDisplaySSD1306_Clear(void)
 {
-  uint8_t *p = (uint8_t*)(&McuSSD1306_DisplayBuf[0][0]); /* first element in display buffer */
-
-  while (p<((uint8_t*)McuSSD1306_DisplayBuf)+sizeof(McuSSD1306_DisplayBuf)) {
- #if McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==1
-    *p++ = (uint8_t)(  (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<7)
-                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<6)
-                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<5)
-                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<4)
-                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<3)
-                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<2)
-                  | (McuGDisplaySSD1306_COLOR_PIXEL_CLR<<1)
-                  |  McuGDisplaySSD1306_COLOR_PIXEL_CLR
-                 );
- #elif McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==16
-    *((uint16_t*)p) = McuGDisplaySSD1306_COLOR_WHITE;
-    p += 2;
- #else
-    *p++ = McuGDisplaySSD1306_COLOR_WHITE;
- #endif
-  }
+  McuGDisplaySSD1306_DrawFilledBox(0, 0, McuGDisplaySSD1306_GetWidth(), McuGDisplaySSD1306_GetHeight(), McuGDisplaySSD1306_COLOR_WHITE);
 }
 
 /*
@@ -181,10 +162,8 @@ void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up a one pixel window */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_WRITEPIXEL(McuGDisplaySSD1306_COLOR_BLACK); /* store pixel with color information */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
-#elif McuGDisplaySSD1306_CONFIG_USE_DISPLAY_MEMORY_WRITE
-  McuGDisplaySSD1306_CONFIG_FCT_NAME_SETPIXEL(x, y);
 #elif McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==16
-  McuGDisplaySSD1306_BUF_WORD(x,y) = McuGDisplaySSD1306_COLOR_BLACK;
+  McuGDisplaySSD1306_CONFIG_FCT_NAME_PUTPIXEL(x, y, McuGDisplaySSD1306_COLOR_BLACK);
 #else
   McuGDisplaySSD1306_BUF_BYTE(x,y) |= McuGDisplaySSD1306_BUF_BYTE_PIXEL_MASK(x,y);
 #endif
@@ -218,11 +197,9 @@ void McuGDisplaySSD1306_ClrPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   McuGDisplaySSD1306_CONFIG_FCT_NAME_OPENWINDOW(x, y, x, y); /* set up a one pixel window */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_WRITEPIXEL(McuGDisplaySSD1306_COLOR_WHITE); /* store pixel with color information */
   McuGDisplaySSD1306_CONFIG_FCT_NAME_CLOSEWINDOW(); /* close and execute window */
-#elif McuGDisplaySSD1306_CONFIG_USE_DISPLAY_MEMORY_WRITE
-  McuSSD1306_ClrPixel(x, y);
 #elif McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==16
-  McuGDisplaySSD1306_BUF_WORD(x,y) = McuGDisplaySSD1306_COLOR_WHITE;
-#else
+  McuGDisplaySSD1306_CONFIG_FCT_NAME_PUTPIXEL(x, y, McuGDisplaySSD1306_COLOR_WHITE);
+#else /* do memory buffer operation */
   McuGDisplaySSD1306_BUF_BYTE(x,y) &= ~McuGDisplaySSD1306_BUF_BYTE_PIXEL_MASK(x,y);
 #endif
 #if McuGDisplaySSD1306_CONFIG_USE_MUTEX
@@ -288,10 +265,8 @@ void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD13
   } else {
     McuGDisplaySSD1306_ClrPixel(x,y);
   }
- #elif McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==16
-  McuGDisplaySSD1306_BUF_WORD(x,y) = color;
  #else /* multi-bit display */
-  McuSSD1306_PutPixel(x, y, color);
+  McuGDisplaySSD1306_CONFIG_FCT_NAME_PUTPIXEL(x, y, color);
  #endif
 #endif
 #if McuGDisplaySSD1306_CONFIG_USE_MUTEX

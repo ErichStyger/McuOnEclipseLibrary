@@ -6,7 +6,7 @@
 **     Component   : KinetisTools
 **     Version     : Component 01.040, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-21, 19:41, # CodeGen: 340
+**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
 **     Abstract    :
 **
 **     Settings    :
@@ -79,6 +79,8 @@
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
   #include "fsl_sim.h" /* system integration module */
 #elif McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_1_3
+  #include "Cpu.h" /* include CPU related interfaces and defines */
+#elif McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_S32K
   #include "Cpu.h" /* include CPU related interfaces and defines */
 #elif McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
   /* include device specific header file for CMSIS inside "McuArmToolsconfig.h" */
@@ -171,6 +173,8 @@ void McuArmTools_SoftwareReset(void)
 #if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
 #if McuLib_CONFIG_PEX_SDK_USED
   SCB_AIRCR = SCB_AIRCR_VECTKEY(0x5FA) | SCB_AIRCR_SYSRESETREQ_MASK;
+#elif McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_S32K
+  S32_SCB->AIRCR = S32_SCB_AIRCR_VECTKEY(0x5FA) | S32_SCB_AIRCR_SYSRESETREQ_MASK;
 #else
   SCB->AIRCR = (0x5FA<<SCB_AIRCR_VECTKEY_Pos)|SCB_AIRCR_SYSRESETREQ_Msk;
 #endif

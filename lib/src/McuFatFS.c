@@ -6,7 +6,7 @@
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.204, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-21, 19:41, # CodeGen: 340
+**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
 **     Abstract    :
 **
 **     Settings    :
@@ -1834,7 +1834,7 @@ uint8_t McuFatFS_MountFileSystem(FATFS *fileSystemObject, uint8_t *logicalDrive,
 {
   McuFatFS_FRESULT fres;
 
-  fres = McuFatFS_mount(fileSystemObject, (const TCHAR*)logicalDrive, 0);
+  fres = McuFatFS_mount(fileSystemObject, (const TCHAR*)logicalDrive, 1 /* 1: mount immediately; 0: delayed mount */);
   if (fres != FR_OK) {
     if (io!=NULL) {
       FatFsFResultMsg((unsigned char*)"mount failed", fres, io);

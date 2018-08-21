@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.200, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.202, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
 **     Abstract    :
 **          Graphical display driver for LCD or other displays
 **     Settings    :
@@ -40,7 +40,7 @@
 **         Deinit            - void McuGDisplaySSD1306_Deinit(void);
 **         Init              - void McuGDisplaySSD1306_Init(void);
 **
-** * Copyright (c) 2013-2017, Erich Styger
+** * Copyright (c) 2013-2018, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -518,7 +518,7 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 ** ===================================================================
 */
 
-#define McuGDisplaySSD1306_GetWidth McuSSD1306_GetLongerSide
+#define McuGDisplaySSD1306_GetWidth McuSSD1306_GetWidth
 /*
 ** ===================================================================
 **     Method      :  GetWidth (component GDisplay)
@@ -531,7 +531,7 @@ void McuGDisplaySSD1306_DrawFilledCircle(McuGDisplaySSD1306_PixelDim x0, McuGDis
 ** ===================================================================
 */
 
-#define McuGDisplaySSD1306_GetHeight McuSSD1306_GetShorterSide
+#define McuGDisplaySSD1306_GetHeight McuSSD1306_GetHeight
 /*
 ** ===================================================================
 **     Method      :  GetHeight (component GDisplay)
