@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="65.766708mm"
+   height="54.708504mm"
+   viewBox="0 0 65.766708 54.708504"
+   version="1.1"
+   id="svg4536"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="OpenPnP Brackets.svg">
+  <defs
+     id="defs4530" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.0065258"
+     inkscape:cx="229.30248"
+     inkscape:cy="100.95697"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="1192"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:measure-start="177.67,141.04"
+     inkscape:measure-end="177.67,68.7756" />
+  <metadata
+     id="metadata4533">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(13.638378,-101.66133)">
+    <g
+       transform="rotate(90,203.74587,62.305565)"
+       id="g5074">
+      <path
+         sodipodi:nodetypes="cccccccccccc"
+         inkscape:connector-curvature="0"
+         id="rect5081-2-6-8"
+         d="m 271.22367,279.61377 -3.17387,-3.175 v -36.72366 h -21.6825 l -3.18962,-3.175 v -18.65063 l 4.23332,-3.89033 47.14794,2.6e-4 3.17516,3.175 v 59.26431 l -3.15712,3.175 z"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:0.15208538;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         transform="rotate(-90)"
+         r="2.4005475"
+         cy="272.71884"
+         cx="-273.53979"
+         id="path5083-4-8-1"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.1989055;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         transform="rotate(-90)"
+         r="2.4005475"
+         cy="272.71884"
+         cx="-258.83154"
+         id="path5083-7-5-3-8"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.1989055;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         transform="rotate(-90)"
+         r="2.4005475"
+         cy="292.71884"
+         cx="-273.53979"
+         id="path5083-2-8-3-4"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.1989055;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         transform="rotate(-90)"
+         r="2.4005475"
+         cy="292.71884"
+         cx="-258.83154"
+         id="path5083-7-1-4-6-9"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.1989055;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         transform="rotate(-90)"
+         r="2.4005475"
+         cy="275.8938"
+         cx="-224.11398"
+         id="path5083-22-4-5-2"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.1989055;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         transform="rotate(-90)"
+         r="2.4005475"
+         cy="252.36539"
+         cx="-223.52292"
+         id="path5083-22-2-9-1-1"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#0000ff;stroke-width:0.1989055;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
