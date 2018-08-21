@@ -79,7 +79,7 @@
    </package>
    <package version="1.1" id="FIDU_HOME" description="Special fiducial for visual homing">
       <footprint units="Millimeters" body-width="0.0" body-height="0.0">
-         <pad name="1" x="0.0" y="0.0" width="1.9" height="1.9" rotation="0.0" roundness="100.0"/>
+         <pad name="1" x="0.0" y="0.0" width="2.0" height="2.0" rotation="0.0" roundness="100.0"/>
       </footprint>
    </package>
    <package version="1.1" id="C0805" description="C0805">

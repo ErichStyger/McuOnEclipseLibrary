@@ -246,7 +246,7 @@
             </nozzles>
             <actuators/>
             <cameras>
-               <camera class="org.openpnp.machine.reference.camera.OpenPnpCaptureCamera" id="CAM1522162587547" name="DownCamera" looking="Down" settle-time-ms="2000" rotation="-1.9" flip-x="true" flip-y="true" offset-x="0" offset-y="0" crop-width="0" crop-height="0" scale-width="0" scale-height="0" deinterlace="false" unique-id="HD USB Camera \\?\usb#vid_05a3&amp;pid_9310&amp;mi_00#6&amp;32b46817&amp;0&amp;0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global" format-id="0" fps="20">
+               <camera class="org.openpnp.machine.reference.camera.OpenPnpCaptureCamera" id="CAM1522162587547" name="DownCamera" looking="Down" settle-time-ms="2000" rotation="-1.9" flip-x="true" flip-y="true" offset-x="0" offset-y="0" crop-width="0" crop-height="0" scale-width="0" scale-height="0" deinterlace="false" unique-id="HD USB Camera \\?\usb#vid_05a3&amp;pid_9310&amp;mi_00#6&amp;2f46afff&amp;0&amp;0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global" format-id="0" fps="30">
                   <units-per-pixel units="Millimeters" x="0.02109705" y="0.02053388" z="0.0" rotation="0.0"/>
                   <vision-provider class="org.openpnp.machine.reference.vision.OpenCvVisionProvider"/>
                   <head-offsets units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
@@ -255,13 +255,13 @@
                      <camera-matrix length="9">3.313323113E-315, 0.0, 3.3982025112790883E-222, 1.69759663317E-313, 1.6975966328E-313, 1.7976931348623157E308, 0.0, 0.0, 0.0</camera-matrix>
                      <distortion-coefficients length="5">0.0, 0.0, 0.0, 0.0, 0.0</distortion-coefficients>
                   </calibration>
-                  <brightness property="Brightness" value="39" auto="false"/>
-                  <contrast property="Contrast" value="73" auto="false"/>
+                  <brightness property="Brightness" value="82" auto="false"/>
+                  <contrast property="Contrast" value="128" auto="false"/>
                   <exposure property="Exposure" value="-4" auto="true"/>
                   <focus property="Focus"/>
                   <gain property="Gain" value="0" auto="false"/>
-                  <gamma property="Gamma" value="72" auto="false"/>
-                  <saturation property="Saturation" value="1" auto="false"/>
+                  <gamma property="Gamma" value="100" auto="false"/>
+                  <saturation property="Saturation" value="64" auto="false"/>
                   <white-balance property="WhiteBalance" value="4600" auto="true"/>
                   <zoom property="Zoom"/>
                </camera>
@@ -272,7 +272,7 @@
       </heads>
       <signalers/>
       <feeders>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceLoosePartFeeder" id="FDR1521823866341" name="Loose01" enabled="true" part-id="SOT-23-D_Schottky_x2_ACom_AKK" retry-count="3">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceLoosePartFeeder" id="FDR1521823866341" name="Loose01" enabled="false" part-id="SOT-23-D_Schottky_x2_ACom_AKK" retry-count="3">
             <location units="Millimeters" x="254.297" y="-169.445" z="-11.0" rotation="0.0"/>
             <pipeline>
                <stages>
@@ -296,13 +296,13 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceAutoFeeder" id="FDR1523370033899" name="MotorFeeder00" enabled="true" part-id="R_0805-100k" retry-count="3" actuator-name="MotorFeeder0" actuator-type="Double" actuator-value="850.0" post-pick-actuator-name="MotorFeeder0" post-pick-actuator-type="Double" post-pick-actuator-value="851.0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceAutoFeeder" id="FDR1523370033899" name="MotorFeeder00" enabled="false" part-id="R_0805-100k" retry-count="3" actuator-name="MotorFeeder0" actuator-type="Double" actuator-value="850.0" post-pick-actuator-name="MotorFeeder0" post-pick-actuator-type="Double" post-pick-actuator-value="851.0">
             <location units="Millimeters" x="26.013" y="-370.889" z="-11.0" rotation="0.0"/>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1524746282755" name="Black00" enabled="true" part-id="R_0805-62" retry-count="0" tape-type="WhitePaper" vision-enabled="true" feed-count="1">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1524746282755" name="Black00" enabled="true" part-id="R_0805-100k" retry-count="0" tape-type="WhitePaper" vision-enabled="true" feed-count="3">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
-            <reference-hole-location units="Millimeters" x="160.303" y="-196.904" z="-11.0" rotation="0.0"/>
-            <last-hole-location units="Millimeters" x="156.336" y="-196.977" z="0.0" rotation="0.0"/>
+            <reference-hole-location units="Millimeters" x="158.754" y="-208.079" z="-10.5" rotation="0.0"/>
+            <last-hole-location units="Millimeters" x="154.758" y="-208.053" z="-10.5" rotation="0.0"/>
             <part-pitch value="4.0" units="Millimeters"/>
             <tape-width value="8.0" units="Millimeters"/>
             <pipeline>
@@ -321,7 +321,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1524747164117" name="Black01" enabled="true" part-id="R_0805-100" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="6">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1524747164117" name="Black01" enabled="false" part-id="R_0805-100" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="170.377" y="-207.24" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="166.3" y="-207.185" z="0.0" rotation="0.0"/>
@@ -343,7 +343,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1524747222917" name="Black02" enabled="true" part-id="R_0805-10k" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1524747222917" name="Black02" enabled="false" part-id="R_0805-10k" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="204.383" y="-211.641" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="200.165" y="-211.585" z="0.0" rotation="0.0"/>
@@ -365,7 +365,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844711950" name="Black03" enabled="true" part-id="R_0805-4k7" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844711950" name="Black03" enabled="false" part-id="R_0805-4k7" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="167.81976429196905" y="-217.71862266941514" z="0.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="163.74072946978958" y="-217.8550283180919" z="0.0" rotation="0.0"/>
@@ -387,7 +387,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844760660" name="Black04" enabled="true" part-id="C_0805-100n" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844760660" name="Black04" enabled="false" part-id="C_0805-100n" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="201.243" y="-232.567" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="197.25" y="-232.602" z="0.0" rotation="0.0"/>
@@ -409,7 +409,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844850261" name="Black05" enabled="true" part-id="C_0805-1u" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844850261" name="Black05" enabled="false" part-id="C_0805-1u" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="202.577" y="-244.409" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="198.386" y="-244.461" z="0.0" rotation="0.0"/>
@@ -431,7 +431,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844867476" name="Black06" enabled="true" part-id="C_0805-2u2" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844867476" name="Black06" enabled="false" part-id="C_0805-2u2" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="201.272" y="-255.029" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="197.136" y="-255.009" z="0.0" rotation="0.0"/>
@@ -453,7 +453,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844875484" name="Black07" enabled="true" part-id="C_0805-3n3" retry-count="3" tape-type="ClearPlastic" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844875484" name="Black07" enabled="false" part-id="C_0805-3n3" retry-count="3" tape-type="ClearPlastic" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="201.162" y="-265.604" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="197.209" y="-265.587" z="0.0" rotation="0.0"/>
@@ -475,7 +475,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844893636" name="Black08" enabled="true" part-id="C_0805-2u2" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1525844893636" name="Black08" enabled="false" part-id="C_0805-2u2" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="200.395" y="-276.389" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="196.179" y="-276.357" z="0.0" rotation="0.0"/>
@@ -497,7 +497,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceLoosePartFeeder" id="FDR1526464444914" name="Loose02" enabled="true" part-id="LM2700MTX" retry-count="3">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceLoosePartFeeder" id="FDR1526464444914" name="Loose02" enabled="false" part-id="LM2700MTX" retry-count="3">
             <location units="Millimeters" x="223.912" y="-164.387" z="0.0" rotation="0.0"/>
             <pipeline>
                <stages>
@@ -543,7 +543,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceLoosePartFeeder" id="FDR1526479648638" name="Loose00" enabled="true" part-id="CP_Elec_6.3x7.7-220u" retry-count="3">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceLoosePartFeeder" id="FDR1526479648638" name="Loose00" enabled="false" part-id="CP_Elec_6.3x7.7-220u" retry-count="3">
             <location units="Millimeters" x="150.049" y="-180.71" z="-11.0" rotation="0.0"/>
             <pipeline>
                <stages>
@@ -572,13 +572,13 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceTubeFeeder" id="FDR1526482399606" name="ReferenceTubeFeeder" enabled="true" part-id="KEMET-10V-220uF" retry-count="3">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceTubeFeeder" id="FDR1526482399606" name="ReferenceTubeFeeder" enabled="false" part-id="KEMET-10V-220uF" retry-count="3">
             <location units="Millimeters" x="166.857" y="-181.696" z="-11.0" rotation="180.0"/>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceAutoFeeder" id="FDR1527950912892" name="MotorFeeder01" enabled="true" part-id="R_0805-470" retry-count="3" actuator-name="MotorFeeder1" actuator-type="Double" actuator-value="850.0" post-pick-actuator-name="MotorFeeder1" post-pick-actuator-type="Double" post-pick-actuator-value="851.0">
-            <location units="Millimeters" x="46.513" y="-370.889" z="-11.0" rotation="0.0"/>
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceAutoFeeder" id="FDR1527950912892" name="MotorFeeder01" enabled="false" part-id="R_0805-100k" retry-count="3" actuator-name="MotorFeeder1" actuator-type="Double" actuator-value="850.0" post-pick-actuator-name="MotorFeeder1" post-pick-actuator-type="Double" post-pick-actuator-value="851.0">
+            <location units="Millimeters" x="44.354" y="-370.801" z="-11.0" rotation="0.0"/>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528114890134" name="Black09" enabled="true" part-id="L_0805-330" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528114890134" name="Black09" enabled="false" part-id="L_0805-330" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="0.0" y="0.0" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
@@ -600,7 +600,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528114898918" name="Black10" enabled="true" part-id="LED_0805-LED" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528114898918" name="Black10" enabled="false" part-id="LED_0805-LED" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="0.0" y="0.0" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
@@ -622,7 +622,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528114990693" name="Black11" enabled="true" part-id="SOT-23-BC847" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528114990693" name="Black11" enabled="false" part-id="SOT-23-BC847" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="0.0" y="0.0" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
@@ -644,7 +644,7 @@
                </stages>
             </pipeline>
          </feeder>
-         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528115054501" name="Black12" enabled="true" part-id="SOT-23-D_Schottky_x2_ACom_AKK" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
+         <feeder class="org.openpnp.machine.reference.feeder.ReferenceStripFeeder" id="FDR1528115054501" name="Black12" enabled="false" part-id="SOT-23-D_Schottky_x2_ACom_AKK" retry-count="3" tape-type="WhitePaper" vision-enabled="true" feed-count="0">
             <location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
             <reference-hole-location units="Millimeters" x="0.0" y="0.0" z="-11.0" rotation="0.0"/>
             <last-hole-location units="Millimeters" x="0.0" y="0.0" z="0.0" rotation="0.0"/>
@@ -690,22 +690,22 @@
          </feeder>
       </feeders>
       <cameras>
-         <camera class="org.openpnp.machine.reference.camera.OpenPnpCaptureCamera" id="CAM1522164645906" name="UpCamera" looking="Up" settle-time-ms="1000" rotation="0.0" flip-x="true" flip-y="false" offset-x="0" offset-y="0" crop-width="0" crop-height="0" scale-width="0" scale-height="0" deinterlace="false" unique-id="HD USB Camera \\?\usb#vid_05a3&amp;pid_9310&amp;mi_00#7&amp;324dc70b&amp;0&amp;0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global" format-id="0" fps="30">
+         <camera class="org.openpnp.machine.reference.camera.OpenPnpCaptureCamera" id="CAM1522164645906" name="UpCamera" looking="Up" settle-time-ms="2000" rotation="0.0" flip-x="true" flip-y="false" offset-x="0" offset-y="0" crop-width="0" crop-height="0" scale-width="0" scale-height="0" deinterlace="false" unique-id="HD USB Camera \\?\usb#vid_05a3&amp;pid_9310&amp;mi_00#8&amp;1f5f630e&amp;0&amp;0000#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\global" format-id="0" fps="10">
             <units-per-pixel units="Millimeters" x="0.01355932" y="0.01358234" z="0.0" rotation="0.0"/>
             <vision-provider class="org.openpnp.machine.reference.vision.OpenCvVisionProvider"/>
-            <head-offsets units="Millimeters" x="286.855" y="-262.423" z="-9.0" rotation="0.0"/>
+            <head-offsets units="Millimeters" x="287.0" y="-261.8" z="-8.0" rotation="0.0"/>
             <safe-z value="0.0" units="Millimeters"/>
             <calibration enabled="false">
                <camera-matrix length="9">2.888516617E-315, 0.0, 2.8462250436676484E-306, 1.69759663317E-313, 1.6975966328E-313, 1.7976931348623157E308, 0.0, 0.0, 0.0</camera-matrix>
                <distortion-coefficients length="5">0.0, 0.0, 0.0, 0.0, 0.0</distortion-coefficients>
             </calibration>
-            <brightness property="Brightness" value="-1" auto="false"/>
-            <contrast property="Contrast" value="89" auto="false"/>
+            <brightness property="Brightness" value="-13" auto="false"/>
+            <contrast property="Contrast" value="95" auto="false"/>
             <exposure property="Exposure" value="-4" auto="true"/>
             <focus property="Focus"/>
-            <gain property="Gain" value="6" auto="false"/>
-            <gamma property="Gamma" value="72" auto="false"/>
-            <saturation property="Saturation" value="1" auto="false"/>
+            <gain property="Gain" value="24" auto="false"/>
+            <gamma property="Gamma" value="100" auto="false"/>
+            <saturation property="Saturation" value="66" auto="false"/>
             <white-balance property="WhiteBalance" value="4600" auto="true"/>
             <zoom property="Zoom"/>
          </camera>
@@ -1831,6 +1831,34 @@
                   </part-settings>
                </entry>
                <entry>
+                  <string>Fiducial_1mm_Dia_2mm_Outer-Fiducial_1mm_Dia_2mm_Outer</string>
+                  <part-settings enabled="true">
+                     <pipeline>
+                        <stages>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ImageCapture" name="0" enabled="true" settle-first="true"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ImageWriteDebug" name="13" enabled="true" prefix="bv_source_" suffix=".png"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.BlurGaussian" name="10" enabled="true" kernel-size="9"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskCircle" name="4" enabled="true" diameter="500"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="1" enabled="false" conversion="Bgr2HsvFull"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskHsv" name="2" enabled="false" hue-min="60" hue-max="130" saturation-min="0" saturation-max="255" value-min="0" value-max="255"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="3" enabled="false" conversion="Hsv2BgrFull"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="6" enabled="true" conversion="Bgr2Gray"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.Threshold" name="12" enabled="true" threshold="100" auto="true" invert="false"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.FindContours" name="5" enabled="true" retrieval-mode="List" approximation-method="None"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.FilterContours" name="9" enabled="true" contours-stage-name="5" min-area="50.0" max-area="900000.0"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskCircle" name="11" enabled="true" diameter="0"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.DrawContours" name="7" enabled="true" contours-stage-name="9" thickness="2" index="-1">
+                              <color r="255" g="255" b="255" a="255"/>
+                           </cv-stage>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.MinAreaRect" name="results" enabled="true" threshold-min="100" threshold-max="255"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ImageRecall" name="14" enabled="true" image-stage-name="0"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.DrawRotatedRects" name="8" enabled="true" rotated-rects-stage-name="results" thickness="2" draw-rect-center="false" rect-center-radius="20" show-orientation="false"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ImageWriteDebug" name="15" enabled="true" prefix="bv_result_" suffix=".png"/>
+                        </stages>
+                     </pipeline>
+                  </part-settings>
+               </entry>
+               <entry>
                   <string>STTH4R02</string>
                   <part-settings enabled="true">
                      <pipeline>
@@ -2313,11 +2341,11 @@
                         <stages>
                            <cv-stage class="org.openpnp.vision.pipeline.stages.ImageCapture" name="0" enabled="true" settle-first="true"/>
                            <cv-stage class="org.openpnp.vision.pipeline.stages.ImageWriteDebug" name="13" enabled="true" prefix="bv_source_" suffix=".png"/>
-                           <cv-stage class="org.openpnp.vision.pipeline.stages.BlurGaussian" name="10" enabled="true" kernel-size="9"/>
-                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskCircle" name="4" enabled="true" diameter="500"/>
-                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="1" enabled="false" conversion="Bgr2HsvFull"/>
-                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskHsv" name="2" enabled="false" hue-min="60" hue-max="130" saturation-min="0" saturation-max="255" value-min="0" value-max="255"/>
-                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="3" enabled="false" conversion="Hsv2BgrFull"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.BlurGaussian" name="10" enabled="true" kernel-size="21"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskCircle" name="4" enabled="true" diameter="400"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="1" enabled="true" conversion="Bgr2HsvFull"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.MaskHsv" name="2" enabled="true" hue-min="60" hue-max="130" saturation-min="0" saturation-max="255" value-min="0" value-max="255"/>
+                           <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="3" enabled="true" conversion="Hsv2BgrFull"/>
                            <cv-stage class="org.openpnp.vision.pipeline.stages.ConvertColor" name="6" enabled="true" conversion="Bgr2Gray"/>
                            <cv-stage class="org.openpnp.vision.pipeline.stages.Threshold" name="12" enabled="true" threshold="100" auto="true" invert="false"/>
                            <cv-stage class="org.openpnp.vision.pipeline.stages.FindContours" name="5" enabled="true" retrieval-mode="List" approximation-method="None"/>
@@ -2772,9 +2800,6 @@
                   <text><![CDATA[#M{IntegerValue} {Index} 2 mm]]></text>
                </command>
                <command head-mountable-id="ACT1524544570949" type="ACTUATE_DOUBLE_COMMAND">
-                  <text><![CDATA[#M{IntegerValue} {Index} 4 mm]]></text>
-               </command>
-               <command head-mountable-id="ACT1524544570949" type="MOVE_TO_COMMAND">
                   <text><![CDATA[#M{IntegerValue} {Index} 2 mm]]></text>
                </command>
                <sub-drivers class="java.util.ArrayList"/>
