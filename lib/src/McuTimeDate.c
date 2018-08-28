@@ -6,17 +6,17 @@
 **     Component   : GenericTimeDate
 **     Version     : Component 01.061, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-12, 15:44, # CodeGen: 337
+**     Date/Time   : 2018-08-28, 07:54, # CodeGen: 352
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
 **          Component name                                 : McuTimeDate
-**          Software RTC                                   : Disabled
+**          Software RTC                                   : Enabled
+**            Tick Time (ms)                               : 10
+**            RTOS                                         : Enabled
+**              RTOS                                       : McuRTOS
 **          Hardware RTC                                   : Enabled
-**            Internal                                     : Enabled
-**              Internal LDD RTC                           : Enabled
-**                RTC                                      : RTC1
-**              Internal non-LDD RTC                       : Disabled
+**            Internal                                     : Disabled
 **            External RTC                                 : Disabled
 **          Set Time and Date                              : 
 **            Software RTC                                 : yes

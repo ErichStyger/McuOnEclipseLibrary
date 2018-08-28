@@ -6,17 +6,17 @@
 **     Component   : GenericTimeDate
 **     Version     : Component 01.061, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-08-28, 07:54, # CodeGen: 352
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
 **          Component name                                 : McuTimeDate
-**          Software RTC                                   : Disabled
+**          Software RTC                                   : Enabled
+**            Tick Time (ms)                               : 10
+**            RTOS                                         : Enabled
+**              RTOS                                       : McuRTOS
 **          Hardware RTC                                   : Enabled
-**            Internal                                     : Enabled
-**              Internal LDD RTC                           : Enabled
-**                RTC                                      : RTC1
-**              Internal non-LDD RTC                       : Disabled
+**            Internal                                     : Disabled
 **            External RTC                                 : Disabled
 **          Set Time and Date                              : 
 **            Software RTC                                 : yes
@@ -112,7 +112,7 @@
 #include "McuTimeDateconfig.h" /* configuration */
 
 /* Include inherited components */
-#include "RTC1.h"
+#include "McuRTOS.h"
 #include "McuCriticalSection.h"
 #include "McuUtility.h"
 #include "McuLib.h"
@@ -131,13 +131,13 @@
 #define McuTimeDate_INIT_SOFTWARE_RTC_FROM_EXTERNAL_RTC     2  /* init software RTC from external RTC values */
 
 /* settings for software RTC */
-#define McuTimeDate_USE_SOFTWARE_RTC                        0  /* set to 1 if using software RTC, 0 otherwise */
+#define McuTimeDate_USE_SOFTWARE_RTC                        1  /* set to 1 if using software RTC, 0 otherwise */
 #define McuTimeDate_INIT_SOFTWARE_RTC_METHOD                McuTimeDate_INIT_SOFTWARE_RTC_FROM_DEFAULTS /* which method to use during Init() */
 
 /* settings for internal hardware RTC */
-#define McuTimeDate_USE_INTERNAL_HW_RTC                     1  /* set to 1 if using internal HW RTC, 0 otherwise */
+#define McuTimeDate_USE_INTERNAL_HW_RTC                     0  /* set to 1 if using internal HW RTC, 0 otherwise */
 #define McuTimeDate_USE_INTERNAL_HW_RTC_BEAN                0  /* set to 1 if using HW RTC using normal bean driver, 0 otherwise */
-#define McuTimeDate_USE_INTERNAL_HW_RTC_LDD                 1  /* set to 1 if using HW RTC using LDD driver, 0 otherwise */
+#define McuTimeDate_USE_INTERNAL_HW_RTC_LDD                 0  /* set to 1 if using HW RTC using LDD driver, 0 otherwise */
 
 #define McuTimeDate_USE_EXTERNAL_HW_RTC                     0  /* set to 1 if using external HW RTC driver, 0 otherwise */
 
@@ -209,7 +209,7 @@ static const DATEREC McuTimeDate_DefaultDate = {
 };
 
 #define McuTimeDate_TICK_TIME_MS \
-  10                                    /* Period in milliseconds, at which McuTimeDate._AddTick() is called */
+  (1000/1000)                           /* Period in milliseconds as defined in RTOS component properties, at which McuTimeDate_AddTick() is called */
 
 
 
