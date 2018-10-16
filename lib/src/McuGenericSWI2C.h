@@ -6,15 +6,15 @@
 **     Component   : GenericSWI2C
 **     Version     : Component 01.024, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2018-08-28, 07:32, # CodeGen: 351
 **     Abstract    :
 **
 **     Settings    :
 **          Component name                                 : McuGenericSWI2C
 **          Delay (ns)                                     : 1250
 **          Trials                                         : 256
-**          SDA                                            : SDA
-**          SCL                                            : SCL
+**          SDA                                            : SDK_BitIO
+**          SCL                                            : SDK_BitIO
 **          Wait                                           : McuWait
 **          Yield                                          : yes
 **     Contents    :

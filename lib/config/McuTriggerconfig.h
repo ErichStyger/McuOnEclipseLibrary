@@ -10,5 +10,11 @@
 #define __McuTrigger_CONFIG_H
 
 /* no configuration supported yet */
+/*! Definition of triggers */
+#define McuTrigger_KEY1_PRESS /* key pressed, used by the KEY bean. Format is '<triggerName>_<keyName>_PRESS' */ 0
+#define McuTrigger_EXAMPLE  /* example trigger */ 1
+
+#define McuTrigger_CONFIG_TICK_PERIOD_MS \
+  10                                    /* Period in milliseconds as defined in component properties, at which McuTrigger._AddTick() is called */
 
 #endif /* __McuTrigger_CONFIG_H */

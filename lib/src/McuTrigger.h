@@ -6,7 +6,7 @@
 **     Component   : Trigger
 **     Version     : Component 01.065, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
 **     Abstract    :
 **
 This component implements triggers.
@@ -71,6 +71,8 @@ Triggers are callbacks with a time when they should be executed.
 #include "McuLib.h" /* SDK and API used */
 #include "McuTriggerconfig.h" /* configuration */
 
+#define McuTrigger_TICK_PERIOD_MS  McuTrigger_CONFIG_TICK_PERIOD_MS  /* trigger period in milli-seconds */
+
 /* Include inherited components */
 #include "McuCriticalSection.h"
 #include "McuLib.h"
@@ -81,13 +83,7 @@ Triggers are callbacks with a time when they should be executed.
 extern "C" {
 #endif
 
-/*! Definition of triggers */
-#define McuTrigger_KEY1_PRESS /* key pressed, used by the KEY bean. Format is '<triggerName>_<keyName>_PRESS' */ 0
-#define McuTrigger_EXAMPLE  /* example trigger */ 1
 
-
-#define McuTrigger_TICK_PERIOD_MS \
-  10                                    /* Period in milliseconds as defined in component properties, at which McuTrigger._AddTick() is called */
 
 
 void McuTrigger_AddTrigger(uint8_t trigger, uint16_t incTicks, void (*callback)(void));

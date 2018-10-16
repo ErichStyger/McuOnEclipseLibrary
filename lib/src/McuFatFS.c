@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FAT_FileSystem
-**     Version     : Component 01.204, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.207, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
+**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
 **     Abstract    :
 **
 **     Settings    :
@@ -1784,6 +1784,9 @@ uint8_t McuFatFS_CheckCardPresence(bool *cardMounted, uint8_t *drive, FATFS *fil
   }
   if (!(*cardMounted) && McuFatFS_isDiskPresent(drive)) {
     /* card inserted */
+    #if McuFatFS_CONFIG_CARD_INSERT_DELAY_TIME_MS>0
+        McuWait_WaitOSms(McuFatFS_CONFIG_CARD_INSERT_DELAY_TIME_MS); /* give card some time to power up */
+    #endif
     if (McuFatFS_MountFileSystem(fileSystemObject, drive, io)==ERR_OK) {
       *cardMounted = TRUE;
       if (io!=NULL) {

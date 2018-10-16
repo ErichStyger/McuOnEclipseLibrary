@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericI2C
-**     Version     : Component 01.042, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.044, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
 **     Abstract    :
 **         This component implements a generic I2C driver wrapper to work both with LDD and non-LDD I2C components.
 **     Settings    :
@@ -29,6 +29,7 @@
 **         WriteBlock        - uint8_t McuGenericI2C_WriteBlock(void* data, uint16_t dataSize,...
 **         ReadBlock         - uint8_t McuGenericI2C_ReadBlock(void* data, uint16_t dataSize,...
 **         ReadBlockGeneric  - uint8_t McuGenericI2C_ReadBlockGeneric(void* data, uint16_t dataSize,...
+**         ReadAddressWait   - uint8_t McuGenericI2C_ReadAddressWait(uint8_t i2cAddr, uint8_t *memAddr,...
 **         ReadAddress       - uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         WriteAddress      - uint8_t McuGenericI2C_WriteAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t...
 **         ReadByte          - uint8_t McuGenericI2C_ReadByte(uint8_t i2cAddr, uint8_t *data);
@@ -327,23 +328,27 @@ uint8_t McuGenericI2C_WriteBlock(void* data, uint16_t dataSize, McuGenericI2C_En
 
 /*
 ** ===================================================================
-**     Method      :  ReadAddress (component GenericI2C)
+**     Method      :  ReadAddressWait (component GenericI2C)
 **
 **     Description :
-**         Read from the device. This writes (S+i2cAddr+0), (memAddr),
-**         (Sr+i2cAddr+1), (data)...(data+P)
+**         Same as ReadAddress, but with an optional wait between the
+**         address and read. Read from the device. This writes
+**         (S+i2cAddr+0), (memAddr), (Sr+i2cAddr+1), (data)...(data+P)
 **     Parameters  :
 **         NAME            - DESCRIPTION
 **         i2cAddr         - I2C Address of device
 **       * memAddr         - Pointer to device memory address
 **         memAddrSize     - number of address bytes
+**         waitMs          - Wait time between the address part
+**                           and reading the data part. Wait time can be
+**                           zero.
 **       * data            - Pointer to read buffer
 **         dataSize        - Size of read buffer
 **     Returns     :
 **         ---             - Error code
 ** ===================================================================
 */
-uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t memAddrSize, uint8_t *data, uint16_t dataSize)
+uint8_t McuGenericI2C_ReadAddressWait(uint8_t i2cAddr, uint8_t *memAddr, uint8_t memAddrSize, word waitMs, uint8_t *data, uint16_t dataSize)
 {
   uint8_t res = ERR_OK;
   uint16_t nof;
@@ -365,21 +370,28 @@ uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t mem
         break; /* break for(;;) */
       }
     }
-    res = McuGenericI2C_CONFIG_RECV_BLOCK(data, dataSize, &nof);
-    if (res!=ERR_OK) {
-      (void)McuGenericI2C_CONFIG_SEND_STOP();
-    #if McuGenericI2C_CONFIG_USE_ON_ERROR_EVENT
-      McuGenericI2C_CONFIG_ON_ERROR_EVENT();
-    #endif
-      break; /* break for(;;) */
+    /* optional wait time */
+    if (waitMs!=0) {
+      McuWait_WaitOSms(waitMs);
     }
-    res = McuGenericI2C_CONFIG_SEND_STOP();
-    if (res!=ERR_OK) {
-    #if McuGenericI2C_CONFIG_USE_ON_ERROR_EVENT
-      McuGenericI2C_CONFIG_ON_ERROR_EVENT();
-    #endif
-      break; /* break for(;;) */
-    }
+    if (data!=NULL) {
+      /* receive data */
+      res = McuGenericI2C_CONFIG_RECV_BLOCK(data, dataSize, &nof);
+      if (res!=ERR_OK) {
+        (void)McuGenericI2C_CONFIG_SEND_STOP();
+      #if McuGenericI2C_CONFIG_USE_ON_ERROR_EVENT
+        McuGenericI2C_CONFIG_ON_ERROR_EVENT();
+      #endif
+        break; /* break for(;;) */
+      }
+      res = McuGenericI2C_CONFIG_SEND_STOP();
+      if (res!=ERR_OK) {
+      #if McuGenericI2C_CONFIG_USE_ON_ERROR_EVENT
+        McuGenericI2C_CONFIG_ON_ERROR_EVENT();
+      #endif
+        break; /* break for(;;) */
+      }
+    } /* if receive data */
     break; /* break for(;;) */
   } /* for(;;) */
   if (McuGenericI2C_UnselectSlave()!=ERR_OK) {
@@ -389,6 +401,29 @@ uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t mem
     return ERR_FAILED;
   }
   return res;
+}
+
+/*
+** ===================================================================
+**     Method      :  ReadAddress (component GenericI2C)
+**
+**     Description :
+**         Read from the device. This writes (S+i2cAddr+0), (memAddr),
+**         (Sr+i2cAddr+1), (data)...(data+P)
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         i2cAddr         - I2C Address of device
+**       * memAddr         - Pointer to device memory address
+**         memAddrSize     - number of address bytes
+**       * data            - Pointer to read buffer
+**         dataSize        - Size of read buffer
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+uint8_t McuGenericI2C_ReadAddress(uint8_t i2cAddr, uint8_t *memAddr, uint8_t memAddrSize, uint8_t *data, uint16_t dataSize)
+{
+  return McuGenericI2C_ReadAddressWait(i2cAddr, memAddr, memAddrSize, 0, data, dataSize);
 }
 
 /*

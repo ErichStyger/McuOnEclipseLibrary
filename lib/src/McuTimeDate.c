@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GenericTimeDate
-**     Version     : Component 01.061, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.062, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-08-28, 07:54, # CodeGen: 352
+**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -20,13 +20,13 @@
 **            External RTC                                 : Disabled
 **          Set Time and Date                              : 
 **            Software RTC                                 : yes
-**            Internal RTC                                 : yes
-**            External RTC                                 : yes
-**          Get Time and Date                              : Internal RTC
+**            Internal RTC                                 : no
+**            External RTC                                 : no
+**          Get Time and Date                              : Software RTC
 **          Init()                                         : 
 **            Defaults                                     : 
 **              Time                                       : 17:51:31
-**              Date                                       : 2012-07-22
+**              Date                                       : 2018-08-01
 **            Call Init() in startup                       : yes
 **            Software RTC Initialization                  : Init from Defaults
 **          System                                         : 
@@ -66,7 +66,7 @@
 **         DeInit                      - void McuTimeDate_DeInit(void);
 **         Init                        - uint8_t McuTimeDate_Init(void);
 **
-** * Copyright (c) 2011-2016, Erich Styger
+** * Copyright (c) 2011-2018, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx

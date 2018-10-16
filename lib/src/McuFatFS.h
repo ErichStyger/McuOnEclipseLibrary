@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FAT_FileSystem
-**     Version     : Component 01.204, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.207, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-21, 19:41, # CodeGen: 340
+**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
 **     Abstract    :
 **
 **     Settings    :
@@ -127,6 +127,9 @@
 #define McuFatFS_FRESULT          FRESULT
 #define McuFatFS_DRESULT          DRESULT
 
+#include "McuLib.h" /* SDK and API used */
+#include "McuFatFSconfig.h" /* configuration */
+
 /* Include shared modules, which are used for whole project */
 #include "PE_Types.h"
 #include "PE_Error.h"
@@ -137,6 +140,8 @@
 #include "McuTimeDate.h"
 #include "McuRTOS.h"
 #include "McuUtility.h"
+#include "McuWait.h"
+#include "McuLib.h"
 #include "McuShell.h"
 #include "ff.h"
 #include "diskio.h"

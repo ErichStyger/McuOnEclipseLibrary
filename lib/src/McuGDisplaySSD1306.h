@@ -6,7 +6,7 @@
 **     Component   : GDisplay
 **     Version     : Component 01.202, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-08-19, 17:46, # CodeGen: 341
+**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
 **     Abstract    :
 **          Graphical display driver for LCD or other displays
 **     Settings    :
@@ -483,8 +483,7 @@ void McuGDisplaySSD1306_Draw256BitmapHigh(McuGDisplaySSD1306_PixelDim x1, McuGDi
 ** ===================================================================
 */
 
-#define McuGDisplaySSD1306_UpdateRegion(x,y,w,h)   McuSSD1306_UpdateRegion(x,y,w,h)
-
+void McuGDisplaySSD1306_UpdateRegion(McuGDisplaySSD1306_PixelDim x, McuGDisplaySSD1306_PixelDim y, McuGDisplaySSD1306_PixelDim w, McuGDisplaySSD1306_PixelDim h);
 /*
 ** ===================================================================
 **     Method      :  UpdateRegion (component GDisplay)
