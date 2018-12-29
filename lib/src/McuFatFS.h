@@ -6,7 +6,7 @@
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.207, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
+**     Date/Time   : 2018-12-29, 17:06, # CodeGen: 365
 **     Abstract    :
 **
 **     Settings    :
@@ -130,23 +130,16 @@
 #include "McuLib.h" /* SDK and API used */
 #include "McuFatFSconfig.h" /* configuration */
 
-/* Include shared modules, which are used for whole project */
-#include "PE_Types.h"
-#include "PE_Error.h"
-#include "PE_Const.h"
-#include "IO_Map.h"
-/* Include inherited beans */
-#include "McuSDCard.h"
-#include "McuTimeDate.h"
-#include "McuRTOS.h"
-#include "McuUtility.h"
-#include "McuWait.h"
-#include "McuLib.h"
-#include "McuShell.h"
+  #include "McuShell.h"
+  #include "McuRTOS.h"
+  #include "McuUtility.h"
+  #include "McuWait.h"
+  #include "McuTimeDate.h"
+
+
 #include "ff.h"
 #include "diskio.h"
 
-#include "Cpu.h"
 
 
 #ifndef __BWUserType_McuFatFS_CHARP
