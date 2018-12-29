@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.098, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-12-29, 15:35, # CodeGen: 361
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -1288,9 +1288,9 @@ void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch))
 {
 #if McuShell_CONFIG_BLOCKING_SEND_ENABLED
   uint8_t res;
-#endif
-#if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS>0
-  int timeoutMs = McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS;
+  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0
+  int timeoutMs = McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_MS;
+  #endif
 #endif
 
 #if McuShell_CONFIG_USE_MUTEX
@@ -1299,16 +1299,16 @@ void McuShell_SendCharFct(uint8_t ch, uint8_t (*fct)(uint8_t ch))
 #if McuShell_CONFIG_BLOCKING_SEND_ENABLED
   do {
     res = fct((uint8_t)ch);            /* Send char, returns error code */
-  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS
+  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0
     if (res==ERR_TXFULL) {
     #if McuShell_CONFIG_BLOCKING_SEND_RTOS_WAIT
-      McuWait_WaitOSms(McuShell_CONFIG_BLOCKING_SEND_RTOS_WAIT);
+      McuWait_WaitOSms(McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS);
     #else
-      McuWait_Waitms(McuShell_CONFIG_BLOCKING_SEND_RTOS_WAIT);
+      McuWait_Waitms(McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS);
     #endif
     }
   #endif
-  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_WAIT_MS>0
+  #if McuShell_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0
     if(timeoutMs<=0) {
       break; /* timeout */
     }

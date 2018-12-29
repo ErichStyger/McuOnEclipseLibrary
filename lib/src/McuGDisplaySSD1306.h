@@ -4,13 +4,22 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : GDisplay
-**     Version     : Component 01.202, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.206, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-10-16, 06:57, # CodeGen: 357
+**     Date/Time   : 2018-12-29, 15:35, # CodeGen: 361
 **     Abstract    :
 **          Graphical display driver for LCD or other displays
 **     Settings    :
-**
+**          Component name                                 : McuGDisplaySSD1306
+**          SDK                                            : McuLib
+**          Inverted Pixels                                : no
+**          Memory Buffer                                  : Enabled
+**            Orientation                                  : Landscape
+**          Clear screen on Init                           : no
+**          Hardware                                       : 
+**            Display                                      : McuSSD1306
+**          Watchdog                                       : Disabled
+**          RTOS                                           : Disabled
 **     Contents    :
 **         PutPixel          - void McuGDisplaySSD1306_PutPixel(McuGDisplaySSD1306_PixelDim x,...
 **         SetPixel          - void McuGDisplaySSD1306_SetPixel(McuGDisplaySSD1306_PixelDim x,...
@@ -92,15 +101,18 @@ extern "C" {
 
 
 
-/* this type is declared in PE_Types.h for non-LDD processors, need to declare it locally otherwise */
-typedef struct {                         /* Image */
-  uint16_t width;                        /* Image width  */
-  uint16_t height;                       /* Image height */
-  const uint8_t *pixmap;                 /* Image pixel bitmap */
-  uint16_t size;                         /* Image size   */
-  const char *name;                      /* Image name   */
-} TIMAGE;
-typedef TIMAGE* PIMAGE ;                 /* Pointer to image */
+#ifndef _TIMAGE_IS_DEFINED
+  #define _TIMAGE_IS_DEFINED
+  /* this type is declared in PE_Types.h for non-LDD processors, need to declare it locally otherwise */
+  typedef struct {                         /* Image */
+    uint16_t width;                        /* Image width  */
+    uint16_t height;                       /* Image height */
+    const uint8_t *pixmap;                 /* Image pixel bitmap */
+    uint16_t size;                         /* Image size   */
+    const char *name;                      /* Image name   */
+  } TIMAGE;
+  typedef TIMAGE* PIMAGE ;                 /* Pointer to image */
+#endif /* _TIMAGE_IS_DEFINED */
 
 #define McuGDisplaySSD1306_RGB565(R,G,B)     ((McuGDisplaySSD1306_PixelColor)((((R)&0x1f)<<11)+(((G)&0x3f)<<5)+((B)&0x1f))) /* convert RGB into 565 color format */
 
@@ -153,13 +165,16 @@ typedef McuSSD1306_DisplayOrientation McuGDisplaySSD1306_DisplayOrientation;
 #define McuGDisplaySSD1306_ORIENTATION_LANDSCAPE    McuSSD1306_ORIENTATION_LANDSCAPE
 #define McuGDisplaySSD1306_ORIENTATION_LANDSCAPE180 McuSSD1306_ORIENTATION_LANDSCAPE180
 
-
+/* using Memory Buffer */
 /* Landscape */
 
 #define McuGDisplaySSD1306_BUF_BYTE(x,y)  /* how to access a byte in the display buf[][] */ \
+  /* one bit per pixel */\
       McuSSD1306_DisplayBuf[(y)/8][x]
-#define McuGDisplaySSD1306_BUF_BYTE_PIXEL_BIT_NO(x,y) /* pixel bit number inside display buffer byte (0 is LSB, 7 MSB) */ \
+#if McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==1
+  #define McuGDisplaySSD1306_BUF_BYTE_PIXEL_BIT_NO(x,y) /* pixel bit number inside display buffer byte (0 is LSB, 7 MSB) */ \
       ((uint8_t)((y)%8))
+#endif
 
 #if McuGDisplaySSD1306_CONFIG_NOF_BITS_PER_PIXEL==1
   #define McuGDisplaySSD1306_BUF_BYTE_PIXEL_MASK(x,y)  /* pixel mask for an individual bit inside a display buffer byte */ \

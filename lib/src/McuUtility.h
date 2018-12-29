@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Utility
-**     Version     : Component 01.158, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.159, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-12-15, 15:28, # CodeGen: 360
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -1312,8 +1312,8 @@ int32_t McuUtility_map(int32_t x, int32_t in_min, int32_t in_max, int32_t out_mi
 **         x               - value to be mapped
 **         in_min          - input range minimum value
 **         in_max          - input range maximum value
-**         out_min         - output range maximum value
-**         out_max         - 
+**         out_min         - output range minimum value
+**         out_max         - output range maximum value
 **     Returns     :
 **         ---             - remapped value
 ** ===================================================================

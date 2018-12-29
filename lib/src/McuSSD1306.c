@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.030, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.034, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2018-12-29, 15:45, # CodeGen: 363
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -43,6 +43,7 @@
 **         GetShorterSide        - McuSSD1306_PixelDim McuSSD1306_GetShorterSide(void);
 **         SetDisplayOrientation - void McuSSD1306_SetDisplayOrientation(McuSSD1306_DisplayOrientation...
 **         GetDisplayOrientation - McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void);
+**         PutPixel              - void McuSSD1306_PutPixel(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y,...
 **         Clear                 - void McuSSD1306_Clear(void);
 **         UpdateFull            - void McuSSD1306_UpdateFull(void);
 **         UpdateRegion          - void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y,...
@@ -53,6 +54,7 @@
 **         GetLCD                - void McuSSD1306_GetLCD(void);
 **         GiveLCD               - void McuSSD1306_GiveLCD(void);
 **         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
+**         Deinit                - void McuSSD1306_Deinit(void);
 **         Init                  - void McuSSD1306_Init(void);
 **
 ** * Copyright (c) 2017-2018, Erich Styger
@@ -865,6 +867,53 @@ void McuSSD1306_Init(void)
 #if McuSSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT
   McuSSD1306_Clear();
 #endif
+}
+
+/*
+** ===================================================================
+**     Method      :  PutPixel (component SSD1306)
+**
+**     Description :
+**         Draws a pixel into the display buffer (not on the display).
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         x               - x position of the pixel
+**         y               - y position of the pixel
+**         color           - color value of the pixel
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuSSD1306_PutPixel(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y, McuSSD1306_PixelColor color)
+{
+  uint8_t val;
+
+#if 0 /* done at the the higher level */
+  if (x>=McuSSD1306_GetWidth() || y>=McuSSD1306_GetHeight()) {
+    return; /* error case */
+  }
+#endif
+  val = McuSSD1306_DisplayBuf[y/8][x]; /* get current value */
+  if (color!=0) {
+    val |= (1<<(y%8)); /* set pixel */
+  } else {
+    val &= (1<<(y%8)); /* clear pixel */
+  }
+  McuSSD1306_DisplayBuf[y/8][x] = val; /* store value */
+}
+
+/*
+** ===================================================================
+**     Method      :  Deinit (component SSD1306)
+**
+**     Description :
+**         Driver de-initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuSSD1306_Deinit(void)
+{
+  /* nothing to do */
 }
 
 /* END McuSSD1306. */
