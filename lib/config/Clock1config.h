@@ -8,12 +8,20 @@
 #define __Clock1_CONFIG_H
 
 #ifndef Clock1_CONFIG_PORT_NAME
-  #define Clock1_CONFIG_PORT_NAME       PORTA
+  #if McuLib_CONFIG_CPU_IS_IMXRT
+    #define Clock1_CONFIG_PORT_NAME       GPIO1
+  #else /* name from properties */
+    #define Clock1_CONFIG_PORT_NAME       PORTA
+  #endif
     /*!< name of PORT, is pointer to PORT_Type */
 #endif
 
 #ifndef Clock1_CONFIG_GPIO_NAME
-  #define Clock1_CONFIG_GPIO_NAME       GPIOA
+  #if McuLib_CONFIG_CPU_IS_IMXRT
+    #define Clock1_CONFIG_GPIO_NAME       GPIO1
+  #else /* name from properties */
+    #define Clock1_CONFIG_GPIO_NAME       GPIOA
+  #endif
     /*!< name of GPIO, is pointer to GPIO_Type, not used for S32K SDK */
 #endif
 

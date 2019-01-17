@@ -4,13 +4,22 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SDK_BitIO
-**     Version     : Component 01.024, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-08-28, 07:32, # CodeGen: 351
+**     Date/Time   : 2019-01-17, 07:41, # CodeGen: 375
 **     Abstract    :
-**
+**          GPIO component usable with NXP SDK
 **     Settings    :
-**
+**          Component name                                 : SDA1
+**          SDK                                            : McuLib
+**          GPIO Name                                      : GPIOA
+**          PORT Name                                      : PORTA
+**          Pin Number                                     : 0
+**          Pin Symbol                                     : I2C_SDA
+**          Do Pin Muxing                                  : no
+**          Init Direction                                 : Output
+**          Pull Resistor                                  : no pull resistor
+**          Init Value                                     : 0
 **     Contents    :
 **         GetDir    - bool SDA1_GetDir(void);
 **         SetDir    - void SDA1_SetDir(bool Dir);
@@ -24,7 +33,7 @@
 **         Init      - void SDA1_Init(void);
 **         Deinit    - void SDA1_Deinit(void);
 **
-** * Copyright (c) 2015-2018, Erich Styger
+** * Copyright (c) 2015-2019, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -55,7 +64,7 @@
 ** @file SDA1.h
 ** @version 01.00
 ** @brief
-**
+**          GPIO component usable with NXP SDK
 */         
 /*!
 **  @addtogroup SDA1_module SDA1 module documentation
@@ -66,7 +75,9 @@
 
 #include "SDA1.h"
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
+  #if SDA1_CONFIG_DO_PIN_MUXING
   #include "fsl_port.h" /* include SDK header file for port muxing */
+  #endif
   #include "fsl_gpio.h" /* include SDK header file for GPIO */
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
   #include "fsl_gpio_driver.h" /* include SDK header file for GPIO */
@@ -155,7 +166,7 @@ static bool SDA1_isOutput = false;
 void SDA1_ClrVal(void)
 {
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
-  GPIO_ClearPinsOutput(SDA1_CONFIG_GPIO_NAME, 1<<SDA1_CONFIG_PIN_NUMBER);
+  GPIO_PortClear(SDA1_CONFIG_GPIO_NAME, 1<<SDA1_CONFIG_PIN_NUMBER);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
   GPIO_DRV_ClearPinOutput(SDA1_CONFIG_PIN_SYMBOL);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K
@@ -176,7 +187,7 @@ void SDA1_ClrVal(void)
 void SDA1_SetVal(void)
 {
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
-  GPIO_SetPinsOutput(SDA1_CONFIG_GPIO_NAME, 1<<SDA1_CONFIG_PIN_NUMBER);
+  GPIO_PortSet(SDA1_CONFIG_GPIO_NAME, 1<<SDA1_CONFIG_PIN_NUMBER);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
   GPIO_DRV_SetPinOutput(SDA1_CONFIG_PIN_SYMBOL);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K
@@ -197,7 +208,7 @@ void SDA1_SetVal(void)
 void SDA1_NegVal(void)
 {
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
-  GPIO_TogglePinsOutput(SDA1_CONFIG_GPIO_NAME, 1<<SDA1_CONFIG_PIN_NUMBER);
+  GPIO_PortToggle(SDA1_CONFIG_GPIO_NAME, 1<<SDA1_CONFIG_PIN_NUMBER);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
   GPIO_DRV_TogglePinOutput(SDA1_CONFIG_PIN_SYMBOL);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K

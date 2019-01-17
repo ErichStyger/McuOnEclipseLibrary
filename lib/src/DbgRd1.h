@@ -4,13 +4,22 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SDK_BitIO
-**     Version     : Component 01.024, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2019-01-17, 07:41, # CodeGen: 375
 **     Abstract    :
-**
+**          GPIO component usable with NXP SDK
 **     Settings    :
-**
+**          Component name                                 : DbgRd1
+**          SDK                                            : McuLib
+**          GPIO Name                                      : GPIOA
+**          PORT Name                                      : PORTA
+**          Pin Number                                     : 1
+**          Pin Symbol                                     : OneWireDbgRead
+**          Do Pin Muxing                                  : no
+**          Init Direction                                 : Output
+**          Pull Resistor                                  : no pull resistor
+**          Init Value                                     : 0
 **     Contents    :
 **         GetDir    - bool DbgRd1_GetDir(void);
 **         SetDir    - void DbgRd1_SetDir(bool Dir);
@@ -24,7 +33,7 @@
 **         Init      - void DbgRd1_Init(void);
 **         Deinit    - void DbgRd1_Deinit(void);
 **
-** * Copyright (c) 2015-2018, Erich Styger
+** * Copyright (c) 2015-2019, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -55,7 +64,7 @@
 ** @file DbgRd1.h
 ** @version 01.00
 ** @brief
-**
+**          GPIO component usable with NXP SDK
 */         
 /*!
 **  @addtogroup DbgRd1_module DbgRd1 module documentation

@@ -8,12 +8,20 @@
 #define __LEDpin1_CONFIG_H
 
 #ifndef LEDpin1_CONFIG_PORT_NAME
-  #define LEDpin1_CONFIG_PORT_NAME       PORTA
+  #if McuLib_CONFIG_CPU_IS_IMXRT
+    #define LEDpin1_CONFIG_PORT_NAME       GPIO1
+  #else /* name from properties */
+    #define LEDpin1_CONFIG_PORT_NAME       PORTA
+  #endif
     /*!< name of PORT, is pointer to PORT_Type */
 #endif
 
 #ifndef LEDpin1_CONFIG_GPIO_NAME
-  #define LEDpin1_CONFIG_GPIO_NAME       GPIOA
+  #if McuLib_CONFIG_CPU_IS_IMXRT
+    #define LEDpin1_CONFIG_GPIO_NAME       GPIO1
+  #else /* name from properties */
+    #define LEDpin1_CONFIG_GPIO_NAME       GPIOA
+  #endif
     /*!< name of GPIO, is pointer to GPIO_Type, not used for S32K SDK */
 #endif
 

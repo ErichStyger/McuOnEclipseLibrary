@@ -6,7 +6,7 @@
 **     Component   : QuadCounter
 **     Version     : Component 01.031, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-03, 08:21, # CodeGen: 331
+**     Date/Time   : 2019-01-12, 20:26, # CodeGen: 372
 **     Abstract    :
 **
 This driver implements a quadrature encoder using two signals (C1 and C2) to generate position information.
@@ -17,8 +17,8 @@ This driver implements a quadrature encoder using two signals (C1 and C2) to gen
 **          Method                                         : 
 **            Sampling                                     : Enabled
 **              Error Correction                           : no
-**              C1                                         : Cx
-**              C2                                         : Cx
+**              C1                                         : SDK_BitIO
+**              C2                                         : SDK_BitIO
 **            Input Capture                                : Disabled
 **          Shell                                          : Enabled
 **            Shell                                        : McuShell

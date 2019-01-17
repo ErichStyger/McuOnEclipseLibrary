@@ -4,13 +4,22 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SDK_BitIO
-**     Version     : Component 01.024, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-12-29, 17:33, # CodeGen: 366
+**     Date/Time   : 2019-01-17, 07:41, # CodeGen: 375
 **     Abstract    :
-**
+**          GPIO component usable with NXP SDK
 **     Settings    :
-**
+**          Component name                                 : Input1
+**          SDK                                            : McuLib
+**          GPIO Name                                      : GPIOA
+**          PORT Name                                      : PORTA
+**          Pin Number                                     : 0
+**          Pin Symbol                                     : LED_RED
+**          Do Pin Muxing                                  : no
+**          Init Direction                                 : Output
+**          Pull Resistor                                  : no pull resistor
+**          Init Value                                     : 0
 **     Contents    :
 **         GetDir    - bool Input1_GetDir(void);
 **         SetDir    - void Input1_SetDir(bool Dir);
@@ -24,7 +33,7 @@
 **         Init      - void Input1_Init(void);
 **         Deinit    - void Input1_Deinit(void);
 **
-** * Copyright (c) 2015-2018, Erich Styger
+** * Copyright (c) 2015-2019, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -55,7 +64,7 @@
 ** @file Input1.h
 ** @version 01.00
 ** @brief
-**
+**          GPIO component usable with NXP SDK
 */         
 /*!
 **  @addtogroup Input1_module Input1 module documentation
