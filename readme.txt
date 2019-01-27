@@ -10,6 +10,7 @@ Additionally following middleware is provided:
 - lib\SEGGER_RTT: Port of the SEGGER RTT Library
 - lib\SEGGER_Sysview: Port of the SEGGER SystemView Library
 - lib\TraceRecorder: Port of the Percepio Tracealyzer library
+- lib\HD44780: library for the HD44780 character display, see https://mcuoneclipse.com/2019/01/27/tutorial-hd44780-display-driver-with-nxp-mcuxpresso-sdk/
 
 Make sure you follow the McuOnEclipse blog: http://mcuoneclipse.com/
 
