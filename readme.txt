@@ -31,6 +31,16 @@ How to use the library:
 ../McuLib/TraceRecorder/streamports/Jlink_RTT/include
 ../McuLib/HD44780
 - If the project contains a hard fault handler: disable or remove it, as the McuLib comes with its own (I think better) handler.
+- Edit the McuLib/config/McuLibConfig.h header file which configures the library. Below the settings for the Kinetis (ARM Cortex-M4F with FPU) using the MCUXpresso SDK 2.5.0:
+#define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M    (1 || defined(__CORTEX_M))
+#define McuLib_CONFIG_CPU_IS_KINETIS         (1 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+#define McuLib_CONFIG_CORTEX_M      (4)
+#define McuLib_CONFIG_FPU_PRESENT   (1 || (defined(__FPU_PRESENT) && (__FPU_PRESENT)==1))
+#define McuLib_CONFIG_FPU_USED      (1 || (defined(__FPU_USED) && (__FPU_USED)==1))
+#define McuLib_CONFIG_SDK_VERSION_MAJOR   2
+#define McuLib_CONFIG_SDK_VERSION_MINOR   5
+#define McuLib_CONFIG_SDK_VERSION_BUILD   0
+#define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_MCUXPRESSO_2_0
 
 Enjoy!
 Erich
