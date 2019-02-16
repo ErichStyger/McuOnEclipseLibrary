@@ -14,5 +14,23 @@ Additionally following middleware is provided:
 
 Make sure you follow the McuOnEclipse blog: http://mcuoneclipse.com/
 
+How to use the library:
+- download the repository zip file: https://github.com/ErichStyger/McuOnEclipseLibrary/archive/master.zip
+- place the 'lib' folder into your Eclipse project and rename it to 'McuLib'. You can use any other name, but then you need to change the include paths accordingly
+- Make sure that the folder is included in the build (see https://mcuoneclipse.com/2014/07/22/exclude-source-files-from-build-in-eclipse/)
+- Add the following paths to the compiler include settings (you might simply copy-paste them into the control):
+../McuLib/config
+../McuLib/config/fonts
+../McuLib/src
+../McuLib/FreeRTOS/Source/include
+../McuLib/FreeRTOS/Source/portable/GCC/ARM_CM4F
+../McuLib/SEGGER_RTT
+../McuLib/SEGGER_Sysview
+../McuLib/TraceRecorder/config
+../McuLib/TraceRecorder/include
+../McuLib/TraceRecorder/streamports/Jlink_RTT/include
+../McuLib/HD44780
+- If the project contains a hard fault handler: disable or remove it, as the McuLib comes with its own (I think better) handler.
+
 Enjoy!
 Erich
