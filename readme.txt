@@ -14,7 +14,8 @@ Additionally following middleware is provided:
 
 Make sure you follow the McuOnEclipse blog: http://mcuoneclipse.com/
 
-How to use the library:
+How to integrate the library
+============================
 - download the repository zip file: https://github.com/ErichStyger/McuOnEclipseLibrary/archive/master.zip
 - place the 'lib' folder into your Eclipse project and rename it to 'McuLib'. You can use any other name, but then you need to change the include paths accordingly
 - Make sure that the folder is included in the build (see https://mcuoneclipse.com/2014/07/22/exclude-source-files-from-build-in-eclipse/)
@@ -41,6 +42,17 @@ How to use the library:
 #define McuLib_CONFIG_SDK_VERSION_MINOR   5
 #define McuLib_CONFIG_SDK_VERSION_BUILD   0
 #define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_MCUXPRESSO_2_0
+
+How to use the Modules in the library
+=====================================
+a) Include the Module header file:
+#include "McuWait.h"
+
+b) Initialize the Module before using it:
+McuWait_Init(); /* initialize the module */
+
+c) Use the Module:
+McuWait_Waitms(100); /* wait for 100 ms */
 
 Enjoy!
 Erich
