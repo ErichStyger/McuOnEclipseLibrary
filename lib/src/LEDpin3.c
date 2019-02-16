@@ -6,7 +6,7 @@
 **     Component   : SDK_BitIO
 **     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-01-30, 21:09, # CodeGen: 420
+**     Date/Time   : 2019-02-16, 17:45, # CodeGen: 426
 **     Abstract    :
 **          GPIO component usable with NXP SDK
 **     Settings    :
@@ -15,7 +15,7 @@
 **          GPIO Name                                      : GPIOA
 **          PORT Name                                      : PORTA
 **          Pin Number                                     : 0
-**          Pin Symbol                                     : LED1
+**          Pin Symbol                                     : LED3
 **          Do Pin Muxing                                  : no
 **          Init Direction                                 : Output
 **          Pull Resistor                                  : no pull resistor
@@ -258,7 +258,11 @@ bool LEDpin3_GetVal(void)
 #if McuLib_CONFIG_CPU_IS_LPC
   return GPIO_PinRead(LEDpin3_CONFIG_GPIO_NAME, LEDpin3_CONFIG_PORT_NAME, LEDpin3_CONFIG_PIN_NUMBER);
 #elif McuLib_CONFIG_NXP_SDK_2_0_USED
+  #if McuLib_CONFIG_SDK_VERSION < 250
   return GPIO_ReadPinInput(LEDpin3_CONFIG_GPIO_NAME, LEDpin3_CONFIG_PIN_NUMBER)!=0;
+  #else
+  return GPIO_PinRead(LEDpin3_CONFIG_GPIO_NAME, LEDpin3_CONFIG_PIN_NUMBER)!=0;
+  #endif
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
   return GPIO_DRV_ReadPinInput(LEDpin3_CONFIG_PIN_SYMBOL)!=0;
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K
@@ -384,11 +388,19 @@ void LEDpin3_PutVal(bool Val)
     GPIO_PortClear(LEDpin3_CONFIG_GPIO_NAME, LEDpin3_CONFIG_PORT_NAME, 1<<LEDpin3_CONFIG_PIN_NUMBER);
   }
 #elif McuLib_CONFIG_NXP_SDK_2_0_USED
+  #if McuLib_CONFIG_SDK_VERSION < 250
   if (Val) {
     GPIO_SetPinsOutput(LEDpin3_CONFIG_GPIO_NAME, 1<<LEDpin3_CONFIG_PIN_NUMBER);
   } else {
     GPIO_ClearPinsOutput(LEDpin3_CONFIG_GPIO_NAME, 1<<LEDpin3_CONFIG_PIN_NUMBER);
   }
+  #else
+  if (Val) {
+    GPIO_PortSet(LEDpin3_CONFIG_GPIO_NAME, 1<<LEDpin3_CONFIG_PIN_NUMBER);
+  } else {
+    GPIO_PortClear(LEDpin3_CONFIG_GPIO_NAME, 1<<LEDpin3_CONFIG_PIN_NUMBER);
+  }
+  #endif
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
   GPIO_DRV_WritePinOutput(LEDpin3_CONFIG_PIN_SYMBOL, Val);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K
