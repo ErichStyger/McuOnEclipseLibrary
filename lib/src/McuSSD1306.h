@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.035, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-02-16, 17:45, # CodeGen: 426
+**     Date/Time   : 2019-02-20, 14:44, # CodeGen: 432
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -53,7 +53,8 @@
 **         DisplayInvert         - uint8_t McuSSD1306_DisplayInvert(bool invert);
 **         GetLCD                - void McuSSD1306_GetLCD(void);
 **         GiveLCD               - void McuSSD1306_GiveLCD(void);
-**         PrintString           - void McuSSD1306_PrintString(uint8_t *str);
+**         SetRowCol             - uint8_t McuSSD1306_SetRowCol(uint8_t row, uint8_t col);
+**         PrintString           - void McuSSD1306_PrintString(uint8_t line, uint8_t col, uint8_t *str);
 **         Deinit                - void McuSSD1306_Deinit(void);
 **         Init                  - void McuSSD1306_Init(void);
 **
@@ -456,7 +457,7 @@ uint8_t McuSSD1306_DisplayInvert(bool invert);
 ** ===================================================================
 */
 
-void McuSSD1306_PrintString(uint8_t *str);
+void McuSSD1306_PrintString(uint8_t line, uint8_t col, uint8_t *str);
 /*
 ** ===================================================================
 **     Method      :  PrintString (component SSD1306)
@@ -466,6 +467,8 @@ void McuSSD1306_PrintString(uint8_t *str);
 **         Newline is supported.
 **     Parameters  :
 **         NAME            - DESCRIPTION
+**         line            - line number, starting with 0
+**         col             - column number, starting with 0
 **       * str             - Pointer to string to be printed on display
 **     Returns     : Nothing
 ** ===================================================================
@@ -496,6 +499,23 @@ void McuSSD1306_Deinit(void);
 **         Driver de-initialization
 **     Parameters  : None
 **     Returns     : Nothing
+** ===================================================================
+*/
+
+uint8_t McuSSD1306_SetRowCol(uint8_t row, uint8_t col);
+/*
+** ===================================================================
+**     Method      :  SetRowCol (component SSD1306)
+**
+**     Description :
+**         Sets the column and row position, useful for start writing
+**         text with PrintString()
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         row             - row (or line) number, starting with 0
+**         col             - column number, starting with 0
+**     Returns     :
+**         ---             - Error code
 ** ===================================================================
 */
 
