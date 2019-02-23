@@ -16,7 +16,7 @@
 
 /* Which display is used: only one of the two options below can be enabled: */
 #define McuSSD1306_CONFIG_SSD1306_SIZE_TYPE (12864)
-  /*!< /* either 12864 (128x64) or 12832 (128x32) */
+  /*!< either 12864 (128x64) or 12832 (128x32) */
 
 #ifndef McuSSD1306_CONFIG_SSD1306_HAS_RST
   #define McuSSD1306_CONFIG_SSD1306_HAS_RST         (0)
