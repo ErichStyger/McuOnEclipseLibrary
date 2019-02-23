@@ -6,7 +6,7 @@
 **     Component   : SSD1306
 **     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-02-20, 14:44, # CodeGen: 432
+**     Date/Time   : 2019-02-23, 07:23, # CodeGen: 434
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -105,14 +105,16 @@
 #include <stddef.h> /* for size_t */
 
 
-#if McuSSD1306_CONFIG_SSD1306_128X64
+#if McuSSD1306_CONFIG_SSD1306_SIZE_TYPE==12864
   #define McuSSD1306_DISPLAY_HW_NOF_COLUMNS  128u /* number of columns in hardware */
   #define McuSSD1306_DISPLAY_HW_NOF_ROWS      64u /* number of rows in hardware */
   #define McuSSD1306_DISPLAY_HW_NOF_PAGES      8u /* number of pages in hardware */
-#elif McuSSD1306_CONFIG_SSD1306_128X32
+#elif McuSSD1306_CONFIG_SSD1306_SIZE_TYPE==12832
   #define McuSSD1306_DISPLAY_HW_NOF_COLUMNS  128u /* number of columns in hardware */
   #define McuSSD1306_DISPLAY_HW_NOF_ROWS      32u /* number of rows in hardware */
   #define McuSSD1306_DISPLAY_HW_NOF_PAGES      4u /* number of pages in hardware */
+#else
+  #error "unknown display type, must be 128x64 or 128x32"
 #endif
 
 typedef bool McuSSD1306_PixelColor;    /* type to hold color information */
@@ -146,12 +148,8 @@ extern uint8_t McuSSD1306_DisplayBuf[((McuSSD1306_DISPLAY_HW_NOF_ROWS-1)/8)+1][M
 #define McuSSD1306_PIXEL_ON  McuSSD1306_COLOR_WHITE /* value of a pixel if it is 'on' */
 #define McuSSD1306_PIXEL_OFF McuSSD1306_COLOR_BLACK /* value of a pixel if it is 'off' */
 
-#define McuSSD1306_WIDTH  128u          /* Logical display width in pixels */
-#define McuSSD1306_HEIGHT 64u           /* Logical display height in pixels */
-#define McuSSD1306_HW_WIDTH  McuSSD1306_WIDTH /* Hardware display width in pixels */
-#define McuSSD1306_HW_HEIGHT McuSSD1306_HEIGHT /* Hardware display height in pixels */
-#define McuSSD1306_HW_LONGER_SIDE  McuSSD1306_WIDTH /* Hardware display longer side in pixels */
-#define McuSSD1306_HW_SHORTER_SIDE McuSSD1306_HEIGHT /* Hardware display shorter side in pixels */
+#define McuSSD1306_HW_LONGER_SIDE  McuSSD1306_DISPLAY_HW_NOF_COLUMNS            /* Hardware display longer side in pixels */
+#define McuSSD1306_HW_SHORTER_SIDE McuSSD1306_DISPLAY_HW_NOF_ROWS               /* Hardware display shorter side in pixels */
 
 typedef enum {
   McuSSD1306_ORIENTATION_PORTRAIT    = 0,

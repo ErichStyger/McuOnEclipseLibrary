@@ -6,7 +6,7 @@
 **     Component   : SSD1306
 **     Version     : Component 01.038, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-02-20, 14:44, # CodeGen: 432
+**     Date/Time   : 2019-02-23, 08:58, # CodeGen: 435
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -328,8 +328,8 @@ static uint8_t SSD1306_SetColStartAddr(uint8_t col){
   if(actCol>=McuSSD1306_DISPLAY_HW_NOF_COLUMNS) {
     return ERR_RANGE;
   }
-  SSD1306_WriteCommand(0x10 | (actCol>>4));
-  SSD1306_WriteCommand(actCol & 0x0F);
+  SSD1306_WriteCommand(0x10 | ((actCol+McuSSD1306_CONFIG_SSD1306_START_COLUMN_OFFSET)>>4));
+  SSD1306_WriteCommand((actCol+McuSSD1306_CONFIG_SSD1306_START_COLUMN_OFFSET) & 0x0F);
   return ERR_OK;
 }
 
@@ -825,6 +825,7 @@ void McuSSD1306_PrintString(uint8_t line, uint8_t col, uint8_t *str)
 */
 void McuSSD1306_Init(void)
 {
+  /* see as well https://github.com/hallard/ArduiPi_OLED/blob/master/ArduiPi_OLED.cpp */
 #if McuSSD1306_CONFIG_INIT_DELAY_MS>0
   McuWait_Waitms(McuSSD1306_CONFIG_INIT_DELAY_MS);                   /* give hardware time to power up*/
 #endif
@@ -858,12 +859,12 @@ void McuSSD1306_Init(void)
 #else
   SSD1306_WriteCommand(0x14);                                        /* set to enabled */
 #endif
-#if McuSSD1306_CONFIG_SSD1306_128X32
+#if McuSSD1306_CONFIG_SSD1306_SIZE_TYPE==12832
   SSD1306_WriteCommand(SSD1306_SET_COM_PINS);                        /* set COM pins hardware configuration */
   SSD1306_WriteCommand(0x02);
   SSD1306_WriteCommand(SSD1306_SET_CONTRAST);                        /* set contrast control register */
   SSD1306_WriteCommand(0x8F);
-#else
+#elif McuSSD1306_CONFIG_SSD1306_SIZE_TYPE==12864
   SSD1306_WriteCommand(SSD1306_SET_COM_PINS);                        /* set COM pins hardware configuration */
   SSD1306_WriteCommand(0x12);
   SSD1306_WriteCommand(SSD1306_SET_CONTRAST);                        /* set contrast control register */
@@ -872,6 +873,8 @@ void McuSSD1306_Init(void)
   #else
   SSD1306_WriteCommand(0xCF);
   #endif
+#else
+  #error "unknown display type"
 #endif
 
   SSD1306_WriteCommand(SSD1306_SET_PRECHARGE);                       /* set pre-charge period */
