@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.568, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.570, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-01-21, 15:52, # CodeGen: 379
+**     Date/Time   : 2019-03-03, 08:49, # CodeGen: 444
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -85,7 +85,11 @@
 **          Semaphores and Mutexes                         : Settings for Mutex and Semaphore
 **            Use Mutexes                                  : yes
 **            Use Recursive Mutexes                        : yes
-**          Timers                                         : Disabled
+**          Timers                                         : Enabled
+**            Priority                                     : 2
+**            Queue Length                                 : 10
+**            Stack Depth                                  : 150
+**            Use Daemon Task Startup Hook                 : no
 **          Memory                                         : Settings for the memory and heap allocation
 **            Dynamic Allocation                           : Enabled
 **              Heap Size                                  : 8192
@@ -220,7 +224,7 @@
 **         Deinit                               - void McuRTOS_Deinit(void);
 **         Init                                 - void McuRTOS_Init(void);
 **
-** * FreeRTOS (c) Copyright 2003-2018 Richard Barry/Amazon, http: www.FreeRTOS.org
+** * FreeRTOS (c) Copyright 2003-2019 Richard Barry/Amazon, http: www.FreeRTOS.org
 **  * See separate FreeRTOS licensing terms.
 **  *
 **  * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2018

@@ -51,10 +51,25 @@
 #define McuLib_CONFIG_SDK_S32K                5
   /*!< SDK for S32K */
 
-#define McuLib_CONFIG_SDK_VERSION_MAJOR   2
-#define McuLib_CONFIG_SDK_VERSION_MINOR   5
-#define McuLib_CONFIG_SDK_VERSION_BUILD   0
-#define McuLib_CONFIG_SDK_VERSION        (McuLib_CONFIG_SDK_VERSION_MAJOR*100)+(McuLib_CONFIG_SDK_VERSION_MINOR*10)+McuLib_CONFIG_SDK_VERSION_BUILD
+#ifndef McuLib_CONFIG_SDK_VERSION_MAJOR
+  #define McuLib_CONFIG_SDK_VERSION_MAJOR   (2)
+    /*!< SDK major version number */
+#endif
+
+#ifndef McuLib_CONFIG_SDK_VERSION_MINOR
+  #define McuLib_CONFIG_SDK_VERSION_MINOR   (5)
+    /*!< SDK minor version number */
+#endif
+
+#ifndef McuLib_CONFIG_SDK_VERSION_BUILD
+  #define McuLib_CONFIG_SDK_VERSION_BUILD   (0)
+    /*!< SDK build version number */
+#endif
+
+#ifndef McuLib_CONFIG_SDK_VERSION
+  #define McuLib_CONFIG_SDK_VERSION        (McuLib_CONFIG_SDK_VERSION_MAJOR*100)+(McuLib_CONFIG_SDK_VERSION_MINOR*10)+McuLib_CONFIG_SDK_VERSION_BUILD
+    /*!< Builds a single number with the SDK version (major, minor, build), e.g. 250 for 2.5.0 */
+#endif
 
 /* specify the SDK and API used */
 #ifndef McuLib_CONFIG_SDK_VERSION_USED

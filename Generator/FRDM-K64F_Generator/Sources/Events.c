@@ -258,7 +258,7 @@ void McuDS18B20_OnRomRead(uint8_t sensor_index, uint8_t *rom_code)
 **     Returns     : Nothing
 ** ===================================================================
 */
-void McuRTOS_vOnPreSleepProcessing(portTickType expectedIdleTicks)
+void McuRTOS_vOnPreSleepProcessing(TickType_t expectedIdleTicks)
 {
   (void)expectedIdleTicks; /* not used */
 #if 1
