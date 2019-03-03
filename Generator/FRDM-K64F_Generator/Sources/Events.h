@@ -303,6 +303,20 @@ void McuGenericI2C_OnError(void);
 ** ===================================================================
 */
 
+void McuRTOS_vOnPostSleepProcessing(TickType_t expectedIdleTicks);
+/*
+** ===================================================================
+**     Description :
+**         Event called after the CPU woke up after low power mode.
+**         This event is optional.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         expectedIdleTicks - expected idle
+**                           time, in ticks
+**     Returns     : Nothing
+** ===================================================================
+*/
+
 /* END Events */
 
 #ifdef __cplusplus

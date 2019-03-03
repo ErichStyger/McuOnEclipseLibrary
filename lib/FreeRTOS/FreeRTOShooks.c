@@ -1,7 +1,7 @@
 /*
  * FreeRTOShooks.c
  *
- *  Created on: 22.07.2018
+ *  This is a default FreeRTOS hooks file you can use in your application.
  *      Author: Erich Styger
  */
 

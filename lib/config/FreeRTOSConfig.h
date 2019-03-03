@@ -109,7 +109,7 @@
 #define configCHECK_FOR_STACK_OVERFLOW_NAME       McuRTOS_vApplicationStackOverflowHook
 #define configUSE_RECURSIVE_MUTEXES               1
 #define configQUEUE_REGISTRY_SIZE                 5
-#define configUSE_QUEUE_SETS                      0
+#define configUSE_QUEUE_SETS                      1
 #define configUSE_COUNTING_SEMAPHORES             1
 #define configUSE_APPLICATION_TASK_TAG            0
 /* Tickless Idle Mode ----------------------------------------------------------*/
@@ -143,10 +143,10 @@ point support. */
 
 /* Set the following definitions to 1 to include the API function, or zero
    to exclude the API function. */
-#define INCLUDE_vTaskEndScheduler                 0
+#define INCLUDE_vTaskEndScheduler                 1
 #define INCLUDE_vTaskPrioritySet                  1
 #define INCLUDE_uxTaskPriorityGet                 1
-#define INCLUDE_vTaskDelete                       0
+#define INCLUDE_vTaskDelete                       1
 #define INCLUDE_vTaskCleanUpResources             1
 #define INCLUDE_vTaskSuspend                      1
 #define INCLUDE_vTaskDelayUntil                   1
@@ -159,7 +159,7 @@ point support. */
 #define INCLUDE_xTaskGetCurrentTaskHandle         1
 #define INCLUDE_xTaskGetIdleTaskHandle            1
 #define INCLUDE_xTaskResumeFromISR                1
-#define INCLUDE_eTaskGetState                     0
+#define INCLUDE_eTaskGetState                     1
 #define INCLUDE_pcTaskGetTaskName                 1
 /* -------------------------------------------------------------------- */
 #define INCLUDE_pxTaskGetStackStart               (1 && configUSE_SEGGER_SYSTEM_VIEWER_HOOKS)
