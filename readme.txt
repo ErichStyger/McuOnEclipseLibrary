@@ -22,6 +22,7 @@ How to integrate the library
 - Add the following paths to the compiler include settings (you might simply copy-paste them into the control):
 ../McuLib/config
 ../McuLib/config/fonts
+../McuLib/fonts
 ../McuLib/src
 ../McuLib/FreeRTOS/Source/include
 ../McuLib/FreeRTOS/Source/portable/GCC/ARM_CM4F
