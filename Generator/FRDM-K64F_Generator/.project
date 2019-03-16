@@ -32,9 +32,19 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>FreeRTOS_10.2.0</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/tmp/FreeRTOSv10.2.0/FreeRTOS_10.2.0</locationURI>
+		</link>
+		<link>
 			<name>McuOnEclipseLibrary</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>freeRTOS</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/ProgramData/Processor%20Expert/PEXDRV_PE5_3/Drivers/freeRTOS</locationURI>
 		</link>
 		<link>
 			<name>lib</name>
