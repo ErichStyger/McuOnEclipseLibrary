@@ -33,6 +33,11 @@ void McuRTOS_vApplicationStackOverflowHook(TaskHandle_t pxTask, char *pcTaskName
   (void)pcTaskName;
   taskDISABLE_INTERRUPTS();
   /* Write your code here ... */
+#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
+    __asm volatile("bkpt #0");
+#elif McuLib_CONFIG_CPU_IS_RISC_V
+    __asm volatile( "ebreak" );
+#endif
   for(;;) {}
 }
 
@@ -57,6 +62,11 @@ void McuRTOS_vApplicationMallocFailedHook(void)
      configTOTAL_HEAP_SIZE configuration constant in FreeRTOSConfig.h. */
   taskDISABLE_INTERRUPTS();
   /* Write your code here ... */
+#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
+    __asm volatile("bkpt #0");
+#elif McuLib_CONFIG_CPU_IS_RISC_V
+    __asm volatile( "ebreak" );
+#endif
   for(;;) {}
 }
 
@@ -74,7 +84,7 @@ void McuRTOS_vApplicationMallocFailedHook(void)
 */
 void McuRTOS_vApplicationTickHook(void)
 {
-  /* Called for every RTOS tick. */
+  /* Hook called for every RTOS tick. */
 }
 
 /*
