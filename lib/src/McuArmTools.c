@@ -6,7 +6,7 @@
 **     Component   : KinetisTools
 **     Version     : Component 01.041, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-01-12, 11:31, # CodeGen: 368
+**     Date/Time   : 2019-03-11, 16:59, # CodeGen: 461
 **     Abstract    :
 **
 **     Settings    :
@@ -75,6 +75,9 @@
 /* MODULE McuArmTools. */
 
 #include "McuArmTools.h"
+
+#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
+
 #include "McuUtility.h" /* various utility functions */
 #if McuLib_CONFIG_NXP_SDK_2_0_USED
   #include "fsl_common.h"
@@ -689,6 +692,8 @@ void McuArmTools_Init(void)
   /* Nothing needed */
 }
 
+
+#endif /* McuLib_CONFIG_CPU_IS_ARM_CORTEX_M */
 /* END McuArmTools. */
 
 /*!

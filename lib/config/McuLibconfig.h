@@ -11,20 +11,38 @@
 /* identification of CPU/core used. __CORTEX_M is defined in CMSIS-Core.
    Otherwise CPU Family is set automatically by Processor Expert: detected: Kinetis (supported: "Kinetis", "S32K", "HCS08")
 */
-#define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M    (1 || defined(__CORTEX_M))
-  /*!< 1: ARM Cortex-M family, 0 otherwise */
-#define McuLib_CONFIG_CPU_IS_KINETIS         (1 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
-  /*!< 1: NXP Kinetis CPU family, 0: otherwise */
-#define McuLib_CONFIG_CPU_IS_S32K            (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
-  /*!< 1: NXP S32K CPU family, 0: otherwise */
-#define McuLib_CONFIG_CPU_IS_LPC             (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
-  /*!< 1: NXP LPC CPU family, 0: otherwise */
-#define McuLib_CONFIG_CPU_IS_STM32           (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
-  /*!< 1: STM32 ARM Cortex CPU family, 0: otherwise */
-#define McuLib_CONFIG_CPU_IS_HCS08           (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
-  /*!< 1: HCS08 CPU family, 0: otherwise */
-#define McuLib_CONFIG_CPU_IS_IMXRT           (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
-  /*!< 1: NXP i.Mx RT CPU family, 0: otherwise */
+#ifndef McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
+  #define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M    (1 || defined(__CORTEX_M))
+    /*!< 1: ARM Cortex-M family, 0 otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_KINETIS
+  #define McuLib_CONFIG_CPU_IS_KINETIS         (1 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+    /*!< 1: NXP Kinetis CPU family, 0: otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_S32K
+  #define McuLib_CONFIG_CPU_IS_S32K            (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+    /*!< 1: NXP S32K CPU family, 0: otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_LPC
+  #define McuLib_CONFIG_CPU_IS_LPC             (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+   /*!< 1: NXP LPC CPU family, 0: otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_STM32
+  #define McuLib_CONFIG_CPU_IS_STM32           (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+    /*!< 1: STM32 ARM Cortex CPU family, 0: otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_IMXRT
+  #define McuLib_CONFIG_CPU_IS_IMXRT           (0 && McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
+    /*!< 1: NXP i.Mx RT CPU family, 0: otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_HCS08
+  #define McuLib_CONFIG_CPU_IS_HCS08           (0)
+    /*!< 1: HCS08 CPU family, 0: otherwise */
+#endif
+#ifndef McuLib_CONFIG_CPU_IS_RISC_V
+  #define McuLib_CONFIG_CPU_IS_RISC_V          (0)
+    /*!< 1: RISC-V CPU family, 0: otherwise */
+#endif
 
 /* identification of Cortex-M core. __FPU_USED can be defined in CMSIS-Core */
 #define McuLib_CONFIG_CORTEX_M      (4)
