@@ -40,7 +40,7 @@ void McuLED_GetDefaultConfig(McuLED_Config_t *config) {
 
 McuLED_Handle_t McuLED_InitLed(McuLED_Config_t *config) {
   McuGPIO_Config_t gpio_config; /* config for the SDK */
-  McuGPIO_Handle_t *gpio;
+  McuGPIO_Handle_t gpio;
   McuLED_t *handle;
 
   assert(config!=NULL);
@@ -55,8 +55,7 @@ McuLED_Handle_t McuLED_InitLed(McuLED_Config_t *config) {
     gpio_config.isLowOnInit = config->isOnInit?1:0;
   }
   gpio = McuGPIO_InitGPIO(&gpio_config); /* create gpio handle */
-
-  handle = malloc(sizeof(McuLED_t)); /* get a new device descriptor */
+  handle = (McuLED_t*)malloc(sizeof(McuLED_t)); /* get a new device descriptor */
   assert(handle!=NULL);
   if (handle!=NULL) { /* if malloc failed, will return NULL pointer */
     memset(handle, 0, sizeof(McuLED_t)); /* init all fields */

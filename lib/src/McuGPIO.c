@@ -61,7 +61,7 @@ McuGPIO_Handle_t McuGPIO_InitGPIO(McuGPIO_Config_t *config) {
   GPIO_PinInit(config->gpio, config->port, config->pin, &pin_config);
 #endif
 
-  handle = malloc(sizeof(McuGPIO_t)); /* get a new device descriptor */
+  handle = (McuGPIO_t*)malloc(sizeof(McuGPIO_t)); /* get a new device descriptor */
   assert(handle!=NULL);
   if (handle!=NULL) { /* if malloc failed, will return NULL pointer */
     memset(handle, 0, sizeof(McuGPIO_t)); /* init all fields */
