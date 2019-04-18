@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SSD1306
-**     Version     : Component 01.042, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.044, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-02-23, 10:55, # CodeGen: 437
+**     Date/Time   : 2019-04-17, 13:35, # CodeGen: 487
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -55,6 +55,7 @@
 **         GiveLCD               - void McuSSD1306_GiveLCD(void);
 **         SetRowCol             - uint8_t McuSSD1306_SetRowCol(uint8_t row, uint8_t col);
 **         PrintString           - void McuSSD1306_PrintString(uint8_t line, uint8_t col, uint8_t *str);
+**         ClearLine             - void McuSSD1306_ClearLine(uint8_t line);
 **         Deinit                - void McuSSD1306_Deinit(void);
 **         Init                  - void McuSSD1306_Init(void);
 **
@@ -514,6 +515,20 @@ uint8_t McuSSD1306_SetRowCol(uint8_t row, uint8_t col);
 **         col             - column number, starting with 0
 **     Returns     :
 **         ---             - Error code
+** ===================================================================
+*/
+
+void McuSSD1306_ClearLine(uint8_t line);
+/*
+** ===================================================================
+**     Method      :  ClearLine (component SSD1306)
+**
+**     Description :
+**         Clear a text line on the display
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         line            - Line number, starting with zero
+**     Returns     : Nothing
 ** ===================================================================
 */
 
