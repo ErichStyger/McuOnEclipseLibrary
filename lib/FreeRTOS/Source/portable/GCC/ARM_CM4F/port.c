@@ -30,6 +30,8 @@
  *----------------------------------------------------------*/
 /* Scheduler includes. */
 #include "FreeRTOS.h"
+#if McuLib_CONFIG_SDK_USE_FREERTOS
+
 #include "portmacro.h" /* for configCPU_FAMILY */
 #include "task.h"
 #include "portTicks.h" /* for CPU_CORE_CLK_HZ used in configSYSTICK_CLOCK_HZ */
@@ -41,7 +43,9 @@
     #include "SIM_PDD.h"   /* PDD interface to system integration module */
   #endif
 #endif
+
 #include "McuLib.h" /* include SDK and API used */
+#if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
 /* --------------------------------------------------- */
 /* Let the user override the pre-loading of the initial LR with the address of
    prvTaskExitError() in case is messes up unwinding of the stack in the
@@ -1655,4 +1659,8 @@ __asm uint32_t vPortGetIPSR(void) {
 
 
 #endif /* ARM M4(F) core */ 
+
+#endif /* McuLib_CONFIG_CPU_IS_ARM_CORTEX_M */
+
+#endif /* McuLib_CONFIG_SDK_USE_FREERTOS */
 

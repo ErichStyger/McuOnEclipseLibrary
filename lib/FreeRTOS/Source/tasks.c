@@ -466,7 +466,7 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
   #endif
   uint32_t ulTotalRunTime = 0UL;   /*< Holds the total amount of execution time as defined by the run time counter clock. */
 #else
-  PRIVILEGED_DATA static uint32_t ulTotalRunTime = 0UL;   /*< Holds the total amount of execution time as defined by the run time counter clock. */
+	PRIVILEGED_DATA static uint32_t ulTotalRunTime = 0UL;		/*< Holds the total amount of execution time as defined by the run time counter clock. */
 #endif
 
 #endif
