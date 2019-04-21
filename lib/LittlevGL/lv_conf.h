@@ -13,6 +13,7 @@
 #define LV_CONF_H
 
 #include "McuLib.h"
+#include "lcd.h"
 /*===================
    Dynamic memory
  *===================*/
@@ -39,11 +40,9 @@
  *===================*/
 
 /* Horizontal and vertical resolution of the library.*/
-#include "lcd.h"
-#define LV_HOR_RES          (LCD_DISPLAY_WIDTH)
-#define LV_VER_RES          (LCD_DISPLAY_HEIGHT)
-#define LV_DPI              30/*100*/
-/* Adadruit: 128 pixel @ 27 mm ==>  (128/27)*25.4 == 120 dots/pixel per Inch == 120 DPI */
+#define LV_HOR_RES          (LCD_LV_DISPLAY_WIDTH)
+#define LV_VER_RES          (LCD_LV_DISPLAY_HEIGHT)
+#define LV_DPI              (LCD_LV_DPI)
 
 /* Size of VDB (Virtual Display Buffer: the internal graphics buffer).
  * Required for buffered drawing, opacity and anti-aliasing
@@ -78,7 +77,7 @@
 #define LV_INDEV_LONG_PRESS_REP_TIME    100                    /*Repeated trigger period in long press [ms] */
 
 /*Color settings*/
-#define LV_COLOR_DEPTH     LCD_COLOR_DEPTH                     /*Color depth: 1/8/16/32*/
+#define LV_COLOR_DEPTH     LCD_LV_COLOR_DEPTH     /*Color depth: 1/8/16/32*/
 #define LV_COLOR_16_SWAP   0                      /*Swap the 2 bytes of RGB565 color. Useful if the display has a 8 bit interface (e.g. SPI)*/
 #define LV_COLOR_SCREEN_TRANSP        0           /*1: Enable screen transparency. Useful for OSD or other overlapping GUIs. Requires ARGB8888 colors*/
 #define LV_COLOR_TRANSP    LV_COLOR_LIME          /*Images pixels with this color will not be drawn (with chroma keying)*/
