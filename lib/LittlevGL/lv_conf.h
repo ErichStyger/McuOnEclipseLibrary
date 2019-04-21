@@ -42,7 +42,8 @@
 #include "lcd.h"
 #define LV_HOR_RES          (LCD_DISPLAY_WIDTH)
 #define LV_VER_RES          (LCD_DISPLAY_HEIGHT)
-#define LV_DPI              100
+#define LV_DPI              30/*100*/
+/* Adadruit: 128 pixel @ 27 mm ==>  (128/27)*25.4 == 120 dots/pixel per Inch == 120 DPI */
 
 /* Size of VDB (Virtual Display Buffer: the internal graphics buffer).
  * Required for buffered drawing, opacity and anti-aliasing
