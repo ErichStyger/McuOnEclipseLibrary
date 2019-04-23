@@ -6,7 +6,7 @@
 **     Component   : SSD1306
 **     Version     : Component 01.044, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-04-17, 13:35, # CodeGen: 487
+**     Date/Time   : 2019-04-23, 06:31, # CodeGen: 489
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -403,6 +403,36 @@ void McuSSD1306_Clear(void)
 
 /*
 ** ===================================================================
+**     Method      :  UpdateRegion (component SSD1306)
+**
+**     Description :
+**         Updates a region of the display. This is only a stub for
+**         this display as we are using windowing.
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**         x               - x coordinate
+**         y               - y coordinate
+**         w               - width of the region
+**         h               - Height of the region
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y, McuSSD1306_PixelDim w, McuSSD1306_PixelDim h)
+{
+  int page, pageBeg, pageEnd, colStart;
+
+  pageBeg = y/8;
+  pageEnd = (y+h-1)/8;
+  colStart = x;
+  for(page = pageBeg; page<=pageEnd; page++) {
+    (void)SSD1306_SetPageStartAddr(page);
+    (void)SSD1306_SetColStartAddr(colStart);
+    SSD1306_WriteDataBlock(&McuSSD1306_DisplayBuf[0][0]+(page*McuSSD1306_DISPLAY_HW_NOF_COLUMNS+colStart), w);
+  }
+}
+
+/*
+** ===================================================================
 **     Method      :  UpdateFull (component SSD1306)
 **
 **     Description :
@@ -431,29 +461,6 @@ void McuSSD1306_UpdateFull(void)
   #error "unknown display type?"
 #endif
 }
-
-/*
-** ===================================================================
-**     Method      :  UpdateRegion (component SSD1306)
-**
-**     Description :
-**         Updates a region of the display. This is only a stub for
-**         this display as we are using windowing.
-**     Parameters  :
-**         NAME            - DESCRIPTION
-**         x               - x coordinate
-**         y               - y coordinate
-**         w               - width of the region
-**         h               - Height of the region
-**     Returns     : Nothing
-** ===================================================================
-*/
-/*
-void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y, McuSSD1306_PixelDim w, McuSSD1306_PixelDim h)
-{
-  implemented as macro in McuSSD1306.h
-}
-*/
 
 /*
 ** ===================================================================

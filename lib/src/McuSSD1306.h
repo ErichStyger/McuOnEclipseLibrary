@@ -6,7 +6,7 @@
 **     Component   : SSD1306
 **     Version     : Component 01.044, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-04-17, 13:35, # CodeGen: 487
+**     Date/Time   : 2019-04-23, 06:31, # CodeGen: 489
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -204,10 +204,7 @@ void McuSSD1306_UpdateFull(void);
 ** ===================================================================
 */
 
-/* implemented as macro
 void McuSSD1306_UpdateRegion(McuSSD1306_PixelDim x, McuSSD1306_PixelDim y, McuSSD1306_PixelDim w, McuSSD1306_PixelDim h);
-*/
-#define McuSSD1306_UpdateRegion(x,y,w,h) /* nothing to do, as this display type does not require a refresh */
 /*
 ** ===================================================================
 **     Method      :  UpdateRegion (component SSD1306)
