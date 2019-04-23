@@ -170,7 +170,7 @@ typedef unsigned long TickCounter_t; /* enough for 24 bit Systick */
  */
 #if configUSE_TICKLESS_IDLE == 1
   static TickCounter_t ulStoppedTimerCompensation = 0; /* number of timer ticks to compensate */
-  #define configSTOPPED_TIMER_COMPENSATION    45UL  /* number of CPU cycles to compensate, as defined in properties. ulStoppedTimerCompensation will contain the number of timer ticks. */
+  #define configSTOPPED_TIMER_COMPENSATION    45UL  /* number of CPU cycles to compensate. ulStoppedTimerCompensation will contain the number of timer ticks. */
 #endif /* configUSE_TICKLESS_IDLE */
 
 /* Flag indicating that the tick counter interval needs to be restored back to
@@ -448,6 +448,12 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime) {
   /* if we wait for the tick interrupt, do not enter low power again below */
   if (restoreTickInterval!=0) {
     McuRTOS_vOnPreSleepProcessing(xExpectedIdleTime); /* go into low power mode. Re-enable interrupts as needed! */
+#if 0 /* default example code */
+    /* default wait/sleep code */
+    __asm volatile("dsb");
+    __asm volatile("wfi");
+    __asm volatile("isb");
+#endif
     return;
   }
 #endif
@@ -532,6 +538,12 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime) {
 
      /* CPU *HAS TO WAIT* in the sequence below for an interrupt. If vOnPreSleepProcessing() is not used, a default implementation is provided */
     McuRTOS_vOnPreSleepProcessing(xExpectedIdleTime); /* go into low power mode. Re-enable interrupts as needed! */
+#if 0 /* example/default code */
+    /* default wait/sleep code */
+    __asm volatile("dsb");
+    __asm volatile("wfi");
+    __asm volatile("isb");
+#endif
     /* ----------------------------------------------------------------------------
      * Here the CPU *HAS TO BE* low power mode, waiting to wake up by an interrupt 
      * ----------------------------------------------------------------------------*/
