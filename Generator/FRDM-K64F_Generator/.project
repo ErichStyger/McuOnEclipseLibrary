@@ -37,6 +37,11 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>Source</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/tmp/FreeRTOSv10.2.0/FreeRTOSv10.2.0/FreeRTOS/Source</locationURI>
+		</link>
+		<link>
 			<name>freeRTOS</name>
 			<type>2</type>
 			<locationURI>PARENT-7-PROJECT_LOC/ProgramData/Processor%20Expert/PEXDRV_PE5_3/Drivers/freeRTOS</locationURI>
