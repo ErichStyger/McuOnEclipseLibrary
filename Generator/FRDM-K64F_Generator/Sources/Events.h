@@ -53,6 +53,7 @@
 #include "LEDpin3.h"
 #include "McuLED4.h"
 #include "LEDpin4.h"
+#include "MinINI.h"
 #include "McuQuadCounter.h"
 #include "C11.h"
 #include "C21.h"
