@@ -6,7 +6,7 @@
 **     Component   : SSD1306
 **     Version     : Component 01.044, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-04-23, 06:31, # CodeGen: 489
+**     Date/Time   : 2019-04-24, 10:23, # CodeGen: 503
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -365,6 +365,7 @@ uint16_t McuSSD1306_ReadDataWord(void)
 */
 void McuSSD1306_WriteData(uint8_t data)
 {
+  SSD1306_WriteData(data);
 }
 
 /*
@@ -377,6 +378,20 @@ void McuSSD1306_WriteData(uint8_t data)
 */
 void McuSSD1306_OpenWindow(McuSSD1306_PixelDim x0, McuSSD1306_PixelDim y0, McuSSD1306_PixelDim x1, McuSSD1306_PixelDim y1)
 {
+  /* no windowing capabilities */
+}
+
+/*
+** ===================================================================
+**     Method      :  McuSSD1306_CloseWindow (component SSD1306)
+**
+**     Description :
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+void McuSSD1306_CloseWindow(void)
+{
+  /* no windowing capabilities */
 }
 
 /*
@@ -461,21 +476,6 @@ void McuSSD1306_UpdateFull(void)
   #error "unknown display type?"
 #endif
 }
-
-/*
-** ===================================================================
-**     Method      :  McuSSD1306_CloseWindow (component SSD1306)
-**
-**     Description :
-**         This method is internal. It is used by Processor Expert only.
-** ===================================================================
-*/
-/*
-void McuSSD1306_CloseWindow(void)
-{
-  implemented as macro in McuSSD1306.h
-}
-*/
 
 /*
 ** ===================================================================

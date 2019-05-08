@@ -40,7 +40,7 @@
 #define configCPU_FAMILY_IS_ARM_M7(fam)           (((fam)==configCPU_FAMILY_ARM_M7)  || ((fam)==configCPU_FAMILY_ARM_M7F))
 #define configCPU_FAMILY_IS_ARM_M4_M7(fam)        (configCPU_FAMILY_IS_ARM_M4(fam)   || configCPU_FAMILY_IS_ARM_M7(fam))
 #define configCPU_FAMILY_IS_ARM_M33(fam)          (((fam)==configCPU_FAMILY_ARM_M33) || ((fam)==configCPU_FAMILY_ARM_M33F))
-#define configCPU_FAMILY_IS_ARM_FPU(fam)          (((fam)==configCPU_FAMILY_ARM_M4F) || ((fam)==configCPU_FAMILY_ARM_M7F))
+#define configCPU_FAMILY_IS_ARM_FPU(fam)          (((fam)==configCPU_FAMILY_ARM_M4F) || ((fam)==configCPU_FAMILY_ARM_M7F) || ((fam)==configCPU_FAMILY_ARM_M33F))
 #define configCPU_FAMILY_IS_ARM(fam)              (configCPU_FAMILY_IS_ARM_M0(fam) || configCPU_FAMILY_IS_ARM_M4(fam) || configCPU_FAMILY_IS_ARM_M7(fam) || configCPU_FAMILY_IS_ARM_M33(fam))
 
 #if McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
@@ -70,10 +70,19 @@
   #define configCPU_FAMILY                        configCPU_FAMILY_ARM_M4F
 #endif
 
-/* MPU support: portUSING_MPU_WRAPPERS is defined (or not) in portmacro.h and turns on MPU support. Currently only supported for ARM Cortex-M4/M3 ports */
-#ifndef configUSE_MPU_SUPPORT
-  #define configUSE_MPU_SUPPORT                   (0 && configCPU_FAMILY_IS_ARM_M4(configCPU_FAMILY))
+#ifndef configENABLE_MPU
+  #define configENABLE_MPU                        (0 && (configCPU_FAMILY_IS_ARM_M4(configCPU_FAMILY)||configCPU_FAMILY_IS_ARM_M33(configCPU_FAMILY)))
   /*!< 1: enable MPU support; 0: MPU support is disabled */
+#endif
+
+#ifndef configENABLE_FPU
+  #define configENABLE_FPU                        (1 && McuLib_CONFIG_FPU_PRESENT)
+    /*!< 1: enable FPU support; 0: FPU support is disabled */
+#endif
+
+#ifndef configENABLE_TRUSTZONE
+  #define configENABLE_TRUSTZONE                  (0 && configCPU_FAMILY_IS_ARM_M33(configCPU_FAMILY))
+    /*!< 1: enable ARM TrustZone support; 0: TrustZone support is disabled */
 #endif
 
 /*-----------------------------------------------------------

@@ -113,7 +113,7 @@
 #define configUSE_COUNTING_SEMAPHORES             1
 #define configUSE_APPLICATION_TASK_TAG            0
 /* Tickless Idle Mode ----------------------------------------------------------*/
-#define configUSE_TICKLESS_IDLE                   1 /* set to 1 for tickless idle mode, 0 otherwise */
+#define configUSE_TICKLESS_IDLE                   0 /* set to 1 for tickless idle mode, 0 otherwise */
 #define configEXPECTED_IDLE_TIME_BEFORE_SLEEP     2 /* number of ticks must be larger than this to enter tickless idle mode */
 #define configUSE_TICKLESS_IDLE_DECISION_HOOK     0 /* set to 1 to enable application hook, zero otherwise */
 #define configUSE_TICKLESS_IDLE_DECISION_HOOK_NAME xEnterTicklessIdle /* function name of decision hook */
@@ -203,6 +203,20 @@ point support. */
  */
 #define configCLINT_BASE_ADDRESS   0x0
 
+/*---------------------------------------------------------------------------------------*/
+/* MPU and TrustZone settings */
+#ifndef configENABLE_FPU
+  #define configENABLE_FPU        (0)
+#endif /* configENABLE_FPU */
+
+#ifndef configENABLE_MPU
+  #define configENABLE_MPU        (0)
+#endif /* configENABLE_MPU */
+
+#ifndef configENABLE_TRUSTZONE
+  #define configENABLE_TRUSTZONE  (0)
+#endif /* configENABLE_TRUSTZONE */
+/*---------------------------------------------------------------------------------------*/
 
 /* custom include file: */
 // #include "CustomFreeRTOSSettings.h
