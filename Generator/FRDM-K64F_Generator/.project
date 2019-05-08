@@ -52,6 +52,21 @@
 			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
 		</link>
 		<link>
+			<name>minIni</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/ProgramData/Processor%20Expert/CWMCU_PE5_00/Beans/minIni</locationURI>
+		</link>
+		<link>
+			<name>minIni.nok</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/ProgramData/Processor%20Expert/minIni.nok</locationURI>
+		</link>
+		<link>
+			<name>minIni.ok</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/ProgramData/Processor%20Expert/minIni.ok</locationURI>
+		</link>
+		<link>
 			<name>McuOnEclipseLibrary/license.txt</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/license.txt</locationURI>
