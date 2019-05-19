@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Kernel V10.2.0
+ * FreeRTOS Kernel V10.2.1
  * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -25,29 +25,27 @@
  * 1 tab == 4 spaces!
  */
 
-#ifndef __SECURE_INIT_H__
-#define __SECURE_INIT_H__
+#ifndef __SECURE_HEAP_H__
+#define __SECURE_HEAP_H__
+
+/* Standard includes. */
+#include <stdlib.h>
 
 /**
- * @brief De-prioritizes the non-secure exceptions.
+ * @brief Allocates memory from heap.
  *
- * This is needed to ensure that the non-secure PendSV runs at the lowest
- * priority. Context switch is done in the non-secure PendSV handler.
+ * @param[in] xWantedSize The size of the memory to be allocated.
  *
- * @note This function must be called in the handler mode. It is no-op if called
- * in the thread mode.
+ * @return Pointer to the memory region if the allocation is successful, NULL
+ * otherwise.
  */
-void SecureInit_DePrioritizeNSExceptions( void );
+void *pvPortMalloc( size_t xWantedSize );
 
 /**
- * @brief Sets up the Floating Point Unit (FPU) for Non-Secure access.
+ * @brief Frees the previously allocated memory.
  *
- * Also sets FPCCR.TS=1 to ensure that the content of the Floating Point
- * Registers are not leaked to the non-secure side.
- *
- * @note This function must be called in the handler mode. It is no-op if called
- * in the thread mode.
+ * @param[in] pv Pointer to the memory to be freed.
  */
-void SecureInit_EnableNSFPUAccess( void );
+void vPortFree( void *pv );
 
-#endif /* __SECURE_INIT_H__ */
+#endif /* __SECURE_HEAP_H__ */
