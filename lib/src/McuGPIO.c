@@ -1,7 +1,12 @@
 /*
- * McuGPIO.c
+ * Copyright (c) 2019, Erich Styger
+ * All rights reserved.
  *
+ * Driver for GPIO pins
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  */
+
 #include "McuLibconfig.h"
 #include "McuGPIO.h"
 #include "fsl_gpio.h"
