@@ -10,20 +10,18 @@
 #ifndef McuGPIO_H_
 #define McuGPIO_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "fsl_gpio.h"
 #include "McuLibconfig.h"
 #include "McuGPIOconfig.h"
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef void *McuGPIO_Handle_t;
 
 typedef struct {
-  bool isInput;
-  bool isLowOnInit;
   GPIO_Type *gpio;
 #if McuLib_CONFIG_CPU_IS_KINETIS
   PORT_Type *port;
@@ -31,6 +29,12 @@ typedef struct {
   uint32_t port;
 #endif
   uint32_t pin;
+} McuGPIO_HwPin_t;
+
+typedef struct {
+  bool isInput;
+  bool isLowOnInit;
+  McuGPIO_HwPin_t hw;
 } McuGPIO_Config_t;
 
 void McuGPIO_GetDefaultConfig(McuGPIO_Config_t *config);

@@ -2,13 +2,13 @@
  * Copyright (c) 2019, Erich Styger
  * All rights reserved.
  *
- * Configuration header file for McuGPIO
+ * Configuration header file for McuDebounc
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#ifndef MCUGPIO_CONFIG_H_
-#define MCUGPIO_CONFIG_H_
+#ifndef MCUDEBOUNCE_CONFIG_H_
+#define MCUDEBOUNCE_CONFIG_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,4 +20,4 @@ extern "C" {
 }  /* extern "C" */
 #endif
 
-#endif /* MCUGPIOCONFIG_H_ */
+#endif /* MCUDEBOUNCE_CONFIG_H_ */
