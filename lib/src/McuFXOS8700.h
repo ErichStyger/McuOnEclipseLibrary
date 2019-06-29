@@ -153,7 +153,7 @@ extern "C" {
 
 /* die temperature (needs to add an offset as not factory trimmed) */
 #define McuFXOS8700_DIE_TEMP  0x51 /* die temperature register, signed 8bit in C */
-#define McuFXOS8700_DIE_TEMP_OFFSET   McuFXOS8700_CONFIG_TEMP_OFFSE /* offset to temperature reading as value on device is not calibrated */
+#define McuFXOS8700_DIE_TEMP_OFFSET   McuFXOS8700_CONFIG_TEMP_OFFSET /* offset to temperature reading as value on device is not calibrated */
 
 #define McuFXOS8700_I2C_ADDR          McuFXOS8700_CONFIG_I2C_DEVICE_ADDRESS /* I2C slave device address as set in the properties */
 

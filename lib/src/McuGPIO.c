@@ -98,7 +98,7 @@ void McuGPIO_Low(McuGPIO_Handle_t gpio) {
 #if McuLib_CONFIG_CPU_IS_KINETIS
   GPIO_PortClear(pin->hw.gpio, (1<<pin->hw.pin));
 #elif McuLib_CONFIG_CPU_IS_LPC
-  GPIO_PortClear(pin->gpio, pin->port, (1<<pin->pin));
+  GPIO_PortClear(pin->hw.gpio, pin->hw.port, (1<<pin->hw.pin));
 #endif
 }
 
