@@ -8,6 +8,7 @@
  */
 
 #include "McuLibconfig.h"
+#include "McuLEDconfig.h"
 #include "McuLED.h"
 #include "McuGPIO.h"
 #include "fsl_gpio.h"
@@ -16,8 +17,11 @@
 #endif
 #include <stddef.h>
 #include <string.h> /* for memset */
+#include <stdlib.h> /* for malloc() and free() */
 #include <assert.h>
-#include <McuLEDconfig.h>
+#if MCULED_CONFIG_USE_FREERTOS_HEAP
+  #include "McuRTOS.h"
+#endif
 
 /* default configuration, used for initializing the config */
 static const McuLED_Config_t defaultConfig =
@@ -62,7 +66,11 @@ McuLED_Handle_t McuLED_InitLed(McuLED_Config_t *config) {
     gpio_config.isLowOnInit = !config->isOnInit;
   }
   gpio = McuGPIO_InitGPIO(&gpio_config); /* create gpio handle */
+#if MCULED_CONFIG_USE_FREERTOS_HEAP
+  handle = (McuLED_t*)pvPortMalloc(sizeof(McuLED_t)); /* get a new device descriptor */
+#else
   handle = (McuLED_t*)malloc(sizeof(McuLED_t)); /* get a new device descriptor */
+#endif
   assert(handle!=NULL);
   if (handle!=NULL) { /* if malloc failed, will return NULL pointer */
     memset(handle, 0, sizeof(McuLED_t)); /* init all fields */
@@ -75,7 +83,11 @@ McuLED_Handle_t McuLED_InitLed(McuLED_Config_t *config) {
 McuLED_Handle_t McuLED_DeinitLed(McuLED_Handle_t led) {
   assert(led!=NULL);
   McuGPIO_DeinitGPIO(((McuLED_t*)led)->gpio);
+#if MCULED_CONFIG_USE_FREERTOS_HEAP
+  vPortFree(led);
+#else
   free(led);
+#endif
   return NULL;
 }
 
