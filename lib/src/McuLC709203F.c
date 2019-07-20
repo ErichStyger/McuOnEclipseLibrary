@@ -255,6 +255,7 @@ uint8_t McuLC_SetCurrentDirection(McuLC_CurrentDirection direction) {
   return WriteCmdWordChecked(LC709203F_I2C_SLAVE_ADDR, LC709203F_REG_CURRENT_DIRECTION, low, high);
 }
 
+#if MCULC709203F_CONFIG_PARSE_COMMAND_ENABLED
 static uint8_t PrintStatus(McuShell_ConstStdIOType *io) {
   uint8_t buf[32], res;
 
@@ -350,7 +351,9 @@ static uint8_t PrintStatus(McuShell_ConstStdIOType *io) {
   }
   return ERR_OK;
 }
+#endif /* MCULC709203F_CONFIG_PARSE_COMMAND_ENABLED */
 
+#if MCULC709203F_CONFIG_PARSE_COMMAND_ENABLED
 uint8_t McuLC_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io) {
   uint8_t res = ERR_OK;
   const uint8_t *p;
@@ -376,6 +379,7 @@ uint8_t McuLC_ParseCommand(const unsigned char *cmd, bool *handled, const McuShe
   }
   return res;
 }
+#endif /* MCULC709203F_CONFIG_PARSE_COMMAND_ENABLED */
 
 uint8_t McuLC_GetTemperatureMeasurementMode(bool *isI2Cmode) {
   uint16_t val=0;

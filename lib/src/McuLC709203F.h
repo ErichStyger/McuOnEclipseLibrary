@@ -13,7 +13,9 @@
 extern "C" {
 #endif
 
-#include "McuShell.h"
+#if MCULC709203F_CONFIG_PARSE_COMMAND_ENABLED
+  #include "McuShell.h"
+#endif
 
 /*!
  * \brief Returns the current battery voltage
@@ -72,6 +74,7 @@ uint8_t McuLC_SetPowerMode(bool sleepMode);
  */
 void McuLC_Wakeup(void); /* must be done before any other I2C communication on the bus! */
 
+#if MCULC709203F_CONFIG_PARSE_COMMAND_ENABLED
 /*!
  * \brief Module command line parser
  * \param cmd Pointer to string to be parsed
@@ -80,6 +83,7 @@ void McuLC_Wakeup(void); /* must be done before any other I2C communication on t
  * \return Error code, ERR_OK if everything is ok
  */
 uint8_t McuLC_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
+#endif
 
 /*!
  * \brief Driver initialization. I2C bus must be operational for this.
