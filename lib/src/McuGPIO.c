@@ -24,7 +24,7 @@
 static const McuGPIO_Config_t defaultConfig =
 {
     .isInput = true,
-    .isLowOnInit = true,
+    .isHighOnInit = false,
     .hw = {
       .gpio = NULL,
     #if McuLib_CONFIG_CPU_IS_KINETIS
@@ -46,7 +46,7 @@ void McuGPIO_GetDefaultConfig(McuGPIO_Config_t *config) {
   memcpy(config, &defaultConfig, sizeof(*config));
 }
 
-static void McuGPIO_ConfigureDirection(bool isInput, bool isLowOnInit, McuGPIO_HwPin_t *hw) {
+static void McuGPIO_ConfigureDirection(bool isInput, bool isHighOnInit, McuGPIO_HwPin_t *hw) {
   gpio_pin_config_t pin_config; /* config for the SDK */
 
   memset(&pin_config, 0, sizeof(pin_config)); /* init all fields */
@@ -66,7 +66,7 @@ static void McuGPIO_ConfigureDirection(bool isInput, bool isLowOnInit, McuGPIO_H
 #if McuLib_CONFIG_CPU_IS_IMXRT
   pin_config.interruptMode = kGPIO_NoIntmode; /* no interrupts */
 #endif
-  pin_config.outputLogic = !isLowOnInit;
+  pin_config.outputLogic = isHighOnInit;
 #if McuLib_CONFIG_CPU_IS_KINETIS
   GPIO_PinInit(hw->gpio, hw->pin, &pin_config);
 #elif McuLib_CONFIG_CPU_IS_LPC
@@ -80,21 +80,33 @@ void McuGPIO_SetAsInput(McuGPIO_Handle_t gpio) {
   McuGPIO_t *pin = (McuGPIO_t*)gpio;
 
   assert(gpio!=NULL);
-  McuGPIO_ConfigureDirection(true, true /* don't care */, &pin->hw);
+  McuGPIO_ConfigureDirection(true, false /* don't care */, &pin->hw);
+  pin->isInput = true;
 }
 
 void McuGPIO_SetAsOutput(McuGPIO_Handle_t gpio, bool setHigh) {
   McuGPIO_t *pin = (McuGPIO_t*)gpio;
 
   assert(gpio!=NULL);
-  McuGPIO_ConfigureDirection(false, !setHigh, &pin->hw);
+  McuGPIO_ConfigureDirection(false, setHigh, &pin->hw);
+  pin->isInput = false;
+}
+
+bool McuGPIO_IsInput(McuGPIO_Handle_t gpio) {
+  McuGPIO_t *pin = (McuGPIO_t*)gpio;
+  return pin->isInput;
+}
+
+bool McuGPIO_IsOutput(McuGPIO_Handle_t gpio) {
+  McuGPIO_t *pin = (McuGPIO_t*)gpio;
+  return !pin->isInput;
 }
 
 McuGPIO_Handle_t McuGPIO_InitGPIO(McuGPIO_Config_t *config) {
   McuGPIO_t *handle;
 
   assert(config!=NULL);
-  McuGPIO_ConfigureDirection(config->isInput, config->isLowOnInit, &config->hw);
+  McuGPIO_ConfigureDirection(config->isInput, config->isHighOnInit, &config->hw);
 #if McuLib_CONFIG_CPU_IS_KINETIS
   PORT_SetPinMux(config->hw.port, config->hw.pin, kPORT_MuxAsGpio);
 #elif McuLib_CONFIG_CPU_IS_LPC

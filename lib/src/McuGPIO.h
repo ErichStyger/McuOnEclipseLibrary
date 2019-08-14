@@ -33,7 +33,7 @@ typedef struct {
 
 typedef struct {
   bool isInput;
-  bool isLowOnInit;
+  bool isHighOnInit;
   McuGPIO_HwPin_t hw;
 } McuGPIO_Config_t;
 
@@ -45,6 +45,8 @@ McuGPIO_Handle_t McuGPIO_DeinitGPIO(McuGPIO_Handle_t gpio);
 
 void McuGPIO_SetAsInput(McuGPIO_Handle_t gpio);
 void McuGPIO_SetAsOutput(McuGPIO_Handle_t gpio, bool setHigh);
+bool McuGPIO_IsInput(McuGPIO_Handle_t gpio);
+bool McuGPIO_IsOutput(McuGPIO_Handle_t gpio);
 void McuGPIO_SetLow(McuGPIO_Handle_t gpio);
 void McuGPIO_SetHigh(McuGPIO_Handle_t gpio);
 void McuGPIO_Toggle(McuGPIO_Handle_t gpio);
