@@ -9,15 +9,16 @@
 
 #include "McuLibconfig.h"
 #include "McuGPIO.h"
-#include "fsl_gpio.h"
-#if McuLib_CONFIG_CPU_IS_KINETIS
-  #include "fsl_port.h"
-#endif
+#include "McuUtility.h"
 #include <stddef.h>
 #include <string.h> /* for memset */
 #include <assert.h>
 #if MCUGPIO_CONFIG_USE_FREERTOS_HEAP
   #include "McuRTOS.h"
+#endif
+#include "fsl_gpio.h"
+#if McuLib_CONFIG_CPU_IS_KINETIS
+  #include "fsl_port.h"
 #endif
 
 /* default configuration, used for initializing the config */
@@ -224,6 +225,33 @@ bool McuGPIO_IsHigh(McuGPIO_Handle_t gpio) {
 
 bool McuGPIO_IsLow(McuGPIO_Handle_t gpio) {
   return !McuGPIO_IsHigh(gpio);
+}
+
+void McuGPIO_GetPinStatusString(McuGPIO_Handle_t gpio, unsigned char *buf, size_t bufSize) {
+  McuGPIO_t *pin = (McuGPIO_t*)gpio;
+
+  *buf = '\0';
+  if (McuGPIO_IsOutput(gpio)) {
+    McuUtility_strcat(buf, bufSize, (unsigned char*)"Output");
+  } else {
+    McuUtility_strcat(buf, bufSize, (unsigned char*)"Input");
+  }
+  if (McuGPIO_IsHigh(gpio)) {
+    McuUtility_strcat(buf, bufSize, (unsigned char*)", HIGH");
+  } else {
+    McuUtility_strcat(buf, bufSize, (unsigned char*)", LOW");
+  }
+  McuUtility_strcat(buf, bufSize, (unsigned char*)", gpio:0x");
+  McuUtility_strcatNum32Hex(buf, bufSize, (uint32_t)pin->hw.gpio); /* write address */
+#if McuLib_CONFIG_CPU_IS_KINETIS
+  McuUtility_strcat(buf, bufSize, (unsigned char*)", port:0x");
+  McuUtility_strcatNum32Hex(buf, bufSize, (uint32_t)pin->hw.port); /* write address */
+#elif McuLib_CONFIG_CPU_IS_LPC
+  McuUtility_strcat(buf, bufSize, (unsigned char*)", port:");
+  McuUtility_strcatNum32u(buf, bufSize, (uint32_t)pin->hw.port); /* write port number */
+#endif
+  McuUtility_strcat(buf, bufSize, (unsigned char*)", pin:");
+  McuUtility_strcatNum32u(buf, bufSize, (uint32_t)pin->hw.pin); /* write pin number */
 }
 
 void McuGPIO_Init(void) {

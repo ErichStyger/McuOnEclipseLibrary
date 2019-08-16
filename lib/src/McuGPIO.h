@@ -55,6 +55,8 @@ bool McuGPIO_IsHigh(McuGPIO_Handle_t gpio);
 void McuGPIO_SetValue(McuGPIO_Handle_t gpio, bool val);
 bool McuGPIO_GetValue(McuGPIO_Handle_t gpio);
 
+void McuGPIO_GetPinStatusString(McuGPIO_Handle_t gpio, unsigned char *buf, size_t bufSize);
+
 /* driver initialization */
 void McuGPIO_Init(void);
 
