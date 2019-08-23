@@ -50,7 +50,6 @@
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Static_Code/System&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Static_Code/PDD&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Static_Code/IO_Map&quot;"/>
-									<listOptionValue builtIn="false" value="C:/nxp/KDS_3.2.0/eclipse/ProcessorExpert/lib/Kinetis/pdd/inc"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Sources&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Generated_Code&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Generated_Code/config&quot;"/>
@@ -71,7 +70,6 @@
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Static_Code/System&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Static_Code/PDD&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Static_Code/IO_Map&quot;"/>
-									<listOptionValue builtIn="false" value="C:/nxp/KDS_3.2.0/eclipse/ProcessorExpert/lib/Kinetis/pdd/inc"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Sources&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Generated_Code&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:/Users/Erich Styger/Data/GitRepos/McuOnEclipseLibrary/Generator/FRDM-K64F_Generator/Generated_Code/config&quot;"/>
@@ -86,7 +84,6 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Static_Code/System&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Static_Code/PDD&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Static_Code/IO_Map&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProcessorExpertPath}/lib/Kinetis/pdd/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Sources&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Generated_Code&quot;"/>
 								</option>
@@ -112,7 +109,6 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Static_Code/System&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Static_Code/PDD&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Static_Code/IO_Map&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProcessorExpertPath}/lib/Kinetis/pdd/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Sources&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Generated_Code&quot;"/>
 								</option>
