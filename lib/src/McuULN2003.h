@@ -8,6 +8,10 @@
 #ifndef MCUULN2003_H_
 #define MCUULN2003_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "McuGPIO.h"
 
 #define McuLUN2003_28BYJ_48_    4076  /* 64:1 gear (actually more 63.68395:1 (4076 steps/ref), Adafruit has a 1/16 reduction (513 steps/rev) */
@@ -47,5 +51,9 @@ void McuULN2003_SetPos(McuULN2003_Handle_t motor, int32_t pos);
 
 void McuULN2003_Deinit(void);
 void McuULN2003_Init(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* MCUULN2003_H_ */
