@@ -6,7 +6,7 @@
 **     Component   : SeggerRTT
 **     Version     : Component 01.089, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-08-21, 18:45, # CodeGen: 570
+**     Date/Time   : 2019-08-27, 17:20, # CodeGen: 576
 **     Abstract    :
 **
 **     Settings    :
@@ -290,9 +290,9 @@ void McuRTT_StdIOReadChar(uint8_t *c)
 void McuRTT_StdIOSendChar(uint8_t ch)
 {
 #if McuRTT_CONFIG_BLOCKING_SEND
-#if McuRTT_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0 && McuRTT_CONFIG_BLOCKING_SEND_WAIT_MS>0
+  #if McuRTT_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0 && McuRTT_CONFIG_BLOCKING_SEND_WAIT_MS>0
   int timeoutMs = McuRTT_CONFIG_BLOCKING_SEND_TIMEOUT_MS;
-#endif
+  #endif
 
   for(;;) { /* will break */
     if (McuRTT_Write(0, (const char*)&ch, 1)==1) { /* non blocking send, check that we were able to send */
@@ -300,12 +300,12 @@ void McuRTT_StdIOSendChar(uint8_t ch)
     }
   #if McuRTT_CONFIG_BLOCKING_SEND_WAIT_MS>0
     McuWait_WaitOSms(McuRTT_CONFIG_BLOCKING_SEND_WAIT_MS);
-  #if McuRTT_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0
+    #if McuRTT_CONFIG_BLOCKING_SEND_TIMEOUT_MS>0
     if(timeoutMs<=0) {
       break; /* timeout */
     }
     timeoutMs -= McuRTT_CONFIG_BLOCKING_SEND_WAIT_MS;
-  #endif
+    #endif
   #endif
   } /* for */
 #else
