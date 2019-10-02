@@ -254,6 +254,42 @@ void McuGPIO_GetPinStatusString(McuGPIO_Handle_t gpio, unsigned char *buf, size_
   McuUtility_strcatNum32u(buf, bufSize, (uint32_t)pin->hw.pin); /* write pin number */
 }
 
+void McuGPIO_SetPullResistor(McuGPIO_Handle_t gpio, McuGPIO_PullType pull) {
+  McuGPIO_t *pin = (McuGPIO_t*)gpio;
+
+#if McuLib_CONFIG_CPU_IS_KINETIS
+  if (pull == McuGPIO_PULL_DISABLE) {
+    pin->hw.port->PCR[pin->hw.pin] = ((pin->hw.port->PCR[pin->hw.pin] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+                     /* Pull Select: Internal pullup resistor is enabled on the corresponding pin, if the
+                      * corresponding Port Pull Enable field is set. */
+                     | (uint32_t)(kPORT_PullUp)
+                     | PORT_PCR_PE(kPORT_PullDisable));
+  } else if (pull == McuGPIO_PULL_UP) {
+    pin->hw.port->PCR[pin->hw.pin] = ((pin->hw.port->PCR[pin->hw.pin] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Select: Internal pullup resistor is enabled on the corresponding pin, if the
+                      * corresponding Port Pull Enable field is set. */
+                     | (uint32_t)(kPORT_PullUp));
+  } else if (pull == McuGPIO_PULL_DOWN) {
+    pin->hw.port->PCR[pin->hw.pin] = ((pin->hw.port->PCR[pin->hw.pin] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PS_MASK | PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Select: Internal pullup resistor is enabled on the corresponding pin, if the
+                      * corresponding Port Pull Enable field is set. */
+                     | (uint32_t)(kPORT_PullDown));
+  }
+  #elif McuLib_CONFIG_CPU_IS_LPC
+  /* \todo */
+#elif McuLib_CONFIG_CPU_IS_IMXRT
+  /* \todo */
+#endif
+}
+
 void McuGPIO_Init(void) {
   /* nothing to do */
 }

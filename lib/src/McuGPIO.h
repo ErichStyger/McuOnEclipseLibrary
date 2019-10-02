@@ -57,6 +57,14 @@ bool McuGPIO_GetValue(McuGPIO_Handle_t gpio);
 
 void McuGPIO_GetPinStatusString(McuGPIO_Handle_t gpio, unsigned char *buf, size_t bufSize);
 
+typedef enum {
+  McuGPIO_PULL_DISABLE,
+  McuGPIO_PULL_UP,
+  McuGPIO_PULL_DOWN,
+} McuGPIO_PullType;
+
+void McuGPIO_SetPullResistor(McuGPIO_Handle_t gpio, McuGPIO_PullType pull);
+
 /* driver initialization */
 void McuGPIO_Init(void);
 
