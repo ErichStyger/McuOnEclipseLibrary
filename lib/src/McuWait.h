@@ -26,7 +26,7 @@
 **         Waitns         - void McuWait_Waitns(uint16_t ns);
 **         WaitOSms       - void McuWait_WaitOSms(void);
 **         Init           - void McuWait_Init(void);
-**         DeInit         - void McuWait_DeInit(void);
+**         Deinit         - void McuWait_DeInit(void);
 **
 ** * Copyright (c) 2013-2019, Erich Styger
 **  * Web:         https://mcuoneclipse.com
@@ -247,7 +247,7 @@ void McuWait_Init(void);
 ** ===================================================================
 */
 
-void McuWait_DeInit(void);
+void McuWait_Deinit(void);
 /*
 ** ===================================================================
 **     Method      :  DeInit (component Wait)

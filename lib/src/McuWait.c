@@ -26,7 +26,7 @@
 **         Waitns         - void McuWait_Waitns(uint16_t ns);
 **         WaitOSms       - void McuWait_WaitOSms(void);
 **         Init           - void McuWait_Init(void);
-**         DeInit         - void McuWait_DeInit(void);
+**         Deinit         - void McuWait_DeInit(void);
 **
 ** * Copyright (c) 2013-2019, Erich Styger
 **  * Web:         https://mcuoneclipse.com
@@ -355,7 +355,7 @@ void McuWait_Init(void)
 **     Returns     : Nothing
 ** ===================================================================
 */
-void McuWait_DeInit(void)
+void McuWait_Deinit(void)
 {
 #if McuWait_CONFIG_USE_CYCLE_COUNTER
   /* disable hardware cycle counter */
