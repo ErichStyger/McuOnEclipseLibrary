@@ -29,16 +29,16 @@ Instructions:
 
 /* ------------------- SDK/Library ---------------------------*/
 #define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_MCUXPRESSO_2_0
-//#define McuLib_CONFIG_CPU_IS_LPC        (1)  /* LPC845 */
-//#define McuLib_CONFIG_CORTEX_M          (0)  /* LPC845 is a Cortex-M0+ */
-//#define McuLib_CONFIG_CPU_IS_KINETIS    (0)  /* disabling the default Kinetis */
-
+/* set the CPU. See McuLibConfig.h for all supported CPUs */
+//#define McuLib_CONFIG_CPU_IS_KINETIS    (0)  /* default CPU is NXP Kinetis */
+//#define McuLib_CONFIG_CPU_IS_LPC        (1)  /* NXP LPC845 */
+//#define McuLib_CONFIG_CPU_IS_IMXRT      (0)  /* NXP i.MX RT */
+//#define McuLib_CONFIG_CPU_IS_LPC55xx    (0)  /* NXP LPC55xx */
 /* ------------------- RTOS ---------------------------*/
-/* Note: set configTOTAL_HEAP_SIZE to 16k in FreeRTOSConfig.h */
 //#define McuLib_CONFIG_SDK_USE_FREERTOS       (1)
 //#define configUSE_SEGGER_SYSTEM_VIEWER_HOOKS (1)
-//#define configTOTAL_HEAP_SIZE                       (24*1024)
-//#define configUSE_HEAP_SECTION_NAME                 (1)
-//#define configHEAP_SECTION_NAME_STRING              ".bss.$SRAM_LOWER.FreeRTOS"
+//#define configTOTAL_HEAP_SIZE                (24*1024)
+//#define configUSE_HEAP_SECTION_NAME          (1)
+//#define configHEAP_SECTION_NAME_STRING       ".bss.$SRAM_LOWER.FreeRTOS"
 
 #endif /* INCLUDEMCULIBCONFIG_H_ */
