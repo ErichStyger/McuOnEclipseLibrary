@@ -47,11 +47,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
 		</link>
 		<link>
-			<name>orig_IAR</name>
-			<type>2</type>
-			<locationURI>PARENT-7-PROJECT_LOC/tmp/IAR%20Wait/I2C_EEPROM/src/projects/I2C_EEPROM/Bit_Banging/orig_IAR</locationURI>
-		</link>
-		<link>
 			<name>McuOnEclipseLibrary/license.txt</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/license.txt</locationURI>
