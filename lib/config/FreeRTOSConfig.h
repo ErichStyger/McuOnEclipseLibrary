@@ -63,14 +63,30 @@
   #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()     /* nothing */
   #define portGET_RUN_TIME_COUNTER_VALUE()             /* nothing */
 #endif
-#define configUSE_PREEMPTION                      1 /* 1: pre-emptive mode; 0: cooperative mode */
-#define configUSE_TIME_SLICING                    1 /* 1: use time slicing; 0: don't time slice at tick interrupt time */
-#define configUSE_IDLE_HOOK                       1 /* 1: use Idle hook; 0: no Idle hook */
-#define configUSE_IDLE_HOOK_NAME                  McuRTOS_vApplicationIdleHook
-#define configUSE_TICK_HOOK                       1 /* 1: use Tick hook; 0: no Tick hook */
-#define configUSE_TICK_HOOK_NAME                  McuRTOS_vApplicationTickHook
-#define configUSE_MALLOC_FAILED_HOOK              1 /* 1: use MallocFailed hook; 0: no MallocFailed hook */
-#define configUSE_MALLOC_FAILED_HOOK_NAME         McuRTOS_vApplicationMallocFailedHook
+#ifndef configUSE_PREEMPTION
+  #define configUSE_PREEMPTION                    1 /* 1: pre-emptive mode; 0: cooperative mode */
+#endif
+#ifndef configUSE_TIME_SLICING
+  #define configUSE_TIME_SLICING                  1 /* 1: use time slicing; 0: don't time slice at tick interrupt time */
+#endif
+#ifndef configUSE_IDLE_HOOK
+  #define configUSE_IDLE_HOOK                     1 /* 1: use Idle hook; 0: no Idle hook */
+#endif
+#ifndef configUSE_IDLE_HOOK_NAME
+  #define configUSE_IDLE_HOOK_NAME                McuRTOS_vApplicationIdleHook
+#endif
+#ifndef configUSE_TICK_HOOK
+  #define configUSE_TICK_HOOK                     1 /* 1: use Tick hook; 0: no Tick hook */
+#endif
+#ifndef configUSE_TICK_HOOK_NAME
+  #define configUSE_TICK_HOOK_NAME                McuRTOS_vApplicationTickHook
+#endif
+#ifndef configUSE_MALLOC_FAILED_HOOK
+  #define configUSE_MALLOC_FAILED_HOOK            1 /* 1: use MallocFailed hook; 0: no MallocFailed hook */
+#endif
+#ifndef configUSE_MALLOC_FAILED_HOOK_NAME
+  #define configUSE_MALLOC_FAILED_HOOK_NAME       McuRTOS_vApplicationMallocFailedHook
+#endif
 #ifndef configTICK_RATE_HZ
   #define configTICK_RATE_HZ                      (1000) /* frequency of tick interrupt */
 #endif
