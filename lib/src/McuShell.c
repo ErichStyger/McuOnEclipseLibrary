@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.107, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.108, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-01-29, 06:51, # CodeGen: 595
+**     Date/Time   : 2020-04-15, 12:58, # CodeGen: 596
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -68,7 +68,7 @@
 **         Init                            - void McuShell_Init(void);
 **         Deinit                          - void McuShell_Deinit(void);
 **
-** * Copyright (c) 2014-2019, Erich Styger
+** * Copyright (c) 2014-2020, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -741,6 +741,7 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
   for(;;) { /* breaks */
     if (i>sizeof(buf)-2) {
       res = ERR_FAILED;
+      McuShell_PrintCommandFailed(buf, io);
       break; /* buffer overflow */
     }
     buf[i] = *cmd;
