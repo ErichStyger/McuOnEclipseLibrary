@@ -86,19 +86,19 @@
 #define McuLib_CONFIG_CPU_IS_LITTLE_ENDIAN   (McuLib_CONFIG_CPU_IS_ARM_CORTEX_M)
 
 /* Identifiers used to identify the SDK */
-#define McuLib_CONFIG_SDK_GENERIC             0
+#define McuLib_CONFIG_SDK_GENERIC             (0)
   /*!< using a generic API/SDK */
-#define McuLib_CONFIG_SDK_PROCESSOR_EXPERT    1
+#define McuLib_CONFIG_SDK_PROCESSOR_EXPERT    (1)
   /*!< using Processor Expert SDK */
-#define McuLib_CONFIG_SDK_KINETIS_1_3         2
+#define McuLib_CONFIG_SDK_KINETIS_1_3         (2)
   /*!< using NXP Kinetis SDK V1.3 */
-#define McuLib_CONFIG_SDK_KINETIS_2_0         3
+#define McuLib_CONFIG_SDK_KINETIS_2_0         (3)
   /*!< using NXP Kinetis SDK V2.0 */
-#define McuLib_CONFIG_SDK_MCUXPRESSO_2_0      4
+#define McuLib_CONFIG_SDK_MCUXPRESSO_2_0      (4)
   /*!< using NXP MCUXpresso SDK V2.x, same as Kinetis SDK v2.0 */
-#define McuLib_CONFIG_SDK_S32K                5
+#define McuLib_CONFIG_SDK_S32K                (5)
   /*!< SDK for S32K */
-#define McuLib_CONFIG_SDK_NORDIC_NRF5         6
+#define McuLib_CONFIG_SDK_NORDIC_NRF5         (6)
   /*!< Nordic nRF5 SDK */
 
 #ifndef McuLib_CONFIG_SDK_VERSION_MAJOR
@@ -157,6 +157,27 @@
 
 #define McuLib_CONFIG_PEX_SDK_USED               (McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_PROCESSOR_EXPERT)
   /*!< Using Processor Expert API */
+
+/* Compiler identification: */
+#define McuLib_CONFIG_COMPILER_GNU            (0)
+#define McuLib_CONFIG_COMPILER_IAR            (1)
+#define McuLib_CONFIG_COMPILER_KEIL           (2)
+#define McuLib_CONFIG_COMPILER_HIWARE         (3)
+
+#ifndef McuLib_CONFIG_COMPILER
+  #if defined(__GNUC__)
+    #define McuLib_CONFIG_COMPILER                    McuLib_CONFIG_COMPILER_GNU
+  #elif defined(__HIWARE__)
+    #define McuLib_CONFIG_COMPILER                    McuLib_CONFIG_COMPILER_HIWARE
+  #elif defined(__IAR_SYSTEMS_ICC__)
+    #define McuLib_CONFIG_COMPILER                    McuLib_CONFIG_COMPILER_IAR
+  #elif defined(__CC_ARM)
+    #define McuLib_CONFIG_COMPILER                    McuLib_CONFIG_COMPILER_KEIL
+  #else
+    #warning "a compiler needs to be defined!"
+  #endif
+#endif
+
 
 #endif /* __McuLib_CONFIG_H */
 
