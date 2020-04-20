@@ -59,4 +59,14 @@
     /*!< number of milliseconds for timeout using for block write */
 #endif
 
+#ifndef McuEE24_CONFIG_USE_SHELL
+  #define McuEE24_CONFIG_USE_SHELL               (1)
+    /*!< 1: use shell, 0: do not use shell */
+#endif
+
+#ifndef McuEE24_CONFIG_USE_UTILITY
+  #define McuEE24_CONFIG_USE_UTILITY               (1)
+    /*!< 1: use utility module, 0: do not use utility module */
+#endif
+
 #endif /* __McuEE24_CONFIG_H */
