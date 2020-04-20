@@ -6,7 +6,7 @@
 **     Component   : GDisplay
 **     Version     : Component 01.207, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-04-24, 10:26, # CodeGen: 505
+**     Date/Time   : 2020-04-15, 12:58, # CodeGen: 596
 **     Abstract    :
 **          Graphical display driver for LCD or other displays
 **     Settings    :

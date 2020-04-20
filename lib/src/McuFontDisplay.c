@@ -6,7 +6,7 @@
 **     Component   : FontDisplay
 **     Version     : Component 01.199, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2018-07-11, 12:55, # CodeGen: 333
+**     Date/Time   : 2020-04-15, 12:58, # CodeGen: 596
 **     Abstract    :
 **          Driver to write fonts using GFont component
 **     Settings    :

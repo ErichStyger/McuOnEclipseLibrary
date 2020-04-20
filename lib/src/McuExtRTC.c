@@ -6,7 +6,7 @@
 **     Component   : RTC_Maxim
 **     Version     : Component 01.020, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-08-21, 18:32, # CodeGen: 568
+**     Date/Time   : 2020-04-15, 12:58, # CodeGen: 596
 **     Abstract    :
 **          Driver for external I2C based realtime clocks (RTC)
 **     Settings    :
