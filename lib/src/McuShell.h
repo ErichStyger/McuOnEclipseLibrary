@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : Shell
-**     Version     : Component 01.108, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.110, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-04-15, 12:58, # CodeGen: 596
+**     Date/Time   : 2020-05-04, 08:06, # CodeGen: 604
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -55,6 +55,7 @@
 **         RequestSerial                   - void McuShell_RequestSerial(void);
 **         ReleaseSerial                   - void McuShell_ReleaseSerial(void);
 **         ReadAndParseWithCommandTableExt - uint8_t McuShell_ReadAndParseWithCommandTableExt(uint8_t *cmdBuf, size_t...
+**         ReadCommandLine                 - uint8_t McuShell_ReadCommandLine(uint8_t *cmdBuf, size_t cmdBufSize,...
 **         ReadAndParseWithCommandTable    - uint8_t McuShell_ReadAndParseWithCommandTable(uint8_t *cmdBuf, size_t...
 **         ParseWithCommandTableExt        - uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd,...
 **         ParseWithCommandTable           - uint8_t McuShell_ParseWithCommandTable(const uint8_t *cmd,...
@@ -813,6 +814,31 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
 **                           command prompt printed
 **     Returns     :
 **         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuShell_ReadCommandLine(uint8_t *cmdBuf, size_t cmdBufSize, McuShell_ConstStdIOType *io);
+/*
+** ===================================================================
+**     Method      :  ReadCommandLine (component Shell)
+**
+**     Description :
+**         Similar to ReadAndParseWithCommandTableExt, but does not
+**         call the parser. Reads characters from the default input
+**         channel and appends it to the buffer. Once a new line has
+**         been detected, it  removes it and returns ERR_OK
+**     Parameters  :
+**         NAME            - DESCRIPTION
+**       * cmdBuf          - Pointer to buffer provided by the
+**                           caller where to store the command to read
+**                           in. Characters will be appended, so make
+**                           sure string buffer is initialized with a
+**                           zero byte at the beginning.
+**         cmdBufSize      - Size of buffer
+**       * io              - Pointer to I/O channels to be used
+**     Returns     :
+**         ---             - Error code, ERR_OK if a complete line has
+**                           been detected
 ** ===================================================================
 */
 
