@@ -34,6 +34,15 @@
     /*!< 1: Use a mutex to protect access to the bus; 0: no mutex used */
 #endif
 
+#if !defined(McuGenericI2C_CONFIG_USE_TIMEOUT)
+  #define McuGenericI2C_CONFIG_USE_TIMEOUT             (0)
+    /*!< 1: Use a timeout in case problems; 0: do not use a timeout */
+#endif
+
+#if !defined(McuGenericI2C_CONFIG_TIMEOUT_US)
+  #define McuGenericI2C_CONFIG_TIMEOUT_US  ((uint32_t)500)  /* number of microseconds as specified in properties used for timeout */
+#endif
+
 #if !defined(McuGenericI2C_CONFIG_WRITE_BUFFER_SIZE)
   #define McuGenericI2C_CONFIG_WRITE_BUFFER_SIZE             (32)
     /*!< Size of the write buffer size which defines the maximum block size which can be sent */

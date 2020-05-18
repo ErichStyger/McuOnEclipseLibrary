@@ -174,6 +174,9 @@
 #ifndef configUSE_APPLICATION_TASK_TAG
   #define configUSE_APPLICATION_TASK_TAG          0
 #endif
+#ifndef configUSE_TASK_NOTIFICATIONS
+  #define configUSE_TASK_NOTIFICATIONS            1
+#endif
 /* Tickless Idle Mode ----------------------------------------------------------*/
 #ifndef configUSE_TICKLESS_IDLE
   #define configUSE_TICKLESS_IDLE                 0 /* set to 1 for tickless idle mode, 0 otherwise */
@@ -284,9 +287,11 @@ point support. */
 #endif
 
 /* Normal assert() semantics without relying on the provision of an assert.h header file. */
-#define configASSERT(x) if((x)==0) { taskDISABLE_INTERRUPTS(); for( ;; ); }
-#if 0 /* version for RISC-V with a debug break: */
-#define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); __asm volatile( "ebreak" ); for( ;; ); }
+#ifndef configASSERT
+  #define configASSERT(x) if((x)==0) { taskDISABLE_INTERRUPTS(); for( ;; ); }
+  #if 0 /* version for RISC-V with a debug break: */
+    #define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); __asm volatile( "ebreak" ); for( ;; ); }
+  #endif
 #endif
 
 /* RISC-V only: If the target chip includes a Core Local Interrupter (CLINT) then set configCLINT_BASE_ADDRESS to the CLINT base address.
