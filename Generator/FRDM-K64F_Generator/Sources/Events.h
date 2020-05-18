@@ -294,19 +294,6 @@ void McuRTOS_vOnPreSleepProcessing(TickType_t expectedIdleTicks);
 ** ===================================================================
 */
 
-void McuGenericI2C_OnError(void);
-/*
-** ===================================================================
-**     Event       :  McuGenericI2C_OnError (module Events)
-**
-**     Component   :  McuGenericI2C [GenericI2C]
-**     Description :
-**         Event called in case of error condition
-**     Parameters  : None
-**     Returns     : Nothing
-** ===================================================================
-*/
-
 void McuRTOS_vOnPostSleepProcessing(TickType_t expectedIdleTicks);
 /*
 ** ===================================================================
