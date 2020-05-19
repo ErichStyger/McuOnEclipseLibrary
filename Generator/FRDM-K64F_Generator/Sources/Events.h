@@ -109,7 +109,7 @@
 #include "DbgRd1.h"
 #include "McuDS18B20.h"
 #include "McuFatFS.h"
-#include "McuSDCard.h"
+#include "SDCard.h"
 #include "SS1.h"
 #include "McuHD44780.h"
 #include "RW1.h"
