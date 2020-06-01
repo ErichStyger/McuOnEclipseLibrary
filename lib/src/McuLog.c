@@ -145,15 +145,15 @@ void McuLog_set_level(McuLog_Levels_e level) {
   L.level = level;
 }
 
-#if MCULOG_CONFIG_USE_COLOR
 void McuLog_set_quiet(bool enable) {
   L.quiet = enable;
 }
-#endif
 
+#if MCULOG_CONFIG_USE_COLOR
 void McuLog_set_color(bool enable) {
   L.color = enable;
 }
+#endif
 
 static void OutputCharFctConsole(void *p, char ch) {
   McuShell_StdIO_OutErr_FctType io = (McuShell_StdIO_OutErr_FctType)p;
