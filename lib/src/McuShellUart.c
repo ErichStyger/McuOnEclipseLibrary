@@ -5,6 +5,7 @@
  */
 
 #include "McuShellUartconfig.h"
+#if McuShellUart_CONFIG_UART!=McuShellUart_CONFIG_UART_NONE
 #include "McuShellUart.h"
 #include "McuShell.h"
 #include "McuRTOS.h"
@@ -89,3 +90,5 @@ void McuShellUart_Init(void) {
   }
   vQueueAddToRegistry(uartRxQueue, "UartRxQueue");
 }
+
+#endif /* McuShellUart_CONFIG_UART!=McuShellUart_CONFIG_UART_NONE*/

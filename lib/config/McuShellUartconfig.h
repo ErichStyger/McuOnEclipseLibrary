@@ -8,21 +8,21 @@
 #define MCUSHELLUARTCONFIG_H_
 
 /* supported UART implementation: */
-#define McuShellUart_CONFIG_UART_LPC845_USART0      (0)
-#define McuShellUart_CONFIG_UART_K22FX512_UART0     (1)
-#define McuShellUart_CONFIG_UART_K22FN512_UART1     (2)
-#define McuShellUart_CONFIG_UART_K22FN512_LPUART0   (3)
+#define McuShellUart_CONFIG_UART_NONE               (0)
+#define McuShellUart_CONFIG_UART_LPC845_USART0      (1)
+#define McuShellUart_CONFIG_UART_K22FX512_UART0     (2)
+#define McuShellUart_CONFIG_UART_K22FN512_UART1     (3)
+#define McuShellUart_CONFIG_UART_K22FN512_LPUART0   (4)
 
+/* default UART used */
 #ifndef McuShellUart_CONFIG_UART
-  #if McuLib_CONFIG_CPU_IS_LPC
-    #define McuShellUart_CONFIG_UART      McuShellUart_CONFIG_UART_LPC845_USART0
-  #elif McuLib_CONFIG_CPU_IS_KINETIS
-    #define McuShellUart_CONFIG_UART      McuShellUart_CONFIG_UART_K22FN512_LPUART0
-  #endif
+  #define McuShellUart_CONFIG_UART      McuShellUart_CONFIG_UART_NONE
 #endif
 
 /* UART configuration items */
-#if McuShellUart_CONFIG_UART==McuShellUart_CONFIG_UART_LPC845_USART0
+#if McuShellUart_CONFIG_UART==McuShellUart_CONFIG_UART_NONE
+  /* no UART used */
+#elif McuShellUart_CONFIG_UART==McuShellUart_CONFIG_UART_LPC845_USART0
   #include "fsl_usart.h"
   #define McuShellUart_CONFIG_UART_DEVICE                   USART0
   #define McuShellUart_CONFIG_UART_SET_UART_CLOCK()         CLOCK_Select(kUART0_Clk_From_MainClk) /* Select the main clock as source clock of USART0. */
