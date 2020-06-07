@@ -149,12 +149,6 @@
     /*!< 1: Use FreeRTOS; 0: no FreeRTOS used */
 #endif
 
-/* Configuration macro if FreeRTOS is used */
-#ifndef McuLib_CONFIG_SDK_USE_FREERTOS
-  #define McuLib_CONFIG_SDK_USE_FREERTOS          (1)
-    /*!< 1: Use FreeRTOS; 0: no FreeRTOS used */
-#endif
-
 /* FatFS */
 #ifndef McuLib_CONFIG_SDK_USE_FAT_FS
   #define McuLib_CONFIG_SDK_USE_FAT_FS            (0)
