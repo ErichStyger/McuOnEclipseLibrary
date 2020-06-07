@@ -189,7 +189,6 @@ static void OutString(const unsigned char *str, void (*outchar)(void *,char), vo
 
 static void LogHeader(DATEREC *date, TIMEREC *time, McuLog_Levels_e level, bool supportColor, const char *file, int line, void (*outchar)(void *,char), void *param) {
   unsigned char buf[32];
-  const unsigned char *p;
 
   /* date/time */
   buf[0] = '\0';
@@ -216,12 +215,27 @@ static void LogHeader(DATEREC *date, TIMEREC *time, McuLog_Levels_e level, bool 
 #endif
   OutString(buf, outchar, param);
 
+#if McuLog_CONFIG_LOG_STRIP_FILENAME_PATH
   /* file name */
+  const unsigned char *p;
+
   p = (const unsigned char*)file;
-  while(*p==' ' || *p=='.') {
-    p++; /* skip leading spaces or dots */
+  if (*p=='.') { /* relative */
+    while(*p==' ' || *p=='.') {
+      p++; /* skip leading spaces or dots */
+    }
+  } else { /* scan for separator */
+    size_t pos;
+    pos = McuUtility_strlen(file)-1; /* end of the string */
+    while(pos>1 && !(file[pos-1]=='/' || file[pos-1]=='\\')) {
+      pos--;
+    }
+    p = (const unsigned char*)&file[pos];
   }
   OutString(p, outchar, param);
+#else
+  OutString(file, outchar, param);
+#endif
 
   /* line number */
   buf[0] = '\0';

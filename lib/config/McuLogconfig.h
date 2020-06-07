@@ -34,6 +34,11 @@
     /*!< 1: add date to timestamp, 0: do not date for timestamp */
 #endif
 
+#ifndef McuLog_CONFIG_LOG_STRIP_FILENAME_PATH
+  #define McuLog_CONFIG_LOG_STRIP_FILENAME_PATH    (1)
+    /*!< 1: strip path from file name, 0: keep file name untouched */
+#endif
+
 #ifndef McuLog_CONFIG_USE_RTT_DATA_LOGGER
   #define McuLog_CONFIG_USE_RTT_DATA_LOGGER        (0)
     /*!< 1: use use SEGGER RTT Logger (Channel 1), 0: do not use SEGGER RTT Logger */
