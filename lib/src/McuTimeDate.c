@@ -135,7 +135,7 @@ static uint8_t AddDateToBuf(uint8_t *buf, uint16_t bufSize, DATEREC *tdate) {
   McuUtility_chcat(buf, bufSize, '.');
   McuUtility_strcatNum16uFormatted(buf, bufSize, tdate->Month, '0', 2);
   McuUtility_chcat(buf, bufSize, '.');
-  McuUtility_strcatNum16u(buf, bufSize, (uint16_t)tdate->Year);
+  McuUtility_strcatNum16uFormatted(buf, bufSize, tdate->Year, '0', 2);
   return ERR_OK;
 }
 
