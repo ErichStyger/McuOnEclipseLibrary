@@ -6,7 +6,7 @@
 **     Component   : Wait
 **     Version     : Component 01.086, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-04-20, 08:14, # CodeGen: 603
+**     Date/Time   : 2020-07-12, 14:40, # CodeGen: 661
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -266,15 +266,13 @@ void McuWait_WaitCycles(uint16_t cycles)
     /* wait */
   }
 #else
-  int32_t counter = cycles;
-
-  while(counter > 100) {
+  while(cycles >= 100u) {
     McuWait_Wait100Cycles();
-    counter -= 100;
+    cycles -= 100u;
   }
-  while(counter > 10) {
+  while(cycles >= 10u) {
     McuWait_Wait10Cycles();
-    counter -= 10;
+    cycles -= 10u;
   }
 #endif
   /*lint -restore */
