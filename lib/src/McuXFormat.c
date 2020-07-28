@@ -785,12 +785,12 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
           case  'P':
             param.flags |=  FLAG_UPPER;
             // fall through
-            /* no break */
             /*lint -fallthrough */
 
             /*
              * Pointer
              */
+            /* no break */
           case  'p':
             param.flags &= ~FLAG_TYPE_MASK;
             param.flags |= FLAG_INTEGER | FLAG_TYPE_SIZEOF;
@@ -832,15 +832,14 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
              * Hex number upper case letter.
              */
           case  'X':
-            /* no break */
             param.flags |= FLAG_UPPER;
             // fall through
-            /* no break */
             /* lint -fallthrough */
 
             /*
              * Hex number lower case
              */
+            /* no break */
           case  'x':
             param.flags |= FLAG_INTEGER;
             param.radix = 16;
@@ -875,12 +874,12 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
           case  'S':
             param.flags |= FLAG_UPPER;
             // fall through
-            /* no break */
             /*lint -fallthrough */
 
             /*
              * Normal string
              */
+            /* no break */
           case  's':
             param.out = va_arg(args,char *);
             if (param.out == 0)
@@ -894,12 +893,12 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
           case  'C':
             param.flags |= FLAG_UPPER;
             // fall through
-            /* no break */
             /* lint -fallthrough */
 
             /*
              * Char
              */
+            /* no break */
           case  'c':
             param.out = param.buffer;
             param.buffer[0] = (char)va_arg(args,int);
@@ -1006,6 +1005,8 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
                 param.values.llvalue = (LONGLONG)va_arg(args,long long);
                 break;
 #endif
+              default:
+                break;
             }
 
           }
