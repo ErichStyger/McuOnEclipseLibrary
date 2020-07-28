@@ -6,7 +6,7 @@
 **     Component   : Utility
 **     Version     : Component 01.164, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-05-19, 11:05, # CodeGen: 630
+**     Date/Time   : 2020-07-20, 11:46, # CodeGen: 659
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -2790,6 +2790,7 @@ uint8_t McuUtility_ScanRGB(const unsigned char **str, uint8_t *r, uint8_t *g, ui
     *r = (val32>>16)&0xff;
     *g = (val32>>8)&0xff;
     *b = val32&0xff;
+    *str = p;
     return ERR_OK;
   } else { /* not starting with 0x (hex): read three values */
     if (   McuUtility_xatoi(&p, &rv)==ERR_OK && rv>=0 && rv<=0xff
