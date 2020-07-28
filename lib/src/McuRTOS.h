@@ -6,7 +6,7 @@
 **     Component   : FreeRTOS
 **     Version     : Component 01.580, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-07-11, 08:15, # CodeGen: 659
+**     Date/Time   : 2020-07-28, 07:27, # CodeGen: 661
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -34,7 +34,7 @@
 **          Thread Local Storage Pointers                  : 0
 **          Use Trace Facility                             : yes
 **          Debug Helpers                                  : 
-**            Enable GDB Debug Helper                      : yes
+**            Enable GDB Debug Helper                      : no
 **            uxTopUsedPriority                            : yes
 **            Heap Indication Constant                     : yes
 **          Segger System Viewer Trace                     : Disabled

@@ -6,7 +6,7 @@
 **     Component   : GenericTimeDate
 **     Version     : Component 01.064, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-05-20, 07:04, # CodeGen: 649
+**     Date/Time   : 2020-07-28, 06:57, # CodeGen: 660
 **     Abstract    :
 **         Software date/time module.
 **     Settings    :
@@ -160,7 +160,6 @@
     uint8_t Day;                       /* days (1 - 31) */
   } DATEREC;
 #endif
-
 
 #define McuTimeDate_TICK_TIME_MS  McuTimeDate_CONFIG_TICK_TIME_MS /* period of AddTick() */
 
