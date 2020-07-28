@@ -6,7 +6,7 @@
 **     Component   : Wait
 **     Version     : Component 01.086, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-07-12, 14:40, # CodeGen: 661
+**     Date/Time   : 2020-07-28, 06:57, # CodeGen: 660
 **     Abstract    :
 **          Implements busy waiting routines.
 **     Settings    :
@@ -179,14 +179,14 @@ void McuWait_Wait100Cycles(void)
    /* bl to here:               [4] */
    "push {r0}   \n\t"        /* [2] */
    "movs r0, #0 \n\t"        /* [1] */
-   "loop:       \n\t"
+   "loopWait100Cycles:       \n\t"
    "nop         \n\t"        /* [1] */
    "nop         \n\t"        /* [1] */
    "nop         \n\t"        /* [1] */
    "nop         \n\t"        /* [1] */
    "add r0,#1   \n\t"        /* [1] */
    "cmp r0,#9   \n\t"        /* [1] */
-   "bls loop    \n\t"        /* [3] taken, [1] not taken */
+   "bls loopWait100Cycles    \n\t"        /* [3] taken, [1] not taken */
    "nop         \n\t"        /* [1] */
    "nop         \n\t"        /* [1] */
    "nop         \n\t"        /* [1] */
@@ -234,9 +234,9 @@ loop
   /* \todo */
   __asm ( /* assuming [10] for overhead */
     "  li a5,20        \n\t"
-    "Loop:             \n\t"
+    "LoopWait100Cycles:             \n\t"
     "  addi a5,a5,-1   \n\t"
-    "  bgtz a5, Loop   \n\t"
+    "  bgtz a5, LoopWait100Cycles   \n\t"
   );
 #endif
   /*lint -restore */
