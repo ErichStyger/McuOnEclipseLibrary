@@ -112,6 +112,20 @@
   #include "McuExtRTC.h"
 #endif
 
+/* default time/date values */
+static const TIMEREC McuTimeDate_DefaultTime = {
+  McuTimeDate_CONFIG_DEFAULT_INITIAL_TIME_HOUR, /* hour */
+  McuTimeDate_CONFIG_DEFAULT_INITIAL_TIME_MIN,  /* minute */
+  McuTimeDate_CONFIG_DEFAULT_INITIAL_TIME_SEC,  /* second */
+#if McuTimeDate_HAS_SEC100_IN_TIMEREC
+  0 /* h-second */
+#endif
+};
+static const DATEREC McuTimeDate_DefaultDate = {
+  McuTimeDate_CONFIG_DEFAULT_INITIAL_DATE_YEAR, /* year */
+  McuTimeDate_CONFIG_DEFAULT_INITIAL_DATE_MONTH,  /* month */
+  McuTimeDate_CONFIG_DEFAULT_INITIAL_DATE_DAY /* day */
+};
 
 #if McuTimeDate_TICK_TIME_MS==0
   #error "Tick period cannot be zero!"
