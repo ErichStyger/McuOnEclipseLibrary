@@ -6,7 +6,7 @@
 **     Component   : KinetisTools
 **     Version     : Component 01.042, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-05-18, 08:17, # CodeGen: 608
+**     Date/Time   : 2020-07-28, 16:15, # CodeGen: 666
 **     Abstract    :
 **
 **     Settings    :
@@ -83,6 +83,8 @@
   #include "fsl_common.h"
   #if McuLib_CONFIG_CPU_IS_KINETIS
     #include "fsl_sim.h" /* system integration module, used for CPU ID */
+  #elif McuLib_CONFIG_CPU_IS_LPC  /* LPC845 */
+    #include "fsl_iap.h" /* if missing, add this module from the MCUXpresso SDK */
   #endif
 #elif McuLib_CONFIG_SDK_VERSION_USED==McuLib_CONFIG_SDK_KINETIS_1_3
   #include "Cpu.h" /* include CPU related interfaces and defines */
@@ -125,14 +127,14 @@ static const unsigned char *KinetisM0FamilyStrings[] =
 #if McuArmTools_CONFIG_PARSE_COMMAND_ENABLED
 static uint8_t PrintStatus(const McuShell_StdIOType *io)
 {
-#if McuLib_CONFIG_CPU_IS_KINETIS
+#if McuLib_CONFIG_CPU_IS_KINETIS || McuLib_CONFIG_CPU_IS_LPC
   uint8_t buf[1+(16*5)+1+1]; /* "{0xAA,...0xBB}" */
   uint8_t res;
   McuArmTools_UID uid;
 #endif
 
   McuShell_SendStatusStr((unsigned char*)"McuArmTools", (unsigned char*)"\r\n", io->stdOut);
-#if McuLib_CONFIG_CPU_IS_KINETIS
+#if McuLib_CONFIG_CPU_IS_KINETIS || McuLib_CONFIG_CPU_IS_LPC
   res = McuArmTools_UIDGet(&uid);
   if (res==ERR_OK) {
     res = McuArmTools_UIDtoString(&uid, buf, sizeof(buf));
@@ -293,6 +295,14 @@ uint8_t McuArmTools_UIDGet(McuArmTools_UID *uid)
   uid->id[15] = SIM_UUIDL&0xff;
     #endif
   #endif /* McuLib_CONFIG_NXP_SDK_2_0_USED */
+  return ERR_OK;
+#elif McuLib_CONFIG_CPU_IS_LPC /* LPC845 */
+  uint8_t res;
+
+  res = IAP_ReadUniqueID((uint32_t*)&uid->id[0]);
+  if (res != kStatus_IAP_Success) {
+    return ERR_FAILED;
+  }
   return ERR_OK;
 #else
   (void)uid; /* not used */
