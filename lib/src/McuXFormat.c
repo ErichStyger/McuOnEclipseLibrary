@@ -6,7 +6,7 @@
 **     Component   : XFormat
 **     Version     : Component 01.025, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2019-12-21, 16:19, # CodeGen: 594
+**     Date/Time   : 2020-07-28, 06:57, # CodeGen: 660
 **     Abstract    :
 **
 **     Settings    :
@@ -512,9 +512,7 @@ unsigned McuXFormat_xformat(void (*outchar)(void *,char), void *arg, const char 
 
   va_start(list,fmt);
   count = McuXFormat_xvformat(outchar,arg,fmt,list);
-
   va_end(list);
-
   return count;
 }
 
@@ -549,7 +547,6 @@ static unsigned xstrlen(const char *s)
   for (i = s ; *i ; i++)
   {
   }
-
   return (unsigned)(i - s);
 }
 
@@ -574,7 +571,6 @@ static unsigned outBuffer(void (*myoutchar)(void *arg,char),void *arg,const char
 
   return count;
 }
-
 
 static unsigned outChars(void (*myoutchar)(void *arg,char),void *arg,char ch,int len)
 {
@@ -683,7 +679,6 @@ unsigned McuXFormat_xvformat(void (*outchar)(void *,char), void *arg, const char
       i = formatStates[c - ' '] & 0x0F;
 
     param.state = formatStates[(i << 3) + param.state] >> 4;
-
 
     switch (param.state)
     {
