@@ -90,7 +90,7 @@
  * See http://interactive.freertos.org/entries/23468301-Tasks-backtrace-switcher-viewer-snippet-for-debugger-gcc-gdb-ARM-Cortex-M3-MPU-port-Eclipse-support-
  *----------------------------------------------------------*/
 #ifndef configGDB_HELPER
-  #define configGDB_HELPER                        (1 && configCPU_FAMILY_IS_ARM(configCPU_FAMILY) && (configCOMPILER==configCOMPILER_ARM_GCC))
+  #define configGDB_HELPER                        (0 && configCPU_FAMILY_IS_ARM(configCPU_FAMILY) && (configCOMPILER==configCOMPILER_ARM_GCC))
    /*!< 1: enable special GDB stack backtrace debug helper; 0: disabled */
 #endif
 
