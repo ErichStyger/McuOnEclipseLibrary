@@ -445,7 +445,7 @@ McuArmTools_ConstCharPtr McuArmTools_GetKinetisFamilyString(void)
     }
   #elif defined(SIM_SRSID_FAMID) /* MKE02Z4 defines this, hopefully all other KE too... */
     return (McuArmTools_ConstCharPtr)"KE0x Family"; /* 0000 only KE0x supported */
-  #elif defined(SIM_SDID_FAMID)
+  #elif defined(SIM_SDID_FAMID) || defined(SIM_SDID_FAMILYID)
     int32_t val;
 
     val = ((SIM->SDID)>>28)&0xF; /* bits 31..28 */
@@ -468,7 +468,7 @@ McuArmTools_ConstCharPtr McuArmTools_GetKinetisFamilyString(void)
     } else {
       return (McuArmTools_ConstCharPtr)"M4 Family ID out of bounds!";
     }
-    #elif defined(SIM_SDID_FAMID)
+    #elif defined(SIM_SDID_FAMID) || defined(SIM_SDID_FAMILYID)
     int32_t val;
 
     val = ((SIM->SDID)>>4)&0x3; /* bits 6..4 */
