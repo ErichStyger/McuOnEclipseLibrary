@@ -6,7 +6,7 @@
 **     Component   : Utility
 **     Version     : Component 01.164, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-07-20, 11:46, # CodeGen: 659
+**     Date/Time   : 2020-07-28, 17:35, # CodeGen: 670
 **     Abstract    :
 **          Contains various utility functions.
 **     Settings    :
@@ -2801,6 +2801,7 @@ uint8_t McuUtility_ScanRGB(const unsigned char **str, uint8_t *r, uint8_t *g, ui
       *r = rv;
       *g = gv;
       *b = bv;
+      *str = p;
       return ERR_OK;
     }
   }
