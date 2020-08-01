@@ -6,7 +6,7 @@
 **     Component   : FreeRTOS
 **     Version     : Component 01.580, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-07-28, 07:27, # CodeGen: 661
+**     Date/Time   : 2020-07-28, 17:35, # CodeGen: 670
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -277,7 +277,9 @@
 #if McuLib_CONFIG_SDK_USE_FREERTOS
 
 #include "portTicks.h"                 /* interface to tick counter */
-
+#if configSYSTICK_USE_LOW_POWER_TIMER && McuLib_CONFIG_NXP_SDK_USED
+  #include "fsl_clock.h"
+#endif
 #include "McuUtility.h"
 #if configHEAP_SCHEME_IDENTIFICATION
   /* special variable identifying the used heap scheme */
@@ -2300,7 +2302,11 @@ void McuRTOS_Init(void)
 #if configSYSTICK_USE_LOW_POWER_TIMER
   /* enable clocking for low power timer, otherwise vPortStopTickTimer() will crash.
     Additionally, Percepio trace needs access to the timer early on. */
+  #if McuLib_CONFIG_NXP_SDK_USED
+  CLOCK_EnableClock(kCLOCK_Lptmr0);
+  #else /* Processor Expert */
   SIM_PDD_SetClockGate(SIM_BASE_PTR, SIM_PDD_CLOCK_GATE_LPTMR0, PDD_ENABLE);
+  #endif
 #endif
   vPortStopTickTimer(); /* tick timer shall not run until the RTOS scheduler is started */
 #if configUSE_PERCEPIO_TRACE_HOOKS
