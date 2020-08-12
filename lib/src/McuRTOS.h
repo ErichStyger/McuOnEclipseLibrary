@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FreeRTOS
-**     Version     : Component 01.580, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.581, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-07-28, 07:27, # CodeGen: 661
+**     Date/Time   : 2020-08-10, 19:29, # CodeGen: 671
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -231,7 +231,7 @@
 **         Deinit                               - void McuRTOS_Deinit(void);
 **         Init                                 - void McuRTOS_Init(void);
 **
-** * FreeRTOS (c) Copyright 2003-2019 Richard Barry/Amazon, http: www.FreeRTOS.org
+** * FreeRTOS (c) Copyright 2003-2020 Richard Barry/Amazon, http: www.FreeRTOS.org
 **  * See separate FreeRTOS licensing terms.
 **  *
 **  * FreeRTOS Processor Expert Component: (c) Copyright Erich Styger, 2013-2020

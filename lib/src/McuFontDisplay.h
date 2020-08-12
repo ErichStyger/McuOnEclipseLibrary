@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FontDisplay
-**     Version     : Component 01.200, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.201, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-08-10, 19:29, # CodeGen: 671
+**     Date/Time   : 2020-08-12, 13:43, # CodeGen: 672
 **     Abstract    :
 **          Driver to write fonts using GFont component
 **     Settings    :
@@ -261,7 +261,7 @@ void McuFontDisplay_WriteStringWidth(uint8_t *str, McuFontDisplay_PixelColor col
 **                           (upper left corner). On return this will
 **                           contain the next y position.
 **       * font            - Pointer to font information
-**         width           - Maximum of witdh of the text box. If
+**         width           - Maximum of width of the text box. If
 **                           text reaches the end of the box, the text
 **                           gets wrapped to a new line.
 **     Returns     : Nothing

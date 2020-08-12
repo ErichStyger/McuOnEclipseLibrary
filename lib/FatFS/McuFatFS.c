@@ -6,7 +6,7 @@
 **     Component   : FAT_FileSystem
 **     Version     : Component 01.211, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-05-31, 13:14, # CodeGen: 655
+**     Date/Time   : 2020-08-12, 13:43, # CodeGen: 672
 **     Abstract    :
 **
 **     Settings    :
@@ -1854,7 +1854,7 @@ uint8_t McuFatFS_CheckCardPresence(bool *cardMounted, uint8_t *drive, FATFS *fil
       if (io!=NULL) {
         McuShell_SendStr((unsigned char*)"File System mounted\r\n", io->stdOut);
       }
-  #if (McuFatFS_FS_RPATH >= 1U)
+  #if (McuFatFS_FS_RPATH >= 1U && McuFatFS_VOLUMES >= 2)
       if (f_chdrive((char const *)drive)!=FR_OK) { /* change default drive */
         return ERR_FAILED;
       }
@@ -3003,4 +3003,3 @@ FRESULT McuFatFS_f_readdir(DIR *dj, FILINFO *fno)
 /*!
 ** @}
 */
-#endif /* McuLib_CONFIG_USE_FAT_FS */

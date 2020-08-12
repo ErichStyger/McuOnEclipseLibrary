@@ -32,11 +32,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>McuLib</name>
-			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/McuOnEclipse/Examples/MCUXpresso/LPC845-BRK/LPC845-BRK_FreeRTOS/McuLib</locationURI>
-		</link>
-		<link>
 			<name>McuOnEclipseLibrary</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
