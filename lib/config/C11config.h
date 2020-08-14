@@ -6,6 +6,7 @@
  *
  * This header file is used to configure settings of the SDK Bit I/O module.
  */
+
 #ifndef __C11_CONFIG_H
 #define __C11_CONFIG_H
 

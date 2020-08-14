@@ -6,6 +6,7 @@
  *
  * This header file is used to configure settings of the SDK Bit I/O module.
  */
+
 #ifndef __DB41_CONFIG_H
 #define __DB41_CONFIG_H
 

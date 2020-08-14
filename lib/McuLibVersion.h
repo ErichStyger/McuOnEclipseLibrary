@@ -1,3 +1,10 @@
+/**
+ * \file
+ * \brief Version information header file for library
+ * Copyright (c) 2020, Erich Styger
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
 #ifndef SOURCES_MCULIBVERSION_H_
 #define SOURCES_MCULIBVERSION_H_
 

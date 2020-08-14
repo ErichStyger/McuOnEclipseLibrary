@@ -1,4 +1,12 @@
-#ifndef __McuRTOS_CONFIG_H
+/**
+ * \file
+ * \brief Configuration header file for FreeRTOS component
+ * Copyright (c) 2020, Erich Styger
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * This header file is used to configure settings of the FreeRTOS module.
+ */
+ #ifndef __McuRTOS_CONFIG_H
 #define __McuRTOS_CONFIG_H
 
 #include "McuLib.h" /* SDK and API used */
@@ -145,7 +153,6 @@
   #define configRESET_MSP                         (1)
    /*!< 1: reset MSP at scheduler start (Cortex M3/M4/M7 only); 0: do not reset MSP */
 #endif
-
 
 /*-----------------------------------------------------------
  * FreeRTOS Trace hook support

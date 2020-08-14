@@ -6,6 +6,7 @@
  *
  * This header file is used to configure settings of the SDK Bit I/O module.
  */
+
 #ifndef __SDA1_CONFIG_H
 #define __SDA1_CONFIG_H
 
