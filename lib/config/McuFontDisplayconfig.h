@@ -6,6 +6,8 @@
  *
  * This header file is used to configure settings of the Font Display module.
  */
+#ifndef __McuFontDisplay_CONFIG_H
+#define __McuFontDisplay_CONFIG_H
 
 /* no configuration supported yet */
 
