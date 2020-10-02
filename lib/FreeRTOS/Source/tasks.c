@@ -484,12 +484,6 @@ PRIVILEGED_DATA static volatile UBaseType_t uxSchedulerSuspended	= ( UBaseType_t
 #endif
 #endif
 
-#if( configUSE_TICK_HOOK > 0 )
-#if 0 /* << EST: not used */
-	extern void vApplicationTickHook( void ); /*lint !e526 Symbol not defined as it is an application callback. */
-#endif
-#endif
-
 #if( configSUPPORT_STATIC_ALLOCATION == 1 )
 
 	extern void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize ); /*lint !e526 Symbol not defined as it is an application callback. */
