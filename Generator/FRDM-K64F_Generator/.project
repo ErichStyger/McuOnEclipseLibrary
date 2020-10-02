@@ -32,6 +32,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>FreeRTOS 10.4.1</name>
+			<type>2</type>
+			<locationURI>PARENT-7-PROJECT_LOC/tmp/FreeRTOS/FreeRTOS%2010.4.1</locationURI>
+		</link>
+		<link>
 			<name>McuOnEclipseLibrary</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
