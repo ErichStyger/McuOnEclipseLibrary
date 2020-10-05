@@ -55,9 +55,9 @@
   #define McuShellUart_CONFIG_UART_ENABLE_INTERRUPT_FLAGS   (kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable)
   #define McuShellUart_CONFIG_UART_IRQ_NUMBER               UART0_RX_TX_IRQn
   #define McuShellUart_CONFIG_UART_INIT                     UART_Init
-  #define McuShellUart_CONFIG_UART_GET_CLOCK_FREQ_SELECT    kCLOCK_MainClk
+  #define McuShellUart_CONFIG_UART_GET_CLOCK_FREQ_SELECT    kCLOCK_CoreSysClk
   #define McuShellUart_CONFIG_UART_IRQ_HANDLER              UART0_RX_TX_IRQHandler
-  #define McuShellUART_CONFIG_CLEAR_STATUS_FLAGS            USART_ClearStatusFlags
+  #define McuShellUART_CONFIG_CLEAR_STATUS_FLAGS            UART_ClearStatusFlags
 #elif McuShellUart_CONFIG_UART==McuShellUart_CONFIG_UART_K22FN512_UART0
   /* UART0 on K22FN512. Mux the pins using the pins muxing tool */
   #include "fsl_uart.h"
