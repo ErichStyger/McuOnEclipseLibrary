@@ -2304,7 +2304,7 @@ void vTaskRemoveFromUnorderedEventList( ListItem_t * pxEventListItem, const Tick
  * Sets the pointer to the current TCB to the TCB of the highest priority task
  * that is ready to run.
  */
-#ifdef __GNUC__ /* << EST: 'used' attribute need for LTO (Link Time Optimization) */
+#if defined(__GNUC__) && McuLib_CONFIG_SDK_USE_FREERTOS && configLTO_HELPER /* << EST: 'used' attribute need for LTO (Link Time Optimization) */
   void vTaskSwitchContext( void ) PRIVILEGED_FUNCTION __attribute__((used));
 #else
   void vTaskSwitchContext( void ) PRIVILEGED_FUNCTION;
