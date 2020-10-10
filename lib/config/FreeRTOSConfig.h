@@ -51,12 +51,21 @@
 #endif
 #if configGENERATE_RUN_TIME_STATS
   #if configGENERATE_RUN_TIME_STATS_USE_TICKS
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()   /* nothing */ /* default: use Tick counter as runtime counter */
-    #define portGET_RUN_TIME_COUNTER_VALUE()           xTaskGetTickCountFromISR() /* default: use Tick counter as runtime counter */
+    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
+      #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() /* nothing */ /* default: use Tick counter as runtime counter */
+   #endif
+   #ifndef portGET_RUN_TIME_COUNTER_VALUE
+     #define portGET_RUN_TIME_COUNTER_VALUE()          xTaskGetTickCountFromISR() /* default: use Tick counter as runtime counter */
+    #endif
   #else /* use dedicated timer */
-    extern uint32_t McuRTOS_AppGetRuntimeCounterValueFromISR(void);
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()   McuRTOS_AppConfigureTimerForRuntimeStats()
-    #define portGET_RUN_TIME_COUNTER_VALUE()           McuRTOS_AppGetRuntimeCounterValueFromISR()
+    #ifndef portCONFIGURE_TIMER_FOR_RUN_TIME_STATS
+      extern void McuRTOS_AppConfigureTimerForRuntimeStats(void);
+      #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() McuRTOS_AppConfigureTimerForRuntimeStats()
+    #endif
+    #ifndef portGET_RUN_TIME_COUNTER_VALUE
+      extern uint32_t McuRTOS_AppGetRuntimeCounterValueFromISR(void);
+      #define portGET_RUN_TIME_COUNTER_VALUE()         McuRTOS_AppGetRuntimeCounterValueFromISR()
+    #endif
   #endif
 #else /* no runtime stats, use empty macros */
   #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()     /* nothing */
