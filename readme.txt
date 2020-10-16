@@ -19,6 +19,9 @@ Make sure you follow my McuOnEclipse blog: http://mcuoneclipse.com/
 
 How to integrate the library
 ============================
+NEW: if you consider adding the McuLib to many Eclipse/MCUXpresso projects, consider using
+  the PowerShell scripts written by 'urhano':  https://github.com/urhano/addMCULib
+
 - download the repository zip file: https://github.com/ErichStyger/McuOnEclipseLibrary/archive/master.zip
 - place the 'lib' folder into your Eclipse project and rename it to 'McuLib'. You can use any other name, but then you need to change the include paths accordingly
 - Make sure that the folder is included in the build (see https://mcuoneclipse.com/2014/07/22/exclude-source-files-from-build-in-eclipse/)
