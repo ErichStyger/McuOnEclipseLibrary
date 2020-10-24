@@ -163,12 +163,8 @@ Revision: $Rev: 21074 $
 *       RTT lock configuration for SEGGER Embedded Studio,
 *       Rowley CrossStudio and GCC
 */
-#if McuLib_CONFIG_SDK_USE_FREERTOS /* << EST */
-  #define SEGGER_RTT_LOCK()   vPortEnterCritical();
-  #define SEGGER_RTT_UNLOCK() vPortExitCritical();
-#else
 #if ((defined(__SES_ARM) || defined(__SES_RISCV) || defined(__CROSSWORKS_ARM) || defined(__GNUC__) || defined(__clang__)) && !defined (__CC_ARM) && !defined(WIN32))
-  #if (defined(__ARM_ARCH_6M__) || defined(__ARM_ARCH_8M_BASE__))
+  #if (defined(__ARM_ARCH_6M__) || defined(__ARM_ARCH_8M_BASE__)) /* EST >> */ || (McuLib_CONFIG_CPU_IS_ARM_CORTEX_M && McuLib_CONFIG_CORTEX_M==0)
     #define SEGGER_RTT_LOCK()   {                                                                   \
                                     unsigned int LockState;                                         \
                                   __asm volatile ("mrs   %0, primask  \n\t"                         \
@@ -185,7 +181,7 @@ Revision: $Rev: 21074 $
                                                   :                                                 \
                                                   );                                                \
                                 }
-  #elif (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_8M_MAIN__))
+  #elif (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__) || defined(__ARM_ARCH_8M_MAIN__)) /* EST >> */ || (McuLib_CONFIG_CPU_IS_ARM_CORTEX_M && McuLib_CONFIG_CORTEX_M>=3)
     #define SEGGER_RTT_LOCK()   {                                                                   \
                                     unsigned int LockState;                                         \
                                   __asm volatile ("mrs   %0, basepri  \n\t"                         \
@@ -250,7 +246,6 @@ Revision: $Rev: 21074 $
     #define SEGGER_RTT_UNLOCK()
   #endif
 #endif
-#endif /* #if McuLib_CONFIG_SDK_USE_FREERTOS << EST */
 /*********************************************************************
 *
 *       RTT lock configuration for IAR EWARM

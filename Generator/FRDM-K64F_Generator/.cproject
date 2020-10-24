@@ -185,14 +185,14 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.1241998347" name="Cross ARM GNU Print Size" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.1679803"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1109165088" name="PE_Types.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Types.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1603355104" name="CPU_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/CPU_Config.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.928000886" name="PE_Error.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Error.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1109165088" name="PE_Types.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Types.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1914393216" name="PE_LDD.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_LDD.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.928000886" name="PE_Error.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Error.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1922424712" name="PE_Const.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Const.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1763160532" name="IO_Map.h" rcbsApplicability="disable" resourcePath="Generated_Code/IO_Map.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1992075774" name="Cpu.h" rcbsApplicability="disable" resourcePath="Generated_Code/Cpu.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.411931587" name="Vectors_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Vectors_Config.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1992075774" name="Cpu.h" rcbsApplicability="disable" resourcePath="Generated_Code/Cpu.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.255376223" name="Init_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Init_Config.h" toolsToInvoke=""/>
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1194375418" name="/" resourcePath="Drivers">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1506879558" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug" unusedChildren="">
@@ -216,9 +216,15 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.599688710.732328245" name="Build command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.make.599688710"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.1862178607.634023323" name="Remove command" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm.1862178607"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar.1383993923.844959392" name="Archiver" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar.1383993923"/>
-							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.1648977664" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.579535120"/>
-							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.425912627" name="Cross ARM C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1341114899"/>
-							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1442750358" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1828861847"/>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.1648977664" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.579535120">
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.115022744" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.425912627" name="Cross ARM C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1341114899">
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.928628032" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
+							</tool>
+							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1442750358" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1828861847">
+								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1883557166" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
+							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.966760819" name="Cross ARM C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.1576533311"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.1395056610" name="Cross ARM C++ Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.288190724"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.archiver.1214476843" name="Cross ARM GNU Archiver" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.archiver.666087753"/>
