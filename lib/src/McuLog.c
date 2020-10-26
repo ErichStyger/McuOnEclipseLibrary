@@ -157,6 +157,12 @@ void McuLog_set_color(bool enable) {
 
 static void OutputCharFctConsole(void *p, char ch) {
   McuShell_StdIO_OutErr_FctType io = (McuShell_StdIO_OutErr_FctType)p;
+  if (io==McuRTT_StdIOSendChar) { /* using RTT: check first if we are able to send */
+    unsigned int rttUpSize = SEGGER_RTT_GetUpBufferFreeSize(0);
+    if (rttUpSize<1) { /* there is NOT enough space available in the RTT up buffer */
+      return; /* do not send :-( */
+    }
+  }
   io(ch);
 }
 
