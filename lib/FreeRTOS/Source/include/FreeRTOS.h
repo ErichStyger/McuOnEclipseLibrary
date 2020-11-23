@@ -321,6 +321,8 @@
 
 #if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS /* << EST */
   #include "SEGGER_SYSVIEW_FreeRTOS.h" /* include Segger System Viewer macro definitions */
+#elif configUSE_PERCEPIO_TRACE_HOOKS /* << EST */
+   #include "trcRecorder.h"
 #endif
 
 /* Remove any unused trace macros. */
@@ -1370,6 +1372,3 @@ typedef StaticStreamBuffer_t StaticMessageBuffer_t;
 
 #endif /* INC_FREERTOS_H */
 
-#if configUSE_PERCEPIO_TRACE_HOOKS /* << EST */
-  #include "trcRecorder.h"
-#endif
