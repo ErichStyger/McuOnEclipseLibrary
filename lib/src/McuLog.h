@@ -92,9 +92,10 @@ void McuLog_Deinit(void);
   #define McuLog_Deinit() do{}while(0)
 #endif /* McuLog_CONFIG_IS_ENABLED */
 
-#endif /* McuLog_CONFIG_IS_ENABLED */
-
 #ifdef __cplusplus
 }  /* extern "C" */
 #endif
+
+#endif /* McuLog_CONFIG_IS_ENABLED */
+
 
