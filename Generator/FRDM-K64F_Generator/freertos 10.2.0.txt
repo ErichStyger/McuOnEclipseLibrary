@@ -1,9 +1,0 @@
-FreeRTOS 10.2.0 notes
-
-configSUPPORT_STATIC_ALLOCATION ==>
-tskSTATIC_AND_DYNAMIC_ALLOCATION_POSSIBLE
-
-new?
-INCLUDE_xTaskAbortDelay
-
-new: xTaskGetIdleRunTimeCounter()
