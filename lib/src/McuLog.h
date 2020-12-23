@@ -46,7 +46,7 @@ typedef enum { McuLog_TRACE, McuLog_DEBUG, McuLog_INFO, McuLog_WARN, McuLog_ERRO
 #define McuLog_error(...) McuLog_log(McuLog_ERROR, __BASE_FILE__, __LINE__, __VA_ARGS__)
 #define McuLog_fatal(...) McuLog_log(McuLog_FATAL, __BASE_FILE__, __LINE__, __VA_ARGS__)
 
-void McuLog_set_console(McuShell_ConstStdIOType *io);
+void McuLog_set_console(McuShell_ConstStdIOType *io, uint8_t index);
 void McuLog_set_udata(void *udata);
 void McuLog_set_lock(log_LockFn fn);
 #if McuLog_CONFIG_USE_FILE
