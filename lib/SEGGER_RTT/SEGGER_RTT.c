@@ -981,7 +981,7 @@ CopyStraight:
   } else {                                             // Potential case 4)
     Avail = RdOff - WrOff - 1u;
     if (Avail >= NumBytes) {                           // Case 4)? => If not, we have case 5) (does not fit)
-      goto CopyStraight;
+      goto CopyStraight; // << EST @suppress("Goto statement used")
     }
   }
   return 0;     // No space in buffer
