@@ -70,12 +70,12 @@ static struct {
 #endif
 } L;
 
-static const char *level_names[] = {
+static const char *const level_names[] = {
   "TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"
 };
 
 #if McuLog_CONFIG_USE_COLOR
-static const char *level_colors[] = { /* color codes for messages */
+static const char *const level_colors[] = { /* color codes for messages */
   McuShell_ANSI_COLOR_TEXT_BRIGHT_BLUE,     /* trace */
   McuShell_ANSI_COLOR_TEXT_BRIGHT_GREEN,    /* debug */
   McuShell_ANSI_COLOR_TEXT_BRIGHT_CYAN,     /* info */
