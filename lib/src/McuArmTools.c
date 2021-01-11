@@ -96,7 +96,7 @@
 
 #if McuLib_CONFIG_CPU_IS_KINETIS
 #if McuLib_CONFIG_CORTEX_M==4
-static const unsigned char *KinetisM4FamilyStrings[] =
+static const unsigned char *const KinetisM4FamilyStrings[] =
 { /* FAMID (3 bits) are used as index */
   (const unsigned char *)"K10 or K12 Family",          /* 000 */
   (const unsigned char *)"K20 or K22 Family",          /* 001 */
@@ -110,7 +110,7 @@ static const unsigned char *KinetisM4FamilyStrings[] =
 #endif
 
 #if McuLib_CONFIG_CORTEX_M==0
-static const unsigned char *KinetisM0FamilyStrings[] =
+static const unsigned char *const KinetisM0FamilyStrings[] =
 { /* FAMID (3 bits) are used as index */
   (const unsigned char *)"KL0x",          /* 0000 */
   (const unsigned char *)"KL1x",          /* 0001 */
