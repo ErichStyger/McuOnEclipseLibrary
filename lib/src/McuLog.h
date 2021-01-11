@@ -27,11 +27,11 @@
 extern "C" {
 #endif
 
-#define McuLog_VERSION "0.1.1"
+#define McuLog_VERSION "0.1.2"
 
 #define McuLog_RTT_DATA_LOGGER_CHANNEL   (1) /* channel used for the RTT data logger */
 
-typedef void (*log_LockFn)(void *udata, int lock);
+typedef void (*log_LockFn)(void *udata, bool lock);
 
 typedef enum { McuLog_TRACE, McuLog_DEBUG, McuLog_INFO, McuLog_WARN, McuLog_ERROR, McuLog_FATAL } McuLog_Levels_e;
 

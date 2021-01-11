@@ -86,14 +86,14 @@ static const char *level_colors[] = { /* color codes for messages */
 #endif
 
 static void lock(void)   {
-  if (L.lock) {
-    L.lock(L.udata, 1);
+  if (L.lock!=NULL) {
+    L.lock(L.udata, true);
   }
 }
 
 static void unlock(void) {
-  if (L.lock) {
-    L.lock(L.udata, 0);
+  if (L.lock!=NULL) {
+    L.lock(L.udata, false);
   }
 }
 
@@ -318,8 +318,7 @@ void McuLog_log(McuLog_Levels_e level, const char *file, int line, const char *f
 }
 
 #if McuLog_CONFIG_USE_MUTEX
-static void LockUnlockCallback(void *data, int lock) {
-  (void)data; /* not used */
+static void LockUnlockCallback(void *data, bool lock) {
   if (lock) {
     (void)xSemaphoreTakeRecursive(L.McuLog_Mutex, portMAX_DELAY);
   } else {
