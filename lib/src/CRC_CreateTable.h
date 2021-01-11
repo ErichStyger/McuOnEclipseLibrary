@@ -1,6 +1,6 @@
 /**
-* \file CRC_CreateTable.h
-*
+* Copyright Ivo Gärtner
+* \file
 * \author Ivo Gärtner
 * \copyright Ivo Gärtner
 * \date 9.11.2018

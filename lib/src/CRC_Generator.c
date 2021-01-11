@@ -1,6 +1,6 @@
 /**
-* \file CRC_Generator.c
-*
+* Copyright Ivo Gärtner
+* \file
 * \author Ivo Gärtner
 * \copyright Ivo Gärtner
 * \date 9.11.2018
