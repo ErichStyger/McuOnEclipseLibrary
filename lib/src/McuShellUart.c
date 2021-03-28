@@ -73,8 +73,8 @@ static void InitUart(void) {
   /* Initialize the USART with configuration. */
   McuShellUart_CONFIG_UART_INIT(McuShellUart_CONFIG_UART_DEVICE, &config, CLOCK_GetFreq(McuShellUart_CONFIG_UART_GET_CLOCK_FREQ_SELECT));
   McuShellUart_CONFIG_UART_ENABLE_INTERRUPTS(McuShellUart_CONFIG_UART_DEVICE, McuShellUart_CONFIG_UART_ENABLE_INTERRUPT_FLAGS);
-  EnableIRQ(McuShellUart_CONFIG_UART_IRQ_NUMBER);
   NVIC_SetPriority(McuShellUart_CONFIG_UART_IRQ_NUMBER, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY);
+  EnableIRQ(McuShellUart_CONFIG_UART_IRQ_NUMBER);
 }
 
 void McuShellUart_Deinit(void) {
