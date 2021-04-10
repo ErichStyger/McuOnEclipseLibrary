@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>532</ProjectCompNumb>
+    <ProjectCompNumb>534</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -19176,7 +19176,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
-        <Index>4</Index>
+        <Index>3</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -19905,7 +19905,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
-        <Index>4</Index>
+        <Index>3</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -20293,7 +20293,7 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <ItemWasNeverEnabledInChgScript>true</ItemWasNeverEnabledInChgScript>
-        <Index>4</Index>
+        <Index>3</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -21678,7 +21678,7 @@
     <UserFolderName>Unsupported</UserFolderName>
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.010</BeanVersion>
+    <BeanVersion>01.013</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -22761,6 +22761,17 @@
         <LastSelection>true</LastSelection>
         <LastUserSel>yes</LastUserSel>
         <UsrMethodName>GetDisplayOrientation</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>PutPixel</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>PutPixel</UsrMethodName>
       </ItemState>
       <ItemState>
         <ItemSymbol>Clear</ItemSymbol>
@@ -27885,7 +27896,7 @@
           </Methods>
           <Events />
         </InheritedComponentState>
-        <Index>3</Index>
+        <Index>2</Index>
       </ItemState>
       <ItemState>
         <ItemSymbol>SCL</ItemSymbol>
@@ -28588,7 +28599,7 @@
           </Methods>
           <Events />
         </InheritedComponentState>
-        <Index>3</Index>
+        <Index>2</Index>
       </ItemState>
       <ItemState>
         <ItemSymbol>sdk</ItemSymbol>
@@ -35077,7 +35088,7 @@
         <ItemSymbol>DataPin</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>2</Index>
+        <Index>1</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -40021,7 +40032,7 @@
         <ItemSymbol>LCD_ENABLE</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>3</Index>
+        <Index>2</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -40268,7 +40279,7 @@
         <ItemSymbol>RW</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>3</Index>
+        <Index>2</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -40523,7 +40534,7 @@
         <ItemSymbol>EN</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>3</Index>
+        <Index>2</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -40770,7 +40781,7 @@
         <ItemSymbol>E2</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>3</Index>
+        <Index>2</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -41009,7 +41020,7 @@
         <ItemSymbol>RS</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>3</Index>
+        <Index>2</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
@@ -47553,7 +47564,7 @@
         <ItemSymbol>WP</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
-        <Index>3</Index>
+        <Index>2</Index>
         <RegCompType>SDK_BitIO</RegCompType>
         <RegCompRepository>file:/${ProcessorExpertPath:user}</RegCompRepository>
         <InheritedComponentState>
