@@ -313,7 +313,7 @@ uint8_t McuArmTools_UIDGet(McuArmTools_UID *uid)
   }
 
   uint8_t *p;
-  p = (uint8_t*)FLASH_NMPA->UUID_ARRAY[0];
+  p = (uint8_t*)&FLASH_NMPA->UUID_ARRAY[0];
   for(i=0;i<sizeof(McuArmTools_UID) && i<sizeof(FLASH_NMPA->UUID_ARRAY);i++) {
     uid->id[i] = *p;
     p++;
