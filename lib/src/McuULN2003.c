@@ -25,10 +25,10 @@ typedef struct {
 } McuULN2003_Motor_t;
 
 #define McuULN2003_NOF_STEPS_HALF_STEP_MODE    (8)
-#define McuULN2003_DELAY_HALF_STEP_MODE()      McuWait_WaitOSms(1)
+#define McuULN2003_DELAY_HALF_STEP_MODE()      McuWait_WaitOSms(2)
 
 #define McuULN2003_NOF_STEPS_FULL_STEP_MODE    (4)
-#define McuULN2003_DELAY_FULL_STEP_MODE()      McuWait_WaitOSms(2)
+#define McuULN2003_DELAY_FULL_STEP_MODE()      McuWait_WaitOSms(3)
 
 typedef bool McuULN2003_PinStatus[McuULN2003_NOF_MOTOR_GPIO_PINS];
 
@@ -215,6 +215,16 @@ static void McuULN2003_TableMakeStep(McuULN2003_Handle_t motor, bool forward) {
       m->pos--;
     }
   }
+}
+
+bool McuULN2003_StepCallback(McuULN2003_Handle_t motor, bool forward) {
+  McuULN2003_Motor_t *m = (McuULN2003_Motor_t*)motor;
+  if (forward) {
+    McuULN2003_TableMakeStep(motor, true); /* forward */
+  } else {
+    McuULN2003_TableMakeStep(motor, false); /* backward */
+  }
+  return m->tablePos==0; /* reached position */
 }
 
 bool McuULN2003_MoveCallback(McuULN2003_Handle_t motor, int32_t targetPos) {
