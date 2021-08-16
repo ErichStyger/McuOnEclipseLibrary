@@ -7,7 +7,7 @@
  * This header file is used to configure settings of the McuLibConfig module.
  */
 #if defined(__XTENSA__) && __XTENSA__==1
-  #include "ESP32_config.h" /* special include or ESP32 */
+  #include "IncludeMcuLibConfig.h" /* special include for ESP32 */
 #endif
 
 #ifndef __McuLib_CONFIG_H

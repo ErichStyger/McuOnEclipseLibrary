@@ -69,8 +69,13 @@
 
 /* other includes needed */
 #if McuCriticalSection_CONFIG_USE_RTOS_CRITICAL_SECTION
-  #include "FreeRTOS.h"
-  #include "task.h"  /* FreeRTOS header file for taskENTER_CRITICAL() and taskEXIT_CRITICAL() macros */
+  #if McuLib_CONFIG_CPU_IS_ESP32
+    #include "freertos/FreeRTOS.h"
+    #include "freertos/task.h"  /* FreeRTOS header file for taskENTER_CRITICAL() and taskEXIT_CRITICAL() macros */
+  #else
+    #include "FreeRTOS.h"
+    #include "task.h"  /* FreeRTOS header file for taskENTER_CRITICAL() and taskEXIT_CRITICAL() macros */
+  #endif
 #endif
 
 #ifdef __cplusplus

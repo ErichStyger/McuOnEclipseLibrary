@@ -37,7 +37,6 @@
 #include "McuTimeDate.h"
 #include "McuUtility.h"
 #include "McuXFormat.h"
-#include "McuRTT.h"
 #include "McuShell.h"
 #if McuLog_CONFIG_USE_MUTEX
   #include "McuRTOS.h"
@@ -45,7 +44,7 @@
 #if McuLog_CONFIG_USE_FILE
   #include "McuFatFS.h"
 #endif
-#if McuLog_CONFIG_USE_RTT_DATA_LOGGER
+#if McuLog_CONFIG_USE_RTT_DATA_LOGGER || McuLog_CONFIG_USE_RTT_CONSOLE
   #include "McuRTT.h"
 #endif
 
@@ -159,12 +158,15 @@ void McuLog_set_color(bool enable) {
 
 static void OutputCharFctConsole(void *p, char ch) {
   McuShell_StdIO_OutErr_FctType io = (McuShell_StdIO_OutErr_FctType)p;
+
+#if McuLog_CONFIG_USE_RTT_CONSOLE
   if (io==McuRTT_StdIOSendChar) { /* using RTT: check first if we are able to send */
     unsigned int rttUpSize = SEGGER_RTT_GetUpBufferFreeSize(0);
     if (rttUpSize<1) { /* there is NOT enough space available in the RTT up buffer */
       return; /* do not send :-( */
     }
   }
+#endif
   io(ch);
 }
 

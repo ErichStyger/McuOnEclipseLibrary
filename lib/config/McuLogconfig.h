@@ -50,6 +50,12 @@
     /*!< 1: strip path from file name, 0: keep file name untouched */
 #endif
 
+#ifndef McuLog_CONFIG_USE_RTT_CONSOLE
+  #define McuLog_CONFIG_USE_RTT_CONSOLE        (0)
+    /*!< 1: use use SEGGER RTT console outpot, 0: do not use SEGGER RTT */
+#endif
+
+
 #ifndef McuLog_CONFIG_USE_RTT_DATA_LOGGER
   #define McuLog_CONFIG_USE_RTT_DATA_LOGGER        (0)
     /*!< 1: use use SEGGER RTT Logger (Channel 1), 0: do not use SEGGER RTT Logger */
