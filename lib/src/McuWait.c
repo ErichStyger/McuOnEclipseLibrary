@@ -82,7 +82,7 @@
 ** ===================================================================
 */
 #ifdef __GNUC__
-#if McuLib_CONFIG_CPU_IS_RISC_V /* naked is ignored for RISC-V gcc */
+#if McuLib_CONFIG_CPU_IS_RISC_V  || McuLib_CONFIG_CPU_IS_ESP32 /* naked is ignored for RISC-V or ESP32 gcc */
   #ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't set 'no_instrument_function' attribute after definition */
   #else
     __attribute__((no_instrument_function))
@@ -157,7 +157,7 @@ void McuWait_Wait10Cycles(void)
   /* Implemented in assembly file, as IAR does not support labels in HLI */
 #else
 #ifdef __GNUC__
-  #if McuLib_CONFIG_CPU_IS_RISC_V /* naked is ignored for RISC-V gcc */
+  #if McuLib_CONFIG_CPU_IS_RISC_V || McuLib_CONFIG_CPU_IS_ESP32 /* naked is ignored for RISC-V or ESP32 gcc */
     #ifdef __cplusplus  /* gcc 4.7.3 in C++ mode does not like no_instrument_function: error: can't set 'no_instrument_function' attribute after definition */
     #else
       __attribute__((no_instrument_function))
