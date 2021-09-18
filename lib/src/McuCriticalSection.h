@@ -125,7 +125,7 @@ extern "C" {
   #if McuLib_CONFIG_CPU_IS_RISC_V
     #define McuCriticalSection_EnterCritical() \
       do {                                  \
-      __asm volatile( "csrc mstatus, 8" ); /* Disable interrupts \todo */ \
+      __asm volatile( "csrc mstatus, 8" ); /* Disable interrupts */ \
       } while(0)
   #elif McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
     #define McuCriticalSection_EnterCritical() \
@@ -161,7 +161,7 @@ extern "C" {
   #if McuLib_CONFIG_CPU_IS_RISC_V
     #define McuCriticalSection_ExitCritical() \
       do {                                  \
-        __asm volatile( "csrs mstatus, 8" ); /* Enable interrupts \todo */ \
+        __asm volatile( "csrs mstatus, 8" ); /* Enable interrupts */ \
       } while(0)
   #elif McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
     #define McuCriticalSection_ExitCritical() \

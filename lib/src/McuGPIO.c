@@ -199,7 +199,7 @@ McuGPIO_Handle_t McuGPIO_InitGPIO(McuGPIO_Config_t *config) {
                                       IOCON_PIO_OPENDRAIN_DI);
   IOCON_PinMuxSet(IOCON, config->hw.port, config->hw.pin, port_pin_config);
 #elif McuLib_CONFIG_CPU_IS_IMXRT
-  /* \todo */
+  /* muxing not implemented */
 #elif McuLib_CONFIG_CPU_IS_STM32
   /* no muxing */
 #endif
@@ -450,7 +450,7 @@ void McuGPIO_SetPullResistor(McuGPIO_Handle_t gpio, McuGPIO_PullType pull) {
                        (~(IOCON_PIO_MODE_MASK))) /* Mask bits to zero which are setting */
                       | config); /* Select function mode (on-chip pull-up/pull-down resistor control) */
 #elif McuLib_CONFIG_CPU_IS_IMXRT
-  /* \todo, NYI */
+  /* NYI */
   if (pull == McuGPIO_PULL_DISABLE) {
   } else if (pull == McuGPIO_PULL_UP) {
   } else if (pull == McuGPIO_PULL_DOWN) {

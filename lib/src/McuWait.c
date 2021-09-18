@@ -132,7 +132,6 @@ void McuWait_Wait10Cycles(void)
   }
 #endif
 #elif McuLib_CONFIG_CPU_IS_RISC_V
-  /* \todo */
   __asm ( /* assuming [4] for overhead */
    "nop   \n\t" /* [1] */
    "nop   \n\t" /* [1] */
@@ -232,7 +231,6 @@ loop
   }
 #endif
 #elif McuLib_CONFIG_CPU_IS_RISC_V
-  /* \todo */
   __asm ( /* assuming [10] for overhead */
     "  li a5,20        \n\t"
     "LoopWait100Cycles:             \n\t"

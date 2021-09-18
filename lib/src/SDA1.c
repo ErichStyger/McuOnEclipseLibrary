@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : SDK_BitIO
-**     Version     : Component 01.026, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.027, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-07-20, 09:02, # CodeGen: 745
+**     Date/Time   : 2021-09-18, 09:57, # CodeGen: 748
 **     Abstract    :
 **          GPIO component usable with NXP SDK
 **     Settings    :
@@ -33,7 +33,7 @@
 **         Init      - void SDA1_Init(void);
 **         Deinit    - void SDA1_Deinit(void);
 **
-** * Copyright (c) 2015-2020, Erich Styger
+** * Copyright (c) 2015-2022, Erich Styger
 **  * Web:         https://mcuoneclipse.com
 **  * SourceForge: https://sourceforge.net/projects/mcuoneclipse
 **  * Git:         https://github.com/ErichStyger/McuOnEclipse_PEx
@@ -424,7 +424,7 @@ void SDA1_PutVal(bool Val)
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K
   PINS_DRV_WritePin(SDA1_CONFIG_PORT_NAME, SDA1_CONFIG_PIN_NUMBER, Val);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_NORDIC_NRF5
-  /*! \todo */
+  /* NYI */
 #endif
 }
 
@@ -472,7 +472,7 @@ void SDA1_Init(void)
       #endif
   #endif
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_KINETIS_1_3
-  /*! \todo Pin Muxing not implemented */
+  /*! Pin Muxing not implemented */
   GPIO_DRV_Init(SDA1_InputConfig, SDA1_OutputConfig);
 #elif McuLib_CONFIG_SDK_VERSION_USED == McuLib_CONFIG_SDK_S32K
   /* the following needs to be called in the application first:
