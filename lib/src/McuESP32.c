@@ -41,15 +41,14 @@ static bool McuESP32_CopyUartToShell = true; /* if we copy the ESP32 UART to the
 /* Below is the I/O handler for the console: data from the ESP is sent to that stdout (e.g. shell console).
  * Optionally with McuESP32_CONFIG_USE_USB_CDC enabled all CDC data is sent to the ESP32 as well.
  */
-static McuShell_ConstStdIOType *McuESP32_ShellConsoleStdIO = NULL; /* can be overwritten by McuESP32_SetConsoleStdio(); */
+static McuShell_ConstStdIOType *McuESP32_RxFromESPStdIO = NULL; /* can be overwritten with McuESP32_SetRxFromESPStdio(); */
 
-uint8_t McuESP32_SetShellConsoleStdio(McuShell_ConstStdIOTypePtr stdio) {
-  McuESP32_ShellConsoleStdIO = stdio;
-  return ERR_OK;
+void McuESP32_SetRxFromESPStdio(McuShell_ConstStdIOTypePtr stdio) {
+ McuESP32_RxFromESPStdIO = stdio;
 }
 
-McuShell_ConstStdIOTypePtr McuESP32_GetShellConsoleStdio(void) {
-  return McuESP32_ShellConsoleStdIO;
+McuShell_ConstStdIOTypePtr McuESP32_GetRxFromESPStdio(void) {
+  return McuESP32_RxFromESPStdIO;
 }
 
 #if McuESP32_CONFIG_USE_CTRL_PINS
@@ -178,36 +177,32 @@ void McuESP32_UartState_Callback(uint8_t state) { /* callback for DTR and RTS li
 }
 #endif
 
-static void Uart_SendChar(unsigned char ch) {
-  McuESP32_CONFIG_UART_WRITE_BLOCKING(McuESP32_CONFIG_UART_DEVICE, &ch, 1);
+/*********************************************************************************************************/
+/* Stdio Handler for sending text to the ESP32 */
+static void QueueTxChar(unsigned char ch) {
+ (void)xQueueSendToBack(uartTxQueue, &ch, 0); /* put it back in to the Tx queue */
 }
 
-static void Uart_ReadChar(uint8_t *c) {
-  uint8_t ch;
-
-  if (xQueueReceive(uartRxQueue, &ch, 0)==pdPASS ) {
-    *c = ch; /* return received character */
-  } else {
-    *c = '\0'; /* nothing received */
-  }
+static void Dummy_ReadChar(uint8_t *c) {
+  *c = '\0'; /* nothing received */
 }
 
-static bool McuShellUart_CharPresent(void) {
-  return uxQueueMessagesWaiting(uartRxQueue)!=0;
+static bool Dummy_CharPresent(void) {
+  return false;
 }
 
-/* UART connection to the ESP32 */
-static McuShell_ConstStdIOType McuESP32_UartESP_stdio = {
-    (McuShell_StdIO_In_FctType)Uart_ReadChar,      /* stdin */
-    (McuShell_StdIO_OutErr_FctType)Uart_SendChar,  /* stdout */
-    (McuShell_StdIO_OutErr_FctType)Uart_SendChar,  /* stderr */
-    McuShellUart_CharPresent /* if input is not empty */
+/* for sending data to the ESP32 (tx only) */
+static const McuShell_ConstStdIOType McuESP32_Tx_stdio = {
+    (McuShell_StdIO_In_FctType)Dummy_ReadChar,      /* stdin */
+    (McuShell_StdIO_OutErr_FctType)QueueTxChar,  /* stdout */
+    (McuShell_StdIO_OutErr_FctType)QueueTxChar,  /* stderr */
+    Dummy_CharPresent /* if input is not empty */
   };
 
-McuShell_ConstStdIOTypePtr McuESP32_GetUartESPStdio(void) {
-  return &McuESP32_UartESP_stdio;
+McuShell_ConstStdIOTypePtr McuESP32_GetTxToESPStdio(void) {
+  return &McuESP32_Tx_stdio;
 }
-
+/*********************************************************************************************************/
 void McuESP32_CONFIG_UART_IRQ_HANDLER(void) {
   uint8_t data;
   uint32_t flags=0;
@@ -353,8 +348,8 @@ uint8_t McuESP32_ParseCommand(const unsigned char *cmd, bool *handled, const Mcu
 #endif
   } else if (McuUtility_strncmp((char*)cmd, (char*)"esp32 send ", sizeof("esp32 send ")-1)==0) {
     *handled = true;
-    McuShell_SendStr(cmd+sizeof("esp32 send ")-1, McuESP32_UartESP_stdio.stdOut);
-    McuShell_SendStr((unsigned char*)"\r\n", McuESP32_UartESP_stdio.stdOut);
+    McuShell_SendStr(cmd+sizeof("esp32 send ")-1, McuESP32_GetTxToESPStdio()->stdOut);
+    McuShell_SendStr((unsigned char*)"\r\n", McuESP32_GetTxToESPStdio()->stdOut);
     return ERR_OK;
   }
   return ERR_OK;
@@ -379,7 +374,7 @@ static void UartRxTask(void *pv) { /* task handling characters sent by the ESP32
   #endif
          )
       { /* only write to shell if not in programming mode. Programming mode might crash RTT */
-        io = McuESP32_GetShellConsoleStdio();
+        io = McuESP32_GetRxFromESPStdio();
         if (io!=NULL) {
           McuShell_SendCh(ch, io->stdOut); /* write to console */
         }
@@ -394,7 +389,6 @@ static void UartTxTask(void *pv) { /* task handling sending data to the ESP32 mo
   unsigned char ch;
   BaseType_t res;
   bool workToDo;
-  McuShell_ConstStdIOType *io;
 
   for(;;) {
 #if McuESP32_CONFIG_USE_USB_CDC
@@ -409,32 +403,23 @@ static void UartTxTask(void *pv) { /* task handling sending data to the ESP32 mo
       res = xQueueReceive(uartTxQueue, &ch, 0); /* poll queue */
       if (res==pdPASS) { /* write data to ESP over UART */
         workToDo = true;
-        McuESP32_CONFIG_UART_WRITE_BLOCKING(McuESP32_CONFIG_UART_DEVICE, &ch, 1);
+        McuESP32_CONFIG_UART_WRITE_BLOCKING(McuESP32_CONFIG_UART_DEVICE, &ch, 1); /* send to ESP */
       }
     } while (res==pdPASS);
 #if McuESP32_CONFIG_USE_USB_CDC
     while (USB_CdcStdio.keyPressed()) { /* check USB CDC data stream */
       workToDo = true;
       USB_CdcStdio.stdIn(&ch); /* read byte */
-      McuESP32_CONFIG_UART_WRITE_BLOCKING(McuESP32_CONFIG_UART_DEVICE, &ch, 1); /* send to the module */
+      McuESP32_CONFIG_UART_WRITE_BLOCKING(McuESP32_CONFIG_UART_DEVICE, &ch, 1); /* send to ESP */
       /* check if we can copy the USB CDC data to shell console too */
       if (McuESP32_CopyUartToShell && !McuESP32_IsProgramming) {
-        io = McuESP32_GetShellConsoleStdio();
+        McuShell_ConstStdIOTypePtr io = McuESP32_GetRxFromESPStdio();
         if (io!=NULL) {
           McuShell_SendCh(ch, io->stdOut); /* write to console */
         }
       }
     }
 #endif
-    /* check if we have other data from the shell console stdio we can send to the ESP32 */
-    io = McuESP32_GetShellConsoleStdio();
-    if (io!=NULL) {
-      while (io->keyPressed()) { /* data present? */
-        workToDo = true;
-        io->stdIn(&ch); /* read character */
-        McuESP32_CONFIG_UART_WRITE_BLOCKING(McuESP32_CONFIG_UART_DEVICE, &ch, 1);
-      }
-    }
     if (!workToDo) { /* only delay if we are not busy */
       vTaskDelay(pdMS_TO_TICKS(5));
     }
