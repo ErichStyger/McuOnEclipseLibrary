@@ -234,7 +234,7 @@ static uint8_t McuESP32_PrintHelp(const McuShell_StdIOType *io) {
   McuShell_SendHelpStr((unsigned char*)"  usbprg auto|on|off", (unsigned char*)"Use USB CDC to UART for programming\r\n", io->stdOut);
 #endif
 #endif
-  McuShell_SendHelpStr((unsigned char*)"  send <cmd>", (unsigned char*)"Send a command or string to the ESP32.\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  send <cmd>", (unsigned char*)"Send a command or string to the ESP32\r\n", io->stdOut);
   return ERR_OK;
 }
 
@@ -243,7 +243,7 @@ static uint8_t McuESP32_PrintStatus(const McuShell_StdIOType *io) {
   uint8_t buf[64];
 #endif
 
-  McuShell_SendStatusStr((unsigned char*)"esp32", (unsigned char*)"\r\n", io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"esp32", (unsigned char*)"ESP32 status\r\n", io->stdOut);
 #if McuESP32_CONFIG_USE_CTRL_PINS
   McuGPIO_GetPinStatusString(McuESP32_RF_EN_Pin, buf, sizeof(buf));
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
