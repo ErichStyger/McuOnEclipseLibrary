@@ -12,6 +12,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include "McuLib.h"
 #if McuLib_CONFIG_NXP_SDK_USED
   #include "fsl_gpio.h"
 #elif McuLib_CONFIG_CPU_IS_STM32
