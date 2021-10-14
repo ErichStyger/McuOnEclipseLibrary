@@ -51,12 +51,12 @@
 
 #ifndef McuLog_CONFIG_USE_RTT_CONSOLE
   #define McuLog_CONFIG_USE_RTT_CONSOLE        (0)
-    /*!< 1: use use SEGGER RTT console outpot, 0: do not use SEGGER RTT */
+    /*!< 1: use SEGGER RTT console output, 0: do not use SEGGER RTT */
 #endif
 
 #ifndef McuLog_CONFIG_USE_RTT_DATA_LOGGER
   #define McuLog_CONFIG_USE_RTT_DATA_LOGGER        (0)
-    /*!< 1: use use SEGGER RTT Logger (Channel 1), 0: do not use SEGGER RTT Logger */
+    /*!< 1: use SEGGER RTT Logger (Channel 1), 0: do not use SEGGER RTT Logger */
 #endif
 
 #ifndef McuLog_CONFIG_RTT_DATA_LOGGER_BUFFER_SIZE
