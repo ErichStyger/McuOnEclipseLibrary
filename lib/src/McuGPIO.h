@@ -17,6 +17,8 @@
   #include "fsl_gpio.h"
 #elif McuLib_CONFIG_CPU_IS_STM32
   #include "stm32f3xx_hal.h"
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  #include "driver/gpio.h"
 #endif
 #include "McuLibconfig.h"
 #include "McuGPIOconfig.h"
@@ -41,7 +43,7 @@ typedef struct {
   GPIO_TypeDef *gpio;
 #endif
 #if McuLib_CONFIG_CPU_IS_KINETIS
-  PORT_Type *port; /* pointer to port */
+  PORT_Type *port; /* pointer to port, e.g. PORTA */
 #elif McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CORTEX_M==0
   uint32_t port; /* port number */
   uint8_t iocon; /* I/O Connection index used for muxing, e.g. IOCON_INDEX_PIO0_0 */
@@ -50,7 +52,11 @@ typedef struct {
 #elif McuLib_CONFIG_CPU_IS_IMXRT
   /* no port for i.MX */
 #endif
+#if McuLib_CONFIG_CPU_IS_ESP32
+  gpio_num_t pin; /* pin number, e.g. GPIO_NUM_10 */
+#else
   uint32_t pin; /* pin number */
+#endif
   McuGPIO_PullType pull; /* pull resistor configuration */
 } McuGPIO_HwPin_t;
 

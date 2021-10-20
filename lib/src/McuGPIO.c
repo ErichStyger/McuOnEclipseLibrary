@@ -25,6 +25,8 @@
   #include "fsl_iocon.h"
 #elif McuLib_CONFIG_CPU_IS_STM32
   #include "stm32f3xx_hal.h"
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  #include "driver/gpio.h"
 #endif
 
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CORTEX_M==0 /* LPC845 specific defines, not available in SDK */
@@ -59,7 +61,11 @@ static const McuGPIO_Config_t defaultConfig =
     .isInput = true,
     .isHighOnInit = false,
     .hw = {
-      .gpio = NULL,
+      #if McuLib_CONFIG_NXP_SDK_USED
+        .gpio = NULL,
+      #elif McuLib_CONFIG_CPU_IS_STM32
+        .gpio = NULL,
+      #endif
     #if McuLib_CONFIG_CPU_IS_KINETIS
       .port = NULL,
     #elif McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CORTEX_M==0
@@ -68,12 +74,19 @@ static const McuGPIO_Config_t defaultConfig =
     #elif McuLib_CONFIG_CPU_IS_LPC
       .port = 0,
     #endif
+    #if McuLib_CONFIG_CPU_IS_ESP32
+      .pin = GPIO_NUM_NC,
+    #else
       .pin = 0,
+    #endif
       .pull = McuGPIO_PULL_DISABLE,
     }
 };
 
 typedef struct {
+#if McuLib_CONFIG_CPU_IS_ESP32
+  bool isHigh; /* status of output pin, because we cannot toggle pin */
+#endif
   bool isInput;
   McuGPIO_HwPin_t hw;
 } McuGPIO_t;
@@ -83,7 +96,7 @@ void McuGPIO_GetDefaultConfig(McuGPIO_Config_t *config) {
   memcpy(config, &defaultConfig, sizeof(*config));
 }
 
-static void McuGPIO_ConfigurePin(bool isInput, bool isHighOnInit, McuGPIO_HwPin_t *hw) {
+static void McuGPIO_ConfigurePin(McuGPIO_t *pin, bool isInput, bool isHighOnInit) {
 #if McuLib_CONFIG_NXP_SDK_USED
   gpio_pin_config_t pin_config; /* config for the SDK */
 
@@ -106,11 +119,11 @@ static void McuGPIO_ConfigurePin(bool isInput, bool isHighOnInit, McuGPIO_HwPin_
 #endif
   pin_config.outputLogic = isHighOnInit;
 #if McuLib_CONFIG_CPU_IS_KINETIS
-  GPIO_PinInit(hw->gpio, hw->pin, &pin_config);
+  GPIO_PinInit(pin->hw.gpio, pin->hw.pin, &pin_config);
 #elif McuLib_CONFIG_CPU_IS_LPC
-  GPIO_PinInit(hw->gpio, hw->port, hw->pin, &pin_config);
+  GPIO_PinInit(pin->hw.gpio, pin->hw.port, pin->hw.pin, &pin_config);
 #elif McuLib_CONFIG_CPU_IS_IMXRT
-  GPIO_PinInit(hw->gpio, hw->pin, &pin_config);
+  GPIO_PinInit(pin->hw.gpio, pin->hw.pin, &pin_config);
 #endif
 #elif McuLib_CONFIG_CPU_IS_STM32
   GPIO_InitTypeDef config;
@@ -128,11 +141,28 @@ static void McuGPIO_ConfigurePin(bool isInput, bool isHighOnInit, McuGPIO_HwPin_
     case McuGPIO_PULL_DOWN: config.Pull = GPIO_PULLDOWN; break;
   }
   config.Speed = GPIO_SPEED_FREQ_LOW;
-  config.Pin = hw->pin; 
-  HAL_GPIO_Init(hw->gpio, &config);
+  config.Pin = pin->hw.pin;
+  HAL_GPIO_Init(pin->hw.gpio, &config);
   /* write default output level */
   if (!isInput) {
-    HAL_GPIO_WritePin(hw->gpio, hw->pin, isHighOnInit?GPIO_PIN_SET:GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(pin->hw.gpio, pin->hw.pin, isHighOnInit?GPIO_PIN_SET:GPIO_PIN_RESET);
+  }
+#elif McuLib_CONFIG_CPU_IS_ESP32
+ /*! \todo */
+  gpio_pad_select_gpio(pin->hw.pin);
+  if (isInput) {
+    gpio_set_direction(pin->hw.pin, GPIO_MODE_INPUT);
+  } else {
+    gpio_set_direction(pin->hw.pin, GPIO_MODE_OUTPUT);
+  }
+  switch(pin->hw.pull) {
+    case McuGPIO_PULL_DISABLE: gpio_set_pull_mode(pin->hw.pin, GPIO_FLOATING); break;
+    case McuGPIO_PULL_UP:      gpio_set_pull_mode(pin->hw.pin, GPIO_PULLUP_ONLY); break;
+    case McuGPIO_PULL_DOWN:    gpio_set_pull_mode(pin->hw.pin, GPIO_PULLDOWN_ONLY); break;
+  }
+  if (!isInput) {
+    gpio_set_level(pin->hw.pin, isHighOnInit?1:0);
+    pin->isHigh = isHighOnInit;
   }
 #endif
 }
@@ -141,7 +171,7 @@ void McuGPIO_SetAsInput(McuGPIO_Handle_t gpio) {
   McuGPIO_t *pin = (McuGPIO_t*)gpio;
 
   assert(gpio!=NULL);
-  McuGPIO_ConfigurePin(true, false /* don't care */, &pin->hw);
+  McuGPIO_ConfigurePin(pin, true, false /* don't care */);
   pin->isInput = true;
 }
 
@@ -149,7 +179,7 @@ void McuGPIO_SetAsOutput(McuGPIO_Handle_t gpio, bool setHigh) {
   McuGPIO_t *pin = (McuGPIO_t*)gpio;
 
   assert(gpio!=NULL);
-  McuGPIO_ConfigurePin(false, setHigh, &pin->hw);
+  McuGPIO_ConfigurePin(pin, false, setHigh);
   pin->isInput = false;
 }
 
@@ -167,7 +197,30 @@ McuGPIO_Handle_t McuGPIO_InitGPIO(McuGPIO_Config_t *config) {
   McuGPIO_t *handle;
 
   assert(config!=NULL);
-  McuGPIO_ConfigurePin(config->isInput, config->isHighOnInit, &config->hw);
+  /* allocate memory for handle */
+#if MCUGPIO_CONFIG_USE_FREERTOS_HEAP
+  handle = (McuGPIO_t*)pvPortMalloc(sizeof(McuGPIO_t)); /* get a new device descriptor */
+#else
+  handle = (McuGPIO_t*)malloc(sizeof(McuGPIO_t)); /* get a new device descriptor */
+#endif
+  assert(handle!=NULL);
+  if (handle!=NULL) { /* if malloc failed, will return NULL pointer */
+    memset(handle, 0, sizeof(McuGPIO_t)); /* init all fields */
+    handle->isInput = config->isInput;
+#if McuLib_CONFIG_NXP_SDK_USED || McuLib_CONFIG_CPU_IS_STM32
+    handle->hw.gpio = config->hw.gpio;
+#endif
+    handle->hw.pin = config->hw.pin;
+    handle->hw.pull = config->hw.pull;
+  #if McuLib_CONFIG_CPU_IS_KINETIS || McuLib_CONFIG_CPU_IS_LPC
+    handle->hw.port = config->hw.port;
+  #endif
+  #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CORTEX_M==0
+    handle->hw.iocon = config->hw.iocon;
+  #endif
+  }
+
+  McuGPIO_ConfigurePin(handle, config->isInput, config->isHighOnInit);
 
   /* do pin muxing */
 #if McuLib_CONFIG_CPU_IS_KINETIS
@@ -202,28 +255,10 @@ McuGPIO_Handle_t McuGPIO_InitGPIO(McuGPIO_Config_t *config) {
   /* muxing not implemented */
 #elif McuLib_CONFIG_CPU_IS_STM32
   /* no muxing */
+#elif McuLib_CONFIG_CPU_IS_ESP32
+ /* no muxing needed */
 #endif
 
-  /* allocate memory for handle */
-#if MCUGPIO_CONFIG_USE_FREERTOS_HEAP
-  handle = (McuGPIO_t*)pvPortMalloc(sizeof(McuGPIO_t)); /* get a new device descriptor */
-#else
-  handle = (McuGPIO_t*)malloc(sizeof(McuGPIO_t)); /* get a new device descriptor */
-#endif
-  assert(handle!=NULL);
-  if (handle!=NULL) { /* if malloc failed, will return NULL pointer */
-    memset(handle, 0, sizeof(McuGPIO_t)); /* init all fields */
-    handle->isInput = config->isInput;
-    handle->hw.gpio = config->hw.gpio;
-    handle->hw.pin = config->hw.pin;
-    handle->hw.pull = config->hw.pull;
-  #if McuLib_CONFIG_CPU_IS_KINETIS || McuLib_CONFIG_CPU_IS_LPC
-    handle->hw.port = config->hw.port;
-  #endif
-  #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CORTEX_M==0
-    handle->hw.iocon = config->hw.iocon;
-  #endif
-  }
   return handle;
 }
 
@@ -253,6 +288,9 @@ void McuGPIO_SetLow(McuGPIO_Handle_t gpio) {
   GPIO_PinWrite(pin->hw.gpio, pin->hw.pin, 0U);
 #elif McuLib_CONFIG_CPU_IS_STM32
   HAL_GPIO_WritePin(pin->hw.gpio, pin->hw.pin, GPIO_PIN_RESET);
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  gpio_set_level(pin->hw.pin, 0); /* low */
+  pin->isHigh = false;
 #endif
 }
 
@@ -272,6 +310,9 @@ void McuGPIO_SetHigh(McuGPIO_Handle_t gpio) {
   GPIO_PinWrite(pin->hw.gpio, pin->hw.pin, 1U);
 #elif McuLib_CONFIG_CPU_IS_STM32
   HAL_GPIO_WritePin(pin->hw.gpio, pin->hw.pin, GPIO_PIN_SET);
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  gpio_set_level(pin->hw.pin, 1); /* high */
+  pin->isHigh = true;
 #endif
 }
 
@@ -291,6 +332,14 @@ void McuGPIO_Toggle(McuGPIO_Handle_t gpio) {
   GPIO_PortToggle(pin->hw.gpio, (1<<pin->hw.pin));
 #elif McuLib_CONFIG_CPU_IS_STM32
   HAL_GPIO_TogglePin(pin->hw.gpio, pin->hw.pin);
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  if (pin->isHigh) {
+    gpio_set_level(pin->hw.pin, 0);
+    pin->isHigh = false;
+  } else {
+    gpio_set_level(pin->hw.pin, 1);
+    pin->isHigh = true;
+  }
 #endif
 }
 
@@ -311,6 +360,9 @@ void McuGPIO_SetValue(McuGPIO_Handle_t gpio, bool val) {
     GPIO_PinWrite(pin->hw.gpio, pin->hw.pin, 1U);
 #elif McuLib_CONFIG_CPU_IS_STM32
   HAL_GPIO_WritePin(pin->hw.gpio, pin->hw.pin, GPIO_PIN_RESET);
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  gpio_set_level(pin->hw.pin, 1); /* high */
+  pin->isHigh = true;
 #endif
   } else { /* set to LOW */
 #if McuLib_CONFIG_CPU_IS_KINETIS
@@ -325,6 +377,9 @@ void McuGPIO_SetValue(McuGPIO_Handle_t gpio, bool val) {
     GPIO_PinWrite(pin->hw.gpio, pin->hw.pin, 1U);
 #elif McuLib_CONFIG_CPU_IS_STM32
   HAL_GPIO_WritePin(pin->hw.gpio, pin->hw.pin, GPIO_PIN_SET);
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  gpio_set_level(pin->hw.pin, 0); /* low */
+  pin->isHigh = false;
 #endif
   }
 }
@@ -349,6 +404,8 @@ bool McuGPIO_IsHigh(McuGPIO_Handle_t gpio) {
   return GPIO_PinRead(pin->hw.gpio, pin->hw.pin)!=0;
 #elif McuLib_CONFIG_CPU_IS_STM32
   return HAL_GPIO_ReadPin(pin->hw.gpio, pin->hw.pin);
+#elif McuLib_CONFIG_CPU_IS_ESP32
+  return gpio_get_level(pin->hw.pin);
 #endif
   return false;
 }
@@ -371,8 +428,10 @@ void McuGPIO_GetPinStatusString(McuGPIO_Handle_t gpio, unsigned char *buf, size_
   } else {
     McuUtility_strcat(buf, bufSize, (unsigned char*)", LOW");
   }
+#if McuLib_CONFIG_NXP_SDK_USED || McuLib_CONFIG_CPU_IS_STM32
   McuUtility_strcat(buf, bufSize, (unsigned char*)", gpio:0x");
   McuUtility_strcatNum32Hex(buf, bufSize, (uint32_t)pin->hw.gpio); /* write address */
+#endif
 #if McuLib_CONFIG_CPU_IS_KINETIS
   McuUtility_strcat(buf, bufSize, (unsigned char*)", port:0x");
   McuUtility_strcatNum32Hex(buf, bufSize, (uint32_t)pin->hw.port); /* write address */
