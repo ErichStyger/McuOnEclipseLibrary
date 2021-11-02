@@ -71,6 +71,10 @@ add_compile_options(-include "../config/IncludeMcuLibConfig.h")
 #elif 0 /* example configuration for i.MX RT */
   #define McuLib_CONFIG_CPU_IS_IMXRT      (1)  /* i.MX RT family */
   #define McuLib_CONFIG_CORTEX_M          (7)  /*!< 0: Cortex-M0, 3: M3, 4: M4, 7: M7, 33: M33, -1 otherwise */
+#elif 0 /* ESP32 */
+  #define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M   (0)  /* ESP32 is detected automatically */
+  #define configHEAP_SCHEME_IDENTIFICATION    (0)  /* ESP-IDF RTOS used */
+  #define McuCriticalSection_CONFIG_USE_RTOS_CRITICAL_SECTION  (1) /* no native Extensa implementation yet */
 #endif
 /* ------------------- RTOS ---------------------------*/
 #define McuLib_CONFIG_SDK_USE_FREERTOS       (0)
