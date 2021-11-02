@@ -317,13 +317,13 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
   uint8_t tmpBuf[32];
   uint16_t stackSize;
 #endif
-#if configUSE_TRACE_FACILITY
+#if configUSE_TRACE_FACILITY && !((tskKERNEL_VERSION_MAJOR<10) ||McuLib_CONFIG_CPU_IS_ESP32)
   TaskStatus_t taskStatus;
 #endif
   uint8_t buf[32];
   uint8_t res;
 #if configGENERATE_RUN_TIME_STATS
-  uint32_t ulTotalTime, ulStatsAsPercentage;
+  uint32_t ulTotalTime;
 #endif
 #if configUSE_TRACE_FACILITY
   #define PAD_STAT_TASK_TCB             (sizeof("TCB ")-1)
@@ -556,6 +556,8 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
       McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"0x");
       McuUtility_strcatNum32Hex(tmpBuf, sizeof(tmpBuf), taskStatus.ulRunTimeCounter);
       if (ulTotalTime>0) { /* to avoid division by zero */
+        uint32_t ulStatsAsPercentage;
+
         /* What percentage of the total run time has the task used?
            This will always be rounded down to the nearest integer.
            ulTotalRunTime has already been divided by 100. */
