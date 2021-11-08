@@ -14,6 +14,11 @@
     /*!< 1: Logging is enabled; 0: Logging is disabled, not adding anything to the application code */
 #endif
 
+#ifndef McuLog_CONFIG_DEFAULT_LEVEL
+  #define McuLog_CONFIG_DEFAULT_LEVEL            (McuLog_TRACE)
+    /*!< one of McuLog_Levels_e */
+#endif
+
 #ifndef McuLog_CONFIG_USE_MUTEX
   #define McuLog_CONFIG_USE_MUTEX             (1 && McuLib_CONFIG_SDK_USE_FREERTOS)
     /*!< 1: use a RTOS mutex for the logging module; 0: do not use a mutex */

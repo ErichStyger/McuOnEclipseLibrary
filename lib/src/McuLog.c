@@ -362,7 +362,7 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
 static uint8_t PrintHelp(const McuShell_StdIOType *io) {
   McuShell_SendHelpStr((unsigned char*)"McuLog", (unsigned char*)"Group of McuLog commands\r\n", io->stdOut);
   McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
-  McuShell_SendHelpStr((unsigned char*)"  level <level>", (unsigned char*)"Set log level, 0 (TRACE) 1 (DEBUG), 2 (INFO),  3 (WARN), 4 (ERROR), 5 (FATAL)\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  level <level>", (unsigned char*)"Set log level, 0 (TRACE), 1 (DEBUG), 2 (INFO), 3 (WARN), 4 (ERROR), 5 (FATAL)\r\n", io->stdOut);
   McuShell_SendHelpStr((unsigned char*)"  quiet <on|off>", (unsigned char*)"Set quiet mode for console\r\n", io->stdOut);
 #if McuLog_CONFIG_USE_COLOR
   McuShell_SendHelpStr((unsigned char*)"  color <on|off>", (unsigned char*)"Set color mode\r\n", io->stdOut);
@@ -438,6 +438,7 @@ void McuLog_Init(void) {
   McuLog_set_rtt_logger(true);
 #endif
   McuLog_ConfigData.consoleIo[0] = McuShell_GetStdio(); /* default */
+  McuLog_set_level(McuLog_CONFIG_DEFAULT_LEVEL); /* default level */
 #if McuLog_CONFIG_USE_RTT_DATA_LOGGER
   #if McuLib_CONFIG_SDK_USE_FREERTOS && configUSE_SEGGER_SYSTEM_VIEWER_HOOKS && McuSystemView_CONFIG_RTT_CHANNEL==McuLog_RTT_DATA_LOGGER_CHANNEL
     #error "Both RTT Logger and SystemViewer are using the same channel! Change McuSystemView_CONFIG_RTT_CHANNEL to a different value."
