@@ -564,6 +564,11 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
       } else {
 #if McuShell_ECHO_ENABLED
         if (McuShell_EchoEnabled) {
+#if McuLib_CONFIG_CPU_IS_ESP32
+          if (c=='\r') { /* idf.py monitor uses '\r' for '\n'? */
+            c = '\n';
+          }
+#endif
           io->stdOut(c);               /* echo character */
         }
 #endif
@@ -573,7 +578,11 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
         if ((c=='\r') || (c=='\n')) {
 #if McuShell_ECHO_ENABLED
           if (McuShell_EchoEnabled) {
+            #if McuLib_CONFIG_CPU_IS_ESP32
+            McuShell_SendStr((unsigned char*)" \n", io->stdOut); /* for ESP32 idf.py monitor it uses '\r' at the end, plus we need a space here? */
+            #else
             McuShell_SendStr((unsigned char*)"\n", io->stdOut);
+            #endif
           }
 #endif
 #if McuShell_CONFIG_HISTORY_ENABLED
