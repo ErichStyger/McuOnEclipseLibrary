@@ -50,8 +50,11 @@ typedef bool McuULN2003_PinStatus[McuULN2003_NOF_MOTOR_GPIO_PINS];
 
 static const bool disableTable[McuULN2003_NOF_MOTOR_GPIO_PINS] = { false, false, false, false};
 
-/* half stepping mode with 8 steps */
+/* half stepping mode with 8 steps
+ * For the wire colors and stepper table, see https://leap.tardate.com/kinetics/steppermotors/28byj48/
+ * */
 static const bool stepTableHalfStepsFw[McuULN2003_NOF_STEPS_HALF_STEP_MODE][McuULN2003_NOF_MOTOR_GPIO_PINS] = {
+  /* blue   pink   yellow orange */
     {true,  false, false, false},
     {true,  true,  false, false},
     {false, true,  false, false},
@@ -61,7 +64,9 @@ static const bool stepTableHalfStepsFw[McuULN2003_NOF_STEPS_HALF_STEP_MODE][McuU
     {false, false, false, true },
     {true,  false, false, true },
 };
+
 static const bool stepTableHalfStepsBw[McuULN2003_NOF_STEPS_HALF_STEP_MODE][McuULN2003_NOF_MOTOR_GPIO_PINS] = {
+   /* blue   pink   yellow orange */
     {true,  false, false, true },
     {false, false, false, true },
     {false, false, true,  true },
@@ -74,16 +79,20 @@ static const bool stepTableHalfStepsBw[McuULN2003_NOF_STEPS_HALF_STEP_MODE][McuU
 
 /* full stepping mode with 4 steps */
 static const bool stepTableFullStepsFw[McuULN2003_NOF_STEPS_FULL_STEP_MODE][McuULN2003_NOF_MOTOR_GPIO_PINS] = {
-    {true,  false, false, false},
-    {false, true,  false, false},
-    {false, false, true,  false},
-    {false, false, false, true },
+   /* blue   pink   yellow orange */
+   /* https://leap.tardate.com/kinetics/steppermotors/28byj48/ */
+    {true,  true,  false, false},
+    {false, true,  true,  false},
+    {false, false, true,  true},
+    {true,  false, false, true },
 };
+
 static const bool stepTableFullStepsBw[McuULN2003_NOF_STEPS_FULL_STEP_MODE][McuULN2003_NOF_MOTOR_GPIO_PINS] = {
-    {false, false, false, true },
-    {false, false, true,  false},
-    {false, true,  false, false},
-    {true,  false, false, false},
+    /* blue   pink   yellow orange */
+    {true,  false, false, true },
+    {false, false, true,  true },
+    {false, true,  true, false},
+    {true,  true,  false, false},
 };
 
 /* default configuration, used for initializing the config */
