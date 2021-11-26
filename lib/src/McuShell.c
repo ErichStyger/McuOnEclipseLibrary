@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.111, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-04-30, 11:41, # CodeGen: 735
+**     Date/Time   : 2021-11-25, 14:07, # CodeGen: 755
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -564,11 +564,11 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
       } else {
 #if McuShell_ECHO_ENABLED
         if (McuShell_EchoEnabled) {
-#if McuLib_CONFIG_CPU_IS_ESP32
+  #if McuLib_CONFIG_CPU_IS_ESP32
           if (c=='\r') { /* idf.py monitor uses '\r' for '\n'? */
             c = '\n';
           }
-#endif
+  #endif
           io->stdOut(c);               /* echo character */
         }
 #endif
@@ -579,7 +579,7 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
 #if McuShell_ECHO_ENABLED
           if (McuShell_EchoEnabled) {
             #if McuLib_CONFIG_CPU_IS_ESP32
-            McuShell_SendStr((unsigned char*)" \n", io->stdOut); /* for ESP32 idf.py monitor it uses '\r' at the end, plus we need a space here? */
+            McuShell_SendStr((unsigned char*)" \n", io->stdOut); /* for ESP32 idf.py monitor it uses '\r' at the end, plus we need a space */
             #else
             McuShell_SendStr((unsigned char*)"\n", io->stdOut);
             #endif
@@ -1117,8 +1117,7 @@ static void SendSeparatedStrings(const uint8_t *strA, const uint8_t *strB, uint8
 */
 void McuShell_SendHelpStr(const uint8_t *strCmd, const uint8_t *strHelp, McuShell_StdIO_OutErr_FctType io)
 {
-  #define HELP_SEMICOLON_POS  26 /* position of the ';' after the command string */
-  SendSeparatedStrings(strCmd, strHelp, ';', HELP_SEMICOLON_POS, io);
+  SendSeparatedStrings(strCmd, strHelp, ';', McuShell_CONFIG_HELP_SEMICOLON_POS, io);
 }
 
 /*
@@ -1138,8 +1137,7 @@ void McuShell_SendHelpStr(const uint8_t *strCmd, const uint8_t *strHelp, McuShel
 */
 void McuShell_SendStatusStr(const uint8_t *strItem, const uint8_t *strStatus, McuShell_StdIO_OutErr_FctType io)
 {
-  #define STATUS_COLON_POS  13 /* position of the ':' after the item string */
-  SendSeparatedStrings(strItem, strStatus, ':', STATUS_COLON_POS, io);
+  SendSeparatedStrings(strItem, strStatus, ':', McuShell_CONFIG_STATUS_COLON_POS, io);
 }
 
 /*

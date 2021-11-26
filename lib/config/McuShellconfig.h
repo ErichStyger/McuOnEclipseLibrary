@@ -117,4 +117,14 @@
     /*!< 1: shell implements local echo; 0: no echo functionality */
 #endif
 
+#ifndef McuShell_CONFIG_STATUS_COLON_POS
+  #define McuShell_CONFIG_STATUS_COLON_POS                 (13)
+   /*!< position of the ':' after the item string for the 'status' command */
+#endif
+
+#ifndef McuShell_CONFIG_HELP_SEMICOLON_POS
+  #define McuShell_CONFIG_HELP_SEMICOLON_POS               (26)
+ /*! position of the ';' after the command string for the 'help' command */
+#endif
+
 #endif /* __McuShell_CONFIG_H */
