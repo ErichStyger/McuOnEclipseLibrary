@@ -114,7 +114,8 @@
 
 #ifndef McuShell_CONFIG_ECHO_ENABLED
   #define McuShell_CONFIG_ECHO_ENABLED                     (0)
-    /*!< 1: shell implements local echo; 0: no echo functionality */
+    /*!< 1: shell implements local echo; 0: no echo functionality
+     Note that echo needs to be enabled in each I/O too (io->echoEnabled) */
 #endif
 
 #ifndef McuShell_CONFIG_STATUS_COLON_POS

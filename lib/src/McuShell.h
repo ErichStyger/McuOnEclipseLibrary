@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.111, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-04-30, 11:41, # CodeGen: 735
+**     Date/Time   : 2021-11-27, 14:46, # CodeGen: 756
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -135,6 +135,9 @@
     McuShell_StdIO_OutErr_FctType stdOut; /* standard output */
     McuShell_StdIO_OutErr_FctType stdErr; /* standard error */
     McuShell_StdIO_KeyPressed_FctType keyPressed; /* key pressed callback */
+  #if McuShell_CONFIG_ECHO_ENABLED
+    bool echoEnabled;                  /* true if I/O shall echo characters */
+  #endif
   } McuShell_StdIOType;
 #endif
 #ifndef __BWUserType_McuShell_ConstStdIOType
@@ -205,13 +208,6 @@
 #define McuShell_SILENT_PREFIX_CHAR    '#' /* with this char as first character in the cmd, printing is silent. Use a space to disable it */
 #define McuShell_NO_SILENT_PREFIX_CHAR ' ' /* used for no silent prefix char */
 #define McuShell_SILENT_PREFIX_CHAR_ENABLED (McuShell_SILENT_PREFIX_CHAR != McuShell_NO_SILENT_PREFIX_CHAR)
-
-/* settings for local echo */
-#if McuShell_CONFIG_ECHO_ENABLED
-  #define McuShell_ECHO_ENABLED  1     /* 1: enabled, 0: disabled */
-#else
-  #define McuShell_ECHO_ENABLED  0     /* 1: enabled, 0: disabled */
-#endif
 
 #define McuShell_DEFAULT_SERIAL  McuShell_CONFIG_DEFAULT_SERIAL /* If set to 1, then the shell implements its own StdIO which is returned by McuShell_GetStdio(); */
 

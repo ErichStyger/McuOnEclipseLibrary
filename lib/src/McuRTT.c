@@ -102,10 +102,13 @@
 
 /* default standard I/O struct */
 McuShell_ConstStdIOType McuRTT_stdio = {
-    (McuShell_StdIO_In_FctType)McuRTT_StdIOReadChar, /* stdin */
-    (McuShell_StdIO_OutErr_FctType)McuRTT_StdIOSendChar, /* stdout */
-    (McuShell_StdIO_OutErr_FctType)McuRTT_StdIOSendChar, /* stderr */
-    McuRTT_StdIOKeyPressed /* if input is not empty */
+    (McuShell_StdIO_In_FctType)McuRTT_StdIOReadChar,
+    (McuShell_StdIO_OutErr_FctType)McuRTT_StdIOSendChar,
+    (McuShell_StdIO_OutErr_FctType)McuRTT_StdIOSendChar,
+    McuRTT_StdIOKeyPressed, /* if input is not empty */
+#if McuShell_CONFIG_ECHO_ENABLED
+    .echoEnabled = false,
+#endif
   };
 uint8_t McuRTT_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */
 

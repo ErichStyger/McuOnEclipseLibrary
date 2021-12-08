@@ -324,6 +324,7 @@ void McuLog_log(McuLog_Levels_e level, const char *file, int line, const char *f
 
 #if McuLog_CONFIG_USE_MUTEX
 static void LockUnlockCallback(void *data, bool lock) {
+  (void)data; /* unused */
   if (lock) {
     (void)xSemaphoreTakeRecursive(McuLog_ConfigData.McuLog_Mutex, portMAX_DELAY);
   } else {

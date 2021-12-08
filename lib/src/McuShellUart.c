@@ -34,10 +34,13 @@ static bool McuShellUart_CharPresent(void) {
 }
 
 McuShell_ConstStdIOType McuShellUart_stdio = {
-    (McuShell_StdIO_In_FctType)McuShellUart_ReadChar, /* stdin */
-    (McuShell_StdIO_OutErr_FctType)McuShellUart_SendChar,  /* stdout */
-    (McuShell_StdIO_OutErr_FctType)McuShellUart_SendChar,  /* stderr */
-    McuShellUart_CharPresent /* if input is not empty */
+    .stdIn = (McuShell_StdIO_In_FctType)McuShellUart_ReadChar,
+    .stdOut = (McuShell_StdIO_OutErr_FctType)McuShellUart_SendChar,
+    .stdErr = (McuShell_StdIO_OutErr_FctType)McuShellUart_SendChar,
+    .keyPressed = McuShellUart_CharPresent, /* if input is not empty */
+  #if McuShell_CONFIG_ECHO_ENABLED
+    .echoEnabled = false,
+  #endif
   };
 
 uint8_t McuShellUart_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* default buffer which can be used by the application */

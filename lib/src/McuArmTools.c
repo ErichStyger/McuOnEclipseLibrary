@@ -136,7 +136,7 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io)
   McuArmTools_UID uid;
 #endif
 
-  McuShell_SendStatusStr((unsigned char*)"McuArmTools", (unsigned char*)"\r\n", io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"McuArmTools", (unsigned char*)"Hardware status\r\n", io->stdOut);
 #if McuLib_CONFIG_CPU_IS_KINETIS || McuLib_CONFIG_CPU_IS_LPC
   res = McuArmTools_UIDGet(&uid);
   if (res==ERR_OK) {

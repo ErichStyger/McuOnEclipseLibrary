@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.111, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-11-25, 14:07, # CodeGen: 755
+**     Date/Time   : 2021-11-27, 14:46, # CodeGen: 756
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -126,7 +126,7 @@ uint8_t McuShell_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE]; /* defa
   static uint8_t McuShell_history[McuShell_CONFIG_HISTORY_NOF_ITEMS][McuShell_CONFIG_HISTORY_ITEM_LENGTH]; /* History buffers */
   static uint8_t McuShell_history_index = 0; /* Selected command */
 #endif
-#if McuShell_ECHO_ENABLED
+#if McuShell_CONFIG_ECHO_ENABLED
   static bool McuShell_EchoEnabled = TRUE;
 #endif
 
@@ -367,12 +367,12 @@ uint8_t McuShell_ParseCommand(const uint8_t *cmd, bool *handled, McuShell_ConstS
     McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"McuShell", (const unsigned char*)"Group of McuShell commands\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  help|status", (const unsigned char*)"Print help or status information\r\n", io->stdOut);
-#if McuShell_ECHO_ENABLED
+#if McuShell_CONFIG_ECHO_ENABLED
     McuShell_SendHelpStr((unsigned char*)"  echo (on|off)", (const unsigned char*)"Turn echo on or off\r\n", io->stdOut);
 #endif
     *handled = TRUE;
     return ERR_OK;
-#if McuShell_ECHO_ENABLED
+#if McuShell_CONFIG_ECHO_ENABLED
   } else if ((McuUtility_strcmp((char*)cmd, "McuShell echo on")==0)) {
     *handled = TRUE;
     McuShell_EchoEnabled = TRUE;
@@ -501,8 +501,8 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
       }
       if (c=='\b' || c=='\177') {      /* check for backspace */
         if (buf > bufStart) {          /* Avoid buffer underflow */
-#if McuShell_ECHO_ENABLED
-           if (McuShell_EchoEnabled) {
+#if McuShell_CONFIG_ECHO_ENABLED
+           if (McuShell_EchoEnabled && io->echoEnabled) {
              io->stdOut('\b');         /* delete character on terminal */
              io->stdOut(' ');
              io->stdOut('\b');
@@ -554,16 +554,16 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
         bufSize = bufSize + buf - bufStart - McuUtility_strlen((const char*)bufStart); /* update the buffer */
         buf = bufStart + McuUtility_strlen((const char*)bufStart);
 #endif
-#if McuShell_ECHO_ENABLED
-        if (McuShell_EchoEnabled) {
+#if McuShell_CONFIG_ECHO_ENABLED
+        if (McuShell_EchoEnabled && io->echoEnabled) {
           McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
           McuShell_PrintPrompt(io);
           McuShell_SendStr(bufStart, io->stdOut);
         }
 #endif
       } else {
-#if McuShell_ECHO_ENABLED
-        if (McuShell_EchoEnabled) {
+#if McuShell_CONFIG_ECHO_ENABLED
+        if (McuShell_EchoEnabled && io->echoEnabled) {
   #if McuLib_CONFIG_CPU_IS_ESP32
           if (c=='\r') { /* idf.py monitor uses '\r' for '\n'? */
             c = '\n';
@@ -576,8 +576,8 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
         buf++;
         bufSize--;
         if ((c=='\r') || (c=='\n')) {
-#if McuShell_ECHO_ENABLED
-          if (McuShell_EchoEnabled) {
+#if McuShell_CONFIG_ECHO_ENABLED
+          if (McuShell_EchoEnabled && io->echoEnabled) {
             #if McuLib_CONFIG_CPU_IS_ESP32
             McuShell_SendStr((unsigned char*)" \n", io->stdOut); /* for ESP32 idf.py monitor it uses '\r' at the end, plus we need a space */
             #else
@@ -635,7 +635,7 @@ uint8_t McuShell_PrintStatus(McuShell_ConstStdIOType *io)
   McuShell_SendStr((unsigned char*)" ", io->stdOut);
   McuShell_SendStr((unsigned char*)__TIME__, io->stdOut);
   McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
-#if McuShell_ECHO_ENABLED
+#if McuShell_CONFIG_ECHO_ENABLED
   McuShell_SendStatusStr((const unsigned char*)"  echo", McuShell_EchoEnabled?(const unsigned char*)"On\r\n":(const unsigned char*)"Off\r\n", io->stdOut);
 #endif
   return ERR_OK;
@@ -1275,7 +1275,7 @@ void McuShell_Init(void)
     }
   }
 #endif
-#if McuShell_ECHO_ENABLED
+#if McuShell_CONFIG_ECHO_ENABLED
   McuShell_EchoEnabled = TRUE;
 #endif
 }

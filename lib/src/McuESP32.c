@@ -27,7 +27,7 @@ static QueueHandle_t uartTxQueue;  /* Tx to ESP32 module */
 #define McuESP32_UART_TX_QUEUE_LENGTH                 (4096)
 
 #if McuESP32_CONFIG_USE_USB_CDC
-  typedef enum {
+  typedef enum McuESP32_USB_PrgMode_e {
     McuESP32_USB_PRG_MODE_AUTO,
     McuESP32_USB_PRG_MODE_ON,
     McuESP32_USB_PRG_MODE_OFF,
@@ -193,10 +193,13 @@ static bool Dummy_CharPresent(void) {
 
 /* for sending data to the ESP32 (tx only) */
 static const McuShell_ConstStdIOType McuESP32_Tx_stdio = {
-    (McuShell_StdIO_In_FctType)Dummy_ReadChar,      /* stdin */
-    (McuShell_StdIO_OutErr_FctType)QueueTxChar,  /* stdout */
-    (McuShell_StdIO_OutErr_FctType)QueueTxChar,  /* stderr */
-    Dummy_CharPresent /* if input is not empty */
+    .stdIn = (McuShell_StdIO_In_FctType)Dummy_ReadChar,
+    .stdOut = (McuShell_StdIO_OutErr_FctType)QueueTxChar,
+    .stdErr = (McuShell_StdIO_OutErr_FctType)QueueTxChar,
+    .keyPressed = Dummy_CharPresent, /* if input is not empty */
+ #if McuShell_CONFIG_ECHO_ENABLED
+    .echoEnabled = false,
+  #endif
   };
 
 McuShell_ConstStdIOTypePtr McuESP32_GetTxToESPStdio(void) {
@@ -376,7 +379,7 @@ static void UartRxTask(void *pv) { /* task handling characters sent by the ESP32
       { /* only write to shell if not in programming mode. Programming mode might crash RTT */
         io = McuESP32_GetRxFromESPStdio();
         if (io!=NULL) {
-          McuShell_SendCh(ch, io->stdOut); /* write to console */
+          McuShell_SendCh(ch, io->stdOut); /* forward character */
         }
       }
     } else {

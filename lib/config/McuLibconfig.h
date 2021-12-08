@@ -13,8 +13,15 @@
 /* identification of CPU/core used. __CORTEX_M is defined in CMSIS-Core.
    Otherwise CPU Family is set automatically by Processor Expert: detected: Kinetis (supported: "Kinetis", "S32K", "HCS08")
 */
+
+#if defined(__CORTEX_M)
+  #define McuLib_CPU_IS_ARM_CORTEX_M  (1)
+#else
+  #define McuLib_CPU_IS_ARM_CORTEX_M  (0)
+#endif
+
 #ifndef McuLib_CONFIG_CPU_IS_ARM_CORTEX_M
-  #define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M             (1 || defined(__CORTEX_M))
+  #define McuLib_CONFIG_CPU_IS_ARM_CORTEX_M             (1 || McuLib_CPU_IS_ARM_CORTEX_M)
     /*!< 1: ARM Cortex-M family, 0 otherwise */
 #endif
 #ifndef McuLib_CONFIG_CPU_IS_S32K
