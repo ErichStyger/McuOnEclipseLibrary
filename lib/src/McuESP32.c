@@ -350,8 +350,19 @@ uint8_t McuESP32_ParseCommand(const unsigned char *cmd, bool *handled, const Mcu
     return ERR_OK;
 #endif
   } else if (McuUtility_strncmp((char*)cmd, (char*)"esp32 send ", sizeof("esp32 send ")-1)==0) {
+    const unsigned char *p;
+    unsigned char buffer[McuShell_CONFIG_DEFAULT_SHELL_BUFFER_SIZE];
+
     *handled = true;
-    McuShell_SendStr(cmd+sizeof("esp32 send ")-1, McuESP32_GetTxToESPStdio()->stdOut);
+    p = cmd+sizeof("esp32 send ")-1;
+    if (*p=='"') { /* double-quoted command: it can contain multiple commands */
+      if (McuUtility_ScanDoubleQuotedString(&p, buffer, sizeof(buffer))!=ERR_OK) {
+        return ERR_FAILED;
+      }
+      p = buffer;
+    }
+    /* send command string */
+    McuShell_SendStr(p, McuESP32_GetTxToESPStdio()->stdOut);
     McuShell_SendStr((unsigned char*)"\r\n", McuESP32_GetTxToESPStdio()->stdOut);
     return ERR_OK;
   }
@@ -363,6 +374,7 @@ static void UartRxTask(void *pv) { /* task handling characters sent by the ESP32
   BaseType_t res;
   McuShell_ConstStdIOType *io;
 
+  (void)pv; /* not used */
   for(;;) {
     res = xQueueReceive(uartRxQueue, &ch, portMAX_DELAY);
     if (res==pdPASS) {
@@ -393,6 +405,7 @@ static void UartTxTask(void *pv) { /* task handling sending data to the ESP32 mo
   BaseType_t res;
   bool workToDo;
 
+  (void)pv; /* not used */
   for(;;) {
 #if McuESP32_CONFIG_USE_USB_CDC
     if (McuESP32_ScheduleReset) {

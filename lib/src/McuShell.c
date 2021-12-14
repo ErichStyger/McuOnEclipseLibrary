@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.111, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-11-27, 14:46, # CodeGen: 756
+**     Date/Time   : 2021-12-13, 20:30, # CodeGen: 757
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -630,6 +630,8 @@ bool McuShell_ReadLine(uint8_t *bufStart, uint8_t *buf, size_t bufSize, McuShell
 */
 uint8_t McuShell_PrintStatus(McuShell_ConstStdIOType *io)
 {
+  unsigned char buf[16];
+
   McuShell_SendStatusStr((const unsigned char*)"McuShell", (const unsigned char*)"Commandline shell status\r\n", io->stdOut);
   McuShell_SendStatusStr((const unsigned char*)"  Build", (const unsigned char*)__DATE__, io->stdOut);
   McuShell_SendStr((unsigned char*)" ", io->stdOut);
@@ -638,6 +640,24 @@ uint8_t McuShell_PrintStatus(McuShell_ConstStdIOType *io)
 #if McuShell_CONFIG_ECHO_ENABLED
   McuShell_SendStatusStr((const unsigned char*)"  echo", McuShell_EchoEnabled?(const unsigned char*)"On\r\n":(const unsigned char*)"Off\r\n", io->stdOut);
 #endif
+
+  buf[0] = '\0';
+  if (McuShell_CONFIG_SILENT_PREFIX_CHAR!=McuShell_NO_SILENT_PREFIX_CHAR) {
+    McuUtility_chcat(buf, sizeof(buf), McuShell_CONFIG_SILENT_PREFIX_CHAR);
+    McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
+  } else {
+    McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"none\r\n");
+  }
+  McuShell_SendStatusStr((const unsigned char*)"  silent", buf, io->stdOut);
+#if McuShell_CONFIG_MULTI_CMD_ENABLED
+  McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"yes: '");
+  McuUtility_chcat(buf, sizeof(buf), McuShell_CONFIG_MULTI_CMD_CHAR);
+  McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"'\r\n");
+  McuShell_SendStatusStr((const unsigned char*)"  multiCmd", buf, io->stdOut);
+#else
+  McuShell_SendStatusStr((const unsigned char*)"  multiCmd", (unsigned char*)"no\r\n", io->stdOut);
+#endif
+
   return ERR_OK;
 }
 
@@ -736,6 +756,7 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
   uint8_t buf[McuShell_CONFIG_MULTI_CMD_SIZE];
   uint8_t i;
   bool parseBuffer, finished;
+  bool insideDoubleQuotes = false; /* with multi-commands: allow the McuShell_CONFIG_MULTI_CMD_CHAR inside double quoted strings */
 #endif
 
   if (io==NULL) { /* no I/O handler? */
@@ -755,15 +776,22 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
       break; /* buffer overflow */
     }
     buf[i] = *cmd;
+    if (buf[i]=='"') {
+      if (insideDoubleQuotes) { /* already had a double quote? */
+        insideDoubleQuotes = false; /* note: we do not support nested double quotes */
+      } else {
+        insideDoubleQuotes = true; /* mark that we are inside double quotes */
+      }
+    }
     cmd++; i++;
   #if McuShell_SILENT_PREFIX_CHAR_ENABLED
-    if (i==1 && buf[0]==McuShell_SILENT_PREFIX_CHAR) { /* first character is silent character */
-      silentPrefix |= (bool)(buf[0]==McuShell_SILENT_PREFIX_CHAR);
+    if (i==1 && buf[0]==McuShell_CONFIG_SILENT_PREFIX_CHAR) { /* first character is silent character */
+      silentPrefix |= (bool)(buf[0]==McuShell_CONFIG_SILENT_PREFIX_CHAR);
       buf[0] = *cmd; /* skip silent character */
       cmd++;
     }
   #endif
-    if (buf[i-1] == McuShell_CONFIG_MULTI_CMD_CHAR) { /* found separator */
+    if (!insideDoubleQuotes && buf[i-1] == McuShell_CONFIG_MULTI_CMD_CHAR) { /* found separator, but not inside double quoted string */
       buf[i-1] = '\0';
       parseBuffer = TRUE;
     } else if (buf[i-1]=='\0') {
@@ -786,7 +814,7 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
   } /* for */
 #else
   #if McuShell_SILENT_PREFIX_CHAR_ENABLED
-  silentPrefix = (bool)(*cmd==McuShell_SILENT_PREFIX_CHAR);
+  silentPrefix = (bool)(*cmd==McuShell_CONFIG_SILENT_PREFIX_CHAR);
   if (silentPrefix) {
     cmd++; /* skip silent character */
   }

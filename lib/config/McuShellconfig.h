@@ -125,7 +125,11 @@
 
 #ifndef McuShell_CONFIG_HELP_SEMICOLON_POS
   #define McuShell_CONFIG_HELP_SEMICOLON_POS               (26)
- /*! position of the ';' after the command string for the 'help' command */
+ /*!< position of the ';' after the command string for the 'help' command */
 #endif
+
+#define McuShell_CONFIG_SILENT_PREFIX_CHAR    '#'
+  /*!< With this char as first character in the cmd, printing is silent. Use a space to disable it */
+
 
 #endif /* __McuShell_CONFIG_H */

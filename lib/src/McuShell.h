@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.111, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-11-27, 14:46, # CodeGen: 756
+**     Date/Time   : 2021-12-13, 20:30, # CodeGen: 757
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -205,9 +205,8 @@
 #define McuShell_ANSI_COLOR_BRIGHT_WHITE         "\033[4;47m"
 
 /* settings for silent prefix char */
-#define McuShell_SILENT_PREFIX_CHAR    '#' /* with this char as first character in the cmd, printing is silent. Use a space to disable it */
 #define McuShell_NO_SILENT_PREFIX_CHAR ' ' /* used for no silent prefix char */
-#define McuShell_SILENT_PREFIX_CHAR_ENABLED (McuShell_SILENT_PREFIX_CHAR != McuShell_NO_SILENT_PREFIX_CHAR)
+#define McuShell_SILENT_PREFIX_CHAR_ENABLED (McuShell_CONFIG_SILENT_PREFIX_CHAR != McuShell_NO_SILENT_PREFIX_CHAR)
 
 #define McuShell_DEFAULT_SERIAL  McuShell_CONFIG_DEFAULT_SERIAL /* If set to 1, then the shell implements its own StdIO which is returned by McuShell_GetStdio(); */
 
