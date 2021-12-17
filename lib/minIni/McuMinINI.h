@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : minIni
-**     Version     : Component 01.054, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.056, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-05-31, 13:14, # CodeGen: 655
+**     Date/Time   : 2021-12-17, 13:26, # CodeGen: 759
 **     Abstract    :
 **         minIni is a programmer’s library to read and write ini files in embedded systems.
 **     Settings    :
@@ -32,10 +32,12 @@
 **         ini_getkey     - int McuMinINI_ini_getkey(const mTCHAR *Section, int idx, mTCHAR *Buffer, int...
 **         ini_browse     - int McuMinINI_ini_browse(INI_CALLBACK Callback, const void *UserData, const...
 **         ParseCommand   - uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         Deinit         - void McuMinINI_Deinit(void);
+**         Init           - void McuMinINI_Init(void);
 **
 ** (c) Copyright 2008-2012, CompuPhase;
 ** http      : www.compuphase.com
-** Processor Expert port: Erich Styger, 2014-2019, http://www.mcuoneclipse.com
+** Processor Expert port: Erich Styger, 2014-2021, http://www.mcuoneclipse.com
 ** License: See miniIni_LICENSE.txt and minIni_NOTICE.txt
 ** Adaptions for Processor Expert: (c) Copyright 2012-2020, Erich Styger
 ** ###################################################################*/
@@ -286,6 +288,30 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
 */
 
 #endif
+void McuMinINI_Deinit(void);
+/*
+** ===================================================================
+**     Method      :  Deinit (component minIni)
+**
+**     Description :
+**         Module de-initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
+void McuMinINI_Init(void);
+/*
+** ===================================================================
+**     Method      :  Init (component minIni)
+**
+**     Description :
+**         Module initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+
 /* END McuMinINI. */
 
 #endif

@@ -1,7 +1,7 @@
 /**
  * \file
  * \brief Configuration header file for MinINI
- * Copyright (c) 2020, Erich Styger
+ * Copyright (c) 2020-2021, Erich Styger
  * SPDX-License-Identifier: BSD-3-Clause
  *
  * This header file is used to configure settings of the MinINI module.
@@ -12,6 +12,7 @@
 #define McuMinINI_CONFIG_FS_TYPE_GENERIC  (0) /* Generic File System */
 #define McuMinINI_CONFIG_FS_TYPE_FAT_FS   (1) /* FatFS File System */
 #define McuMinINI_CONFIG_FS_TYPE_TINY_FS  (2) /* TinyFS File System */
+#define McuMinINI_CONFIG_FS_TYPE_FLASH_FS (3) /* Flash Page System */
 
 #ifndef McuMinINI_CONFIG_FS
   #define McuMinINI_CONFIG_FS      (McuMinINI_CONFIG_FS_TYPE_GENERIC)
@@ -22,13 +23,35 @@
 
 //#define INI_REAL double
 
-//#define INI_READONLY
+#ifndef McuMinINI_CONFIG_READ_ONLY
+  #define McuMinINI_CONFIG_READ_ONLY                       (0)
+#endif
+    /*!< if ini file handling is read-only */
 
 #ifndef NDEBUG
   #define NDEBUG
 #endif
 
 #define INI_USE_GLOBAL_BUFFER   0 /* 0: use stack for buffer; 1: use global memory for buffer */
+
+#if McuMinINI_CONFIG_FS==McuMinINI_CONFIG_FS_TYPE_FLASH_FS
+  /* flash settings */
+  #ifndef McuMinINI_CONFIG_FLASH_NVM_ADDR_START
+    #define McuMinINI_CONFIG_FLASH_NVM_ADDR_START      ((0+512*1024)-McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE)
+      /*!< last block in FLASH, start address of data in flash */
+  #endif
+
+  #ifndef McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE
+    #define McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE      0x800
+      /*!< must match FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflash0SectorSize, &pflashSectorSize) */
+  #endif
+
+  #ifndef McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE
+    #define McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE      (128)
+      /*!< size for the data, less than McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE to save memory */
+  #endif
+#endif /* McuMinINI_CONFIG_FS_TYPE_FLASH_FS */
+
 
 #if !defined(McuMinINI_CONFIG_PARSE_COMMAND_ENABLED)
   #define McuMinINI_CONFIG_PARSE_COMMAND_ENABLED  (1)

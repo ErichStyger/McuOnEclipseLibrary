@@ -512,7 +512,7 @@ int  ini_browse(INI_CALLBACK Callback, const void *UserData, const TCHAR *Filena
 }
 #endif /* INI_NOBROWSE */
 
-#if ! defined INI_READONLY
+#if !McuMinINI_CONFIG_READ_ONLY
 static void ini_tempname(TCHAR *dest, const TCHAR *source, int maxlength)
 {
   TCHAR *p;
@@ -843,5 +843,5 @@ int ini_putf(const TCHAR *Section, const TCHAR *Key, INI_REAL Value, const TCHAR
   return ini_puts(Section, Key, LocalBuffer, Filename);
 }
 #endif /* INI_REAL */
-#endif /* !INI_READONLY */
+#endif /* !!McuMinINI_CONFIG_READ_ONLY */
 

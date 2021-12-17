@@ -4,9 +4,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : minIni
-**     Version     : Component 01.054, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.056, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2020-08-12, 13:43, # CodeGen: 672
+**     Date/Time   : 2021-12-17, 13:47, # CodeGen: 760
 **     Abstract    :
 **         minIni is a programmer’s library to read and write ini files in embedded systems.
 **     Settings    :
@@ -32,10 +32,12 @@
 **         ini_getkey     - int McuMinINI_ini_getkey(const mTCHAR *Section, int idx, mTCHAR *Buffer, int...
 **         ini_browse     - int McuMinINI_ini_browse(INI_CALLBACK Callback, const void *UserData, const...
 **         ParseCommand   - uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const...
+**         Deinit         - void McuMinINI_Deinit(void);
+**         Init           - void McuMinINI_Init(void);
 **
 ** (c) Copyright 2008-2012, CompuPhase;
 ** http      : www.compuphase.com
-** Processor Expert port: Erich Styger, 2014-2019, http://www.mcuoneclipse.com
+** Processor Expert port: Erich Styger, 2014-2021, http://www.mcuoneclipse.com
 ** License: See miniIni_LICENSE.txt and minIni_NOTICE.txt
 ** Adaptions for Processor Expert: (c) Copyright 2012-2020, Erich Styger
 ** ###################################################################*/
@@ -60,7 +62,7 @@
 static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   uint8_t buf[16];
 
-  McuShell_SendStatusStr((unsigned char*)"ini", (unsigned char*)"MinINI status\r\n", io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"McuMinINI", (unsigned char*)"MinINI status\r\n", io->stdOut);
   McuUtility_Num32uToStr(buf, sizeof(buf), INI_BUFFERSIZE);
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)" bytes\r\n");
   McuShell_SendStatusStr((unsigned char*)"  buffer", buf, io->stdOut);
@@ -86,6 +88,8 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
       McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"TinyFS\r\n"); break;
     case McuMinINI_CONFIG_FS_TYPE_FAT_FS:
       McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"FatFS\r\n"); break;
+    case McuMinINI_CONFIG_FS_TYPE_FLASH_FS:
+      McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"FLASH\r\n"); break;
     default:
       McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"ERROR\r\n"); break;
     }
@@ -373,7 +377,7 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
     }
     p += lenRead;
     McuUtility_SkipSpaces(&p);
-    if (McuUtility_ReadEscapedName(p, key, sizeof(key), NULL, &lenRead, NULL)!=ERR_OK || lenRead==0) {
+    if (McuUtility_ReadEscapedName(p, key, sizeof(key), &lenRead, NULL, NULL)!=ERR_OK || lenRead==0) {
       return ERR_FAILED;
     }
     p += lenRead;
@@ -401,7 +405,7 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
     }
     p += lenRead;
     McuUtility_SkipSpaces(&p);
-    if (McuUtility_ReadEscapedName(p, key, sizeof(key), NULL, &lenRead, NULL)!=ERR_OK || lenRead==0) {
+    if (McuUtility_ReadEscapedName(p, key, sizeof(key), &lenRead, NULL, NULL)!=ERR_OK || lenRead==0) {
       return ERR_FAILED;
     }
     p += lenRead;
@@ -463,6 +467,36 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
   }
   return ERR_OK;
 }
+/*
+** ===================================================================
+**     Method      :  Deinit (component minIni)
+**
+**     Description :
+**         Module de-initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuMinINI_Deinit(void)
+{
+  (void)ini_deinit(); /* call low level function */
+}
+
+/*
+** ===================================================================
+**     Method      :  Init (component minIni)
+**
+**     Description :
+**         Module initialization
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+void McuMinINI_Init(void)
+{
+  (void)ini_init(); /* call low level function */
+}
+
 /* END McuMinINI. */
 
 /*!
