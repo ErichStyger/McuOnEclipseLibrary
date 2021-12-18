@@ -17,7 +17,7 @@
 
 #define INI_BUFFERSIZE  256       /* maximum line length, maximum path length */
 
-#define MININI_FLASH_MAGIC_DATA_NUMBER_ID   0xdea1C0de
+#define MININI_FLASH_MAGIC_DATA_NUMBER_ID   0xFEEDBABE
 typedef struct MinIniFlashFileHeader {
   unsigned int magicNumber; /* magic ID: MAGIC_DATA_NUMBER_ID */
   unsigned char dataName[16]; /* file/data name, limited to 16 bytes, zero terminated */

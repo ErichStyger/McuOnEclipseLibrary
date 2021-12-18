@@ -31,7 +31,6 @@
 #endif
 /* read-only, FLASH file is at McuMinINI_CONFIG_FLASH_NVM_ADDR_START */
 static unsigned char dataBuf[McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE]; /* ini file for read/write */
-static unsigned char tmpDataBuf[McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE]; /* temporary ini file */
 
 static bool isErased(const uint8_t *ptr, int nofBytes) {
   while (nofBytes>0) {
@@ -50,10 +49,14 @@ static bool NVMC_IsErased(void) {
 
 static uint8_t NVMC_Erase(void) {
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
-  uint32_t startSector = FLASH_NVM_SECTOR_START; /* sector is 1k in size */
-  uint32_t endSector = FLASH_NVM_SECTOR_START;
+  /* determine sector numbers based on block/sector size */
+  uint32_t startSector = McuMinINI_CONFIG_FLASH_NVM_ADDR_START/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE;
+  uint32_t endSector = ((McuMinINI_CONFIG_FLASH_NVM_ADDR_START+(McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE-1))/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE);
   status_t res;
 
+  if (NVMC_IsErased()) { /* already eased? */
+    return ERR_OK; /* yes, nothing to do */
+  }
   res = IAP_BlankCheckSector(startSector, endSector);
   if (res==kStatus_IAP_Success) { /* already erased */
     return ERR_OK;
@@ -72,7 +75,7 @@ static uint8_t NVMC_Erase(void) {
     return ERR_FAILED;
   }
   return ERR_OK;
-#elif McuLib_CONFIG_CPU_IS_KINETIS /* K22FN512 or K02FN64 */
+#elif McuLib_CONFIG_CPU_IS_KINETIS
   uint32_t pflashSectorSize = 0;
   status_t status;
   uint8_t res = ERR_OK;
@@ -124,26 +127,12 @@ static uint8_t NVMC_Erase(void) {
 }
 
 static uint8_t NVMC_SetBlockFlash(uint32_t addr, void *data, size_t dataSize) {
-  static uint32_t NVMC_SetBlockFlashBuffer[McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE/32/4]; /* backup buffer */
-  int i;
+#if McuLib_CONFIG_CPU_IS_KINETIS
   status_t status;
-  uint8_t *p, *q;
   uint8_t res = ERR_OK;
-
-  /* make backup of current content */
-  for(i=0;i<sizeof(NVMC_SetBlockFlashBuffer)/4; i++) {
-    NVMC_SetBlockFlashBuffer[i] = ((uint32_t*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START)[i];
-  }
 
   if (NVMC_Erase()!=ERR_OK) {
     return ERR_FAILED;
-  }
-  /* copy new data into backup */
-  p = ((uint8_t*)NVMC_SetBlockFlashBuffer)+(addr-McuMinINI_CONFIG_FLASH_NVM_ADDR_START);
-  q = (uint8_t*)data;
-  for(i=0;i<dataSize; i++) {
-    *p = *q;
-    p++; q++;
   }
 #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
   /* need to switch to normal RUN mode for flash programming,
@@ -157,11 +146,11 @@ static uint8_t NVMC_SetBlockFlash(uint32_t addr, void *data, size_t dataSize) {
   McuWait_Waitms(1); /* give time to switch clock, otherwise flash programming might fail below */
 #endif
   /* program */
-#if PL_CONFIG_BOARD_MCU==PL_CONFIG_BOARD_ID_MCU_K02FN64 || PL_CONFIG_BOARD_MCU==PL_CONFIG_BOARD_ID_MCU_K02FN128
+#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
     uint32_t primask = DisableGlobalIRQ(); /* workaround: need to disable interrupts? */
 #endif
   for(;;) { /* breaks, switch back to HSRUN if things fail */
-    status = FLASH_Program(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (uint8_t*)NVMC_SetBlockFlashBuffer, sizeof(NVMC_SetBlockFlashBuffer));
+    status = FLASH_Program(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (uint8_t*)data, dataSize);
     if (status!=kStatus_FTFx_Success) {
       res = ERR_FAILED;
       break;
@@ -178,6 +167,39 @@ static uint8_t NVMC_SetBlockFlash(uint32_t addr, void *data, size_t dataSize) {
   }
 #endif
   return res;
+#elif McuLib_CONFIG_CPU_IS_LPC
+  uint32_t startSector = addr/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE; /* sector is 1k in size */
+  uint32_t endSector = (addr+(McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE-1))/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE;
+  uint8_t result = ERR_FAILED; /* default */
+  status_t res;
+
+  if (NVMC_Erase()!=ERR_OK) {
+    return ERR_FAILED;
+  }
+  res = IAP_PrepareSectorForWrite(startSector, endSector); /* sector size is 1k */
+  if (res!=kStatus_IAP_Success) {
+    result = ERR_FAILED;
+  } else {
+    /* destination address should be on a 64byte boundary.
+     * Source address should be word (4byte) boundary
+     * data size (number of bytes) shall be 64, 128, 256, 512, 1024 bytes */
+    res = IAP_CopyRamToFlash(addr, (uint32_t*)data, dataSize, SystemCoreClock);
+    if (res!=kStatus_IAP_Success) {
+      result = ERR_FAILED;
+    } else {
+      res = IAP_Compare(addr, (uint32_t*)data, dataSize);
+      if (res!=kStatus_IAP_Success) {
+        result = ERR_FAILED;
+      } else {
+        result = ERR_OK;
+      }
+    }
+  }
+  return result;
+#else
+  #error "target not supported yet!"
+  return ERR_FAILED;
+#endif /* McuLib_CONFIG_CPU_IS_KINETIS or McuLib_CONFIG_CPU_IS_LPC */
 }
 
 int ini_openread(const TCHAR *filename, INI_FILETYPE *file) {
@@ -211,14 +233,10 @@ static bool isTempFile(const TCHAR *filename) {
 }
 
 int ini_openwrite(const TCHAR *filename, INI_FILETYPE *file) {
-
   /* create always a new file */
-  memset(file, 0, sizeof(INI_FILETYPE)); /* initialize all fields */
-  if (isTempFile(filename)) { /* temporary file name */
-    file->header = (MinIniFlashFileHeader*)tmpDataBuf;
-  } else {
-    file->header = (MinIniFlashFileHeader*)dataBuf;
-  }
+  memset(file, 0, sizeof(INI_FILETYPE)); /* initialize all fields in header */
+  memset(dataBuf, 0, sizeof(dataBuf)); /* initialize all data */
+  file->header = (MinIniFlashFileHeader*)dataBuf;
   file->data = (unsigned char*)file->header + sizeof(MinIniFlashFileHeader);
   file->header->magicNumber = MININI_FLASH_MAGIC_DATA_NUMBER_ID;
   McuUtility_strcpy(file->header->dataName, sizeof(file->header->dataName), (unsigned char*)filename);
@@ -230,8 +248,13 @@ int ini_openwrite(const TCHAR *filename, INI_FILETYPE *file) {
 }
 
 int ini_close(INI_FILETYPE *file) {
-  /* File will be stored in flash during the rename operation */
   file->isOpen = false;
+  if (!file->isReadOnly  && !isTempFile((const char*)file->header->dataName)) { /* RAM data, and not temp file? */
+    /* store data in FLASH */
+    if (NVMC_SetBlockFlash(McuMinINI_CONFIG_FLASH_NVM_ADDR_START, file->header, McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE)!=ERR_OK) {
+      return 0; /* failed */
+    }
+  }
   return 1; /* ok */
 }
 
@@ -241,7 +264,8 @@ int ini_read(TCHAR *buffer, size_t size, INI_FILETYPE *file) {
 
   buffer[0] = '\0'; /* zero terminate */
   for(;;) {
-    if (file->curr >= file->data+file->header->dataSize) {
+    if (file->curr >= file->data+file->header->dataSize) { /* beyond boundaries? */
+      file->curr = file->data+file->header->dataSize; /* point to max position possible, one byte beyond */
       return 0; /* EOF */
     }
     ch = *file->curr; /* read character */
@@ -259,24 +283,33 @@ int ini_write(TCHAR *buffer, INI_FILETYPE *file) {
 
   /* write zero terminated string to file */
   if (file->isReadOnly) {
-    return 1; /* error */
+    return 1; /* error, file is read-only */
   }
   /* data is in RAM buffer */
   len = McuUtility_strlen(buffer);
   remaining = dataBuf+sizeof(dataBuf)-file->curr;
   McuUtility_strcpy(file->curr, remaining, (const unsigned char*)buffer);
   file->curr += len;
-  if (file->curr>=file->data+file->header->dataSize) { /* moved beyond current size? */
-    file->header->dataSize = file->curr-file->data; /* update size */
+  if (file->curr >= (unsigned char*)file->header+McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE) { /* outside valid memory? */
+    file->curr = (unsigned char*)file->header+McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE; /* set to highest possible location */
+    return 0; /* error */
   }
-  return 0; /* error */
+  if (file->curr >= file->data+file->header->dataSize) { /* moved beyond current size? file is growing */
+    file->header->dataSize = file->curr - file->data; /* update size */
+    return 1; /* ok */
+  }
+  return 1; /* ok */
 }
 
 int ini_remove(const TCHAR *filename) {
   MinIniFlashFileHeader *hp;
 
+  /* check first if we are removing the data in FLASH */
   hp = (MinIniFlashFileHeader*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START;
-  if (hp->magicNumber==MININI_FLASH_MAGIC_DATA_NUMBER_ID && McuUtility_strcmp((char*)hp->dataName, filename)==0) {
+  if (   hp->magicNumber==MININI_FLASH_MAGIC_DATA_NUMBER_ID /* valid file */
+      && McuUtility_strcmp((char*)hp->dataName, filename)==0 /* file name matches */
+     )
+  {
     /* flash data file */
     if (NVMC_Erase()==ERR_OK) {
       return 1; /* ok */
@@ -284,23 +317,21 @@ int ini_remove(const TCHAR *filename) {
       return 0; /* error */
     }
   }
+  /* check if we are removing the temp file */
   hp = (MinIniFlashFileHeader*)dataBuf;
-  if (hp->magicNumber==MININI_FLASH_MAGIC_DATA_NUMBER_ID && McuUtility_strcmp((char*)hp->dataName, filename)==0) {
+  if (   hp->magicNumber==MININI_FLASH_MAGIC_DATA_NUMBER_ID /* valid file */
+      && McuUtility_strcmp((char*)hp->dataName, filename)==0 /* it the data in RAM */
+      )
+  {
     /* RAM data file */
     memset(dataBuf, 0, sizeof(dataBuf));
-    return 1; /* ok */
-  }
-  hp = (MinIniFlashFileHeader*)tmpDataBuf;
-  if (hp->magicNumber==MININI_FLASH_MAGIC_DATA_NUMBER_ID && McuUtility_strcmp((char*)hp->dataName, filename)==0) {
-    /* temp data RAM data file */
-    memset(tmpDataBuf, 0, sizeof(tmpDataBuf));
     return 1; /* ok */
   }
   return 0; /* error */
 }
 
 int ini_tell(INI_FILETYPE *file, INI_FILEPOS *pos) {
-  /* return the current file pointer (offset into file */
+  /* return the current file pointer (offset into file) */
   *pos = file->curr - file->data;
   return 1; /* ok */
 }
@@ -309,32 +340,27 @@ int ini_seek(INI_FILETYPE *file, INI_FILEPOS *pos) {
   /* move the file pointer to the given position */
   file->curr = file->data + *pos; /* move current data pointer */
   if (file->curr >= (unsigned char*)file->header+McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE) { /* outside limits? */
-    file->curr = (unsigned char*)file->header + McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE-1; /* back to valid range */
-    return 0; /* error */
+    file->curr = (unsigned char*)file->header + McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE; /* back to valid range, which can be one byte beyond buffer */
+    return 0; /* error, EOF */
   }
   return 1; /* ok */
 }
 
 int ini_rename(const TCHAR *source, const TCHAR *dest) {
-  /* e.g. test.in~ -> test.ini */
+  /* e.g. test.in~ -> test.ini: this always will do a store from RAM to FLASH! */
   MinIniFlashFileHeader *hp;
 
   if (isTempFile(source)) { /* store temporary file into flash */
-    hp = (MinIniFlashFileHeader*)tmpDataBuf;
-    McuUtility_strcpy(hp->dataName, sizeof(hp->dataName), (unsigned char*)dest); /* rename file */
-    /* store in flash */
-    if (NVMC_SetBlockFlash(McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (unsigned char*)tmpDataBuf, sizeof(tmpDataBuf))!=ERR_OK) {
-      return 0; /* failed */
-    }
-    memset(tmpDataBuf, 0, sizeof(dataBuf)); /* erase old content */
-  } else { /* store ram file into flash */
     hp = (MinIniFlashFileHeader*)dataBuf;
+    if (McuUtility_strcmp((char*)hp->dataName, source)!=0) { /* file name in RAM does not match? */
+      return 0; /* error */
+    }
     McuUtility_strcpy(hp->dataName, sizeof(hp->dataName), (unsigned char*)dest); /* rename file */
     /* store in flash */
     if (NVMC_SetBlockFlash(McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (unsigned char*)dataBuf, sizeof(dataBuf))!=ERR_OK) {
       return 0; /* failed */
     }
-    memset(dataBuf, 0, sizeof(dataBuf)); /* erase old content */
+    memset(dataBuf, 0, sizeof(dataBuf)); /* erase RAM file content */
   }
   return 1; /* ok */
 }
@@ -406,7 +432,6 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
 
   PrintDataStatus(io, (MinIniFlashFileHeader*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (const unsigned char*)"  data");
   PrintDataStatus(io, (MinIniFlashFileHeader*)dataBuf, (const unsigned char*)"  ram");
-  PrintDataStatus(io, (MinIniFlashFileHeader*)tmpDataBuf, (const unsigned char*)"  tmp ram");
   return ERR_OK;
 }
 
