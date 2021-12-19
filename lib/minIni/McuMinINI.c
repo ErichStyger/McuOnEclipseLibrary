@@ -74,7 +74,7 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
 #endif
   McuShell_SendStatusStr((unsigned char*)"  real", buf, io->stdOut);
 
-#if defined(INI_READONLY)
+#if McuMinINI_CONFIG_READ_ONLY
   McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"read-only\r\n");
 #else
   McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"read-write\r\n");
@@ -356,9 +356,11 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
     McuShell_SendHelpStr((unsigned char*)"McuMinINI", (const unsigned char*)"Group of McuMinINI commands\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  read <f> <s> <k>", (const unsigned char*)"Read a key from a section in a file\r\n", io->stdOut);
+#if !McuMinINI_CONFIG_READ_ONLY
     McuShell_SendHelpStr((unsigned char*)"  write <f> <s> <k> <v>", (const unsigned char*)"Write a key with value to a section in a file\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  delkey <f> <s> <k>", (const unsigned char*)"Delete a key in a section of file\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  delsec <f> <s>", (const unsigned char*)"Delete a section in a file\r\n", io->stdOut);
+#endif
     *handled = TRUE;
     return ERR_OK;
   } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuMinINI status")==0)) {
@@ -392,6 +394,7 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
     McuShell_SendStr(value, io->stdOut);
     McuShell_SendStr((unsigned char*)"\r\n", io->stdOut);
     return ERR_OK;
+#if !McuMinINI_CONFIG_READ_ONLY
   } else if (McuUtility_strncmp((char*)cmd, "McuMinINI write ", sizeof("McuMinINI write ")-1)==0) {
     *handled = TRUE;
     p = cmd + sizeof("McuMinINI write ")-1;
@@ -421,6 +424,8 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
       return ERR_FAILED;
     }
     return ERR_OK;
+#endif
+#if !McuMinINI_CONFIG_READ_ONLY
   } else if (McuUtility_strncmp((char*)cmd, "McuMinINI delkey ", sizeof("McuMinINI delkey ")-1)==0) {
     *handled = TRUE;
     p = cmd + sizeof("McuMinINI delkey ")-1;
@@ -445,6 +450,8 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
       return ERR_FAILED;
     }
     return ERR_OK;
+#endif
+#if !McuMinINI_CONFIG_READ_ONLY
   } else if (McuUtility_strncmp((char*)cmd, "McuMinINI delsec ", sizeof("McuMinINI delsec ")-1)==0) {
     *handled = TRUE;
     p = cmd + sizeof("McuMinINI delsec ")-1;
@@ -464,6 +471,7 @@ uint8_t McuMinINI_ParseCommand(const unsigned char *cmd, bool *handled, const Mc
       return ERR_FAILED;
     }
     return ERR_OK;
+#endif
   }
   return ERR_OK;
 }
