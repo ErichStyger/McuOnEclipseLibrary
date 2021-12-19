@@ -21,7 +21,16 @@
 
 #define PORTABLE_STRNICMP
 
-//#define INI_REAL double
+#ifndef McuMinINI_CONFIG_USE_REAL
+  #define McuMinINI_CONFIG_USE_REAL                        (0)
+    /*!< if ini file handling includes handling of floating point data types */
+#endif
+
+#if McuMinINI_CONFIG_USE_REAL
+  #define INI_REAL double
+#else
+  //#define INI_REAL double
+#endif
 
 #ifndef McuMinINI_CONFIG_READ_ONLY
   #define McuMinINI_CONFIG_READ_ONLY                       (0)
