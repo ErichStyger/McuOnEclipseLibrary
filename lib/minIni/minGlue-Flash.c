@@ -23,14 +23,16 @@
   #include "McuWait.h"
 #endif
 
-/* NOTE: we only support one file in FLASH, and one file in RAM with a temporary file */
+/* NOTE: we only support one 'file' in FLASH, and only one 'file' in RAM. The one in RAM is for the read-write and temporary one  */
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
   /* nothing needed */
 #elif McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
   static flash_config_t s_flashDriver;
 #endif
-/* read-only, FLASH file is at McuMinINI_CONFIG_FLASH_NVM_ADDR_START */
-static unsigned char dataBuf[McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE]; /* ini file for read/write */
+/* read-only FLASH 'file' is at McuMinINI_CONFIG_FLASH_NVM_ADDR_START */
+#if !McuMinINI_CONFIG_READ_ONLY
+  static unsigned char dataBuf[McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE]; /* ini file for read/write */
+#endif
 
 static bool isErased(const uint8_t *ptr, int nofBytes) {
   while (nofBytes>0) {
@@ -232,6 +234,7 @@ static bool isTempFile(const TCHAR *filename) {
   return false;
 }
 
+#if !McuMinINI_CONFIG_READ_ONLY
 int ini_openwrite(const TCHAR *filename, INI_FILETYPE *file) {
   /* create always a new file */
   memset(file, 0, sizeof(INI_FILETYPE)); /* initialize all fields in header */
@@ -246,6 +249,7 @@ int ini_openwrite(const TCHAR *filename, INI_FILETYPE *file) {
   file->isReadOnly = false;
   return 1; /* ok */
 }
+#endif
 
 int ini_close(INI_FILETYPE *file) {
   file->isOpen = false;
@@ -278,6 +282,7 @@ int ini_read(TCHAR *buffer, size_t size, INI_FILETYPE *file) {
   return 1; /* ok */
 }
 
+#if !McuMinINI_CONFIG_READ_ONLY
 int ini_write(TCHAR *buffer, INI_FILETYPE *file) {
   size_t len, remaining;
 
@@ -300,7 +305,9 @@ int ini_write(TCHAR *buffer, INI_FILETYPE *file) {
   }
   return 1; /* ok */
 }
+#endif
 
+#if !McuMinINI_CONFIG_READ_ONLY
 int ini_remove(const TCHAR *filename) {
   MinIniFlashFileHeader *hp;
 
@@ -329,6 +336,7 @@ int ini_remove(const TCHAR *filename) {
   }
   return 0; /* error */
 }
+#endif
 
 int ini_tell(INI_FILETYPE *file, INI_FILEPOS *pos) {
   /* return the current file pointer (offset into file) */
@@ -346,6 +354,7 @@ int ini_seek(INI_FILETYPE *file, INI_FILEPOS *pos) {
   return 1; /* ok */
 }
 
+#if !McuMinINI_CONFIG_READ_ONLY
 int ini_rename(const TCHAR *source, const TCHAR *dest) {
   /* e.g. test.in~ -> test.ini: this always will do a store from RAM to FLASH! */
   MinIniFlashFileHeader *hp;
@@ -364,6 +373,7 @@ int ini_rename(const TCHAR *source, const TCHAR *dest) {
   }
   return 1; /* ok */
 }
+#endif
 
 int ini_deinit(void) {
   /* nothing needed */
@@ -431,7 +441,9 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   McuShell_SendStatusStr((unsigned char*)"  max data", buf, io->stdOut);
 
   PrintDataStatus(io, (MinIniFlashFileHeader*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (const unsigned char*)"  data");
+#if !McuMinINI_CONFIG_READ_ONLY
   PrintDataStatus(io, (MinIniFlashFileHeader*)dataBuf, (const unsigned char*)"  ram");
+#endif
   return ERR_OK;
 }
 
