@@ -6,7 +6,7 @@
 **     Component   : Shell
 **     Version     : Component 01.111, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-12-13, 20:30, # CodeGen: 757
+**     Date/Time   : 2021-12-26, 08:30, # CodeGen: 765
 **     Abstract    :
 **         Module implementing a command line shell.
 **     Settings    :
@@ -756,7 +756,7 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
   uint8_t buf[McuShell_CONFIG_MULTI_CMD_SIZE];
   uint8_t i;
   bool parseBuffer, finished;
-  bool insideDoubleQuotes = false; /* with multi-commands: allow the McuShell_CONFIG_MULTI_CMD_CHAR inside double quoted strings */
+  bool insideDoubleQuotes = FALSE; /* with multi-commands: allow the McuShell_CONFIG_MULTI_CMD_CHAR inside double quoted strings */
 #endif
 
   if (io==NULL) { /* no I/O handler? */
@@ -778,9 +778,9 @@ uint8_t McuShell_ParseWithCommandTableExt(const uint8_t *cmd, McuShell_ConstStdI
     buf[i] = *cmd;
     if (buf[i]=='"') {
       if (insideDoubleQuotes) { /* already had a double quote? */
-        insideDoubleQuotes = false; /* note: we do not support nested double quotes */
+        insideDoubleQuotes = FALSE; /* note: we do not support nested double quotes */
       } else {
-        insideDoubleQuotes = true; /* mark that we are inside double quotes */
+        insideDoubleQuotes = TRUE; /* mark that we are inside double quotes */
       }
     }
     cmd++; i++;
