@@ -6,7 +6,7 @@
 **     Component   : SSD1306
 **     Version     : Component 01.048, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-01-30, 15:10, # CodeGen: 729
+**     Date/Time   : 2021-12-13, 20:30, # CodeGen: 757
 **     Abstract    :
 **         Display driver for the SSD1306 OLED module
 **     Settings    :
@@ -500,11 +500,11 @@ McuSSD1306_DisplayOrientation McuSSD1306_GetDisplayOrientation(void)
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT
   return McuSSD1306_ORIENTATION_PORTRAIT; /* Portrait mode */
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT180
-  return McuSSD1306_ORIENTATION_PORTRAIT180; /* Portrait mode, rotated 180� */
+  return McuSSD1306_ORIENTATION_PORTRAIT180; /* Portrait mode, rotated 180 degree */
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE
-  return McuSSD1306_ORIENTATION_LANDSCAPE; /* Landscape mode, rotated right 90� */
+  return McuSSD1306_ORIENTATION_LANDSCAPE; /* Landscape mode, rotated right 90 degree */
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE180
-  return McuSSD1306_ORIENTATION_LANDSCAPE180; /* Landscape mode, rotated left 90� */
+  return McuSSD1306_ORIENTATION_LANDSCAPE180; /* Landscape mode, rotated left 90 degree */
 #endif
 }
 
@@ -953,11 +953,11 @@ void McuSSD1306_Init(void)
 #if McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT
   McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT); /* Portrait mode */
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_PORTRAIT180
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT180); /* Portrait mode, rotated 180� */
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_PORTRAIT180); /* Portrait mode, rotated 180 degree */
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE); /* Landscape mode, rotated right 90� */
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE); /* Landscape mode, rotated right 90 degree */
 #elif McuSSD1306_CONFIG_FIXED_DISPLAY_ORIENTATION==McuSSD1306_CONFIG_ORIENTATION_LANDSCAPE180
-  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE180); /* Landscape mode, rotated left 90� */
+  McuSSD1306_SetDisplayOrientation(McuSSD1306_ORIENTATION_LANDSCAPE180); /* Landscape mode, rotated left 90 degree */
 #endif
 #if McuSSD1306_CONFIG_CLEAR_DISPLAY_IN_INIT
   McuSSD1306_Clear();
