@@ -6,7 +6,7 @@
 **     Component   : FreeRTOS
 **     Version     : Component 01.583, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-04-30, 11:41, # CodeGen: 735
+**     Date/Time   : 2021-11-25, 06:25, # CodeGen: 749
 **     Abstract    :
 **          This component implements the FreeRTOS Realtime Operating System
 **     Settings    :
@@ -276,7 +276,7 @@
 #if McuLib_CONFIG_SDK_USE_FREERTOS
 
 #if !McuLib_CONFIG_CPU_IS_ESP32
-  #include "portTicks.h"                 /* interface to tick counter */
+  #include "portTicks.h"               /* interface to tick counter */
 #endif
 #if configSYSTICK_USE_LOW_POWER_TIMER && McuLib_CONFIG_NXP_SDK_USED
   #include "fsl_clock.h"
@@ -317,7 +317,7 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
   uint8_t tmpBuf[32];
   uint16_t stackSize;
 #endif
-#if configUSE_TRACE_FACILITY && !((tskKERNEL_VERSION_MAJOR<10) ||McuLib_CONFIG_CPU_IS_ESP32)
+#if configUSE_TRACE_FACILITY && !((tskKERNEL_VERSION_MAJOR<10) || McuLib_CONFIG_CPU_IS_ESP32)
   TaskStatus_t taskStatus;
 #endif
   uint8_t buf[32];
@@ -416,7 +416,7 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
   ulTotalTime /= 100UL; /* For percentage calculations. */
 #endif
 
-#if tskKERNEL_VERSION_MAJOR<10 || McuLib_CONFIG_CPU_IS_ESP32 /* otherwise xGetTaskHandles(), vTaskGetStackInfo(), pcTaskGetName() not available */
+#if (tskKERNEL_VERSION_MAJOR<10) || McuLib_CONFIG_CPU_IS_ESP32 /* otherwise xGetTaskHandles(), vTaskGetStackInfo(), pcTaskGetName() not available */
   McuShell_SendStr((unsigned char*)"FreeRTOS version must be at least 10.0.0 and not for ESP32\r\n", io->stdOut);
 #else
   nofTasks = uxTaskGetNumberOfTasks();
@@ -556,7 +556,7 @@ static uint8_t PrintTaskList(const McuShell_StdIOType *io) {
       McuUtility_strcpy(tmpBuf, sizeof(tmpBuf), (unsigned char*)"0x");
       McuUtility_strcatNum32Hex(tmpBuf, sizeof(tmpBuf), taskStatus.ulRunTimeCounter);
       if (ulTotalTime>0) { /* to avoid division by zero */
-        uint32_t ulStatsAsPercentage;
+        uint32_t ulTotalTime, ulStatsAsPercentage;
 
         /* What percentage of the total run time has the task used?
            This will always be rounded down to the nearest integer.
