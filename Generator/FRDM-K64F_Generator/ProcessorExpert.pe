@@ -29,7 +29,7 @@
     <UseExistingModules>true</UseExistingModules>
     <RenamePeripheries>false</RenamePeripheries>
     <Autodependency>true</Autodependency>
-    <ProjectCompNumb>555</ProjectCompNumb>
+    <ProjectCompNumb>559</ProjectCompNumb>
     <DelUnusedPreviouslyGenFiles>true</DelUnusedPreviouslyGenFiles>
     <GeneratedCodeFrozen>false</GeneratedCodeFrozen>
     <AssignInitComponentNameToPrph>true</AssignInitComponentNameToPrph>
@@ -34556,7 +34556,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.033</BeanVersion>
+    <BeanVersion>01.035</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -34674,6 +34674,17 @@
         <LastSelection>true</LastSelection>
         <LastUserSel>yes</LastUserSel>
         <UsrMethodName>Disable</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>MagEnable</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>MagEnable</UsrMethodName>
       </ItemState>
       <ItemState>
         <ItemSymbol>isEnabled</ItemSymbol>
@@ -46277,7 +46288,7 @@
     <UserFolderName />
     <Comment lines_count="0" />
     <Template />
-    <BeanVersion>01.056</BeanVersion>
+    <BeanVersion>01.058</BeanVersion>
     <LightErrorsIgnored>false</LightErrorsIgnored>
     <Properties>
       <ItemState>
@@ -46288,7 +46299,7 @@
       </ItemState>
       <ItemState>
         <ItemSymbol>minIniVersion</ItemSymbol>
-        <Value>1.2B</Value>
+        <Value>1.4</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>sdk</ItemSymbol>
@@ -46333,14 +46344,6 @@
         <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
         <Index>0</Index>
         <Value>true</Value>
-      </ItemState>
-      <ItemState>
-        <ItemSymbol>useGlobalBuffer</ItemSymbol>
-        <ReadOnly>false</ReadOnly>
-        <UserReadOnly>false</UserReadOnly>
-        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
-        <Index>1</Index>
-        <Value>false</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>ShellEnabledGroup</ItemSymbol>
@@ -46395,6 +46398,14 @@
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
         <Value>minIni</Value>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>useGlobalBuffer</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>1</Index>
+        <Value>false</Value>
       </ItemState>
       <ItemState>
         <ItemSymbol>FatFSGroup</ItemSymbol>
@@ -46482,6 +46493,17 @@
         <UsrMethodName>ini_putf</UsrMethodName>
       </ItemState>
       <ItemState>
+        <ItemSymbol>ini_hassection</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>ini_hassection</UsrMethodName>
+      </ItemState>
+      <ItemState>
         <ItemSymbol>ini_getsection</ItemSymbol>
         <ReadOnly>false</ReadOnly>
         <UserReadOnly>false</UserReadOnly>
@@ -46491,6 +46513,17 @@
         <LastSelection>true</LastSelection>
         <LastUserSel>yes</LastUserSel>
         <UsrMethodName>ini_getsection</UsrMethodName>
+      </ItemState>
+      <ItemState>
+        <ItemSymbol>ini_haskey</ItemSymbol>
+        <ReadOnly>false</ReadOnly>
+        <UserReadOnly>false</UserReadOnly>
+        <PropertyModelIsAutomatic>false</PropertyModelIsAutomatic>
+        <Index>0</Index>
+        <Value>true</Value>
+        <LastSelection>true</LastSelection>
+        <LastUserSel>yes</LastUserSel>
+        <UsrMethodName>ini_haskey</UsrMethodName>
       </ItemState>
       <ItemState>
         <ItemSymbol>ini_getkey</ItemSymbol>
