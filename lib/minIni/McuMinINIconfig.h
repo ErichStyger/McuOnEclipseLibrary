@@ -27,9 +27,9 @@
 #endif
 
 #if McuMinINI_CONFIG_USE_REAL
-  #define INI_REAL double
+  #define INI_REAL              double
 #else
-  //#define INI_REAL double
+  //#define INI_REAL              double
 #endif
 
 #ifndef McuMinINI_CONFIG_READ_ONLY
@@ -40,8 +40,6 @@
 #ifndef NDEBUG
   #define NDEBUG
 #endif
-
-#define INI_USE_GLOBAL_BUFFER   0 /* 0: use stack for buffer; 1: use global memory for buffer */
 
 #if McuMinINI_CONFIG_FS==McuMinINI_CONFIG_FS_TYPE_FLASH_FS
   /* flash settings */

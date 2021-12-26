@@ -3,7 +3,7 @@
  *  Or better said: this file contains macros that maps the function interface
  *  used by minIni to the standard C/C++ file I/O functions.
  *
- *  By CompuPhase, 2008-2012
+ *  By CompuPhase, 2008-2014
  *  This "glue file" is in the public domain. It is distributed without
  *  warranties or conditions of any kind, either express or implied.
  */
