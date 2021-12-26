@@ -7,7 +7,7 @@
 **     Component   : FXOS8700CQ
 **     Version     : Component 01.036, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-12-26, 15:48, # CodeGen: 768
+**     Date/Time   : 2021-12-26, 16:08, # CodeGen: 770
 **     Abstract    :
 **         Implements a Driver for the MMA8451 accelerometer from Freescale.
 **     Settings    :
@@ -740,37 +740,44 @@ uint8_t McuFXOS8700_ParseCommand(const unsigned char *cmd, bool *handled, const 
     *handled = TRUE;
     return PrintStatus(io);
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 calibrate x")==0) {
+    *handled = TRUE;
     McuFXOS8700_CalibrateX1g();
-    *handled = TRUE;
+    return ERR_OK;
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 calibrate y")==0) {
+    *handled = TRUE;
     McuFXOS8700_CalibrateY1g();
-    *handled = TRUE;
+    return ERR_OK;
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 calibrate z")==0) {
+    *handled = TRUE;
     McuFXOS8700_CalibrateZ1g();
-    *handled = TRUE;
+    return ERR_OK;
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 enable")==0) {
-    McuFXOS8700_Enable();
     *handled = TRUE;
+    return McuFXOS8700_Enable();
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 disable")==0) {
-    McuFXOS8700_Disable();
     *handled = TRUE;
+    return McuFXOS8700_Disable();
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 mag enable")==0) {
-    McuFXOS8700_MagEnable();
     *handled = TRUE;
+    return McuFXOS8700_MagEnable();
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 mag disable")==0) {
-    McuFXOS8700_MagDisable();
     *handled = TRUE;
+    return McuFXOS8700_MagDisable();
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 swreset")==0) {
     *handled = TRUE;
     if (McuFXOS8700_SwReset()!=ERR_OK) {
       McuShell_SendStr((unsigned char*)"SW reset failed!\r\n", io->stdErr);
       return ERR_FAILED;
+    } else {
+      return ERR_OK;
     }
   } else if (McuUtility_strcmp((char*)cmd, (char*)"McuFXOS8700 magreset")==0) {
     *handled = TRUE;
     if (McuFXOS8700_MagneticSensorReset()!=ERR_OK) {
       McuShell_SendStr((unsigned char*)"Magnetometer sensor reset failed!\r\n", io->stdErr);
       return ERR_FAILED;
+    } else {
+      return ERR_OK;
     }
   }
   return ERR_OK;

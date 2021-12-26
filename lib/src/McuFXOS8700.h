@@ -5,9 +5,9 @@
 **     Project     : FRDM-K64F_Generator
 **     Processor   : MK64FN1M0VLL12
 **     Component   : FXOS8700CQ
-**     Version     : Component 01.035, Driver 01.00, CPU db: 3.00.000
+**     Version     : Component 01.036, Driver 01.00, CPU db: 3.00.000
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2021-12-26, 08:30, # CodeGen: 765
+**     Date/Time   : 2021-12-26, 15:48, # CodeGen: 768
 **     Abstract    :
 **         Implements a Driver for the MMA8451 accelerometer from Freescale.
 **     Settings    :
@@ -25,6 +25,7 @@
 **         Enable              - uint8_t McuFXOS8700_Enable(void);
 **         Disable             - uint8_t McuFXOS8700_Disable(void);
 **         MagEnable           - uint8_t McuFXOS8700_MagEnable(void);
+**         MagDisable          - uint8_t McuFXOS8700_MagDisable(void);
 **         isEnabled           - uint8_t McuFXOS8700_isEnabled(bool *isEnabled);
 **         SwReset             - uint8_t McuFXOS8700_SwReset(void);
 **         ReadReg8            - uint8_t McuFXOS8700_ReadReg8(uint8_t addr, uint8_t *val);
@@ -674,6 +675,19 @@ uint8_t McuFXOS8700_MagEnable(void);
 **
 **     Description :
 **         Enables the magnetometer
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code
+** ===================================================================
+*/
+
+uint8_t McuFXOS8700_MagDisable(void);
+/*
+** ===================================================================
+**     Method      :  MagDisable (component FXOS8700CQ)
+**
+**     Description :
+**         Disables the magnetometer
 **     Parameters  : None
 **     Returns     :
 **         ---             - Error code
