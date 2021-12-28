@@ -7,6 +7,7 @@
 #ifndef MCUFLASHCONFIG_H_
 #define MCUFLASHCONFIG_H_
 
+#include "McuLib.h"
 
 #ifndef McuFlash_CONFIG_FLASH_BLOCK_SIZE
 #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845

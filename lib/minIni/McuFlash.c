@@ -19,9 +19,9 @@
 
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
   /* nothing needed */
-#elif   McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22 \
-     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 \
-     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 \
+#elif   McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FN \
+     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FX \
+     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN \
      || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC55S16
   static flash_config_t s_flashDriver;
 #endif
@@ -75,7 +75,7 @@ uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
   if (McuFlash_Erase(addr, dataSize)!=ERR_OK) {
     return ERR_FAILED;
   }
-#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
+#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FN
   /* need to switch to normal RUN mode for flash programming,
    * with Fcore=60MHz Fbus=Fflash=20MHz
    * see https://community.nxp.com/thread/377633
@@ -87,7 +87,7 @@ uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
   McuWait_Waitms(1); /* give time to switch clock, otherwise flash programming might fail below */
 #endif
   /* program */
-#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN
     uint32_t primask = DisableGlobalIRQ(); /* workaround: need to disable interrupts? */
 #endif
   for(;;) { /* breaks, switch back to HSRUN if things fail */
@@ -98,10 +98,10 @@ uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
     }
     break;
   } /* for */
-#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN
   EnableGlobalIRQ(primask); /* workaround: need to disable interrupts? */
 #endif
-#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
+#if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FN
   status = SMC_SetPowerModeHsrun(SMC);
   if (status!=kStatus_Success) {
     res = ERR_FAILED;
@@ -113,22 +113,20 @@ uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
   uint32_t failedAddress, failedData;
 
   if ((dataSize%s_flashDriver.PFlashPageSize)!=0) { /* must be multiple of flash page size! */
+    McuLog_fatal("data size %08x must be aligned with of page size %08x", dataSize, s_flashDriver.PFlashPageSize);
     return ERR_FAILED;
   }
-  /* check first if flash is accessible */
-  if (!McuFlash_IsAccessible(addr, dataSize)) {
-    /* Memory is not accessible or erased. Accessing non-accessile flash it will cause a hard fault! Need to properly erase and program it. */
-    status = FLASH_Erase(&s_flashDriver, (uint32_t)addr, dataSize, kFLASH_ApiEraseKey);
-    if (status!=kStatus_Success ) {
-      McuLog_fatal("erasing failed with error code %d", status);
-      return ERR_FAILED;
-    }
-    /* check if it is erased */
-    status = FLASH_VerifyErase(&s_flashDriver, (uint32_t)addr, dataSize);
-    if (status!=kStatus_Success) {
-      McuLog_fatal("erase check failed");
-      return ERR_FAILED;
-    }
+  /* erase first */
+  status = FLASH_Erase(&s_flashDriver, (uint32_t)addr, dataSize, kFLASH_ApiEraseKey);
+  if (status!=kStatus_Success ) {
+    McuLog_fatal("erasing failed with error code %d", status);
+    return ERR_FAILED;
+  }
+  /* check if it is erased */
+  status = FLASH_VerifyErase(&s_flashDriver, (uint32_t)addr, dataSize);
+  if (status!=kStatus_Success) {
+    McuLog_fatal("erase check failed");
+    return ERR_FAILED;
   }
   /* here the flash is erased, ready for getting programmed */
   status = FLASH_Program(&s_flashDriver, (uint32_t)addr, (uint8_t*)data, dataSize);
@@ -210,10 +208,10 @@ uint8_t McuFlash_Erase(void *addr, size_t nofBytes) {
   status_t status;
   uint8_t res = ERR_OK;
 
-   if (McuFlash_IsErased(addr, nofBytes)) { /* already eased? */
+  if (McuFlash_IsErased(addr, nofBytes)) { /* already eased? */
     return ERR_OK; /* yes, nothing to do */
   }
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FN
   /* need to switch to normal RUN mode for flash programming,
    * with Fcore=60MHz Fbus=Fflash=20MHz
    * see https://community.nxp.com/thread/377633
@@ -234,18 +232,18 @@ uint8_t McuFlash_Erase(void *addr, size_t nofBytes) {
   }
 
   for(;;) { /* breaks, switch back to HSRUN on Kinetis if things fail */
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN
     uint32_t primask = DisableGlobalIRQ(); /* workaround: need to disable interrupts? */
   #endif
     status = FLASH_Erase(&s_flashDriver, (uint32_t)addr, nofBytes, kFTFx_ApiEraseKey);
     if (status!=kStatus_FTFx_Success) {
       res = ERR_FAILED;
-    #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+    #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN
       EnableGlobalIRQ(primask); /* workaround: need to disable interrupts? */
     #endif
       break; /* error, leave for(;;) loop */
     }
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN
     EnableGlobalIRQ(primask); /* workaround: need to disable interrupts? */
   #endif
     /* Verify sector if it's been erased. */
@@ -256,7 +254,7 @@ uint8_t McuFlash_Erase(void *addr, size_t nofBytes) {
     }
     break; /* leave loop */
   } /* for */
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K02FN || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FN
   status = SMC_SetPowerModeHsrun(SMC);
   if (status!=kStatus_Success) {
     res = ERR_FAILED;
@@ -268,7 +266,7 @@ uint8_t McuFlash_Erase(void *addr, size_t nofBytes) {
   uint8_t res;
 
   if ((nofBytes%McuFlash_CONFIG_FLASH_BLOCK_SIZE)!=0) { /* check if size is multiple of page size */
-    McuLog_fatal("wrong erase data size %d", nofBytes);
+    McuLog_fatal("wrong erase data size %d, expected %d", nofBytes, McuFlash_CONFIG_FLASH_BLOCK_SIZE);
     return ERR_FAILED;
   }
   for(int i=0; i<nofBytes/McuFlash_CONFIG_FLASH_BLOCK_SIZE; i++) { /* erase and program each page */
@@ -292,15 +290,65 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   return ERR_OK;
 }
 
+static uint8_t ReadData(void *hndl, uint32_t addr, uint8_t *buf, size_t bufSize) {
+  (void)hndl; /* not used */
+  if (!McuFlash_IsAccessible((void*)addr, bufSize)) {
+    memset(buf, 0xff, bufSize);
+    return ERR_FAILED;
+  }
+  memcpy(buf, (void*)addr, bufSize);
+  return ERR_OK;
+}
+
 uint8_t McuFlash_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io) {
+  const unsigned char *p;
+  uint32_t addr32;
+
   if (McuUtility_strcmp((char*)cmd, McuShell_CMD_HELP)==0 || McuUtility_strcmp((char*)cmd, "McuFlash help")==0) {
     McuShell_SendHelpStr((unsigned char*)"McuFlash", (const unsigned char*)"Group of flash ini commands\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
+    McuShell_SendHelpStr((unsigned char*)"  dump 0x<start> 0x<end>", (unsigned char*)"Dump memory data\r\n", io->stdOut);
+    McuShell_SendHelpStr((unsigned char*)"  erase 0x<addr> <size>", (unsigned char*)"Erase memory block at address\r\n", io->stdOut);
     *handled = TRUE;
     return ERR_OK;
   } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuFlash status")==0)) {
     *handled = TRUE;
     return PrintStatus(io);
+  } else if (McuUtility_strncmp((char*)cmd, "McuFlash dump ", sizeof("McuFlash dump ")-1)==0) {
+    uint32_t end32;
+
+    *handled = TRUE;
+    p = cmd+sizeof("McuFlash dump ")-1;
+    if (McuUtility_ScanHex32uNumber(&p, &addr32)==ERR_OK) {
+      if (McuUtility_ScanHex32uNumber(&p, &end32)==ERR_OK && end32>=addr32) {
+        if (McuFlash_IsAccessible((void*)addr32, end32-addr32+1)) {
+          (void)McuShell_PrintMemory(NULL, addr32, end32, 4, 16, ReadData, io);
+        }
+      } else {
+        McuShell_SendStr((unsigned char*)"**** wrong end address\r\n", io->stdErr);
+        return ERR_FAILED;
+      }
+    } else {
+      McuShell_SendStr((unsigned char*)"**** wrong start address\r\n", io->stdErr);
+      return ERR_FAILED;
+    }
+  } else if (McuUtility_strncmp((char*)cmd, "McuFlash erase ", sizeof("McuFlash erase ")-1)==0) {
+    int32_t size;
+
+    *handled = TRUE;
+    p = cmd+sizeof("McuFlash erase ")-1;
+    if (McuUtility_ScanHex32uNumber(&p, &addr32)==ERR_OK) {
+      if ((addr32%McuFlash_CONFIG_FLASH_BLOCK_SIZE)!=0) {
+        McuShell_SendStr((unsigned char*)"**** address is not flash block aligned\r\n", io->stdErr);
+        return ERR_FAILED;
+      }
+      if (McuUtility_xatoi(&p, &size)==ERR_OK) {
+        return McuFlash_Erase((void*)addr32, size);
+      } else {
+        McuShell_SendStr((unsigned char*)"**** failed scanning size\r\n", io->stdErr);
+        return ERR_FAILED;
+      }
+    }
   }
   return ERR_OK;
 }
