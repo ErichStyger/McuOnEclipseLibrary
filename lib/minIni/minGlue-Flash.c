@@ -5,7 +5,7 @@
  *  warranties or conditions of any kind, either express or implied.
  *
  */
-
+ 
 #include "McuMinINIconfig.h" /* MinIni config file */
 
 #if McuMinINI_CONFIG_FS==McuMinINI_CONFIG_FS_TYPE_FLASH_FS
@@ -26,7 +26,10 @@
 /* NOTE: we only support one 'file' in FLASH, and only one 'file' in RAM. The one in RAM is for the read-write and temporary one  */
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
   /* nothing needed */
-#elif McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+#elif   McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22 \
+     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 \
+     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 \
+     || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC55S16
   static flash_config_t s_flashDriver;
 #endif
 /* read-only FLASH 'file' is at McuMinINI_CONFIG_FLASH_NVM_ADDR_START */
@@ -35,6 +38,16 @@
 #endif
 
 static bool isErased(const uint8_t *ptr, int nofBytes) {
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+  /* see https://community.nxp.com/t5/LPC-Microcontrollers-Knowledge/LPC55xx-Erased-Memory-State-0-or-1/ta-p/1135084 and
+   * https://www.nxp.com/docs/en/application-note/AN12949.pdf
+   * Accessing erased (and not written yet) memory causes a hardfault.
+   */
+  status_t status;
+
+  status = FLASH_VerifyErase(&s_flashDriver, (uint32_t)ptr, McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE);
+  return status==kStatus_Success;  /* true if it is an erased FLASH: accessing it will cause a hard fault! */
+#else
   while (nofBytes>0) {
     if (*ptr!=0xFF) {
       return false;  /* byte not erased */
@@ -43,92 +56,18 @@ static bool isErased(const uint8_t *ptr, int nofBytes) {
     nofBytes--;
   }
   return true;
+#endif
 }
 
+#if !McuLib_CONFIG_CPU_IS_LPC55xx
 static bool NVMC_IsErased(void) {
   return isErased((uint8_t*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE);
 }
-
-static uint8_t NVMC_Erase(void) {
-#if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
-  /* determine sector numbers based on block/sector size */
-  uint32_t startSector = McuMinINI_CONFIG_FLASH_NVM_ADDR_START/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE;
-  uint32_t endSector = ((McuMinINI_CONFIG_FLASH_NVM_ADDR_START+(McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE-1))/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE);
-  status_t res;
-
-  if (NVMC_IsErased()) { /* already eased? */
-    return ERR_OK; /* yes, nothing to do */
-  }
-  res = IAP_BlankCheckSector(startSector, endSector);
-  if (res==kStatus_IAP_Success) { /* already erased */
-    return ERR_OK;
-  }
-  /* erase sector */
-  res = IAP_PrepareSectorForWrite(startSector, endSector);
-  if (res!=kStatus_IAP_Success) {
-    return ERR_FAILED;
-  }
-  res = IAP_EraseSector(startSector, endSector, SystemCoreClock);
-  if (res!=kStatus_IAP_Success) {
-    return ERR_FAILED;
-  }
-  res = IAP_BlankCheckSector(startSector, endSector);
-  if (res!=kStatus_IAP_Success) {
-    return ERR_FAILED;
-  }
-  return ERR_OK;
-#elif McuLib_CONFIG_CPU_IS_KINETIS
-  uint32_t pflashSectorSize = 0;
-  status_t status;
-  uint8_t res = ERR_OK;
-
-  if (NVMC_IsErased()) { /* already eased? */
-    return ERR_OK; /* yes, nothing to do */
-  }
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
-  /* need to switch to normal RUN mode for flash programming,
-   * with Fcore=60MHz Fbus=Fflash=20MHz
-   * see https://community.nxp.com/thread/377633
-   */
-  status = SMC_SetPowerModeRun(SMC);
-  if (status!=kStatus_Success) {
-    return ERR_FAILED;
-  }
-  McuWait_Waitms(1); /* give time to switch clock, otherwise flash programming might fail below */
-  #endif
-  /* erase */
-  FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflash0SectorSize, &pflashSectorSize);
-  for(;;) { /* breaks, switch back to HSRUN if things fail */
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
-    uint32_t primask = DisableGlobalIRQ(); /* workaround: need to disable interrupts? */
-  #endif
-    status = FLASH_Erase(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, pflashSectorSize, kFTFx_ApiEraseKey);
-    if (status!=kStatus_FTFx_Success || pflashSectorSize!=McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE) {
-      res = ERR_FAILED;
-      break;
-    }
-  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
-    EnableGlobalIRQ(primask); /* workaround: need to disable interrupts? */
-  #endif
-    /* Verify sector if it's been erased. */
-    status = FLASH_VerifyErase(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, pflashSectorSize, kFTFx_MarginValueUser);
-    if (status!=kStatus_FTFx_Success) {
-      res = ERR_FAILED;
-      break;
-    }
-    break;
-  } /* for */
-#if PL_CONFIG_BOARD_MCU==PL_CONFIG_BOARD_ID_MCU_K22FN512
-  status = SMC_SetPowerModeHsrun(SMC);
-  if (status!=kStatus_Success) {
-    res = ERR_FAILED;
-  }
 #endif
-  return res;
-#endif
-}
 
-static uint8_t NVMC_SetBlockFlash(uint32_t addr, void *data, size_t dataSize) {
+static uint8_t NVMC_Erase(void);
+
+static uint8_t NVMC_SetBlockFlash(uint32_t addr, const void *data, size_t dataSize) {
 #if McuLib_CONFIG_CPU_IS_KINETIS
   status_t status;
   uint8_t res = ERR_OK;
@@ -169,7 +108,39 @@ static uint8_t NVMC_SetBlockFlash(uint32_t addr, void *data, size_t dataSize) {
   }
 #endif
   return res;
-#elif McuLib_CONFIG_CPU_IS_LPC
+#elif McuLib_CONFIG_CPU_IS_LPC55xx /* \todo Max data size we support here is a single page of 512 bytes */
+  status_t status;
+  uint32_t failedAddress, failedData;
+
+  if (dataSize!=512) { /* must be 512! */
+    return ERR_FAILED;
+  }
+  /* check first if flash is already erased */
+  if (!isErased((const uint8_t*)addr, dataSize)) {
+    /* memory is not erased. Accessing erased fkasg it will cause a hard fault! */
+    status = FLASH_Erase(&s_flashDriver, addr, s_flashDriver.PFlashPageSize, kFLASH_ApiEraseKey);
+    if (status!=kStatus_Success ) {
+      McuLog_fatal("erasing failed with error code %d", status);
+      return ERR_FAILED;
+    }
+    if (!isErased((const uint8_t*)addr, dataSize)) { /* check again if it is now erased */
+      McuLog_fatal("erase check failed");
+      return ERR_FAILED;
+    }
+  }
+  /* here the flash is erased, ready for getting programmed */
+  status = FLASH_Program(&s_flashDriver, addr, (uint8_t*)data, dataSize);
+  if (status!=kStatus_Success) {
+    McuLog_fatal("failed programming flash, error %d", status);
+    return ERR_FAILED;
+  }
+  status = FLASH_VerifyProgram(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, dataSize, (const uint8_t *)data, &failedAddress, &failedData);
+  if (status!=kStatus_Success) {
+    McuLog_fatal("failed verify at address %08x, data %08x", failedAddress, failedData);
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+#elif McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
   uint32_t startSector = addr/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE; /* sector is 1k in size */
   uint32_t endSector = (addr+(McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE-1))/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE;
   uint8_t result = ERR_FAILED; /* default */
@@ -202,6 +173,99 @@ static uint8_t NVMC_SetBlockFlash(uint32_t addr, void *data, size_t dataSize) {
   #error "target not supported yet!"
   return ERR_FAILED;
 #endif /* McuLib_CONFIG_CPU_IS_KINETIS or McuLib_CONFIG_CPU_IS_LPC */
+}
+
+static uint8_t NVMC_Erase(void) {
+#if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
+  /* determine sector numbers based on block/sector size */
+  uint32_t startSector = McuMinINI_CONFIG_FLASH_NVM_ADDR_START/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE;
+  uint32_t endSector = ((McuMinINI_CONFIG_FLASH_NVM_ADDR_START+(McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE-1))/McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE);
+  status_t res;
+
+  if (NVMC_IsErased()) { /* already eased? */
+    return ERR_OK; /* yes, nothing to do */
+  }
+  res = IAP_BlankCheckSector(startSector, endSector);
+  if (res==kStatus_IAP_Success) { /* already erased */
+    return ERR_OK;
+  }
+  /* erase sector */
+  res = IAP_PrepareSectorForWrite(startSector, endSector);
+  if (res!=kStatus_IAP_Success) {
+    return ERR_FAILED;
+  }
+  res = IAP_EraseSector(startSector, endSector, SystemCoreClock);
+  if (res!=kStatus_IAP_Success) {
+    return ERR_FAILED;
+  }
+  res = IAP_BlankCheckSector(startSector, endSector);
+  if (res!=kStatus_IAP_Success) {
+    return ERR_FAILED;
+  }
+  return ERR_OK;
+#elif McuLib_CONFIG_CPU_IS_KINETIS
+  uint32_t pflashSectorSize = 0;
+  status_t status;
+  uint8_t res = ERR_OK;
+
+   if (NVMC_IsErased()) { /* already eased? */
+    return ERR_OK; /* yes, nothing to do */
+  }
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
+  /* need to switch to normal RUN mode for flash programming,
+   * with Fcore=60MHz Fbus=Fflash=20MHz
+   * see https://community.nxp.com/thread/377633
+   */
+  status = SMC_SetPowerModeRun(SMC);
+  if (status!=kStatus_Success) {
+    return ERR_FAILED;
+  }
+  McuWait_Waitms(1); /* give time to switch clock, otherwise flash programming might fail below */
+  #endif
+  /* erase */
+  status = FLASH_GetProperty(&s_flashDriver, kFLASH_PropertyPflash0SectorSize, &pflashSectorSize);
+  if (status!=kStatus_Success) {
+    return ERR_FAILED;
+  }
+  if (pflashSectorSize!=McuMinINI_CONFIG_FLASH_NVM_BLOCK_SIZE) {
+    return ERR_FAILED;
+  }
+
+  for(;;) { /* breaks, switch back to HSRUN on Kinetis if things fail */
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+    uint32_t primask = DisableGlobalIRQ(); /* workaround: need to disable interrupts? */
+  #endif
+    status = FLASH_Erase(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, pflashSectorSize, kFTFx_ApiEraseKey);
+    if (status!=kStatus_FTFx_Success) {
+      res = ERR_FAILED;
+    #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+      EnableGlobalIRQ(primask); /* workaround: need to disable interrupts? */
+    #endif
+      break; /* error, leave for(;;) loop */
+    }
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02
+    EnableGlobalIRQ(primask); /* workaround: need to disable interrupts? */
+  #endif
+    /* Verify sector if it's been erased. */
+    status = FLASH_VerifyErase(&s_flashDriver, McuMinINI_CONFIG_FLASH_NVM_ADDR_START, pflashSectorSize, kFTFx_MarginValueUser);
+    if (status!=kStatus_FTFx_Success) {
+      res = ERR_FAILED;
+      break;
+    }
+    break; /* leave loop */
+  } /* for */
+  #if McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN02 || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_FN22
+  status = SMC_SetPowerModeHsrun(SMC);
+  if (status!=kStatus_Success) {
+    res = ERR_FAILED;
+  }
+  #endif
+  return res;
+#elif McuLib_CONFIG_CPU_IS_LPC55xx
+  static const uint8_t zeroBuffer[McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE]; /* initialized with zeros, buffer in FLASH to save RAM */
+
+  return NVMC_SetBlockFlash(McuMinINI_CONFIG_FLASH_NVM_ADDR_START, zeroBuffer, sizeof(zeroBuffer));
+#endif
 }
 
 int ini_openread(const TCHAR *filename, INI_FILETYPE *file) {
@@ -381,16 +445,27 @@ int ini_deinit(void) {
 }
 
 int ini_init(void) {
-#if McuLib_CONFIG_CPU_IS_KINETIS
+#if McuLib_CONFIG_CPU_IS_KINETIS || McuLib_CONFIG_CPU_IS_LPC55xx
   status_t result;    /* Return code from each flash driver function */
 
   memset(&s_flashDriver, 0, sizeof(flash_config_t));
   /* Setup flash driver structure for device and initialize variables. */
   result = FLASH_Init(&s_flashDriver);
+#if McuLib_CONFIG_CPU_IS_KINETIS
   if (result!=kStatus_FTFx_Success) {
+    McuLog_fatal("NVMC_Init() failed!");
+    for(;;) { /* error */ }
+  }
+#elif McuLib_CONFIG_CPU_IS_LPC55xx
+  if (result!=kStatus_Success) {
+    McuLog_fatal("NVMC_Init() failed!");
     for(;;) { /* error */ }
   }
 #endif
+#endif
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+  if( ! (McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE==512)) {
+#else
   if( ! (McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE==64
      || McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE==128
      || McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE==256
@@ -401,6 +476,7 @@ int ini_init(void) {
      || McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE==8192)
     )
   {
+#endif
     /* data size (number of bytes) needs to be 64, 128, 256, 512, 1024 bytes for the flash programming! */
     McuLog_fatal("wrong size of data!");
     for(;;) {}
@@ -460,6 +536,15 @@ static uint8_t DumpData(const McuShell_StdIOType *io) {
       p++;
     }
   }
+  hp = (MinIniFlashFileHeader*)dataBuf;
+  PrintDataStatus(io, hp, (const unsigned char*)"ram");
+  if (hp->magicNumber==MININI_FLASH_MAGIC_DATA_NUMBER_ID) {
+    p = (const unsigned char*)hp + sizeof(MinIniFlashFileHeader);
+    for(unsigned int i=0; i<hp->dataSize; i++) {
+      io->stdOut(*p);
+      p++;
+    }
+  }
   return ERR_OK;
 }
 
@@ -485,4 +570,3 @@ uint8_t ini_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell
 }
 
 #endif /* McuMinINI_CONFIG_FS==McuMinINI_CONFIG_FS_TYPE_KINETIS_FLASH_FS */
-
