@@ -43,15 +43,46 @@ uint8_t McuFlash_Erase(void *addr, size_t nofBytes);
 
 
 /*!
+ * \brief For LPC55Sxx only: initializes memory with an erase, making it inaccessible
+ * \param addr Start address of memory, must be 0x200 aligned
+ * \param nofBytes Number of bytes, must be multiple if 0x200
+ * \return Error code, ERR_OK if everything is fine
+ */
+uint8_t McuFlash_InitErase(void *addr, size_t nofBytes);
+
+/*!
  * \brief Program the flash memory with data
  * \param addr Address where to store the data
  * \param data Pointer to the data
  * \param dataSize Number of data bytes
  * \return Error code, ERR_OK if everything is fine
  */
-uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize);
+uint8_t McuFlash_Program(void *addr, const void *data, size_t dataSize);
+
+/*!
+ * \brief Read the flash memory
+ * \param addr Address where to store the data
+ * \param data Pointer where to store the data
+ * \param dataSize Number of data bytes
+ * \return Error code, ERR_OK if everything is fine
+ */
+uint8_t McuFlash_Read(const void *addr, void *data, size_t dataSize);
+
+/*!
+ * \brief Register a memory area. This is for information only, to print the information with the Shell status command.
+ * \param addr Start address of memory area
+ * \param nofBytes Number of bytes
+ */
+void McuFlash_RegisterMemory(const void *addr, size_t nofBytes);
 
 #include "McuShell.h"
+/*!
+ * \brief Shell command line parser
+ * \param cmd Pointer to the command string
+ * \param handled If command has been recognized and handled
+ * \param io I/O hander used for output
+ * \return Error code, ERR_OK if everything is fine
+ */
 uint8_t McuFlash_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
 
 /*!

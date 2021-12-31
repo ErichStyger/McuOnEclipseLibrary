@@ -17,6 +17,13 @@
   #include "McuWait.h"
 #endif
 
+typedef struct {
+  uint32_t addr;
+  size_t size;
+} McuFlash_Memory;
+
+static McuFlash_Memory McuFlash_RegisteredMemory; /* used in shell status, for information only */
+
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
   /* nothing needed */
 #elif   McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_K22FN \
@@ -25,6 +32,11 @@
      || McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC55S16
   static flash_config_t s_flashDriver;
 #endif
+
+void McuFlash_RegisterMemory(const void *addr, size_t nofBytes) {
+  McuFlash_RegisteredMemory.addr = (uint32_t)addr;
+  McuFlash_RegisteredMemory.size = nofBytes;
+}
 
 bool McuFlash_IsAccessible(const void *addr, size_t nofBytes) {
 #if McuLib_CONFIG_CPU_IS_LPC55xx
@@ -67,7 +79,26 @@ bool McuFlash_IsErased(const void *addr, size_t nofBytes) {
 #endif
 }
 
-uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
+uint8_t McuFlash_Read(const void *addr, void *data, size_t dataSize) {
+  if (!McuFlash_IsAccessible(addr, dataSize)) {
+    memset(data, 0xff, dataSize);
+    return ERR_FAULT;
+  }
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+  status_t status;
+
+  status = FLASH_Read(&s_flashDriver, (uint32_t)addr, data, (uint32_t)dataSize);
+  if(status != kStatus_Success){
+    return ERR_FAULT;
+  }
+  return ERR_OK;
+#else
+  memcpy(data, addr, dataSize);
+  return ERR_OK;
+#endif
+}
+
+static uint8_t McuFlash_ProgramPage(void *addr, const void *data, size_t dataSize) {
 #if McuLib_CONFIG_CPU_IS_KINETIS
   status_t status;
   uint8_t res = ERR_OK;
@@ -112,8 +143,12 @@ uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
   status_t status;
   uint32_t failedAddress, failedData;
 
-  if ((dataSize%s_flashDriver.PFlashPageSize)!=0) { /* must be multiple of flash page size! */
-    McuLog_fatal("data size %08x must be aligned with of page size %08x", dataSize, s_flashDriver.PFlashPageSize);
+  if (((uint32_t)addr%s_flashDriver.PFlashPageSize) != 0) {
+    McuLog_fatal("addr %08x must be aligned to flash page size %08x", (uint32_t)addr, s_flashDriver.PFlashPageSize);
+    return ERR_FAILED;
+  }
+  if (dataSize!=s_flashDriver.PFlashPageSize) { /* must match flash page size! */
+    McuLog_fatal("data size %08x must match flash page size %08x", dataSize, s_flashDriver.PFlashPageSize);
     return ERR_FAILED;
   }
   /* erase first */
@@ -174,6 +209,71 @@ uint8_t McuFlash_ProgramFlash(void *addr, const void *data, size_t dataSize) {
   return ERR_FAILED;
 #endif /* McuLib_CONFIG_CPU_IS_KINETIS or McuLib_CONFIG_CPU_IS_LPC */
 }
+
+uint8_t McuFlash_Program(void *addr, const void *data, size_t dataSize) {
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+  if (((uint32_t)addr%McuFlash_CONFIG_FLASH_BLOCK_SIZE) != 0 || (dataSize!=McuFlash_CONFIG_FLASH_BLOCK_SIZE)) {
+    /* address and size not aligned to page boundaries: make backup into buffer */
+    uint8_t buffer[McuFlash_CONFIG_FLASH_BLOCK_SIZE];
+    uint8_t res;
+    size_t offset, remaining, size;
+    uint32_t pageAddr; /* address of page */
+
+    pageAddr = ((uint32_t)addr/McuFlash_CONFIG_FLASH_BLOCK_SIZE)*McuFlash_CONFIG_FLASH_BLOCK_SIZE;
+    offset = (uint32_t)addr%McuFlash_CONFIG_FLASH_BLOCK_SIZE; /* offset inside page */
+    remaining = dataSize;
+    while (remaining>0) {
+      res = McuFlash_Read((void*)pageAddr, buffer, sizeof(buffer)); /* read current flash content */
+      if (res!=ERR_OK) {
+        McuLog_fatal("failed reading from Flash");
+        return ERR_FAILED;
+      }
+      if (offset+remaining>McuFlash_CONFIG_FLASH_BLOCK_SIZE) {
+        size = McuFlash_CONFIG_FLASH_BLOCK_SIZE-offset; /* how much we can copy in this step */
+      } else {
+        size = remaining;
+      }
+      memcpy(buffer+offset, data, size); /*  merge original page with new data */
+      /* program new data/page */
+      res = McuFlash_ProgramPage((void*)pageAddr, buffer, sizeof(buffer));
+      if (res!=ERR_OK) {
+        McuLog_fatal("failed making backup from Flash");
+        return ERR_FAILED;
+      }
+      pageAddr += McuFlash_CONFIG_FLASH_BLOCK_SIZE;
+      offset = 0;
+      data += size;
+      remaining -= size;
+    } /* while */
+    return res;
+  } else { /* a full page to program */
+    return McuFlash_ProgramPage(addr, data, dataSize);
+  }
+#else
+  return McuFlash_ProgramPage(addr, data, dataSize);
+#endif
+}
+
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+uint8_t McuFlash_InitErase(void *addr, size_t nofBytes) {
+  /* LPC55Sxx specific: erases the memory, makes it inaccessible */
+  status_t status;
+
+  if ((nofBytes%McuFlash_CONFIG_FLASH_BLOCK_SIZE)!=0) { /* check if size is multiple of page size */
+    McuLog_fatal("wrong erase data size %d, expected multiple %d", nofBytes, McuFlash_CONFIG_FLASH_BLOCK_SIZE);
+    return ERR_FAILED;
+  }
+  for(int i=0; i<nofBytes/McuFlash_CONFIG_FLASH_BLOCK_SIZE; i++) { /* erase and program each page */
+    /* erase each page */
+    status = FLASH_Erase(&s_flashDriver, (uint32_t)addr+i*McuFlash_CONFIG_FLASH_BLOCK_SIZE, McuFlash_CONFIG_FLASH_BLOCK_SIZE, kFLASH_ApiEraseKey);
+    if (status!=kStatus_Success ) {
+      McuLog_fatal("erasing failed with error code %d", status);
+      return ERR_FAILED;
+    }
+  }
+  return ERR_OK;
+}
+#endif
 
 uint8_t McuFlash_Erase(void *addr, size_t nofBytes) {
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
@@ -266,11 +366,11 @@ uint8_t McuFlash_Erase(void *addr, size_t nofBytes) {
   uint8_t res;
 
   if ((nofBytes%McuFlash_CONFIG_FLASH_BLOCK_SIZE)!=0) { /* check if size is multiple of page size */
-    McuLog_fatal("wrong erase data size %d, expected %d", nofBytes, McuFlash_CONFIG_FLASH_BLOCK_SIZE);
+    McuLog_fatal("wrong erase data size %d, expected multiple of %d", nofBytes, McuFlash_CONFIG_FLASH_BLOCK_SIZE);
     return ERR_FAILED;
   }
   for(int i=0; i<nofBytes/McuFlash_CONFIG_FLASH_BLOCK_SIZE; i++) { /* erase and program each page */
-    res = McuFlash_ProgramFlash(addr, zeroBuffer, sizeof(zeroBuffer));
+    res = McuFlash_Program(addr+i*McuFlash_CONFIG_FLASH_BLOCK_SIZE, zeroBuffer, sizeof(zeroBuffer));
     if (res!=ERR_OK) {
       return res;
     }
@@ -287,6 +387,14 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   McuUtility_strcatNum16Hex(buf, sizeof(buf), McuFlash_CONFIG_FLASH_BLOCK_SIZE);
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
   McuShell_SendStatusStr((unsigned char*)"  block", buf, io->stdOut);
+
+
+  McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"addr 0x");
+  McuUtility_strcatNum32Hex(buf, sizeof(buf), McuFlash_RegisteredMemory.addr);
+  McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", size 0x");
+  McuUtility_strcatNum32Hex(buf, sizeof(buf), McuFlash_RegisteredMemory.size);
+  McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
+  McuShell_SendStatusStr((unsigned char*)"  registered", buf, io->stdOut);
   return ERR_OK;
 }
 
@@ -303,52 +411,72 @@ static uint8_t ReadData(void *hndl, uint32_t addr, uint8_t *buf, size_t bufSize)
 uint8_t McuFlash_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io) {
   const unsigned char *p;
   uint32_t addr32;
+  int32_t size;
 
   if (McuUtility_strcmp((char*)cmd, McuShell_CMD_HELP)==0 || McuUtility_strcmp((char*)cmd, "McuFlash help")==0) {
     McuShell_SendHelpStr((unsigned char*)"McuFlash", (const unsigned char*)"Group of flash ini commands\r\n", io->stdOut);
     McuShell_SendHelpStr((unsigned char*)"  help|status", (unsigned char*)"Print help or status information\r\n", io->stdOut);
-    McuShell_SendHelpStr((unsigned char*)"  dump 0x<start> 0x<end>", (unsigned char*)"Dump memory data\r\n", io->stdOut);
-    McuShell_SendHelpStr((unsigned char*)"  erase 0x<addr> <size>", (unsigned char*)"Erase memory block at address\r\n", io->stdOut);
+    McuShell_SendHelpStr((unsigned char*)"  dump <start> <size>", (unsigned char*)"Dump memory data\r\n", io->stdOut);
+    McuShell_SendHelpStr((unsigned char*)"  erase <addr> <size>", (unsigned char*)"Erase memory at address\r\n", io->stdOut);
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+    McuShell_SendHelpStr((unsigned char*)"  init <addr> <size>", (unsigned char*)"Initialize memory (erase only, no programming!)\r\n", io->stdOut);
+#endif
     *handled = TRUE;
     return ERR_OK;
   } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuFlash status")==0)) {
     *handled = TRUE;
     return PrintStatus(io);
   } else if (McuUtility_strncmp((char*)cmd, "McuFlash dump ", sizeof("McuFlash dump ")-1)==0) {
-    uint32_t end32;
-
     *handled = TRUE;
     p = cmd+sizeof("McuFlash dump ")-1;
-    if (McuUtility_ScanHex32uNumber(&p, &addr32)==ERR_OK) {
-      if (McuUtility_ScanHex32uNumber(&p, &end32)==ERR_OK && end32>=addr32) {
-        if (McuFlash_IsAccessible((void*)addr32, end32-addr32+1)) {
-          (void)McuShell_PrintMemory(NULL, addr32, end32, 4, 16, ReadData, io);
+    if (McuUtility_xatoi(&p, (int32_t*)&addr32)==ERR_OK) {
+      if (McuUtility_xatoi(&p, &size)==ERR_OK && size>0) {
+        if (McuFlash_IsAccessible((void*)addr32, size)) {
+          (void)McuShell_PrintMemory(NULL, addr32, addr32+size-1, 4, 16, ReadData, io);
+        } else {
+          McuShell_SendStr((unsigned char*)"*** memory not accessible\r\n", io->stdErr);
+          return ERR_FAILED;
         }
       } else {
-        McuShell_SendStr((unsigned char*)"**** wrong end address\r\n", io->stdErr);
+        McuShell_SendStr((unsigned char*)"*** wrong end address\r\n", io->stdErr);
         return ERR_FAILED;
       }
     } else {
-      McuShell_SendStr((unsigned char*)"**** wrong start address\r\n", io->stdErr);
+      McuShell_SendStr((unsigned char*)"*** wrong start address\r\n", io->stdErr);
       return ERR_FAILED;
     }
   } else if (McuUtility_strncmp((char*)cmd, "McuFlash erase ", sizeof("McuFlash erase ")-1)==0) {
-    int32_t size;
-
     *handled = TRUE;
     p = cmd+sizeof("McuFlash erase ")-1;
-    if (McuUtility_ScanHex32uNumber(&p, &addr32)==ERR_OK) {
+    if (McuUtility_xatoi(&p, (int32_t*)&addr32)==ERR_OK) {
       if ((addr32%McuFlash_CONFIG_FLASH_BLOCK_SIZE)!=0) {
-        McuShell_SendStr((unsigned char*)"**** address is not flash block aligned\r\n", io->stdErr);
+        McuShell_SendStr((unsigned char*)"*** address is not flash block aligned\r\n", io->stdErr);
         return ERR_FAILED;
       }
       if (McuUtility_xatoi(&p, &size)==ERR_OK) {
         return McuFlash_Erase((void*)addr32, size);
       } else {
-        McuShell_SendStr((unsigned char*)"**** failed scanning size\r\n", io->stdErr);
+        McuShell_SendStr((unsigned char*)"*** failed scanning size\r\n", io->stdErr);
         return ERR_FAILED;
       }
     }
+#if McuLib_CONFIG_CPU_IS_LPC55xx
+  } else if (McuUtility_strncmp((char*)cmd, "McuFlash init ", sizeof("McuFlash init ")-1)==0) {
+    *handled = TRUE;
+    p = cmd+sizeof("McuFlash init ")-1;
+    if (McuUtility_xatoi(&p, (int32_t*)&addr32)==ERR_OK) {
+      if ((addr32%McuFlash_CONFIG_FLASH_BLOCK_SIZE)!=0) {
+        McuShell_SendStr((unsigned char*)"*** address is not flash block aligned\r\n", io->stdErr);
+        return ERR_FAILED;
+      }
+      if (McuUtility_xatoi(&p, &size)==ERR_OK) {
+        return McuFlash_InitErase((void*)addr32, size);
+      } else {
+        McuShell_SendStr((unsigned char*)"*** failed scanning size\r\n", io->stdErr);
+        return ERR_FAILED;
+      }
+    }
+#endif
   }
   return ERR_OK;
 }

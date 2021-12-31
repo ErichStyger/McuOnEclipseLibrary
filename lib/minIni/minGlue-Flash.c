@@ -74,7 +74,7 @@ int ini_close(INI_FILETYPE *file) {
   file->isOpen = false;
   if (!file->isReadOnly  && !isTempFile((const char*)file->header->dataName)) { /* RAM data, and not temp file? */
     /* store data in FLASH */
-    if (McuFlash_ProgramFlash((void*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, file->header, McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE)!=ERR_OK) {
+    if (McuFlash_Program((void*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, file->header, McuMinINI_CONFIG_FLASH_NVM_MAX_DATA_SIZE)!=ERR_OK) {
       return 0; /* failed */
     }
   }
@@ -185,7 +185,7 @@ int ini_rename(const TCHAR *source, const TCHAR *dest) {
     }
     McuUtility_strcpy(hp->dataName, sizeof(hp->dataName), (unsigned char*)dest); /* rename file */
     /* store in flash */
-    if (McuFlash_ProgramFlash((void*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (unsigned char*)dataBuf, sizeof(dataBuf))!=ERR_OK) {
+    if (McuFlash_Program((void*)McuMinINI_CONFIG_FLASH_NVM_ADDR_START, (unsigned char*)dataBuf, sizeof(dataBuf))!=ERR_OK) {
       return 0; /* failed */
     }
     memset(dataBuf, 0, sizeof(dataBuf)); /* erase RAM file content */
