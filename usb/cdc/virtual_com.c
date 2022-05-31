@@ -433,7 +433,7 @@ usb_status_t USB_DeviceCdcVcomCallback(class_handle_t handle, uint32_t event, vo
             //  0: Deactivate carrier.
             //  1: Activate carrier.
             //  The device ignores the value of this bit when operating in full duplex mode.
-        #if PL_CONFIG_USE_ESP32
+        #if PL_CONFIG_USE_ESP32 && McuESP32_CONFIG_USE_USB_CDC
             McuESP32_UartState_Callback(acmInfo->uartState);
         #endif
         #if ENABLED_USB_CDC_LOGGING
