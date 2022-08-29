@@ -69,6 +69,12 @@ file(GLOB FILES
   FreeRTOS/Source/portable/MemMang/heap_useNewlib.c
   FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c
   
+  # littleFS
+  littleFS/lfs_util.c
+  littleFS/lfs.c
+  littleFS/McuLittleFS.c
+  littleFS/McuLittleFSBlockDevice.c
+  
   # MinINI
   minIni/McuMinINI.c
   minIni/McuFlash.c
