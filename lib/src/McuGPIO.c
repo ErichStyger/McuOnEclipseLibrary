@@ -493,28 +493,28 @@ void McuGPIO_GetPinStatusString(McuGPIO_Handle_t gpio, unsigned char *buf, size_
   if (McuGPIO_IsOutput(gpio)) {
     McuUtility_strcat(buf, bufSize, (unsigned char*)"Output");
   } else {
-    McuUtility_strcat(buf, bufSize, (unsigned char*)"Input");
+    McuUtility_strcat(buf, bufSize, (unsigned char*)"Input ");
   }
   if (McuGPIO_IsHigh(gpio)) {
-    McuUtility_strcat(buf, bufSize, (unsigned char*)", HIGH");
+    McuUtility_strcat(buf, bufSize, (unsigned char*)" HIGH");
   } else {
-    McuUtility_strcat(buf, bufSize, (unsigned char*)", LOW ");
+    McuUtility_strcat(buf, bufSize, (unsigned char*)" LOW ");
   }
 #if (McuLib_CONFIG_NXP_SDK_USED || McuLib_CONFIG_CPU_IS_STM32) && !McuLib_CONFIG_IS_KINETIS_KE
-  McuUtility_strcat(buf, bufSize, (unsigned char*)", gpio:0x");
+  McuUtility_strcat(buf, bufSize, (unsigned char*)" gpio:0x");
   McuUtility_strcatNum32Hex(buf, bufSize, (uint32_t)pin->hw.gpio); /* write address */
 #endif
 #if McuLib_CONFIG_CPU_IS_KINETIS
-  McuUtility_strcat(buf, bufSize, (unsigned char*)", port:0x");
+  McuUtility_strcat(buf, bufSize, (unsigned char*)" port:0x");
   McuUtility_strcatNum32Hex(buf, bufSize, (uint32_t)pin->hw.port); /* write address */
 #elif McuLib_CONFIG_CPU_IS_LPC /* all LPC, including M33 and M0+ */
-  McuUtility_strcat(buf, bufSize, (unsigned char*)", port:");
+  McuUtility_strcat(buf, bufSize, (unsigned char*)" port:");
   McuUtility_strcatNum32u(buf, bufSize, (uint32_t)pin->hw.port); /* write port number */
 #endif
-  McuUtility_strcat(buf, bufSize, (unsigned char*)", pin:");
+  McuUtility_strcat(buf, bufSize, (unsigned char*)" pin:");
   McuUtility_strcatNum32u(buf, bufSize, (uint32_t)pin->hw.pin); /* write pin number */
 #if McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CORTEX_M==0
-  McuUtility_strcat(buf, bufSize, (unsigned char*)", iocon:");
+  McuUtility_strcat(buf, bufSize, (unsigned char*)" iocon:");
   McuUtility_strcatNum32u(buf, bufSize, (uint32_t)pin->hw.iocon); /* write IOCON number */
 #endif
 }
