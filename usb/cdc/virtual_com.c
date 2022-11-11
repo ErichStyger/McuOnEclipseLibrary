@@ -9,7 +9,7 @@
 #include <stdlib.h>
 /*${standard_header_anchor}*/
 #include "fsl_device_registers.h"
-#include "fsl_debug_console.h"
+//#include "fsl_debug_console.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "board.h"
@@ -58,6 +58,7 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
 
 #if 1 /* << EST */
 #include "platform.h"
+#include "virtual_com_config.h"
 #if PL_CONFIG_USE_ESP32
   #include "McuESP32.h"
 #endif
@@ -70,7 +71,6 @@ usb_status_t USB_DeviceCallback(usb_device_handle handle, uint32_t event, void *
 
 #define ENABLED_USB_CDC_LOGGING  (0)
 
-#define USB_RB_SIZE  (256*DATA_BUFF_SIZE)  /* size of USB ring buffers */
 static McuRB_Handle_t usb_rxBuf, usb_txBuf;
 
 size_t USB_CdcGetFreeBytesInTxBuffer(void) {
@@ -658,7 +658,7 @@ static void UsbTask(void *pv) {
   #if USB_DEVICE_CONFIG_USE_TASK
     USB_DeviceTaskFn(s_cdcVcom.deviceHandle);
   #endif
-    vTaskDelay(pdMS_TO_TICKS(5));
+    vTaskDelay(pdMS_TO_TICKS(VIRTUAL_COM_CONFIG_TASK_DELAY_MS));
   }
 }
 #endif
@@ -710,15 +710,17 @@ void USB_APPInit(void)
 
     McuRB_GetDefaultconfig(&config);
     config.elementSize = 1;
-    config.nofElements = USB_RB_SIZE;
+    config.nofElements = VIRTUAL_COM_CONFIG_RX_RINGBUF_SIZE*DATA_BUFF_SIZE;
     usb_rxBuf = McuRB_InitRB(&config);
+
+    config.nofElements = VIRTUAL_COM_CONFIG_TX_RINGBUF_SIZE*DATA_BUFF_SIZE;
     usb_txBuf = McuRB_InitRB(&config);
     if (xTaskCreate(
         UsbTask,  /* pointer to the task */
         "Usb", /* task name for kernel awareness debugging */
-        600/sizeof(StackType_t), /* task stack size */
+        VIRTUAL_COM_CONFIG_TASK_STACK_SIZE, /* task stack size */
         (void*)NULL, /* optional task startup argument */
-        tskIDLE_PRIORITY+5,  /* initial priority */
+        VIRTUAL_COM_CONFIG_TASK_PRIORITY,  /* initial priority */
         (TaskHandle_t*)NULL /* optional task handle to create */
       ) != pdPASS) {
        for(;;){} /* error! probably out of memory */
