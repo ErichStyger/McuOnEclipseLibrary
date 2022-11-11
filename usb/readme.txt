@@ -8,6 +8,8 @@ The follwing USB stack sources are taken from the MCUXpresso SDK, with following
 
 How to integrate into application
 ---------------------------------
+- Enable USB clock (usually to 48 MHz) in clock configuration
+
 - add following to the compiler defines:
 USB_STACK_BM
 
