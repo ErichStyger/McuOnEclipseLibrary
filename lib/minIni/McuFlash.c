@@ -458,19 +458,19 @@ static uint8_t PrintStatus(const McuShell_StdIOType *io) {
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", block 0x");
   McuUtility_strcatNum32Hex(buf, sizeof(buf), FLASH_BLOCK_SIZE);
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
-  McuShell_SendStatusStr((unsigned char*)"  RP240 Flash", buf, io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"  Flash", buf, io->stdOut);
 
   McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"0x");
   McuUtility_strcatNum32Hex(buf, sizeof(buf), PICO_FLASH_SIZE_BYTES);
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", ");
   McuUtility_strcatNum32u(buf, sizeof(buf), PICO_FLASH_SIZE_BYTES/(1024*1024));
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)" MBytes\r\n");
-  McuShell_SendStatusStr((unsigned char*)"  RP240 size", buf, io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"  Size", buf, io->stdOut);
 
   McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"base 0x");
   McuUtility_strcatNum32Hex(buf, sizeof(buf), XIP_BASE);
   McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
-  McuShell_SendStatusStr((unsigned char*)"  RP240 XIP", buf, io->stdOut);
+  McuShell_SendStatusStr((unsigned char*)"  XIP", buf, io->stdOut);
 #endif
 
   McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"addr 0x");
