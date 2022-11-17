@@ -55,9 +55,11 @@ file(GLOB FILES
   src/McuTimeout.c
   src/McuTrigger.c
   src/McuUart485.c
+  src/McuULN2003.c
   src/McuUtility.c
-  src/McuW28Q128.c
+  src/McuW25Q128.c
   src/McuWait.c
+  src/McuX12_017.c
   src/McuXFormat.c
   
   # FreeRTOS
