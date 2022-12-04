@@ -64,7 +64,7 @@ file(GLOB FILES
   src/McuXFormat.c
   
   # FreeRTOS
-  FreeRTOS/FreeRTOShooks.c
+  # FreeRTOS/FreeRTOShooks.c  # You need to have this one part of the application sources
   FreeRTOS/Source/croutine.c
   FreeRTOS/Source/event_groups.c
   FreeRTOS/Source/list.c
