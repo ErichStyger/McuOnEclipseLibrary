@@ -695,7 +695,7 @@ void USB_APPInit(void)
     }
     else
     {
-        usb_echo("USB device CDC virtual com demo\r\n");
+        //usb_echo("USB device CDC virtual com demo\r\n");
         s_cdcVcom.cdcAcmHandle = s_cdcAcmConfigList.config->classHandle;
     }
 
