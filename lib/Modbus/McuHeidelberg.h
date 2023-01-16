@@ -4,9 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-
 #ifndef MODBUS_MCUHEIDELBERG_H_
 #define MODBUS_MCUHEIDELBERG_H_
+
+#include "McuShell.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef enum McuHeidelberg_Event_e {
   McuHeidelberg_Event_HW_State_Changed,           /* hardware charger state has changed */
@@ -58,11 +61,14 @@ McuHeidelbergChargerState_e McuHeidelberg_GetHWChargerState(void);
 const unsigned char *McuHeidelberg_GetShortHWChargerStateString(McuHeidelbergChargerState_e state);
 
 uint32_t McuHeidelberg_GetSolarPowerWatt(void);
+void McuHeidelberg_SetSolarPowerWatt(uint32_t powerW);
+
 uint32_t McuHeidelberg_GetSitePowerWatt(void);
+void McuHeidelberg_SetSitePowerWatt(uint32_t powerW);
+
 uint32_t McuHeidelberg_GetMaxCarPower(void);
 uint32_t McuHeidelberg_GetCurrChargerPower(void);
 
-#include "McuShell.h"
 uint8_t McuHeidelberg_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io);
 
 void McuHeidelberg_Deinit(void);
