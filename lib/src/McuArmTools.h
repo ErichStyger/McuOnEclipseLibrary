@@ -30,10 +30,10 @@
 **         EnableCycleCounter      - void McuArmTools_EnableCycleCounter(void);
 **         DisableCycleCounter     - void McuArmTools_DisableCycleCounter(void);
 **         GetCycleCounter         - uint32_t McuArmTools_GetCycleCounter(void);
-**         GetUsedMainStackSpace   - dword McuArmTools_GetUsedMainStackSpace(void);
-**         GetUnusedMainStackSpace - dword McuArmTools_GetUnusedMainStackSpace(void);
+**         GetUsedMainStackSpace   - uint32_t McuArmTools_GetUsedMainStackSpace(void);
+**         GetUnusedMainStackSpace - uint32_t McuArmTools_GetUnusedMainStackSpace(void);
 **         FillMainStackSpace      - void McuArmTools_FillMainStackSpace(void);
-**         GetLinkerMainStackSize  - dword McuArmTools_GetLinkerMainStackSize(void);
+**         GetLinkerMainStackSize  - uint32_t McuArmTools_GetLinkerMainStackSize(void);
 **         GetLinkerMainStackTop   - McuArmTools_uint32_t_Ptr McuArmTools_GetLinkerMainStackTop(void);
 **         GetLinkerMainStackBase  - McuArmTools_uint32_t_Ptr McuArmTools_GetLinkerMainStackBase(void);
 **         ParseCommand            - uint8_t McuArmTools_ParseCommand(const unsigned char* cmd, bool *handled,...
@@ -391,7 +391,7 @@ void McuArmTools_Init(void);
 ** ===================================================================
 */
 
-dword McuArmTools_GetUsedMainStackSpace(void);
+uint32_t McuArmTools_GetUsedMainStackSpace(void);
 /*
 ** ===================================================================
 **     Method      :  GetUsedMainStackSpace (component KinetisTools)
@@ -405,7 +405,7 @@ dword McuArmTools_GetUsedMainStackSpace(void);
 ** ===================================================================
 */
 
-dword McuArmTools_GetUnusedMainStackSpace(void);
+uint32_t McuArmTools_GetUnusedMainStackSpace(void);
 /*
 ** ===================================================================
 **     Method      :  GetUnusedMainStackSpace (component KinetisTools)
@@ -432,7 +432,7 @@ void McuArmTools_FillMainStackSpace(void);
 ** ===================================================================
 */
 
-dword McuArmTools_GetLinkerMainStackSize(void);
+uint32_t McuArmTools_GetLinkerMainStackSize(void);
 /*
 ** ===================================================================
 **     Method      :  GetLinkerMainStackSize (component KinetisTools)

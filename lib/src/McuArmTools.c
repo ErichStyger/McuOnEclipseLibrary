@@ -30,10 +30,10 @@
 **         EnableCycleCounter      - void McuArmTools_EnableCycleCounter(void);
 **         DisableCycleCounter     - void McuArmTools_DisableCycleCounter(void);
 **         GetCycleCounter         - uint32_t McuArmTools_GetCycleCounter(void);
-**         GetUsedMainStackSpace   - dword McuArmTools_GetUsedMainStackSpace(void);
-**         GetUnusedMainStackSpace - dword McuArmTools_GetUnusedMainStackSpace(void);
+**         GetUsedMainStackSpace   - uint32_t McuArmTools_GetUsedMainStackSpace(void);
+**         GetUnusedMainStackSpace - uint32_t McuArmTools_GetUnusedMainStackSpace(void);
 **         FillMainStackSpace      - void McuArmTools_FillMainStackSpace(void);
-**         GetLinkerMainStackSize  - dword McuArmTools_GetLinkerMainStackSize(void);
+**         GetLinkerMainStackSize  - uint32_t McuArmTools_GetLinkerMainStackSize(void);
 **         GetLinkerMainStackTop   - McuArmTools_uint32_t_Ptr McuArmTools_GetLinkerMainStackTop(void);
 **         GetLinkerMainStackBase  - McuArmTools_uint32_t_Ptr McuArmTools_GetLinkerMainStackBase(void);
 **         ParseCommand            - uint8_t McuArmTools_ParseCommand(const unsigned char* cmd, bool *handled,...
@@ -859,7 +859,7 @@ void McuArmTools_Init(void)
  * \brief Returns the used main stack space, based on the overwritten checking pattern.
  * \return Number of used main stack bytes
  */
-dword McuArmTools_GetUsedMainStackSpace(void)
+uint32_t McuArmTools_GetUsedMainStackSpace(void)
 {
   return McuArmTools_GetLinkerMainStackSize()-McuArmTools_GetUnusedMainStackSpace();
 }
@@ -880,7 +880,7 @@ dword McuArmTools_GetUsedMainStackSpace(void)
  * \brief Calculates the unused stack space, based on the checking pattern.
  * \return Number of unused main stack space.
  */
-dword McuArmTools_GetUnusedMainStackSpace(void)
+uint32_t McuArmTools_GetUnusedMainStackSpace(void)
 {
   uint32_t unused = 0; /* number of unused bytes */
   uint32_t *p = (uint32_t*)&McuArmTools_CONFIG_LINKER_SYMBOL_STACK_BASE;
@@ -934,7 +934,7 @@ void McuArmTools_FillMainStackSpace(void)
  * \brief Returns the size of the main (MSP) stack size, using linker symbols for top (higher address) and base (lower address).
  * \return Number of bytes allocated by the linker for the stack
  */
-dword McuArmTools_GetLinkerMainStackSize(void)
+uint32_t McuArmTools_GetLinkerMainStackSize(void)
 {
   return (uint32_t)&McuArmTools_CONFIG_LINKER_SYMBOL_STACK_TOP - (uint32_t)&McuArmTools_CONFIG_LINKER_SYMBOL_STACK_BASE;
 }
