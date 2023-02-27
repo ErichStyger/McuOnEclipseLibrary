@@ -26,6 +26,14 @@ extern McuShell_ConstStdIOType McuSemiHost_stdio;
 McuShell_ConstStdIOTypePtr McuSemiHost_GetStdio(void);
 
 /*!
+ * \brief Write a zero byte terminated character array (string) to stdout
+ * \param str String, zero byte terminated
+ * \return 0: ok, -1 error
+ */
+int McuSemihost_WriteString(const unsigned char *str);
+
+
+/*!
  * \brief Sending a character to the SWO/ITM console
  * \param ch Character to send
  */
