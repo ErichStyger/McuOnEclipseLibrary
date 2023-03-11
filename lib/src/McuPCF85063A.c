@@ -595,11 +595,32 @@ static uint8_t PrintStatus(McuShell_ConstStdIOType *io) {
   if (res==ERR_OK) {
     McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"0x");
     McuUtility_strcatNum8Hex(buf, sizeof(buf), data);
+    if (data&(1<<0)) { /* CAP_SEL */
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", 12.5pF");
+    } else {
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", 7pF");
+    }
     if (data&(1<<1)) { /* 12_24 */
       McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", 12h");
     } else {
       McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", 24h");
     }
+    if (data&(1<<3)) { /* CIE: correction interrupt enable */
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", CIE off");
+    } else {
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", CIE on");
+    }
+    if (data&(1<<5)) { /* STOP*/
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", RCT stopped");
+    } else {
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", RTC runs");
+    }
+    if (data&(1<<7)) { /* EXT_TEST */
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", test mode");
+    } else {
+      McuUtility_strcat(buf, sizeof(buf), (unsigned char*)", normal mode");
+    }
+
     McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
   } else {
     McuUtility_strcpy(buf, sizeof(buf), (unsigned char*)"ERROR\r\n");
