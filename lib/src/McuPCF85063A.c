@@ -381,7 +381,7 @@ uint8_t McuPCF85063A_GetDate(DATEREC *date) {
   if (McuPCF85063A_ReadTimeDate(&ttime, &tdate)!=ERR_OK) {
     return ERR_FAILED;
   }
-  date->Year = (uint16_t)(tdate.year+2000);
+  date->Year = (uint16_t)(tdate.year+2000); /* assume we are after the year 2000 */
   date->Month = tdate.month;
   date->Day = tdate.day;
   return ERR_OK;
@@ -390,7 +390,11 @@ uint8_t McuPCF85063A_GetDate(DATEREC *date) {
 uint8_t McuPCF85063A_SetDateInfo(uint16_t Year, uint8_t Month, uint8_t Day) {
   McuPCF85063A_TDATE tdate;
 
-  tdate.year = (uint8_t)(Year-2000);
+  if (Year>=2000) {
+    tdate.year = (uint8_t)(Year-2000);
+  } else if (Year>=1900) {
+    tdate.year = (uint8_t)(Year-1900);
+  }
   tdate.month = Month;
   tdate.day = Day;
   tdate.dayOfWeek = McuUtility_WeekDay(Year, Month, Day);
@@ -442,7 +446,7 @@ static uint8_t StrCatHWTimeDate(uint8_t *buf, size_t bufSize) {
   McuUtility_chcat(buf, bufSize, '.');
   McuUtility_strcatNum16uFormatted(buf, bufSize, tdate.month, '0', 2);
   McuUtility_chcat(buf, bufSize, '.');
-  McuUtility_strcatNum16u(buf, bufSize, (uint16_t)tdate.year+2000);
+  McuUtility_strcatNum16u(buf, bufSize, (uint16_t)tdate.year);
   McuUtility_strcat(buf, bufSize, (unsigned char*)", ");
   McuUtility_strcatNum16sFormatted(buf, bufSize, ttime.hour, '0', 2);
   McuUtility_chcat(buf, bufSize, ':');
