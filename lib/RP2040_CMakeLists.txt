@@ -2,6 +2,8 @@
 # You can use a GLOB function as shown here, or explicitly mention the specific files
 #file(GLOB FILES *.c *.h)
 
+add_subdirectory(LittlevGL)
+
 file(GLOB FILES
   fonts/*.c
 
@@ -88,16 +90,7 @@ file(GLOB FILES
   littleFS/lfs.c
   littleFS/McuLittleFS.c
   littleFS/McuLittleFSBlockDevice.c
-  
-  # lvgl
-  LittlevGL/lvgl/src/lv_core/*.c
-  LittlevGL/lvgl/src/lv_draw/*.c
-  LittlevGL/lvgl/src/lv_font/*.c
-  LittlevGL/lvgl/src/lv_hal/*.c
-  LittlevGL/lvgl/src/lv_misc/*.c
-  LittlevGL/lvgl/src/lv_objx/*.c
-  LittlevGL/lvgl/src/lv_themes/*.c
-  
+   
   # MinINI
   minIni/McuMinINI.c
   minIni/McuFlash.c
@@ -114,13 +107,14 @@ file(GLOB FILES
 # add_compile_options(-include "../src/IncludeMcuLibConfig.h")
 
 # add_library: With this declaration, you express the intent to build a library. 
-# The first argument, here its pico-shift-register, is the name of the library, 
+# The first argument, is the name of the library, 
 # the second argument are the files that will be compiled to create your library.
 add_library(McuLib ${FILES})
 
 # target_link_libraries: If you link with other libraries, list them here
 target_link_libraries(
-  McuLib 
+  McuLib
+  lvglLib
   pico_stdlib
   pico_unique_id
   hardware_pio 
