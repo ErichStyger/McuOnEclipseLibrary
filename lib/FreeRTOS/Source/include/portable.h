@@ -172,6 +172,7 @@ void vPortGetHeapStats( HeapStats_t * pxHeapStats );
 /*
  * Map to the memory management routines required for the port.
  */
+void *pvPortMallocExt(size_t xWantedSize, unsigned int heapTag) PRIVILEGED_FUNCTION; /* << EST: used with SystemView */
 void * pvPortMalloc( size_t xSize ) PRIVILEGED_FUNCTION;
 void * pvPortCalloc( size_t xNum,
                      size_t xSize ) PRIVILEGED_FUNCTION;

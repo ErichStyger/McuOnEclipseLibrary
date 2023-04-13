@@ -49,7 +49,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
-#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS /* << EST */
+#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS && configUSE_SEGGER_SYSTEM_VIEWER_HEAP_EVENTS /* << EST */
   #include "SEGGER_SYSVIEW_Conf.h"
   #include "SEGGER_SYSVIEW.h"
 #endif
@@ -281,9 +281,12 @@ void *pvPortMallocExt(size_t xWantedSize, unsigned int heapTag) /* << EST */
         {
             mtCOVERAGE_TEST_MARKER();
         }
-#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS /* << EST */
-        //SEGGER_SYSVIEW_HeapAlloc(ucHeap, pvReturn, xWantedSize);
-        SEGGER_SYSVIEW_HeapAllocEx(ucHeap, pvReturn, xWantedSize, heapTag);
+#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS && configUSE_SEGGER_SYSTEM_VIEWER_HEAP_EVENTS /* << EST */
+        if (heapTag!=-1) {
+            SEGGER_SYSVIEW_HeapAllocEx(ucHeap, pvReturn, xWantedSize, heapTag);
+        } else {
+            SEGGER_SYSVIEW_HeapAlloc(ucHeap, pvReturn, xWantedSize);
+        }
 #else
         traceMALLOC( pvReturn, xWantedSize );
 #endif
@@ -314,7 +317,7 @@ void *pvPortMallocExt(size_t xWantedSize, unsigned int heapTag) /* << EST */
 /*-----------------------------------------------------------*/
 
 void *pvPortMalloc(size_t xWantedSize) { /* << EST */
-  return pvPortMallocExt(xWantedSize, 0);
+  return pvPortMallocExt(xWantedSize, -1);
 }
 /*-----------------------------------------------------------*/
 
@@ -352,7 +355,7 @@ void vPortFree( void * pv )
                 {
                     /* Add this block to the list of free blocks. */
                     xFreeBytesRemaining += pxLink->xBlockSize;
-#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS /* << EST */
+#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS && configUSE_SEGGER_SYSTEM_VIEWER_HEAP_EVENTS /* << EST */
                     SEGGER_SYSVIEW_HeapFree(ucHeap, pv);
 #else
                     traceFREE( pv, pxLink->xBlockSize );
@@ -454,7 +457,7 @@ static void prvHeapInit( void ) /* PRIVILEGED_FUNCTION */
     /* Only one block exists - and it covers the entire usable heap space. */
     xMinimumEverFreeBytesRemaining = pxFirstFreeBlock->xBlockSize;
     xFreeBytesRemaining = pxFirstFreeBlock->xBlockSize;
-#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS /* << EST */
+#if configUSE_SEGGER_SYSTEM_VIEWER_HOOKS && configUSE_SEGGER_SYSTEM_VIEWER_HEAP_EVENTS /* << EST */
   SEGGER_SYSVIEW_HeapDefine(ucHeap, ucHeap, sizeof(ucHeap), sizeof(BlockLink_t));
   SEGGER_SYSVIEW_NameResource((uint32_t)ucHeap, "heap4");
 #endif
