@@ -47,11 +47,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>SystemView</name>
-			<type>2</type>
-			<locationURI>PARENT-7-PROJECT_LOC/Program%20Files/SEGGER/SystemView</locationURI>
-		</link>
-		<link>
 			<name>lib</name>
 			<type>2</type>
 			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
