@@ -20,7 +20,7 @@
 
 #if !McuUart485_CONFIG_USE_HW_OE_RTS
 
-static McuGPIO_Handle_t RS485_TxEn;
+static McuGPIO_Handle_t RS485_TxEn; /* LOW: Rx, HIGH: Tx */
 
 void McuUart485_GPIO_RxEnable(void) {
   McuGPIO_SetLow(RS485_TxEn);
@@ -135,10 +135,6 @@ static void rs485uart_task(void *arg) {
   bool responseLine = false;
   BaseType_t res;
 
-  if (data==NULL) {
-    McuLog_fatal("Allocating UART buffer failed.\r\n");
-    for(;;) {}
-  }
   McuLog_trace("UART start receive loop.\r\n");
   for(;;) {
     /* Read data from UART */
