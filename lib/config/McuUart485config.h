@@ -54,6 +54,31 @@ extern uint8_t McuUart485_CONFIG_LOGGER_CALLBACK_NAME(uint8_t ch); /* prototype 
   #define McuUart485_CONFIG_UART_GET_CLOCK_FREQ_SELECT    kCLOCK_MainClk
   #define McuUart485_CONFIG_UART_IRQ_HANDLER              USART1_IRQHandler
   #define McuUart485_CONFIG_CLEAR_STATUS_FLAGS            USART_ClearStatusFlags
+
+#elif McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC55S69
+  /* using FlexComm1, on LPC55S69-EVK this is on pin 40 (Rx, FC1_RXD_SDA_MOSI_DATA, PIO1_10) and pin 93 (Rx, FC1_TXD_SCL_MISO_WS, PIO1_11) */
+  #include "fsl_usart.h"
+
+  #ifndef McuUart485_CONFIG_UART_PARITY
+    #define McuUart485_CONFIG_UART_PARITY                 kUSART_ParityDisabled /* or kUSART_ParityEven or kUSART_ParityOdd */
+  #endif
+
+  #define McuUart485_CONFIG_UART_DEVICE                   USART1
+  #define McuUart485_CONFIG_UART_SET_UART_CLOCK()         CLOCK_AttachClk(kFRO12M_to_FLEXCOMM1)
+  #define McuUart485_CONFIG_UART_WRITE_BLOCKING           USART_WriteBlocking
+  #define McuUart485_CONFIG_UART_GET_FLAGS                USART_GetStatusFlags
+  #define McuUart485_CONFIG_UART_HW_RX_READY_FLAGS        (kUSART_RxFifoNotEmptyFlag | kUSART_RxError)
+  #define McuUart485_CONFIG_UART_READ_BYTE                USART_ReadByte
+  #define McuUart485_CONFIG_UART_CONFIG_STRUCT            usart_config_t
+  #define McuUart485_CONFIG_UART_GET_DEFAULT_CONFIG       USART_GetDefaultConfig
+  #define McuUart485_CONFIG_UART_ENABLE_INTERRUPTS        USART_EnableInterrupts
+  #define McuUart485_CONFIG_UART_ENABLE_INTERRUPT_FLAGS   (kUSART_RxLevelInterruptEnable | kUSART_RxErrorInterruptEnable)
+  #define McuUart485_CONFIG_UART_IRQ_NUMBER               FLEXCOMM1_IRQn
+  #define McuUart485_CONFIG_UART_INIT                     USART_Init
+  #define McuUart485_CONFIG_UART_GET_CLOCK_FREQ_SELECT    kCLOCK_Fro12M
+  #define McuUart485_CONFIG_UART_IRQ_HANDLER              FLEXCOMM1_IRQHandler
+  #define McuUart485_CONFIG_CLEAR_STATUS_FLAGS            USART_ClearStatusFlags
+
 #elif McuLib_CONFIG_CPU_IS_KINETIS
   #ifndef McuUart485_CONFIG_UART_PARITY
     #define McuUart485_CONFIG_UART_PARITY                 kUART_ParityDisabled /* or kUART_ParityEven or kUART_ParityOdd */
@@ -183,10 +208,14 @@ extern uint8_t McuUart485_CONFIG_LOGGER_CALLBACK_NAME(uint8_t ch); /* prototype 
 #endif
 
 #ifndef McuUart485_CONFIG_USE_HW_OE_RTS
-  #if McuLib_CONFIG_CPU_IS_KINETIS || (McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845)
+  #if McuLib_CONFIG_CPU_IS_KINETIS
     #define McuUart485_CONFIG_USE_HW_OE_RTS  (1)  /* 1: Use e.g. on LPC845 OESEL (Output Enable Selection) feature. Note that the pin has to be configured in the PinMuxing as RTS! */
   #elif McuLib_CONFIG_CPU_IS_ESP32
     #define McuUart485_CONFIG_USE_HW_OE_RTS  (1)  /* on ESP32, the transceiver is controlled by the UART directly with the RTS pin */
+  #elif McuLib_CONFIG_CPU_IS_LPC && McuLib_CONFIG_CPU_VARIANT==McuLib_CONFIG_CPU_VARIANT_NXP_LPC845
+    #define McuUart485_CONFIG_USE_HW_OE_RTS  (1)  /* 1: Use e.g. on LPC845 OESEL (Output Enable Selection) feature. Note that the pin has to be configured in the PinMuxing as RTS! */
+  #elif McuLib_CONFIG_CPU_IS_LPC55xx
+    #define McuUart485_CONFIG_USE_HW_OE_RTS  (0)  /* if using the RTS function of the UART or not */
   #elif McuLib_CONFIG_CPU_IS_RPxxxx
     #define McuUart485_CONFIG_USE_HW_OE_RTS  (0)  /* on RP2040, need to control RE/DE pin manually */
   #endif
@@ -203,6 +232,17 @@ extern uint8_t McuUart485_CONFIG_LOGGER_CALLBACK_NAME(uint8_t ch); /* prototype 
     #endif
     #ifndef McuUart485_CONFIG_TX_EN_PIN
       #define McuUart485_CONFIG_TX_EN_PIN        2U
+    #endif
+  #elif McuLib_CONFIG_CPU_IS_LPC55xx
+    /* default: pin 92 on LPC55S69-EVK, routed as FC1_I2C_SCL */
+    #ifndef McuUart485_CONFIG_TX_EN_GPIO
+      #define McuUart485_CONFIG_TX_EN_GPIO       GPIO
+    #endif
+    #ifndef McuUart485_CONFIG_TX_EN_PORT
+      #define McuUart485_CONFIG_TX_EN_PORT       0
+    #endif
+    #ifndef McuUart485_CONFIG_TX_EN_PIN
+      #define McuUart485_CONFIG_TX_EN_PIN        14U
     #endif
   #elif McuLib_CONFIG_CPU_IS_ESP32 /* default for ESP32 */
     #ifndef McuUart485_CONFIG_RE_PIN
