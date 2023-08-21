@@ -7,7 +7,7 @@ elseif ( MCULIB_TARGET STREQUAL "MCUXPRESSO" )
     INCLUDE (MCUXpresso_CMakeLists.txt)
 else ()
     message(STATUS "McuLib for ESP32")
-    # Epressif IDF CMake files are special: cannot include sub file here.
+    # Espressif IDF CMake files are special: cannot include sub file here.
     idf_component_register(
           SRCS 
               "fonts/McuFontCour08Bold.c"
