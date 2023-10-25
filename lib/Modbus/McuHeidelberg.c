@@ -686,7 +686,7 @@ static void wallboxTask(void *pv) {
 
   McuHeidelbergInfo.isActive = false;
   McuHeidelbergInfo.state = Wallbox_TaskState_None;
-  McuHeidelbergInfo.userChargingMode = McuHeidelberg_CONFIG_DEFAULT_CHARING_MODE;
+  McuHeidelbergInfo.userChargingMode = McuHeidelberg_CONFIG_DEFAULT_CHARGING_MODE;
 #if McuHeidelberg_CONFIG_USE_MOCK_WALLBOX
   mock.hwChargerState = McuHeidelberg_ChargerState_A1;
 #endif

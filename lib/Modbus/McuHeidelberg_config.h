@@ -27,8 +27,8 @@
     /*! If non-zero, use this value as the site base power */
 #endif
 
-#ifndef McuHeidelberg_CONFIG_DEFAULT_CHARING_MODE
-  #define McuHeidelberg_CONFIG_DEFAULT_CHARING_MODE    McuHeidelberg_User_ChargingMode_SlowPlusPV
+#ifndef McuHeidelberg_CONFIG_DEFAULT_CHARGING_MODE
+  #define McuHeidelberg_CONFIG_DEFAULT_CHARGING_MODE    McuHeidelberg_User_ChargingMode_SlowPlusPV
     /*!< one of McuHeidelberg_UserChargingMode_e, used at startup */
 #endif
 
