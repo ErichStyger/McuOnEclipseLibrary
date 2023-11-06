@@ -7,7 +7,6 @@
 #include "McuRdimon.h"
 
 #if McuRdimon_CONFIG_IS_ENABLED
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/fcntl.h>
@@ -53,9 +52,6 @@ static int monitor_stdin;
 static int monitor_stdout;
 static int monitor_stderr;
 
-static int supports_ext_exit_extended = -1;
-static int supports_ext_stdout_stderr = -1;
-
 /* Return a pointer to the structure associated with
    the user file descriptor fd. */ 
 static struct fdent*findslot (int fd) {
@@ -94,14 +90,6 @@ static int get_errno (void) {
 /* Set errno and return result. */
 static int error (int result) {
   errno = get_errno ();
-  return result;
-}
-
-/* Check the return and set errno appropriately. */
-static int checkerror (int result) {
-  if (result == -1) {
-    return error (-1);
-  }
   return result;
 }
 
@@ -331,6 +319,9 @@ int __attribute__((weak)) _stat (const char *fname, struct stat *st) {
   if ((fd = _open (fname, O_RDONLY)) == -1) {
     return -1;
   }
+  #ifndef S_IREAD /* define locally, e.g. because __BSD_VISIBLE might not be set to 1 */
+    #define	S_IREAD		0000400	/* read permission, owner */
+  #endif
   st->st_mode |= S_IFREG | S_IREAD;
   res = _swistat (fd, st);
   /* Not interested in the error.  */
