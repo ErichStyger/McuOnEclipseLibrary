@@ -219,7 +219,7 @@ int __attribute__((weak)) _write (int fd, const void * ptr, size_t len) {
   return (len - res);
 }
 
-int _swiopen (const char * path, int flags) {
+int _swiopen (const char *path, int flags) {
   int aflags = 0, fh;
  
   int fd = newslot ();
@@ -256,7 +256,7 @@ int _swiopen (const char * path, int flags) {
     aflags &= ~SYS_FILE_MODE_WRITE; /* Can't ask for w AND a; means just 'a'.  */
     aflags |= SYS_FILE_MODE_APPEND;
   }
-  fh = McuSemihost_SysFileOpen(path, aflags);
+  fh = McuSemihost_SysFileOpen((const unsigned char*)path, aflags);
   /* Return a user file descriptor or an error. */
   if (fh >= 0) {
     openfiles[fd].handle = fh;
