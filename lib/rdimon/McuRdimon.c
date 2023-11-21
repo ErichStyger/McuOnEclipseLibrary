@@ -1,3 +1,8 @@
+/*!
+** \file McuRdimon.c
+** \brief Implementation of the Remote Debugger Interface.
+*/         
+
 /* Support files for GNU libc.
    Implementation has been used from 
    gcc-arm-none-eabi-10.3-2021.10-src\gcc-arm-none-eabi-10.3-2021.10\src\newlib\libgloss\arm\syscalls.c
@@ -332,7 +337,7 @@ int __attribute__((weak)) _stat (const char *fname, struct stat *st) {
 int _unlink (const char *path) {
 #if McuSemihost_CONFIG_HAS_SYS_REMOVE
   int res;
-  res = McuSemihost_SysFileRemove(path);
+  res = McuSemihost_SysFileRemove((const unsigned char*)path);
   if (res == -1) {
     return error (res);
   }
