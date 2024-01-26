@@ -320,7 +320,7 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
     __asm void vPortClearInterruptMask(uint32_t ulNewMask);
 
     #define portSET_INTERRUPT_MASK()            ulPortSetInterruptMask()
-    #define portCLEAR_INTERRUPT_MASK()          vPortClearInterruptMask(0)
+    #define portCLEAR_INTERRUPT_MASK(x)          vPortClearInterruptMask(x)
   #elif (configCOMPILER==configCOMPILER_ARM_GCC)
     extern void vPortEnterCritical( void );
     extern void vPortExitCritical( void );
@@ -336,18 +336,18 @@ extern void vPortClearInterruptMaskFromISR(unsigned portBASE_TYPE);
     void vPortSetInterruptMask(void); /* prototype, implemented in portasm.s */
     void vPortClearInterruptMask(void); /* prototype, implemented in portasm.s */
     #define portSET_INTERRUPT_MASK()    vPortSetInterruptMask()
-    #define portCLEAR_INTERRUPT_MASK()  vPortClearInterruptMask()
+    #define portCLEAR_INTERRUPT_MASK(x)  vPortClearInterruptMask(x)
   #else
     #error "unknown compiler?"
   #endif
 #elif configCPU_FAMILY_IS_ARM_M0(configCPU_FAMILY) /* Cortex-M0+ */
   #if configCOMPILER==configCOMPILER_ARM_KEIL
     #define portSET_INTERRUPT_MASK()              __disable_irq()
-    #define portCLEAR_INTERRUPT_MASK()            __enable_irq()
+    #define portCLEAR_INTERRUPT_MASK(x)            __enable_irq()
   #else /* IAR, CW ARM or GNU ARM gcc */
     /* Critical section management. */
     #define portSET_INTERRUPT_MASK()              __asm volatile("cpsid i")
-    #define portCLEAR_INTERRUPT_MASK()            __asm volatile("cpsie i")
+    #define portCLEAR_INTERRUPT_MASK(x)           __asm volatile("cpsie i")
     extern void vPortEnterCritical(void);
     extern void vPortExitCritical(void);
     #define portSET_INTERRUPT_MASK_FROM_ISR()     0;portSET_INTERRUPT_MASK()
