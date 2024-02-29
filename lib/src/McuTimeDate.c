@@ -985,7 +985,7 @@ uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date)
   DATEREC d;
   uint8_t res;
 
-  if (Time!=NULL) {
+  if (time!=NULL) {
     res = RTC1_GetTime(&t); /* get information from HW RTC */
     if (res!=ERR_OK) {
       return res;
