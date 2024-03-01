@@ -112,6 +112,10 @@
   #include McuTimeDate_CONFIG_EXT_RTC_HEADER_FILE_NAME /* header file for the external RTC */
 #endif
 
+#if McuLib_CONFIG_NXP_SDK_USED
+#include "peripherals.h"
+#endif
+
 
 #if McuTimeDate_TICK_TIME_MS==0
   #error "Tick period cannot be zero!"
@@ -936,6 +940,23 @@ uint8_t McuTimeDate_SetInternalRTCTimeDate(TIMEREC *time, DATEREC *date)
     }
   }
   return ERR_OK;
+#elif McuLib_CONFIG_NXP_SDK_USED
+  uint8_t res;
+  rtc_datetime_t datetime;
+
+  datetime.year = date->Year;
+  datetime.month = date->Month;
+  datetime.day = date->Day;
+
+  datetime.hour = time->Hour;
+  datetime.minute = time->Min;
+  datetime.second = time->Sec;
+
+  res = RTC_SetDatetime(RTC_PERIPHERAL, &datetime);
+  if (res!=ERR_OK) {
+    return res;
+  }
+  return ERR_OK;
 #else
   (void)time;
   (void)date;
@@ -999,6 +1020,20 @@ uint8_t McuTimeDate_GetInternalRTCTimeDate(TIMEREC *time, DATEREC *date)
     }
     *date = d; /* struct copy */
   }
+  return ERR_OK;
+#elif McuLib_CONFIG_NXP_SDK_USED
+  rtc_datetime_t datetime;
+  RTC_GetDatetime(RTC_PERIPHERAL, &datetime);
+
+  time->Hour = datetime.hour;
+  time->Min = datetime.minute;
+  time->Sec = datetime.second;
+  time->Sec100 = 0;
+
+  date->Year = datetime.year;
+  date->Month = datetime.month;
+  date->Day = datetime.day;
+
   return ERR_OK;
 #else
   (void)time;
@@ -1115,6 +1150,26 @@ uint8_t McuTimeDate_SyncWithInternalRTC(void)
   }
   /* now sync to the second of the internal RTC */
   res = McuTimeDate_SyncSWtimeToInternalRTCsec();
+  if (res!=ERR_OK) {
+    return res;
+  }
+  return ERR_OK;
+#elif McuLib_CONFIG_NXP_SDK_USED
+  uint8_t res;
+  rtc_datetime_t datetime;
+  RTC_GetDatetime(RTC_PERIPHERAL, &datetime);
+
+  TIMEREC time;
+  time.Hour = datetime.hour;
+  time.Min = datetime.minute;
+  time.Sec = datetime.second;
+
+  DATEREC date;
+  date.Year = datetime.year;
+  date.Month = datetime.month;
+  date.Day = datetime.day;
+
+  res = McuTimeDate_SetSWTimeDate(&time, &date);
   if (res!=ERR_OK) {
     return res;
   }
