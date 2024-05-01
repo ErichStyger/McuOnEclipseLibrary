@@ -38,6 +38,9 @@ char* McuLFS_gets (char* buff,int len, lfs_file_t* fp);
 int McuLFS_putc (char c, lfs_file_t* fp);
 int McuLFS_puts (const char* str, lfs_file_t* fp);
 
+const struct lfs_config *McuLFS_get_config(void);
+lfs_t *McuLFS_get_lfs(void);
+
 void McuLFS_Deinit(void);
 void McuLFS_Init(void);
 
