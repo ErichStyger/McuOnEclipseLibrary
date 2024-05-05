@@ -27,6 +27,7 @@ uint8_t McuLFS_MoveFile(const char *srcPath, const char *dstPath,McuShell_ConstS
 
 uint8_t McuLFS_Mount(McuShell_ConstStdIOType *io);
 uint8_t McuLFS_Unmount(McuShell_ConstStdIOType *io);
+uint8_t McuLFS_Format(McuShell_ConstStdIOType *io);
 
 uint8_t McuLFS_openFile(lfs_file_t* file,uint8_t* filename);
 uint8_t McuLFS_closeFile(lfs_file_t* file);
