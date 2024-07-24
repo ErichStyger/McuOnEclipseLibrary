@@ -12,6 +12,11 @@
 #include "McuLib.h"
 #include <stdint.h>
 #include <stdio.h>
+#include "McuLog.h"
+#if McuLib_CONFIG_SDK_USE_FREERTOS
+  #include "McuRTOS.h"
+#endif
+#include <gcov.h>
 
 int McuCoverage_Check(void) {
   FILE *file = NULL;
@@ -41,16 +46,6 @@ int McuCoverage_Check(void) {
   return 0; /* failed */
 }
 
-void McuCoverage_WriteFiles(void) {
-#if __GNUC__ < 11
-  void __gcov_flush(void); /* internal gcov function to write data */
-  __gcov_flush(); /* __gcov_flush() has been removed in the libraries for GCC11 */
-#else
-  void __gcov_dump(void); /* from GCC11 on, __gcov_flush() has been replaced by __gcov_dump() */
-  __gcov_dump(); /* from GCC11 on, use __gcov_dump() */
-#endif
-}
-
 void McuCoverage_Deinit(void) {
   /* nothing needed  */
 }
@@ -75,13 +70,22 @@ void McuCoverage_Init(void) {
 
 void exit_(int i) {
   /* custom exit function */
-  for(;;) {}
+  for(;;) {} 
 }
 
 /* see https://gcc.gnu.org/onlinedocs/gcc/Freestanding-Environments.html#Tutorial */
-#if McuCoverage_CONFIG_USE_STANDALONE
+#if McuCoverage_CONFIG_USE_FREESTANDING
 /* The start and end symbols are provided by the linker script.  We use the
-   array notation to avoid issues with a potential small-data area.  */
+   array notation to avoid issues with a potential small-data area. */
+
+/* Use the following in the linker file: 
+  .gcov_info:
+  {
+    PROVIDE (__gcov_info_start = .);
+    KEEP (*(.gcov_info))
+    PROVIDE (__gcov_info_end = .);
+  }
+*/
 
 extern const struct gcov_info *const __gcov_info_start[];
 extern const struct gcov_info *const __gcov_info_end[];
@@ -140,7 +144,7 @@ static void dump (const void *d, unsigned n, void *arg) {
    "merge-stream" subcommand of the "gcov-tool" to figure out the filename
    associated with the gcov information. */
 static void filename (const char *f, void *arg) {
-  __gcov_filename_to_gcfn (f, dump, arg);
+  __gcov_filename_to_gcfn(f, dump, arg);
 }
 
 /* The __gcov_info_to_gcda() function may have to allocate memory under
@@ -167,14 +171,27 @@ static void dump_gcov_info (void) {
 
   /* Obfuscate variable to prevent compiler optimizations.  */
   __asm__ ("" : "+r" (info));
-
   while (info != end) {
     void *arg = NULL;
-    __gcov_info_to_gcda (*info, filename, dump, allocate, arg);
+    __gcov_info_to_gcda(*info, filename, dump, allocate, arg);
     fputc ('\n', stderr);
     ++info;
   }
 }
-#endif /* McuCoverage_CONFIG_USE_STANDALONE */
+#endif /* McuCoverage_CONFIG_USE_FREESTANDING */
+
+void McuCoverage_WriteFiles(void) {
+#if McuCoverage_CONFIG_USE_FREESTANDING
+  dump_gcov_info();
+#else
+  #if __GNUC__ < 11
+    // void __gcov_flush(void); /* internal gcov function to write data */
+    __gcov_flush(); /* __gcov_flush() has been removed in the libraries for GCC11 */
+  #else
+    // void __gcov_dump(void); /* from GCC11 on, __gcov_flush() has been replaced by __gcov_dump() */
+    __gcov_dump(); /* from GCC11 on, use __gcov_dump() */
+  #endif
+#endif
+}
 
 #endif /* #if McuCoverage_CONFIG_IS_ENABLED */
