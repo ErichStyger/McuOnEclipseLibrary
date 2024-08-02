@@ -145,7 +145,16 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1576165371" name="/" resourcePath="lib">
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1109165088" name="PE_Types.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Types.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1603355104" name="CPU_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/CPU_Config.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.928000886" name="PE_Error.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Error.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1914393216" name="PE_LDD.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_LDD.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1922424712" name="PE_Const.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Const.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1763160532" name="IO_Map.h" rcbsApplicability="disable" resourcePath="Generated_Code/IO_Map.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1992075774" name="Cpu.h" rcbsApplicability="disable" resourcePath="Generated_Code/Cpu.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.411931587" name="Vectors_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Vectors_Config.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.255376223" name="Init_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Init_Config.h" toolsToInvoke=""/>
+					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1576165371" name="/" resourcePath="compare/lib">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1595789832" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug" unusedChildren="">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1070489961.1890732160" name="Optimization Level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1070489961"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.messagelength.1048538259.545764683" name="Message length (-fmessage-length=0)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.messagelength.1048538259"/>
@@ -185,15 +194,6 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.1241998347" name="Cross ARM GNU Print Size" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize.1679803"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1109165088" name="PE_Types.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Types.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1603355104" name="CPU_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/CPU_Config.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.928000886" name="PE_Error.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Error.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1914393216" name="PE_LDD.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_LDD.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1922424712" name="PE_Const.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Const.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1763160532" name="IO_Map.h" rcbsApplicability="disable" resourcePath="Generated_Code/IO_Map.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1992075774" name="Cpu.h" rcbsApplicability="disable" resourcePath="Generated_Code/Cpu.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.411931587" name="Vectors_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Vectors_Config.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.255376223" name="Init_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Init_Config.h" toolsToInvoke=""/>
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1194375418" name="/" resourcePath="Drivers">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1506879558" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug" unusedChildren="">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1070489961.278073649" name="Optimization Level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1070489961"/>
@@ -236,7 +236,7 @@
 					</folderInfo>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810..settings/com.freescale.processorexpert.core.prefs" name="com.freescale.processorexpert.core.prefs" rcbsApplicability="disable" resourcePath=".settings/com.freescale.processorexpert.core.prefs" toolsToInvoke=""/>
 					<sourceEntries>
-						<entry excluding="McuLib|Drivers|Generated_Code/PE_Error.h|Generated_Code/McuFontCour12Bold.c|Generated_Code/McuFontHelv12Bold.c|FatFS|Generated_Code/PE_LDD.c|Generated_Code/McuFontHelv24Bold.c|Generated_Code/CPU_Config.h|Generated_Code/McuFontCour10Normal.c|Generated_Code/McuFontCour24Normal.c|.settings/com.freescale.processorexpert.core.prefs|Generated_Code/McuFontCour08Bold.c|Generated_Code/McuFontHelv10Bold.c|Generated_Code/McuFontHelv08Normal.c|Generated_Code/McuFontCour24Bold.c|Generated_Code/Init_Config.h|Generated_Code/IO_Map.h|Generated_Code/McuFontCour18Bold.c|Generated_Code/McuFontHelv12Normal.c|Generated_Code/PE_Const.h|Generated_Code/Vectors_Config.h|Generated_Code/McuFontCour12Normal.c|Generated_Code/McuFontHelv08Bold.c|Generated_Code/McuFontHelv18Bold.c|Generated_Code/Cpu.h|Generated_Code/McuFontCour14Normal.c|Generated_Code/PE_LDD.h|Generated_Code/PE_Types.h|Generated_Code/McuFontCour10Bold.c|Generated_Code/McuFontHelv14Bold.c|Generated_Code/McuFontHelv14Normal.c|Generated_Code/McuFontCour14Bold.c|Generated_Code/McuFontCour18Normal.c|Generated_Code/McuFontCour08Normal.c|Generated_Code/Cpu.c|lib|Generated_Code/McuFontHelv24Normal.c|Generated_Code/McuFontHelv18Normal.c|Generated_Code/McuFontHelv10Normal.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="compare|Generated_Code/PE_Error.h|Generated_Code/McuFontCour12Bold.c|Generated_Code/McuFontHelv12Bold.c|Generated_Code/PE_LDD.c|FatFS|Drivers|Generated_Code/McuFontHelv24Bold.c|Generated_Code/CPU_Config.h|Generated_Code/McuFontCour10Normal.c|Generated_Code/McuFontCour24Normal.c|.settings/com.freescale.processorexpert.core.prefs|Generated_Code/McuFontCour08Bold.c|Generated_Code/McuFontHelv10Bold.c|Generated_Code/McuFontHelv08Normal.c|Generated_Code/McuFontCour24Bold.c|Generated_Code/Init_Config.h|Generated_Code/IO_Map.h|Generated_Code/McuFontCour18Bold.c|Generated_Code/McuFontHelv12Normal.c|Generated_Code/PE_Const.h|Generated_Code/Vectors_Config.h|Generated_Code/McuFontHelv18Bold.c|Generated_Code/McuFontCour12Normal.c|Generated_Code/McuFontHelv08Bold.c|Generated_Code/Cpu.h|Generated_Code/PE_LDD.h|Generated_Code/McuFontCour14Normal.c|Generated_Code/PE_Types.h|Generated_Code/McuFontCour10Bold.c|Generated_Code/McuFontHelv14Normal.c|Generated_Code/McuFontHelv14Bold.c|Generated_Code/McuFontCour18Normal.c|Generated_Code/McuFontCour14Bold.c|Generated_Code/McuFontCour08Normal.c|Generated_Code/Cpu.c|McuLib|lib|Generated_Code/McuFontHelv24Normal.c|Generated_Code/McuFontHelv18Normal.c|Generated_Code/McuFontHelv10Normal.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

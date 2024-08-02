@@ -37,19 +37,9 @@
 			<locationURI>PARENT-7-PROJECT_LOC/ProgramData/Processor%20Expert/PEXDRV_PE5_3/Drivers</locationURI>
 		</link>
 		<link>
-			<name>McuLib</name>
-			<type>2</type>
-			<locationURI>PARENT-4-PROJECT_LOC/HSLU/Vorlesung/AEMBS/git/Projects/McuLib</locationURI>
-		</link>
-		<link>
 			<name>McuOnEclipseLibrary</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>lib</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
 		</link>
 		<link>
 			<name>McuOnEclipseLibrary/license.txt</name>
@@ -60,6 +50,26 @@
 			<name>McuOnEclipseLibrary/readme.txt</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/readme.txt</locationURI>
+		</link>
+		<link>
+			<name>compare/lib</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
+		</link>
+		<link>
+			<name>compare/AEMBS/McuLib</name>
+			<type>2</type>
+			<locationURI>PARENT-4-PROJECT_LOC/HSLU/Vorlesung/AEMBS/git/Projects/McuLib</locationURI>
+		</link>
+		<link>
+			<name>compare/McuOnEclipse/McuLib</name>
+			<type>2</type>
+			<location>P:/McuLib</location>
+		</link>
+		<link>
+			<name>compare/lib/McuLib</name>
+			<type>2</type>
+			<location>P:/McuLib</location>
 		</link>
 	</linkedResources>
 </projectDescription>
