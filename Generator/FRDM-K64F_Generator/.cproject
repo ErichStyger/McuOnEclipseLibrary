@@ -145,14 +145,14 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1603355104" name="CPU_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/CPU_Config.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1109165088" name="PE_Types.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Types.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1914393216" name="PE_LDD.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_LDD.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1603355104" name="CPU_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/CPU_Config.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.928000886" name="PE_Error.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Error.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1914393216" name="PE_LDD.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_LDD.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1922424712" name="PE_Const.h" rcbsApplicability="disable" resourcePath="Generated_Code/PE_Const.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1763160532" name="IO_Map.h" rcbsApplicability="disable" resourcePath="Generated_Code/IO_Map.h" toolsToInvoke=""/>
-					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.411931587" name="Vectors_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Vectors_Config.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1992075774" name="Cpu.h" rcbsApplicability="disable" resourcePath="Generated_Code/Cpu.h" toolsToInvoke=""/>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.411931587" name="Vectors_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Vectors_Config.h" toolsToInvoke=""/>
 					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.255376223" name="Init_Config.h" rcbsApplicability="disable" resourcePath="Generated_Code/Init_Config.h" toolsToInvoke=""/>
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.672616810.1576165371" name="/" resourcePath="compare/lib">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1595789832" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug" unusedChildren="">
