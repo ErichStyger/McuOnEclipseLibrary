@@ -18,10 +18,10 @@
 extern "C" {
 #endif
 
-extern uint8_t McuSemiHost_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE];
+extern uint8_t McuSemihost_DefaultShellBuffer[McuShell_DEFAULT_SHELL_BUFFER_SIZE];
   /*!< default buffer which can be used by the application or shell */
 
-extern McuShell_ConstStdIOType McuSemiHost_stdio;
+extern McuShell_ConstStdIOType McuSemihost_stdio;
   /*!< Default standard I/O handler, can be used for a shell intergration */
 
 /*!
