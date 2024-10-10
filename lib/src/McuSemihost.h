@@ -28,7 +28,7 @@ extern McuShell_ConstStdIOType McuSemihost_stdio;
  * \brief Return the SWO stdio handle
  * \return Standard I/O handle
  */
-McuShell_ConstStdIOTypePtr McuSemiHost_GetStdio(void);
+McuShell_ConstStdIOTypePtr McuSemihost_GetStdio(void);
 
 /*!
  * \brief Flush the standard I/O output. Needed if using McuSemihost_CONFIG_BUFFER_IO_FLUSH.
