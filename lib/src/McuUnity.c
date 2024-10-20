@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#include "McuUnity.h"
 #include "McuLib.h"
 #include "McuRTT.h"
 #include "McuLog.h"
