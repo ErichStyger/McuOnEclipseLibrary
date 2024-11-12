@@ -62,6 +62,7 @@ file(GLOB MCULIBFILES
   SEGGER_Sysview/SEGGER_SYSVIEW_Config_FreeRTOS.c
   SEGGER_Sysview/SEGGER_SYSVIEW_FreeRTOS.c
   
+  src/McuSDEP.c
   src/McuSemihost.c
   src/McuShell.c
   src/McuShellCdcDevice.c
