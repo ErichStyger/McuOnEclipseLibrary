@@ -45,7 +45,7 @@
 **         SetRxAddress               - uint8_t McuNRF24L01_SetRxAddress(uint8_t pipe, uint8_t *address, uint8_t...
 **         GetRxAddress               - uint8_t McuNRF24L01_GetRxAddress(uint8_t pipe, uint8_t *address, uint8_t...
 **         GetFifoStatus              - uint8_t McuNRF24L01_GetFifoStatus(uint8_t *status);
-**         PollInterrupt              - void McuNRF24L01_PollInterrupt(void);
+**         PollInterrupt              - bool McuNRF24L01_PollInterrupt(void);
 **         Deinit                     - void McuNRF24L01_Deinit(void);
 **         Init                       - void McuNRF24L01_Init(void);
 **
@@ -817,7 +817,7 @@ uint8_t McuNRF24L01_GetStatusClrIRQ(void);
 ** ===================================================================
 */
 
-void McuNRF24L01_PollInterrupt(void);
+bool McuNRF24L01_PollInterrupt(void);
 /*
 ** ===================================================================
 **     Method      :  PollInterrupt (component nRF24L01)

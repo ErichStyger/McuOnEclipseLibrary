@@ -45,7 +45,7 @@
 **         SetRxAddress               - uint8_t McuNRF24L01_SetRxAddress(uint8_t pipe, uint8_t *address, uint8_t...
 **         GetRxAddress               - uint8_t McuNRF24L01_GetRxAddress(uint8_t pipe, uint8_t *address, uint8_t...
 **         GetFifoStatus              - uint8_t McuNRF24L01_GetFifoStatus(uint8_t *status);
-**         PollInterrupt              - void McuNRF24L01_PollInterrupt(void);
+**         PollInterrupt              - bool McuNRF24L01_PollInterrupt(void);
 **         Deinit                     - void McuNRF24L01_Deinit(void);
 **         Init                       - void McuNRF24L01_Init(void);
 **
@@ -218,7 +218,10 @@ static uint8_t SPIWriteRead(uint8_t val)
   while(McuNRF24L01_SPI_GetCharsInRxBuf()==0) {} /* wait until we receive data */
   while(McuNRF24L01_SPI_RecvChar(&ch)!=ERR_OK) {} /* get data */
 #else
-  McuSPI_SendReceiveByte(val, &ch);
+  int res = McuSPI_SendReceiveByte(val, &ch);
+  if (res!=0) {
+    McuLog_fatal("failed SPI send and receive");
+  }
 #endif
   return ch;
 }
@@ -1170,10 +1173,11 @@ uint8_t McuNRF24L01_GetDataRate(uint16_t *rate)
 **     Returns     : Nothing
 ** ===================================================================
 */
-void McuNRF24L01_PollInterrupt(void)
+bool McuNRF24L01_PollInterrupt(void)
 {
   /*lint -save -e522 function lacks side effect  */
   uint8_t status;
+  bool interrupt = false;
   extern void RADIO_OnInterrupt(void); /* prototype */
 
   status = McuNRF24L01_GetStatus();
@@ -1181,7 +1185,9 @@ void McuNRF24L01_PollInterrupt(void)
     McuNRF24L01_CE_LOW(); /* pull CE Low to disable transceiver */
     RADIO_OnInterrupt();
     McuNRF24L01_OnInterrupt(); /* call user event (if enabled)... */
+    interrupt = true;
   }
+  return interrupt;
   /*lint -restore */
 }
 
