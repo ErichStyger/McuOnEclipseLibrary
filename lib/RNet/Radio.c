@@ -202,6 +202,7 @@ static uint8_t CheckRx(void) {
       McuNRF24L01_Write(McuNRF24L01_FLUSH_RX); /* flush old data */
       return ERR_FAILED;
     } else {
+      memset(packet.rxtx, 0xab, payloadSize); /* have defined data for the SPI transfer */
       McuNRF24L01_RxPayload(packet.rxtx, payloadSize); /* get payload: note that we transmit <size> as payload! */
       RPHY_BUF_SIZE(packet.phyData) = payloadSize;
     }
@@ -243,6 +244,7 @@ static void RADIO_HandleStateMachine(void) {
   static TickType_t sentTimeTickCntr = 0; /* used for timeout */
 #endif
   uint8_t status, res;
+  bool interrupt;
   
   for(;;) { /* will break/return */
     switch (RADIO_AppStatus) {
@@ -259,26 +261,28 @@ static void RADIO_HandleStateMachine(void) {
   
       case RADIO_READY_FOR_TX_RX_DATA: /* we are ready to receive/send data data */
 #if !McuNRF24L01_CONFIG_IRQ_PIN_ENABLED
-        McuNRF24L01_PollInterrupt();
-#if 1 /* experimental */
-        if (!RADIO_isrFlag) { /* interrupt flag not set, check if we have otherwise data */
+        interrupt = McuNRF24L01_PollInterrupt(); /* no interrupt support: poll status instead */
+    #if 1 /* experimental */
+        if (!interrupt) { /* interrupt flag not set, check if we have otherwise data */
           (void)McuNRF24L01_GetFifoStatus(&status);
           if (!(status&McuNRF24L01_FIFO_STATUS_RX_EMPTY) || (status&McuNRF24L01_FIFO_STATUS_RX_FULL)) { /* Rx not empty? */
+            McuLog_info("No data rx in status, but fifo has data?");
             RADIO_isrFlag = TRUE;
           }
         }
-#endif
-#endif
+    #endif
+#endif /* !McuNRF24L01_CONFIG_IRQ_PIN_ENABLED */
         if (RADIO_isrFlag) { /* Rx interrupt? */
           RADIO_isrFlag = FALSE; /* reset interrupt flag */
           res = CheckRx(); /* get message */
-#if 1 /* experimental */
+  #if 1 /* experimental */
           if (res==ERR_FAILED) { /* failed reading from device */
             RADIO_AppStatus = RADIO_RECEIVER_ALWAYS_ON; /* continue listening */
             return; /* get out of loop */
           }
           (void)McuNRF24L01_GetFifoStatus(&status);
-          if (res==ERR_RXEMPTY && !(status&McuNRF24L01_FIFO_STATUS_RX_EMPTY)) { /* no data, but still flag set? */
+          if (res==ERR_RXEMPTY && !(status&McuNRF24L01_FIFO_STATUS_RX_EMPTY)) { /* no data, but rx still flag set? */
+            McuLog_info("No data, but rx set? flushing data");
             McuNRF24L01_Write(McuNRF24L01_FLUSH_RX); /* flush old data */
             RADIO_AppStatus = RADIO_RECEIVER_ALWAYS_ON; /* continue listening */
           } else if (!(status&McuNRF24L01_FIFO_STATUS_RX_EMPTY) || (status&McuNRF24L01_FIFO_STATUS_RX_FULL)) { /* Rx not empty? */
@@ -286,13 +290,13 @@ static void RADIO_HandleStateMachine(void) {
           } else {
             RADIO_AppStatus = RADIO_RECEIVER_ALWAYS_ON; /* continue listening */
           }
-#else
+  #else
           RADIO_AppStatus = RADIO_RECEIVER_ALWAYS_ON; /* continue listening */
-#endif
+  #endif
           break; /* process switch again */
         }
 #if RNET_CONFIG_SEND_RETRY_CNT>0
-        RADIO_RetryCnt=0;
+        RADIO_RetryCnt = 0;
 #endif
         RADIO_AppStatus = RADIO_CHECK_TX; /* check if we can send something */
         break;
@@ -316,13 +320,13 @@ static void RADIO_HandleStateMachine(void) {
         return;
   
       case RADIO_WAITING_DATA_SENT:
-#if !McuNRF24L01_CONFIG_IRQ_PIN_ENABLED
-        McuNRF24L01_PollInterrupt();
-#else /* experimental */
+  #if !McuNRF24L01_CONFIG_IRQ_PIN_ENABLED
+        interrupt = McuNRF24L01_PollInterrupt();
+  #else /* experimental */
         if (!RADIO_isrFlag) { /* check if we missed an interrupt? */
-          McuNRF24L01_PollInterrupt();
+          interrupt = McuNRF24L01_PollInterrupt();
         }
-#endif
+  #endif
         if (RADIO_isrFlag) { /* check if we have received an interrupt: this is either timeout or low level ack */
           RADIO_isrFlag = FALSE; /* reset interrupt flag */
           status = McuNRF24L01_GetStatusClrIRQ();
@@ -828,6 +832,40 @@ uint8_t RADIO_ParseCommand(const unsigned char *cmd, bool *handled, const McuShe
   return res;
 }
 
+#if McuNRF24L01_CONFIG_IRQ_PIN_ENABLED
+#include "McuGPIO.h"
+#include "RadioNRF24.h"
+
+static McuGPIO_Handle_t irqPin;
+
+#if McuLib_CONFIG_CPU_IS_RPxxxx
+static void gpio_IsrCallback(uint gpio, uint32_t events) {
+  switch(gpio) {
+    case McuNRF24L01_CONFIG_IRQ_PIN_NUMBER:
+      RADIO_OnInterrupt();
+      break;
+    default:
+      break;
+  }
+}
+#endif
+
+static void InitIRQPin(void) {
+  McuGPIO_Config_t config;
+
+  config.hw.pin = McuNRF24L01_CONFIG_IRQ_PIN_NUMBER;
+  config.isInput = true;
+  config.hw.pull = McuGPIO_PULL_UP;
+  irqPin = McuGPIO_InitGPIO(&config);
+  if (irqPin==NULL) {
+    for(;;) {}
+  }
+#if McuLib_CONFIG_CPU_IS_RPxxxx
+  gpio_set_irq_enabled_with_callback(McuNRF24L01_CONFIG_IRQ_PIN_NUMBER, GPIO_IRQ_EDGE_FALL, true, &gpio_IsrCallback);
+#endif
+}
+#endif
+
 void RADIO_Deinit(void) {
   /* nothing to do */
 }
@@ -835,6 +873,9 @@ void RADIO_Deinit(void) {
 void RADIO_Init(void) {
   RADIO_isSniffing = FALSE;
   RADIO_CurrChannel = RADIO_CHANNEL_DEFAULT;
+#if McuNRF24L01_CONFIG_IRQ_PIN_ENABLED
+  InitIRQPin();
+#endif
 }
   
 #endif /* McuRNET_CONFIG_IS_ENABLED */

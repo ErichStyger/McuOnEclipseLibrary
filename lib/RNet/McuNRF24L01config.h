@@ -84,4 +84,9 @@
     /*!< Pin number of the CSN Pin */
 #endif
 
+#ifndef McuNRF24L01_CONFIG_IRQ_PIN_NUMBER
+  #define McuNRF24L01_CONFIG_IRQ_PIN_NUMBER   0
+    /*!< Pin number of the IRQ Pin */
+#endif
+
 #endif /* __McuNRF24L01_CONFIG_H */
