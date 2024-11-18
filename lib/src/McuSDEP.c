@@ -3,9 +3,9 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  * 
- *   Input   ->  dataRx_Buffer[]  ->  sdepTask()
- *                                      /  \
- *   Output  <- McuSDEP_SendMessage()<-/    \-> forward_Buffer[]  (e.g. to shell)
+ *   Input   ->  McuSDEP_callbacks.receive_char()  ->  sdepTask()
+ * SDEP                                                  /  \
+ *   Output  <- McuSDEP_callbacks.send_char()         <-/    \-> McuSDEP_callbacks.forward_char()  (e.g. to shell)
  */
 
 #include "McuSDEP.h"
@@ -16,131 +16,57 @@
 #include "McuArmTools.h"
 #include "McuRB.h"
 #include "McuUtility.h"
-#include "usb_host_cdc.h"
+#include "McuIO.h"
 #if McuLib_CONFIG_CPU_IS_RPxxxx
   #include "pico/util/queue.h"
 #endif
 
-/* ------------------------------------------------------------ */
-/* functions to read and write the SDEP communication channel */
-/* Send a byte over the SDEP channel */
+/* --------------------------------------------------------------------------------- */
+/* Logging channel configuration */
+/* --------------------------------------------------------------------------------- */
+static uint8_t logChannel = 0;
 
-#if McuLib_CONFIG_CPU_IS_RPxxxx
-  static queue_t dataRx_buffer; /* using multicore/interrupt aware queue, as data is comming from core 1 */
-#else
-  static McuRB_Handle_t dataRx_buffer;
-#endif
-
-/* callbacks to deal with the SDEP communication channel */
-static struct McuSDEP_callbacks_s {
-  void (*send_char)(unsigned char ch);      /* callback to send a character/byte to the SDEP channel */
-  void (*flush)(void);                      /* callback to flush the SDEP output buffer */
-  void (*forward_char)(unsigned char ch);   /* forwarding characters if not SDEP message */
-} McuSDEP_callbacks;
-
-void McuSDEP_SetFlushCallback( void (*flush_cb)(void)) {
-  McuSDEP_callbacks.flush = flush_cb;
+void McuSDEP_SetLogChannel(uint8_t channel) {
+  logChannel = channel;
 }
 
-void McuSDEP_SetSendCharCallback( void (*send_char_cb)(unsigned char)) {
-  McuSDEP_callbacks.send_char = send_char_cb;
+uint8_t McuSDEP_GetLogChannel(void) {
+  return logChannel;
 }
-
-void McuSDEP_SetForwardCharCallback( void (*forward_char_cb)(unsigned char)) {
-  McuSDEP_callbacks.forward_char = forward_char_cb;
-}
-
-void McuSDEP_QueueSDEP_Rx(unsigned char ch) {
-#if McuLib_CONFIG_CPU_IS_RPxxxx
-  queue_add_blocking(&dataRx_buffer, &ch);
-#else
-  McuRB_Put(dataRx_buffer, &ch);
-#endif
-}
-
-static bool McuSDEP_RxDataAvailable(void) {
-#if McuLib_CONFIG_CPU_IS_RPxxxx
-  return !queue_is_empty(&dataRx_buffer);
-#else
-  return McuRB_NofElements(dataRx_buffer)!=0;
-#endif
-}
-
-static int McuSDEP_ReadByte(void) {
-  unsigned char c;
-
-#if McuLib_CONFIG_CPU_IS_RPxxxx
-  if (queue_is_empty(&dataRx_buffer)) {
-    return EOF;
-  }
-  queue_remove_blocking(&dataRx_buffer, &c);
-  return c;
-#else
-  if (McuRB_NofElements(dataRx_buffer)==0) {
-    return EOF;
-  }
-  if (McuRB_Get(dataRx_buffer, &ch)==ERR_OK) {
-    return ch;
-  } else {
-    return EOF;
-  }
-#endif
-}
-
-static uint8_t McuSDEP_SendByte(uint8_t c) {
-  McuSDEP_callbacks.send_char(c);
-}
-
-static void McuSDEP_Flush(void) {
-  if (McuSDEP_callbacks.flush!=NULL) {
-    McuSDEP_callbacks.flush();
-  }
-}
-
-void McuSDEP_SendBlock(unsigned char *data, size_t count) {
-  for(int i=0; i<count; i++) {
-    McuSDEP_SendByte(data[i]);
-  }
-}
-
+/* --------------------------------------------------------------------------------- */
+/* Buffers and IO for incoming rx data for SDEP */
+/* --------------------------------------------------------------------------------- */
 #if McuSDEP_CONFIG_USE_FREERTOS
-  static QueueHandle_t shellToSDEPQueue; /* data from shell to be sent with ESDEP */
+  static QueueHandle_t rxDataBuffer; /* using FreeRTOS queue */
 #else
-  static McuRB_Handle_t shellToSDEPBuf;
+  static McuRB_Handle_t rxDataBuffer; /* using bare metal ring buffer */
 #endif
 
-void McuSDEP_ShellToSDEP_PutChar(unsigned char ch) {
-#if McuSDEP_CONFIG_USE_FREERTOS
-  if (xQueueSend(shellToSDEPQueue, &ch, portMAX_DELAY)!= pdPASS) {
-    McuLog_fatal("failed sending");
-    for(;;){}
-  }
-#else
-  McuRB_Put(shellToSDEPBuf, &ch);
-#endif
+static McuIO_Desc_t *McuSDEP_SdepIO = NULL;      /* I/O buffer for incoming data: SDEP and non-SDEP shell data */
+static void (*McuSDEP_txToShell_cb)(char) = NULL;   /* callback to write non-SDEP messages to the console */
+static int (*McuSDEP_rxToBuffer_cb)(void) = NULL;   /* callback to get data into the SDEP I/O buffer */
+
+void McuSDEP_SetForwardCharCallback(void (*forward_char_cb)(char)) {
+  McuSDEP_txToShell_cb = forward_char_cb;
 }
 
-unsigned char McuSDEP_ShellToSDEP_GetChar(void) {
-  unsigned char ch;
-#if McuSDEP_CONFIG_USE_FREERTOS
-  if (xQueueReceive(shellToSDEPQueue, &ch, portMAX_DELAY)!= pdPASS) {
-    McuLog_fatal("failed sending");
-    for(;;){}
-  }
-#else
-  McuRB_Get(shellToSDEPBuf, &ch);
-#endif
-  return ch;
+void McuSDEP_SetRxToBufferCallback(int (*rx_cb)(void)) {
+  McuSDEP_rxToBuffer_cb = rx_cb;
 }
 
-size_t McuSDEP_ShellToSDEP_NofElements(void) {
-#if McuSDEP_CONFIG_USE_FREERTOS
-  return uxQueueMessagesWaiting(shellToSDEPQueue);
-#else
-  return McuRB_NofElements(shellToSDEPBuf);
-#endif
+void McuSDEP_SetSdepIO(McuIO_Desc_t *io) {
+  McuSDEP_SdepIO = io;
 }
 
+McuIO_Desc_t *McuSDEP_GetSdepIO(void) {
+  return McuSDEP_SdepIO;
+}
+
+void McuSDEP_StoreCharInSdepBuffer(char ch) { /* callback set with McuShellCdcDevice_SetBufferRxCharCallback(): needs void(*cp)(char) */
+  McuIO_Desc_t *io = McuSDEP_GetSdepIO();
+  (void)io->buffer.write(io, ch);
+}
+/* --------------------------------------------------------------------------------- */
 static uint8_t crc8_bytecalc(unsigned char byte, uint8_t* seed) {
   #define CRC8_POLYNOM (0x07)
   uint8_t i;
@@ -218,28 +144,34 @@ static void DecodeMessage(McuSDEPmessage_t *msg, unsigned char *buf, size_t bufS
   McuUtility_strcatNum8Hex(buf, bufSize, msg->crc);
 }
 
-uint8_t McuSDEP_SendMessage(McuSDEPmessage_t *msg) {
+static void sendBlock(McuIO_Desc_t *io, char *data, size_t count) {
+  for(int i=0; i<count; i++) {
+    io->out.write(data[i]);
+  }
+}
+
+uint8_t McuSDEP_SendMessage(McuIO_Desc_t *io, McuSDEPmessage_t *msg) {
   msg->crc = McuSDEP_Crc8(msg);
   #if McuSDEP_CONFIG_USE_FRAMING
   McuSDEP_SendByte(McuSDEP_CONFIG_MSG_FRAMING_START);
   #endif
-  McuSDEP_SendByte(msg->type);
-  McuSDEP_SendByte((uint8_t) msg->cmdId); /* send little endian first */
-  McuSDEP_SendByte((uint8_t) (msg->cmdId >> 8));
-  McuSDEP_SendByte(msg->payloadSize);
-  McuSDEP_SendBlock(msg->payload, msg->payloadSize & ~McuSDEP_PAYLOADBYTE_MORE_DATA_BIT);
-  McuSDEP_SendByte(msg->crc);
+  io->out.write(msg->type);
+  io->out.write(msg->cmdId); /* send little endian first */
+  io->out.write((msg->cmdId >> 8));
+  io->out.write(msg->payloadSize);
+  sendBlock(io, msg->payload, msg->payloadSize & ~McuSDEP_PAYLOADBYTE_MORE_DATA_BIT);
+  io->out.write(msg->crc);
   #if McuSDEP_CONFIG_USE_FRAMING
   McuSDEP_SendByte(McuSDEP_CONFIG_MSG_FRAMING_END);
   #endif
-  McuSDEP_Flush();
+  io->out.flush();
   unsigned char buf[96];
   DecodeMessage(msg, buf, sizeof(buf));
-  McuLog_info("Tx: %s", buf);
+  McuSDEP_Log("Tx: %s", buf);
   return ERR_OK;
 }
 
-uint8_t McuSDEP_SendResponseForCmd(uint16_t cmdId) {
+static uint8_t McuSDEP_SendResponseForCmd(McuIO_Desc_t *io, uint16_t cmdId) {
   McuSDEPmessage_t msg;
 
   msg.type = McuSDEP_MSG_TYPE_COMMAND;
@@ -251,7 +183,7 @@ uint8_t McuSDEP_SendResponseForCmd(uint16_t cmdId) {
   return ERR_OK;
 }
 
-uint8_t McuSDEP_SendCommand(uint16_t cmdId) {
+static uint8_t McuSDEP_SendCommand(McuIO_Desc_t *io, uint16_t cmdId) {
   McuSDEPmessage_t msg;
 
   msg.type = McuSDEP_MSG_TYPE_COMMAND;
@@ -259,11 +191,11 @@ uint8_t McuSDEP_SendCommand(uint16_t cmdId) {
   msg.payload = NULL;
   msg.payloadSize = 0;
   msg.crc = McuSDEP_Crc8(&msg);
-  McuSDEP_SendMessage(&msg);
+  McuSDEP_SendMessage(io, &msg);
   return ERR_OK;
 }
 
-uint8_t McuSDEP_SendError(uint16_t cmdErrorId) {
+static uint8_t McuSDEP_SendError(McuIO_Desc_t *io, uint16_t cmdErrorId) {
   McuSDEPmessage_t msg;
 
   msg.type = McuSDEP_MSG_TYPE_ERROR;
@@ -271,7 +203,7 @@ uint8_t McuSDEP_SendError(uint16_t cmdErrorId) {
   msg.payload = NULL;
   msg.payloadSize = 0;
   msg.crc = McuSDEP_Crc8(&msg);
-  McuSDEP_SendMessage(&msg);
+  McuSDEP_SendMessage(io, &msg);
   return ERR_OK;
 }
 
@@ -282,13 +214,16 @@ static inline bool isValidSDEPType(unsigned char ch) {
          || ch == McuSDEP_MSG_TYPE_ALERT;
 }
 
-static uint8_t readByte(unsigned char *buf, size_t bufSize, size_t *currBufIdx, int (*read)(void)) {
+static uint8_t readByte(unsigned char *buf, size_t bufSize, size_t *currBufIdx, McuIO_Desc_t *io) {
   int ch;
 
   if (*currBufIdx>=bufSize) {
     return ERR_OVERFLOW;
   }
-  ch = read();
+  if (io->buffer.nof(io)==0) {
+    return ERR_NOTAVAIL;
+  }
+  ch = io->buffer.read(io);
   if (ch==EOF) { /* no data available */
     return ERR_NOTAVAIL;
   }
@@ -296,12 +231,12 @@ static uint8_t readByte(unsigned char *buf, size_t bufSize, size_t *currBufIdx, 
   return ERR_OK;
 }
 
-uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *currBufIdx, McuSDEPmessage_t *msg, int (*read)(void)) {
+static uint8_t McuSDEP_ParseSDEPMessage(McuIO_Desc_t *io, unsigned char *buf, size_t bufSize, size_t *currBufIdx, McuSDEPmessage_t *msg) {
   uint8_t res;
 
   /* 0: message type: 8 bits */
   if (*currBufIdx==0) { /* at the start */
-    res = readByte(buf, bufSize, currBufIdx, read);
+    res = readByte(buf, bufSize, currBufIdx, io);
     if (res!=ERR_OK) {
       return res;
     }
@@ -318,7 +253,7 @@ uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *cur
   }
   /* 1: message command ID: low byte*/
   if (*currBufIdx==1) { /* first byte of cmd */
-    res = readByte(buf, bufSize, currBufIdx, read);
+    res = readByte(buf, bufSize, currBufIdx, io);
     if (res!=ERR_OK) {
       return res;
     }
@@ -326,7 +261,7 @@ uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *cur
   }
   /* 2: message command ID: high byte*/
   if (*currBufIdx==2) { /* second byte of cmd */
-    res = readByte(buf, bufSize, currBufIdx, read);
+    res = readByte(buf, bufSize, currBufIdx, io);
     if (res!=ERR_OK) {
       return res;
     }
@@ -337,7 +272,7 @@ uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *cur
   }
   /* 3: message payload size: 8 bits */
   if (*currBufIdx==3) {
-    res = readByte(buf, bufSize, currBufIdx, read);
+    res = readByte(buf, bufSize, currBufIdx, io);
     if (res!=ERR_OK) {
       return res;
     }
@@ -346,7 +281,7 @@ uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *cur
   /* 4: payload, if any, followed by CRC */
   if (*currBufIdx>=4 && msg->payloadSize!=0 && *currBufIdx<3+msg->payloadSize+1) { /* with payload: read data first */
     do { /* read payload */
-      res = readByte(buf, bufSize, currBufIdx, read);
+      res = readByte(buf, bufSize, currBufIdx, io);
       if (res!=ERR_OK) {
         return res;
       }
@@ -355,7 +290,7 @@ uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *cur
     msg->payload = &buf[*currBufIdx - msg->payloadSize];
   }
   /* last item: CRC */
-  res = readByte(buf, bufSize, currBufIdx, read);
+  res = readByte(buf, bufSize, currBufIdx, io);
   if (res!=ERR_OK) {
     return res;
   }
@@ -369,8 +304,8 @@ uint8_t McuSDEP_ParseSDEPMessage(unsigned char *buf, size_t bufSize, size_t *cur
 static uint8_t PrintHelp(McuShell_ConstStdIOType *io) {
   McuShell_SendHelpStr((unsigned char*)"McuSDEP", (const unsigned char*)"Group of McuSDEP commands\r\n", io->stdOut);
   McuShell_SendHelpStr((unsigned char*)"  help|status", (const unsigned char*)"Print help or status information\r\n", io->stdOut);
-  McuShell_SendHelpStr((unsigned char*)"  send cmd <id>", (const unsigned char*)"Send command\r\n", io->stdOut);
-  McuShell_SendHelpStr((unsigned char*)"  resp cmd <id>", (const unsigned char*)"Send response for command\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  cmd <id>", (const unsigned char*)"Send command\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  resp <id>", (const unsigned char*)"Send response for command\r\n", io->stdOut);
   McuShell_SendHelpStr((unsigned char*)"  text <txt>", (const unsigned char*)"Send text\r\n", io->stdOut);
   return ERR_OK;
 }
@@ -390,76 +325,84 @@ uint8_t McuSDEP_ParseCommand(const uint8_t *cmd, bool *handled, McuShell_ConstSt
   } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuSDEP status")==0)) {
     *handled = TRUE;
     return PrintStatus(io);
-  } else if (McuUtility_strncmp((char*)cmd, "McuSDEP send cmd ", sizeof("McuSDEP send cmd ")-1)==0) {
+  } else if (McuUtility_strncmp((char*)cmd, "McuSDEP cmd ", sizeof("McuSDEP cmd ")-1)==0) {
     *handled = TRUE;
-    p = cmd + sizeof("McuSDEP send cmd ")-1;
+    p = cmd + sizeof("McuSDEP cmd ")-1;
     if (McuUtility_xatoi(&p, &val)!=ERR_OK) {
       return ERR_FAILED;
     }
-    return McuSDEP_SendCommand(val);
-  } else if (McuUtility_strncmp((char*)cmd, "McuSDEP resp cmd ", sizeof("McuSDEP resp cmd ")-1)==0) {
+    return McuSDEP_SendCommand(McuSDEP_GetSdepIO(), val);
+  } else if (McuUtility_strncmp((char*)cmd, "McuSDEP resp ", sizeof("McuSDEP resp ")-1)==0) {
     *handled = TRUE;
-    p = cmd + sizeof("McuSDEP resp cmd ")-1;
+    p = cmd + sizeof("McuSDEP resp ")-1;
     if (McuUtility_xatoi(&p, &val)!=ERR_OK) {
       return ERR_FAILED;
     }
-    return McuSDEP_SendResponseForCmd(val);
+    return McuSDEP_SendResponseForCmd(McuSDEP_GetSdepIO(), val);
   } else if (McuUtility_strncmp((char*)cmd, "McuSDEP text ", sizeof("McuSDEP text ")-1)==0) {
     *handled = TRUE;
-    const unsigned char *p = cmd + sizeof("McuSDEP text ")-1;
+    p = cmd + sizeof("McuSDEP text ")-1;
+    McuIO_Desc_t *io = McuSDEP_GetSdepIO();
     while(*p!='\0') {
-      McuSDEP_SendByte(*p);
+      io->out.write(*p);
       p++;
     }
-    McuSDEP_SendByte('\n');
-    McuSDEP_Flush();
+    io->out.write('\n');
+    io->out.flush();
     return ERR_OK;
   }
   return ERR_OK;
 }
 
 static void sdepTask(void *pv) {
-  uint8_t ch, res;
+  uint8_t res;
   uint8_t buf[McuSDEP_MESSAGE_MAX_NOF_BYTES + 1];
   uint8_t debugBuf[64];
   size_t bufIdx = 0;
   McuSDEPmessage_t msg;
   bool checkingSDEP = false;
   int timeoutMs;
+  McuIO_Desc_t *io = McuSDEP_GetSdepIO();
 
   for(;;) {
-    if (McuSDEP_RxDataAvailable()) {
+    if (McuSDEP_rxToBuffer_cb!=NULL) { /* have callback? */
+      int ch = McuSDEP_rxToBuffer_cb(); /* check if we have data */
+      if (ch!=EOF) { /* yes? then transfer to SDEP buffer */
+        io->buffer.write(io, ch);
+      }
+    }
+    if (io->buffer.nof(io)>0) {
       timeoutMs = 0;
-      res = McuSDEP_ParseSDEPMessage(buf, sizeof(buf), &bufIdx, &msg, McuSDEP_ReadByte);
+      res = McuSDEP_ParseSDEPMessage(io, buf, sizeof(buf), &bufIdx, &msg);
       if (res==ERR_OK) { /* parsed a valid SDEP message */
         bufIdx = 0; /* start for new iteration */
         DecodeMessage(&msg, debugBuf, sizeof(debugBuf));
-        McuLog_info("Rx: %s", debugBuf);
+        McuSDEP_Log("Rx: %s", debugBuf);
         McuSDEP_ID_HandleIncommingMessage(&msg);
       } else if (res==ERR_NOTAVAIL) { /* need to read more data */
         vTaskDelay(pdMS_TO_TICKS(5));
       } else if (res==ERR_FAILED) { /* not SDEP, forward to shell */
-        if (McuSDEP_callbacks.forward_char!=NULL) {
+        if (McuSDEP_txToShell_cb!=NULL) {
           for(int i=0; i<bufIdx; i++) {
-            McuSDEP_callbacks.forward_char(buf[i]); /* forward character */
+            McuSDEP_txToShell_cb(buf[i]); /* forward character */
           }
         }
         bufIdx = 0; /* start for new iteration */
       } else if (res==ERR_OVERFLOW) { /* buffer overflow */
-        McuSDEP_SendError(McuSDEP_CMD_TYPE_ERROR_OVERFLOW);
+        McuSDEP_SendError(io, McuSDEP_CMD_TYPE_ERROR_OVERFLOW);
         bufIdx = 0; /* start for new iteration */
       } else if (res==ERR_CRC) { /* CRC error*/
-        McuSDEP_SendError(McuSDEP_CMD_TYPE_ERROR_INVALIDCRC);
+        McuSDEP_SendError(io, McuSDEP_CMD_TYPE_ERROR_INVALIDCRC);
         bufIdx = 0; /* start for new iteration */
       }
     } else {
       vTaskDelay(pdMS_TO_TICKS(20));
       timeoutMs += 20;
-      if (bufIdx>0 && timeoutMs>500) { /* we have data in the buffer and expect it an SDEP, but takes too long */
+      if (bufIdx>0 && timeoutMs>500) { /* we have data in the buffer and expect it an SDEP, but takes too long? */
         /* abort and forward it */
-        if (McuSDEP_callbacks.forward_char!=NULL) {
+        if (McuSDEP_txToShell_cb!=NULL) {
           for(int i=0; i<bufIdx; i++) {
-            McuSDEP_callbacks.forward_char(buf[i]); /* forward character */
+            McuSDEP_txToShell_cb(buf[i]); /* forward character */
           }
         }
         bufIdx = 0; /* start for new iteration */
@@ -478,37 +421,6 @@ void McuSDEP_Init(void) {
   if (res!=pdPASS) {
     McuLog_fatal("creating sdepTask task failed!");
     for(;;) {}
-  }
-#endif
-#if McuLib_CONFIG_CPU_IS_RPxxxx
-  queue_init(&dataRx_buffer, sizeof(uint8_t), McuSDEP_CONFIG_RX_BUFFER_SIZE);
-#else
-  McuRB_Config_t config;
-
-  McuRB_GetDefaultconfig(&config);
-  config.elementSize = sizeof(uint8_t);
-  config.nofElements = McuSDEP_CONFIG_RX_BUFFER_SIZE;
-  dataRx_buffer = McuRB_InitRB(&config);
-  if (dataRx_buffer==NULL) {
-    McuLog_fatal("creating dataRX_buffer failed!");
-    for(;;) {/* error */}
-  }
-#endif
-#if McuSDEP_CONFIG_USE_FREERTOS
-  shellToSDEPQueue = xQueueCreate(McuSDEP_CONFIG_SHELL_TO_SDEP_QUEUE_LENGTH, sizeof(uint8_t));
-  if (shellToSDEPQueue==NULL) {
-    for(;;){} /* out of memory? */
-  }
-  vQueueAddToRegistry(shellToSDEPQueue, "shellToSDEP");
-#else
-  McuRB_Config_t config;
-
-  McuRB_GetDefaultconfig(&config);
-  config.elementSize = sizeof(uint8_t);
-  config.nofElements = McuSDEP_CONFIG_SHELL_TO_SDEP_QUEUE_LENGTH;
-  shellToSDEPBuf = McuRB_InitRB(&config);
-  if (shellToSDEPBuf==NULL) {
-    for(;;) {/* error */}
   }
 #endif
 }
