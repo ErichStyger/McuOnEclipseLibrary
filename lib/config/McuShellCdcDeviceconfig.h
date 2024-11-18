@@ -24,4 +24,9 @@
     /*!< If FreeRTOS (Queues) shall be used or not */
 #endif
 
+#ifndef McuShellCdcDevice_CONFIG_PROCESS_WAIT_TIME_MS
+  #define McuShellCdcDevice_CONFIG_PROCESS_WAIT_TIME_MS    (5)
+    /*!< Processing wait time for the USB CDC device task, in milli-seconds */
+#endif
+
 #endif

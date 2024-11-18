@@ -2,6 +2,9 @@
  * Copyright (c) 2024, Erich Styger
  *
  * SPDX-License-Identifier: BSD-3-Clause
+ * 
+ * cdcTask() -> device USB process -> tud_cdc_rx_cb() -> McuShellCdcDevice_callbacks.buffer_rx_char()
+ * 
  */
 
 #include "McuLib.h"
@@ -25,10 +28,10 @@
 
 /* callbacks to deal with the CDC communication channel */
 static struct McuShellCdcDevice_s {
-  void (*buffer_rx_char)(unsigned char ch);   /* buffer incoming characters from CDC interface */
+  void (*buffer_rx_char)(char ch);   /* called for incoming characters from CDC device */
 } McuShellCdcDevice_callbacks;
 
-void McuShellCdcDevice_SetBufferRxCharCallback(void (*buffer_rx_char_cb)(unsigned char ch)) {
+void McuShellCdcDevice_SetBufferRxCharCallback(void (*buffer_rx_char_cb)(char ch)) {
   McuShellCdcDevice_callbacks.buffer_rx_char = buffer_rx_char_cb;
 }
 
@@ -93,7 +96,7 @@ static bool McuShellCdcDevice_CharPresent(void) {
 #endif
 }
 
-void McuShellCdcDevice_QueueChar(unsigned char ch) {
+void McuShellCdcDevice_QueueChar(char ch) {
   if (xQueueSend(rxQueue, &ch, portMAX_DELAY)!=pdPASS) {
     McuLog_fatal("failed adding to queue");
   }
@@ -120,11 +123,11 @@ void McuShellCdcDevice_Flush(void) {
   (void)tud_cdc_write_flush();
 }
 
-void McuShellCdcDevice_WriteChar(unsigned char ch) {
+void McuShellCdcDevice_WriteChar(char ch) {
   McuShellCdcDevice_SendChar(ch);
 }
 
-void McuShellCdcDevice_ReadChar(unsigned char *ch) {
+void McuShellCdcDevice_ReadChar(char *ch) {
   McuShellCdcDevice_ReceiveChar(ch);
 }
 
@@ -132,12 +135,12 @@ bool McuShellCdcDevice_IsDataPresent(void) {
   return McuShellCdcDevice_CharPresent();
 }
 
-void McuShellCdcDevice_WriteAndFlush(const unsigned char *buf, size_t count) {
+void McuShellCdcDevice_WriteAndFlush(const char *buf, size_t count) {
   tud_cdc_n_write(0, buf, count);
   (void)tud_cdc_write_flush();
 }
 
-void McuShellCdcDevice_WriteStr(const unsigned char *str) {
+void McuShellCdcDevice_WriteStr(const char *str) {
   tud_cdc_write_str(str);
 }
 
@@ -202,7 +205,7 @@ static void cdcTask(void *pv) {
     #if McuLib_CONFIG_CPU_IS_RPxxxx
     tud_task(); /* tinyusb (CDC) device task */
     #endif
-    vTaskDelay(pdMS_TO_TICKS(1));
+    vTaskDelay(pdMS_TO_TICKS(pdMS_TO_TICKS(McuShellCdcDevice_CONFIG_PROCESS_WAIT_TIME_MS)));
   }
 }
 
