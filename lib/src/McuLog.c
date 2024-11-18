@@ -273,6 +273,50 @@ static void LogHeader(DATEREC *date, TIMEREC *time, McuLog_Levels_e level, bool 
 }
 
 #if McuLog_CONFIG_USE_PRINTF_STYLE
+void McuLog_ChannelLog(uint8_t channel, McuLog_Levels_e level, const char *file, int line, const char *fmt, ...) {
+#if McuLog_CONFIG_LOG_TIMESTAMP_DATE
+  DATEREC date;
+  #define DATE_PTR  &date
+#else
+  #define DATE_PTR  NULL
+#endif
+#if McuLog_CONFIG_LOG_TIMESTAMP_TIME
+  TIMEREC time;
+  #define TIME_PTR  &time
+#else
+  #define TIME_PTR  NULL
+#endif
+  va_list list;
+
+  if (level < McuLog_ConfigData.level) {
+    return;
+  }
+  if (channel>=McuLog_CONFIG_NOF_CONSOLE_LOGGER) {
+    return; /* wrong channel number? */
+  }
+#if McuLog_CONFIG_USE_MUTEX
+  lock(); /* Acquire lock */
+#endif
+#if McuLog_CONFIG_LOG_TIMESTAMP_DATE || McuLog_CONFIG_LOG_TIMESTAMP_TIME
+  (void)McuTimeDate_GetTimeDate(TIME_PTR, DATE_PTR); /* Get current date and time */
+#endif
+  if (!McuLog_ConfigData.quiet) {
+    if(McuLog_ConfigData.consoleIo[channel]!=NULL) { /* log to console */
+      LogHeader(DATE_PTR, TIME_PTR, level, true, file, line, OutputCharFctConsole, McuLog_ConfigData.consoleIo[channel]->stdErr);
+      /* open argument list */
+      va_start(list, fmt);
+      McuXFormat_xvformat(OutputCharFctConsole, McuLog_ConfigData.consoleIo[channel]->stdErr, fmt, list);
+      va_end(list);
+      OutString((unsigned char *)"\n", OutputCharFctConsole, McuLog_ConfigData.consoleIo[channel]->stdErr);
+    }
+  }
+#if McuLog_CONFIG_USE_MUTEX
+  unlock(); /* Release lock */
+#endif
+}
+#endif
+
+#if McuLog_CONFIG_USE_PRINTF_STYLE
 void McuLog_log(McuLog_Levels_e level, const char *file, int line, const char *fmt, ...) {
 #if McuLog_CONFIG_LOG_TIMESTAMP_DATE
   DATEREC date;
