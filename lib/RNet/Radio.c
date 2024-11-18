@@ -266,7 +266,7 @@ static void RADIO_HandleStateMachine(void) {
         if (!interrupt) { /* interrupt flag not set, check if we have otherwise data */
           (void)McuNRF24L01_GetFifoStatus(&status);
           if (!(status&McuNRF24L01_FIFO_STATUS_RX_EMPTY) || (status&McuNRF24L01_FIFO_STATUS_RX_FULL)) { /* Rx not empty? */
-            McuLog_info("No data rx in status, but fifo has data?");
+            McuLog_info("No data rx in status, but FIFO has data?");
             RADIO_isrFlag = TRUE;
           }
         }
