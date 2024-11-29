@@ -410,7 +410,9 @@ void McuNRF24L01_WriteRegister(uint8_t reg, uint8_t val)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
@@ -418,7 +420,9 @@ void McuNRF24L01_WriteRegister(uint8_t reg, uint8_t val)
   (void)SPIWriteRead(McuNRF24L01_W_REGISTER|reg); /* write register command */
   (void)SPIWriteRead(val); /* write value */
   McuNRF24L01_CSN_HIGH(); /* end command sequence */
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
@@ -447,7 +451,9 @@ uint8_t McuNRF24L01_ReadRegister(uint8_t reg)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
@@ -455,7 +461,9 @@ uint8_t McuNRF24L01_ReadRegister(uint8_t reg)
   (void)SPIWriteRead(reg);
   val = SPIWriteRead(0); /* write dummy */
   McuNRF24L01_CSN_HIGH();
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
@@ -484,7 +492,9 @@ void McuNRF24L01_ReadRegisterData(uint8_t reg, uint8_t *buf, uint8_t bufSize)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
@@ -492,7 +502,9 @@ void McuNRF24L01_ReadRegisterData(uint8_t reg, uint8_t *buf, uint8_t bufSize)
   (void)SPIWriteRead(McuNRF24L01_R_REGISTER|reg);
   SPIWriteReadBuffer(buf, buf, bufSize);
   McuNRF24L01_CSN_HIGH();
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
@@ -520,7 +532,9 @@ void McuNRF24L01_WriteRegisterData(uint8_t reg, uint8_t *buf, uint8_t bufSize)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
@@ -528,7 +542,9 @@ void McuNRF24L01_WriteRegisterData(uint8_t reg, uint8_t *buf, uint8_t bufSize)
   (void)SPIWriteRead(McuNRF24L01_W_REGISTER|reg); /* not masking registers as it would conflict with McuNRF24L01_W_TX_PAYLOAD */
   SPIWriteBuffer(buf, bufSize);
   McuNRF24L01_CSN_HIGH();
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
@@ -555,14 +571,18 @@ uint8_t McuNRF24L01_WriteRead(uint8_t val)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
   McuNRF24L01_CSN_LOW();
   val = SPIWriteRead(val);
   McuNRF24L01_CSN_HIGH();
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
@@ -589,14 +609,18 @@ void McuNRF24L01_Write(uint8_t val)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
   McuNRF24L01_CSN_LOW();
   (void)SPIWriteRead(val);
   McuNRF24L01_CSN_HIGH();
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
@@ -659,7 +683,9 @@ uint8_t McuNRF24L01_GetStatusClrIRQ(void)
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreTakeRecursive(McuNRF24L01_Mutex, portMAX_DELAY);
 #endif
+#if McuNRF24L01_CONFIG_USE_ON_ACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_ACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_SWITCH_BUS
   McuNRF24L01_ConfigureSPI(); /* change bus speed */
 #endif
@@ -667,7 +693,9 @@ uint8_t McuNRF24L01_GetStatusClrIRQ(void)
   status = SPIWriteRead(McuNRF24L01_W_REGISTER|McuNRF24L01_STATUS); /* get status */
   (void)SPIWriteRead(status&(McuNRF24L01_STATUS_RX_DR|McuNRF24L01_STATUS_TX_DS|McuNRF24L01_STATUS_MAX_RT)); /* reset IRQ Bits */
   McuNRF24L01_CSN_HIGH(); /* end command sequence */
+#if McuNRF24L01_CONFIG_USE_ON_DEACTIVATE_CALLBACK
   McuNRF24L01_CONFIG_ON_DEACTIVATE_CALLBACK(); /* call user event */
+#endif
 #if McuNRF24L01_CONFIG_USE_MUTEX
   (void)xSemaphoreGiveRecursive(McuNRF24L01_Mutex);
 #endif
