@@ -105,7 +105,9 @@ void McuNRF24L01_OnActivate(void);
 void McuNRF24L01_OnDeactivate(void);
 
 /* if having multiple users on the SPI bus, enable bus sharing/switching */
+#ifndef McuNRF24L01_SWITCH_BUS
   #define McuNRF24L01_SWITCH_BUS       (0)
+#endif
   //#define McuNRF24L01_BAUD_RATE_MODE   2 /* Index of baud rate mode */
 
 /* Memory Map - register address defines */
