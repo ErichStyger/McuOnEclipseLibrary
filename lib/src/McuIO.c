@@ -40,11 +40,19 @@ static int McuIO_Write(McuIO_Desc_t *io, char ch) {
 #endif
 }
 
-static size_t McuIO_Nof(McuIO_Desc_t *io) {
+static size_t McuIO_NofData(McuIO_Desc_t *io) {
 #if MCUIO_CONFIG_USE_FREERTOS_QUEUE
   return uxQueueMessagesWaiting((QueueHandle_t)io->buffer.buf);
 #else
   return McuRB_NofElements((McuRB_Handle_t)io->buffer.buf);
+#endif
+}
+
+static size_t McuIO_NofFree(McuIO_Desc_t *io) {
+#if MCUIO_CONFIG_USE_FREERTOS_QUEUE
+  return uxQueueSpacesAvailable((QueueHandle_t)io->buffer.buf);
+#else
+  return McuRB_NofFreeElements((McuRB_Handle_t)io->buffer.buf);
 #endif
 }
 
@@ -89,7 +97,8 @@ McuIO_Desc_t *McuIO_NewIO(size_t nofBufferElements) {
 #endif
   io->buffer.read = McuIO_Read;
   io->buffer.write = McuIO_Write;
-  io->buffer.nof = McuIO_Nof;
+  io->buffer.nofData = McuIO_NofData;
+  io->buffer.nofFree = McuIO_NofFree;
   io->out.flush = McuIO_OutFlush;
   io->out.write = McuIO_OutWrite;
   return io;

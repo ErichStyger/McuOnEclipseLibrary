@@ -20,7 +20,8 @@ typedef struct McuIO_Desc_t {
     void *buf; /* handle to the buffer */
     int (*write)(struct McuIO_Desc_t *io, char ch); /* write a character, returns the number of bytes written */
     int (*read)(struct McuIO_Desc_t *io); /* read a character and return it, or return EOF */
-    size_t (*nof)(struct McuIO_Desc_t *io); /* return the number of available character in buffer */
+    size_t (*nofData)(struct McuIO_Desc_t *io); /* return the number of data character in buffer */
+    size_t (*nofFree)(struct McuIO_Desc_t *io); /* return the number of free character in buffer */
   } buffer;
   struct {
     void (*write)(char ch);
