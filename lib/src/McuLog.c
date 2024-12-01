@@ -453,11 +453,11 @@ static void LockUnlockCallback(void *data, bool lock) {
 
 #if McuLog_CONFIG_PARSE_COMMAND_ENABLED
 static uint8_t PrintStatus(const McuShell_StdIOType *io) {
-  uint8_t buf[8];
+  uint8_t buf[16];
 
   McuShell_SendStatusStr((unsigned char*)"McuLog", (unsigned char*)"Log status\r\n", io->stdOut);
   McuUtility_Num8uToStr(buf, sizeof(buf), McuLog_CONFIG_NOF_CONSOLE_LOGGER);
-  McuUtility_strcat(buf, sizeof(buf), (unsigned char*)"\r\n");
+  McuUtility_strcat(buf, sizeof(buf), (unsigned char*)" channel\r\n");
   McuShell_SendStatusStr((unsigned char*)"  console", buf, io->stdOut);
 #if McuLog_CONFIG_USE_FILE
   McuShell_SendStatusStr((unsigned char*)"  file", McuLog_ConfigData.fp!=NULL?(unsigned char*)"yes\r\n":(unsigned char*)"no\r\n", io->stdOut);
