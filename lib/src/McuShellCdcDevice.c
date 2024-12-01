@@ -200,7 +200,16 @@ void tud_cdc_rx_cb(uint8_t itf) {
   }
 }
 
+#define RH_PORT_NUM  (0)
+
+static void UsbDeviceRestart(void) {
+  tud_deinit(RH_PORT_NUM);
+  vTaskDelay(pdMS_TO_TICKS(100));
+  tud_init(RH_PORT_NUM);
+}
+
 static void cdcTask(void *pv) {
+  tud_init(RH_PORT_NUM); /* init device stack on native usb (roothub port0) */
   for(;;) {
     #if McuLib_CONFIG_CPU_IS_RPxxxx
     tud_task(); /* tinyusb (CDC) device task */
@@ -209,19 +218,14 @@ static void cdcTask(void *pv) {
   }
 }
 
-static uint8_t PrintHelp(McuShell_ConstStdIOType *io) {
-  McuShell_SendHelpStr((unsigned char*)"McuShellCdc", (const unsigned char*)"Group of McuShellCdc commands\r\n", io->stdOut);
-  McuShell_SendHelpStr((unsigned char*)"  help|status", (const unsigned char*)"Print help or status information\r\n", io->stdOut);
-  McuShell_SendHelpStr((unsigned char*)"  text <txt>", (const unsigned char*)"Send text\r\n", io->stdOut);
-  return ERR_OK;
-}
-
 static uint8_t PrintStatus(McuShell_ConstStdIOType *io) {
   unsigned char buf[64];
   uint8_t val;
 
   McuShell_SendStatusStr((const unsigned char*)"McuShellCdc", (const unsigned char*)"McuShellCdc module status\r\n", io->stdOut);
+#if 0 /* not reliable, disabled for now */
   McuShell_SendStatusStr((const unsigned char*)"  connected", McuShellCdcDevice_IsConnected()?(const unsigned char*)"yes\r\n":(const unsigned char*)"no\r\n", io->stdOut);
+#endif
   McuShell_SendStatusStr((const unsigned char*)"  ready", McuShellCdcDevice_IsReady()?(const unsigned char*)"yes\r\n":(const unsigned char*)"no\r\n", io->stdOut);
   
   val = McuShellCdcDevice_GetLineState();
@@ -235,15 +239,27 @@ static uint8_t PrintStatus(McuShell_ConstStdIOType *io) {
   return ERR_OK;
 }
 
+static uint8_t PrintHelp(McuShell_ConstStdIOType *io) {
+  McuShell_SendHelpStr((unsigned char*)"McuShellCdc", (const unsigned char*)"Group of McuShellCdc commands\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  help|status", (const unsigned char*)"Print help or status information\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  restart", (const unsigned char*)"Restart USB stack\r\n", io->stdOut);
+  McuShell_SendHelpStr((unsigned char*)"  text <txt>", (const unsigned char*)"Send text\r\n", io->stdOut);
+  return ERR_OK;
+}
+
 uint8_t McuShellCdcDevice_ParseCommand(const unsigned char *cmd, bool *handled, const McuShell_StdIOType *io) {
   if (McuUtility_strcmp((char*)cmd, McuShell_CMD_HELP)==0 || McuUtility_strcmp((char*)cmd, "McuShellCdc help")==0) {
-    *handled = TRUE;
+    *handled = true;
     return PrintHelp(io);
   } else if ((McuUtility_strcmp((char*)cmd, McuShell_CMD_STATUS)==0) || (McuUtility_strcmp((char*)cmd, "McuShellCdc status")==0)) {
-    *handled = TRUE;
+    *handled = true;
     return PrintStatus(io);
+  } else if (McuUtility_strcmp((char*)cmd, "McuShellCdc restart")==0) {
+    *handled = true;
+    UsbDeviceRestart();
+    return ERR_OK;
   } else if (McuUtility_strncmp((char*)cmd, "McuShellCdc text ", sizeof("McuShellCdc text ")-1)==0) {
-    *handled = TRUE;
+    *handled = true;
     McuShellCdcDevice_WriteStr(cmd + sizeof("McuShellCdc text ")-1);
     McuShellCdcDevice_WriteStr("\r\n");
     McuShellCdcDevice_Flush();
@@ -257,13 +273,13 @@ void McuShellCdcDevice_Deinit(void) {
 }
 
 void McuShellCdcDevice_Init(void) {
-  BaseType_t res = xTaskCreate(cdcTask, "cdcTask", 4*1024/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+4, NULL);
+  BaseType_t res = xTaskCreate(cdcTask, "cdcTask", 4*1024/sizeof(StackType_t), NULL, McuShellCdcDevice_CONFIG_PROCESS_PRIORITY, NULL);
   if (res!=pdPASS) {
     McuLog_fatal("creating ShellTask task failed!");
     for(;;) {}
   }
 #if McuShellCdcDevice_CONFIG_USE_FREERTOS
-  rxQueue = xQueueCreate(McuShellCdcDevice_CONFIG_UART_RX_BUFFER_SIZE, sizeof(uint8_t));
+  rxQueue = xQueueCreate(McuShellCdcDevice_CONFIG_RX_BUFFER_SIZE, sizeof(uint8_t));
   if (rxQueue==NULL) {
     for(;;){} /* out of memory? */
   }
@@ -273,7 +289,7 @@ void McuShellCdcDevice_Init(void) {
 
   McuRB_GetDefaultconfig(&config);
   config.elementSize = sizeof(uint8_t);
-  config.nofElements = McuShellCdcDevice_CONFIG_UART_RX_BUFFER_SIZE;
+  config.nofElements = McuShellCdcDevice_CONFIG_RX_BUFFER_SIZE;
   rxRingBuffer = McuRB_InitRB(&config);
   if (rxRingBuffer==NULL) {
     for(;;) {/* error */}
