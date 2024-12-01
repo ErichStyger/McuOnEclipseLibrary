@@ -44,7 +44,7 @@ uint8_t McuSDEP_GetLogChannel(void) {
 
 static McuIO_Desc_t *McuSDEP_SdepIO = NULL;      /* I/O buffer for incoming data: SDEP and non-SDEP shell data */
 static void (*McuSDEP_txToShell_cb)(char) = NULL;   /* callback to write non-SDEP messages to the console */
-static int (*McuSDEP_rxToBuffer_cb)(void) = NULL;   /* callback to get data into the SDEP I/O buffer */
+static int (*McuSDEP_rxToBuffer_cb)(void) = NULL;   /* callback to get data from the rx buffer (e.g. queue from USB Host CDC) */
 
 void McuSDEP_SetForwardCharCallback(void (*forward_char_cb)(char)) {
   McuSDEP_txToShell_cb = forward_char_cb;
@@ -220,7 +220,7 @@ static uint8_t readByte(unsigned char *buf, size_t bufSize, size_t *currBufIdx, 
   if (*currBufIdx>=bufSize) {
     return ERR_OVERFLOW;
   }
-  if (io->buffer.nof(io)==0) {
+  if (io->buffer.nofData(io)==0) {
     return ERR_NOTAVAIL;
   }
   ch = io->buffer.read(io);
@@ -311,7 +311,13 @@ static uint8_t PrintHelp(McuShell_ConstStdIOType *io) {
 }
 
 static uint8_t PrintStatus(McuShell_ConstStdIOType *io) {
+  unsigned char buf[16];
+  
   McuShell_SendStatusStr((const unsigned char*)"McuSDEP", (const unsigned char*)"McuSDEP module status\r\n", io->stdOut);
+  McuUtility_strcpy(buf, sizeof(buf), "channel: ");
+  McuUtility_strcatNum8u(buf, sizeof(buf), logChannel);
+  McuUtility_strcat(buf, sizeof(buf), "\r\n");
+  McuShell_SendStatusStr((const unsigned char*)"  log", buf, io->stdOut);
   return ERR_OK;
 }
 
@@ -365,13 +371,17 @@ static void sdepTask(void *pv) {
   McuIO_Desc_t *io = McuSDEP_GetSdepIO();
 
   for(;;) {
-    if (McuSDEP_rxToBuffer_cb!=NULL) { /* have callback? */
-      int ch = McuSDEP_rxToBuffer_cb(); /* check if we have data */
-      if (ch!=EOF) { /* yes? then transfer to SDEP buffer */
-        io->buffer.write(io, ch);
-      }
+    if (McuSDEP_rxToBuffer_cb!=NULL) { /* have valid callback? Read data from Rx buffer */
+      /* try to transfer data from Rx buffer quickly to the SDEP buffer */
+      while(io->buffer.nofFree(io)>0) {
+        int ch = McuSDEP_rxToBuffer_cb(); /* check if we have data */
+        if (ch==EOF) { /* no data from available: get out of loop */
+          break;
+        }
+        io->buffer.write(io, ch); /* store in our own buffer */
+      } /* while */
     }
-    if (io->buffer.nof(io)>0) {
+    if (io->buffer.nofData(io)>0) { /* have data to handle in SDEP buffer */
       timeoutMs = 0;
       res = McuSDEP_ParseSDEPMessage(io, buf, sizeof(buf), &bufIdx, &msg);
       if (res==ERR_OK) { /* parsed a valid SDEP message */
@@ -408,7 +418,7 @@ static void sdepTask(void *pv) {
         bufIdx = 0; /* start for new iteration */
       }
     } /* if */
-  }
+  } /* for */
 }
 
 void McuSDEP_Deinit(void) {
