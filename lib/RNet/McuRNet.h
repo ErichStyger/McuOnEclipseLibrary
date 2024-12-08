@@ -38,7 +38,7 @@
 **              Shell                                      : CLS1
 **     Contents    :
 **         SetChannel   - uint8_t McuRNet_SetChannel(uint8_t channel);
-**         Process      - uint8_t McuRNet_Process(void);
+**         Process      - uint8_t McuRNet_Process(uint32_t notifcationValue);
 **         PowerUp      - uint8_t McuRNet_PowerUp(void);
 **         ParseCommand - uint8_t McuRNet_ParseCommand(const unsigned char *cmd, bool *handled, const...
 **         Init         - void McuRNet_Init(void);
@@ -137,7 +137,7 @@ void McuRNet_Deinit(void);
 ** ===================================================================
 */
 
-uint8_t McuRNet_Process(void);
+uint8_t McuRNet_Process(uint32_t notifcationValue);
 /*
 ** ===================================================================
 **     Method      :  Process (component RNet)

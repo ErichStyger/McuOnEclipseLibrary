@@ -12,6 +12,14 @@
 
 #include "McuRNetConfig.h"
 
+/* direct task notification bits */
+#define RADIO_FLAG_INTERRUPT     (1<<0)  /* transceiver interrupt */
+#define RADIO_FLAG_TX_REQUEST    (1<<1)  /* request to send data using the Tx queue */
+#define RADIO_FLAG_RX_REQUEST    (1<<2)  /* request to receive data from the Rx queue */
+
+void RADIO_Notify(uint32_t flags);
+void RADIO_NotifyFromInterrupt(uint32_t flags, BaseType_t *pxHigherPriorityTaskWoken);
+
 #include "McuShell.h"
 /*!
  * \brief Parses a command
@@ -45,7 +53,7 @@ uint8_t RADIO_PowerUp(void);
  * \brief Function to determine if we could power down the radio.
  * \return TRUE if there is no transmission pending so we can power down the radio.
  */
-bool RADIO_CanDoPowerDown(void);
+bool RADIO_CanDoPowerDown(uint32_t notifcationValue);
 
 /*! 
  * \brief Power down the radio.
@@ -55,9 +63,10 @@ uint8_t RADIO_PowerDown(void);
 
 /*!
  * \brief Processes the radio state machine. Needs to be called frequently from the application (about every 10 ms).
+ * \param notifcationValue Direct Task Notification bits
  * \return Error code, ERR_OK for no failure.
  */
-uint8_t RADIO_Process(void);
+uint8_t RADIO_Process(uint32_t notifcationValue);
 
 /*!
  * \brief Flushes the internal radio queues.
