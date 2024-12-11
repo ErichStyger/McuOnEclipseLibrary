@@ -15,7 +15,7 @@
 /* direct task notification bits */
 #define RADIO_FLAG_INTERRUPT     (1<<0)  /* transceiver interrupt */
 #define RADIO_FLAG_TX_REQUEST    (1<<1)  /* request to send data using the Tx queue */
-#define RADIO_FLAG_RX_REQUEST    (1<<2)  /* request to receive data from the Rx queue */
+#define RADIO_FLAG_REQUEST_INIT  (1<<2)  /* request to re-initialize the radio */
 
 void RADIO_Notify(uint32_t flags);
 void RADIO_NotifyFromInterrupt(uint32_t flags, BaseType_t *pxHigherPriorityTaskWoken);
@@ -62,11 +62,11 @@ bool RADIO_CanDoPowerDown(uint32_t notifcationValue);
 uint8_t RADIO_PowerDown(void);
 
 /*!
- * \brief Processes the radio state machine. Needs to be called frequently from the application (about every 10 ms).
+ * \brief Processes the radio state machine. Needs to be called frequently from the application.
  * \param notifcationValue Direct Task Notification bits
  * \return Error code, ERR_OK for no failure.
  */
-uint8_t RADIO_Process(uint32_t notifcationValue);
+void RADIO_Process(void);
 
 /*!
  * \brief Flushes the internal radio queues.

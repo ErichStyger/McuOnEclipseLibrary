@@ -76,8 +76,6 @@ uint8_t RMSG_QueuePut(uint8_t *buf, size_t bufSize, uint8_t payloadSize, bool fr
     } else {
       if (isTx) {
         RADIO_NotifyFromInterrupt(RADIO_FLAG_TX_REQUEST, &pxHigherPriorityTaskWoken);
-      } else {
-        RADIO_NotifyFromInterrupt(RADIO_FLAG_RX_REQUEST, &pxHigherPriorityTaskWoken);
       }
     }
   } else {
@@ -91,8 +89,6 @@ uint8_t RMSG_QueuePut(uint8_t *buf, size_t bufSize, uint8_t payloadSize, bool fr
     } else {
       if (isTx) {
         RADIO_Notify(RADIO_FLAG_TX_REQUEST);
-      } else {
-        RADIO_Notify(RADIO_FLAG_RX_REQUEST);
       }
     }
   }
