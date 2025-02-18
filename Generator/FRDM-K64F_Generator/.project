@@ -51,25 +51,5 @@
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/readme.txt</locationURI>
 		</link>
-		<link>
-			<name>compare/lib</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/lib</locationURI>
-		</link>
-		<link>
-			<name>compare/AEMBS/McuLib</name>
-			<type>2</type>
-			<locationURI>PARENT-4-PROJECT_LOC/HSLU/Vorlesung/AEMBS/git/Projects/McuLib</locationURI>
-		</link>
-		<link>
-			<name>compare/McuOnEclipse/McuLib</name>
-			<type>2</type>
-			<location>P:/McuLib</location>
-		</link>
-		<link>
-			<name>compare/lib/McuLib</name>
-			<type>2</type>
-			<location>P:/McuLib</location>
-		</link>
 	</linkedResources>
 </projectDescription>
